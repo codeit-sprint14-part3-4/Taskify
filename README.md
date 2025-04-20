@@ -14,7 +14,7 @@
     <th><a href="https://github.com/Parkchanyoung0710">@박찬영</a></th>
   </tr>
   <tr>
-    <td><img src="https://avatars.githubusercontent.com/u/175691313?v=4" width="100"></td>
+    <td><img src="https://avatars.githubusercontent.com/u/100752796?v=4" width="100"></td>
     <td><img src="https://avatars.githubusercontent.com/u/192767726?v=4" width="100"></td>
     <td><img src="https://avatars.githubusercontent.com/u/56295839?v=4" width="100"></td>
     <td><img src="https://avatars.githubusercontent.com/u/175691313?v=4" width="100"></td>
