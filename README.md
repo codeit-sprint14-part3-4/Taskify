@@ -82,41 +82,42 @@
 
 ```bash
 src/
-├── assets/                   # 프로젝트에서 사용하는 정적 파일 (이미지, 아이콘 등)
+├── assets/                   📦 정적 파일 (이미지, 아이콘 등)
 │
-├── components/              # 재사용 가능한 UI 컴포넌트
-│   ├── common/              # 공통 UI 컴포넌트
-│   │   ├── input.tsx
-│   │   ├── button/          # 버튼 컴포넌트
-│   │   ├── card/            # 카드 UI 컴포넌트
-│   │   ├── dropdown/        # 드롭다운 UI
-│   │   └── gnb/             # 상단 네비게이션 바
+├── components/              🧩 UI 컴포넌트 모음
+│   ├── common/              🛠️ 공통으로 사용하는 재사용 컴포넌트
+│   │   ├── input.tsx        ✏️ 인풋 필드
+│   │   ├── button/          🔘 버튼 UI
+│   │   ├── card/            📇 카드 컴포넌트
+│   │   ├── dropdown/        🔽 드롭다운 UI
+│   │   └── gnb/             🧭 상단 네비게이션바
 │   │
-│   └── domain/              # 도메인 기반의 컴포넌트 (업무 로직 포함)
-│       ├── dashboard/       # 대시보드 관련 UI 및 기능
-│       ├── form/            # 로그인, 회원가입, 프로필 폼
-│       └── modals/          # 프로젝트 내 모달 컴포넌트 모음
+│   └── domain/              📚 도메인 중심 컴포넌트 (비즈니스 로직 포함)
+│       ├── dashboard/       📊 대시보드 관련 UI
+│       ├── form/            📝 로그인 / 회원가입 / 프로필 폼
+│       └── modals/          💬 모달 컴포넌트들
 │
-├── hooks/                   # 커스텀 훅 모음
+├── hooks/                   🪝 커스텀 훅 모음
 │
-├── pages/                   # Next.js 페이지 라우팅
-│   ├── login.tsx
-│   ├── signup.tsx
-│   ├── mydashboard.tsx
-│   ├── mypage.tsx
-│   ├── index.tsx            # 랜딩 페이지
+├── pages/                   📄 라우팅 페이지 (Next.js)
+│   ├── index.tsx            🏠 메인 랜딩 페이지
+│   ├── login.tsx            🔐 로그인 페이지
+│   ├── signup.tsx           🧑‍💻 회원가입 페이지
+│   ├── mydashboard.tsx      📂 나의 대시보드 페이지
+│   ├── mypage.tsx           🙋‍♂️ 마이페이지
 │   └── dashboard/
-│       └── [id]/            # 대시보드 상세 및 수정 페이지
+│       └── [id]/            🧱 대시보드 상세/수정 페이지
 │           ├── index.tsx
 │           └── edit.tsx
 │
-├── api/                     # API 요청 관련 모듈
-│   ├── client/              # axios 요청 설정 (interceptor 등)
-│   └── services/            # API 서비스 함수 (auth, dashboard 등)
+├── api/                     🌐 API 요청 모듈
+│   ├── client/              ⚙️ axios 설정 (interceptor 등)
+│   └── services/            📬 API 서비스 함수 모음 (auth, dashboard 등)
 │
-├── styles/                  # 글로벌 스타일 및 테마 정의
+├── styles/                  🎨 글로벌 스타일 및 테마
 │   ├── globals.css
 │   ├── reset.css
 │   └── theme.tsx
 │
-└── utils/                   # 유틸 함수 모음
+└── utils/                   🧠 유틸리티 함수 모음
+
