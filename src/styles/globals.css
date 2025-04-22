@@ -1,26 +1,221 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-family: 'Pretendard', sans-serif;
+
+  /* Black & Gray Colors*/
+  --black-000000: #000000;
+  --black-171717: #171717;
+  --black-333236: #333236;
+  --black-4B4B4B: #4b4b4b;
+  --gray-787486: #787486;
+  --gray-9FA6B2: #9fa6b2;
+  --gray-D9D9D9: #d9d9d9;
+  --gray-EEEEEE: #eeeeee;
+  --gray-FAFAFA: #fafafa;
+  --white-FFFFFF: #ffffff;
+
+  /* Colors */
+  --violet-5534DhA: #5534da;
+  --violet-8: #f1effd;
+  --red-D6173A: #d6173a;
+  --green-7AC555: #7ac555;
+  --purple-760DDE: #760dde;
+  --orange-FFA500: #ffa500;
+  --blue-76A5EA: #76a5ea;
+  --pink-E876EA: #e876ea;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 3xl */
+.text-3xl-bold {
+  font-family: var(--font-family);
+  font-size: 32px;
+  line-height: 42px;
+  font-weight: 700;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.text-3xl-semibold {
+  font-family: var(--font-family);
+  font-size: 32px;
+  line-height: 42px;
+  font-weight: 600;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 2xl */
+.text-2xl-bold {
+  font-family: var(--font-family);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+}
+
+.text-2xl-semibold {
+  font-family: var(--font-family);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+.text-2xl-medium {
+  font-family: var(--font-family);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+}
+
+.text-2xl-regular {
+  font-family: var(--font-family);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+}
+
+/* xl */
+.text-xl-bold {
+  font-family: var(--font-family);
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 700;
+}
+
+.text-xl-semibold {
+  font-family: var(--font-family);
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+.text-xl-medium {
+  font-family: var(--font-family);
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 500;
+}
+
+.text-xl-regular {
+  font-family: var(--font-family);
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 400;
+}
+
+/* 2lg */
+.text-2lg-bold {
+  font-family: var(--font-family);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 700;
+}
+
+.text-2lg-semibold {
+  font-family: var(--font-family);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+}
+
+.text-2lg-medium {
+  font-family: var(--font-family);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 500;
+}
+
+.text-2lg-regular {
+  font-family: var(--font-family);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 400;
+}
+/* lg */
+.text-lg-bold {
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 700;
+}
+
+.text-lg-semibold {
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 600;
+}
+
+.text-lg-medium {
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 500;
+}
+
+.text-lg-regular {
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 400;
+}
+
+/* md */
+.text-md-bold {
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.text-md-semibold {
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.text-md-medium {
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
+}
+
+.text-md-regular {
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+/* sm */
+.text-sm-semibold {
+  font-family: var(--font-family);
+  font-size: 13px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.text-sm-medium {
+  font-family: var(--font-family);
+  font-size: 13px;
+  line-height: 22px;
+  font-weight: 500;
+}
+
+/* xs */
+.text-xs-semibold {
+  font-family: var(--font-family);
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.text-xs-medium {
+  font-family: var(--font-family);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+}
+
+.text-xs-regular {
+  font-family: var(--font-family);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
 }

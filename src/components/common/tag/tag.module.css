@@ -1,0 +1,26 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.tag-orange {
+  background-color: #f9eee3;
+  color: #d58d49;
+}
+.tag-green {
+  background-color: #e7f7db;
+  color: #86d549;
+}
+.tag-pink {
+  background-color: #f7dbf0;
+  color: #d549b6;
+}
+
+.tag-blue {
+  background-color: #dbe6f7;
+  color: #4981d5;
+}
