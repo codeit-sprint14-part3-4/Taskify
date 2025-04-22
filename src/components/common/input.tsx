@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 
 interface InputProps {
@@ -9,6 +11,9 @@ interface InputProps {
   readOnly?: boolean
   error?: string
   className?: string
+  padding?: string
+  height?: string
+  icon?: React.ReactNode
 }
 
 const Input: React.FC<InputProps> = ({
@@ -20,20 +25,30 @@ const Input: React.FC<InputProps> = ({
   readOnly = false,
   error,
   className = '',
+  padding = 'py-2 px-3',
+  height = 'h-10',
+  icon,
 }) => {
   return (
     <div className="flex flex-col">
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        disabled={disabled}
-        readOnly={readOnly}
-        className={`border rounded p-2 ${
-          error ? 'border-red-500' : 'border-gray-300'
-        } ${className}`}
-      />
+      <div className="relative">
+        <input
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          disabled={disabled}
+          readOnly={readOnly}
+          className={`block w-full border rounded ${padding} ${height} ${
+            error ? 'border-red-500' : 'border-gray-300'
+          } pr-10 ${className}`}
+        />
+        {icon && (
+          <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+            {icon}
+          </div>
+        )}
+      </div>
       {error && <span className="text-red-500 text-xs mt-1">{error}</span>}
     </div>
   )
