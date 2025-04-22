@@ -1,5 +1,5 @@
+import Tag from '@/components/common/tag/Tag'
 import { useState, useEffect } from 'react'
-import Tag from '@/components/common/tag/tag'
 
 const colors = [
   'tag-orange',
