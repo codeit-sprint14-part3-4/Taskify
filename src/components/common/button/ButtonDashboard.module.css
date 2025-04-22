@@ -1,0 +1,26 @@
+.button {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.buttonWrapper {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  gap: 10px;
+}
+.textOnly {
+  color: #333236;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.iconOnly {
+  border: none;
+  padding: 0;
+  color: transparent;
+  width: auto;
+  height: auto;
+}
