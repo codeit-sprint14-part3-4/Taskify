@@ -36,10 +36,10 @@ export default function Home() {
       <Input
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        padding="py-4 px-6" // 내부 여백 크게
-        height="h-14" // input 전체 높이 크게
         placeholder="크게 만들어진 인풋"
       />
+
+      <div className="bg-red-500 w-40 h-40">Tailwind 작동 테스트</div>
     </div>
   )
 }

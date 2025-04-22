@@ -39,9 +39,14 @@ const Input: React.FC<InputProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           readOnly={readOnly}
-          className={`block w-full border rounded ${padding} ${height} ${
-            error ? 'border-red-500' : 'border-gray-300'
-          } pr-10 ${className}`}
+          className={`block w-full border rounded 
+            border-red-300
+            appearance-none
+            leading-none
+            ${padding} ${height}
+            ${error ? 'border-red-500' : 'border-gray-300'}
+            pr-10
+            ${className}`}
         />
         {icon && (
           <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
