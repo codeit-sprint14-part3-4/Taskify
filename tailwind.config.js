@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    './src/**/*.{js,ts,jsx,tsx}', // src 폴더 내 파일을 포함
+    './pages/**/*.{js,ts,jsx,tsx}', // pages 폴더 내 파일을 포함
   ],
   theme: {
     extend: {},

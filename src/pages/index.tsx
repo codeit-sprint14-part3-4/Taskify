@@ -1,11 +1,13 @@
 import ButtonDashboard from '@/components/common/button/ButtonDashboard'
 import Image from 'next/image'
+import Gnb from '@/components/layout/gnb/Gnb'
 
 export default function Home() {
   return (
     <div>
+      <Gnb />
       <ButtonDashboard
-        paddingHeight="py-6" // Vertical padding (Top & Bottom)
+        paddingHeight="py-6"
         paddingWidth="px-6"
         className="text-2lg-bold"
         prefix={
@@ -33,7 +35,7 @@ export default function Home() {
         }
       />
       <ButtonDashboard
-        paddingHeight="py-6" // Tailwind 클래스 (패딩)
+        paddingHeight="py-6"
         paddingWidth="px-6"
         suffix={
           <Image
@@ -50,8 +52,8 @@ export default function Home() {
       <ButtonDashboard paddingHeight="py-3" paddingWidth="px-6">
         새로운 컬럼 추가하기
       </ButtonDashboard>
-      <div className="bg-blue-500 p-4 text-white">
-        <h1 className="text-white">Tailwind CSS가 잘 적용되었는지 확인!</h1>
+      <div className="bg-green-500 p-6 text-white">
+        <h1 className="text-3xl font-bold">Tailwind 기본 테스트</h1>
       </div>
     </div>
   )
