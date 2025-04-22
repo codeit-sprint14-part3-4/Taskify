@@ -1,4 +1,4 @@
-import Tag from '@/components/common/tag/tag'
+import Tag from '@/components/common/tag/Tag'
 
 export default function TestPage() {
   return (
