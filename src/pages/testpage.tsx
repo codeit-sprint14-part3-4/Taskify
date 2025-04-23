@@ -12,7 +12,9 @@ const colors = [
   'tag-teal',
   'tag-brown',
   'tag-gray',
-]
+] as const
+
+type TagColor = (typeof colors)[number]
 
 const labels = [
   '프로젝트',
@@ -27,22 +29,21 @@ const labels = [
   '기타',
 ]
 
+interface ShuffledTag {
+  label: string
+  color: TagColor
+}
+
 export default function TestPage() {
-  const [shuffledTags, setShuffledTags] = useState<
-    { label: string; color: string }[]
-  >([])
+  const [shuffledTags, setShuffledTags] = useState<ShuffledTag[]>([])
 
   useEffect(() => {
-    // 색 리스트를 복사하고
     let availableColors = [...colors]
 
-    // label마다 랜덤 색 배정
     const result = labels.map((label) => {
-      // 랜덤 인덱스 뽑기
       const randomIndex = Math.floor(Math.random() * availableColors.length)
       const color = availableColors[randomIndex]
 
-      // 선택한 색을 사용한 색 목록에서 제거
       availableColors.splice(randomIndex, 1)
 
       return { label, color }
@@ -62,7 +63,7 @@ export default function TestPage() {
 
       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
         {shuffledTags.map((tag, idx) => (
-          <Tag key={idx} label={tag.label} color={tag.color as any} />
+          <Tag key={idx} label={tag.label} color={tag.color} />
         ))}
       </div>
     </div>
