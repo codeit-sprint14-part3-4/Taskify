@@ -5,12 +5,14 @@ import { ButtonHTMLAttributes, ReactNode } from 'react'
 interface ButtonDashboardProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix'> {
   children?: ReactNode
+
   paddingHeight?: string
   paddingWidth?: string
   gap?: string
   prefix?: ReactNode
   suffix?: ReactNode
   color?: string
+
 }
 
 export default function ButtonDashboard({
@@ -24,6 +26,7 @@ export default function ButtonDashboard({
   className,
   style,
   onClick,
+
   ...rest
 }: ButtonDashboardProps) {
   const buttonClass = clsx(className)
@@ -40,11 +43,14 @@ export default function ButtonDashboard({
     gap
   )
 
+
   return (
     <div>
       <button
         onClick={onClick}
+
         className={clsx(styles.buttonWrapper, buttonClass)}
+
         style={style}
         {...rest}
       >

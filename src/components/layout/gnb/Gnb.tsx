@@ -10,7 +10,9 @@ const Gnb = () => {
     <nav className={styles.nav}>
       <div className={styles.navWrapper}>
         <Link href={'/'} className={styles.logo}>
+
           <Image src={logo_taskify} alt="Logo" className={styles.image} />
+
           <Image src={text_taskify} alt="Logo" className={styles.logotext} />
         </Link>
 

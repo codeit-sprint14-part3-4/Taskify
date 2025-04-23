@@ -8,8 +8,10 @@ export default function Home() {
       <Gnb />
       <ButtonDashboard
         paddingHeight="py-6"
+
         paddingWidth="px-21.5"
         gap="gap-4"
+
         className="text-2lg-bold"
         prefix={
           <Image
@@ -25,8 +27,10 @@ export default function Home() {
       </ButtonDashboard>
 
       <ButtonDashboard
+
         paddingHeight="py-6"
         paddingWidth="px-21.5"
+
         prefix={
           <Image
             src="/assets/icon/add_box.svg"
@@ -40,7 +44,9 @@ export default function Home() {
       <ButtonDashboard
         paddingHeight="py-6"
         paddingWidth="px-6"
+
         gap="gap-3"
+
         suffix={
           <Image
             src="/assets/icon/add_box.svg"
@@ -56,6 +62,7 @@ export default function Home() {
       <ButtonDashboard paddingHeight="py-3" paddingWidth="px-6">
         새로운 컬럼 추가하기
       </ButtonDashboard>
+
       <ButtonDashboard
         paddingHeight="py-3"
         paddingWidth="px-6"
@@ -73,6 +80,7 @@ export default function Home() {
       >
         관리
       </ButtonDashboard>
+
     </div>
   )
 }
