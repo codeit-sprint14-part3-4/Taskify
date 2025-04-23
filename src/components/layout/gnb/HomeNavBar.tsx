@@ -63,7 +63,7 @@ export default function HomeNavBar() {
               초대하기
             </ButtonDashboard>
           </div>
-          <div className={styles.nickname_tag}>몇명</div>
+          <div className={styles.nickname_tag}>몇명d</div>
         </div>
         <div
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
