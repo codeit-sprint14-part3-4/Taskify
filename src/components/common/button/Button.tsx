@@ -30,7 +30,8 @@ export default function Button({
       onClick={onClick}
       className={classNames(
         styles.button,
-        styles[`${variant}Button-${size}`], //기본은 loginButton-large
+        styles[`${variant}Button`],
+        styles[`${variant}-${size}`], //기본은 login-large
         isActive ? styles.active : styles.inactive,
         className
       )}
