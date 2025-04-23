@@ -1,87 +1,25 @@
-import ButtonDashboard from '@/components/common/button/ButtonDashboard'
-import React, { useState } from 'react'
-import Image from 'next/image'
+import React from 'react'
 import Gnb from '@/components/layout/gnb/Gnb'
+import Image from 'next/image'
 
 export default function Home() {
   return (
-    <div>
+    <div className="bg-black min-h-screen flex flex-col">
       <Gnb />
-      <ButtonDashboard
-        paddingHeight="py-6"
-
-        paddingWidth="px-21.5"
-        gap="gap-4"
-
-        className="text-2lg-bold"
-        prefix={
-          <Image
-            src="/assets/icon/add_box.svg"
-            alt="addbutton"
-            width={20}
-            height={20}
-            className="object-contain flex"
-          />
-        }
-      >
-        새로운 컬럼 추가하기
-      </ButtonDashboard>
-
-      <ButtonDashboard
-
-        paddingHeight="py-6"
-        paddingWidth="px-21.5"
-
-        prefix={
-          <Image
-            src="/assets/icon/add_box.svg"
-            alt="addbutton"
-            width={20}
-            height={20}
-            className="object-contain flex"
-          />
-        }
-      />
-      <ButtonDashboard
-        paddingHeight="py-6"
-        paddingWidth="px-6"
-
-        gap="gap-3"
-
-        suffix={
-          <Image
-            src="/assets/icon/add_box.svg"
-            alt="addbutton"
-            width={20}
-            height={20}
-            className="object-contain flex"
-          />
-        }
-      >
-        새로운 컬럼 추가하기
-      </ButtonDashboard>
-      <ButtonDashboard paddingHeight="py-3" paddingWidth="px-6">
-        새로운 컬럼 추가하기
-      </ButtonDashboard>
-
-      <ButtonDashboard
-        paddingHeight="py-3"
-        paddingWidth="px-6"
-        gap="gap-2"
-        style={{ color: 'var(--gray-787486)' }}
-        prefix={
-          <Image
-            src="/assets/icon/add_box_gray.svg"
-            alt="addbutton"
-            width={20}
-            height={20}
-            className="object-contain flex"
-          />
-        }
-      >
-        관리
-      </ButtonDashboard>
-
+      <div className="flex flex-col items-center justify-center flex-1 text-white">
+        <Image
+          src="/icon/homepage-logo-icon.svg"
+          alt="Taskify Logo"
+          width={150}
+          height={50}
+        />
+        <Image
+          src="/image/homepagepeople.svg"
+          alt="Person Illustration"
+          width={500}
+          height={400}
+        />
+      </div>
     </div>
   )
 }

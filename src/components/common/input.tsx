@@ -13,8 +13,8 @@ const Input: React.FC<InputProps> = ({
   readOnly = false,
   error,
   className = '',
-  padding = '14px 16px', // ✨ 기본 padding
-  height = '40px', // ✨ 기본 height
+  padding = '14px 16px',
+  height = '40px',
   icon,
   width,
 }) => {
@@ -37,7 +37,7 @@ const Input: React.FC<InputProps> = ({
           style={{
             width: width || '100%',
             padding: padding,
-            height: height, // ✨ 여기도
+            height: height,
           }}
         />
         {icon && (

@@ -9,12 +9,10 @@
   transition: border-color 0.2s ease;
 }
 
-/* 포커스 되었을 때 */
 .input:focus {
   border-color: #5534da;
 }
 
-/* 에러 상태 */
 .error {
   border-color: #d6173a;
 }
