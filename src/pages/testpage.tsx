@@ -1,4 +1,6 @@
 import Tag from '@/components/common/tag/Tag'
+
+
 import { useState, useEffect } from 'react'
 
 const colors = [
@@ -33,6 +35,7 @@ interface ShuffledTag {
   label: string
   color: TagColor
 }
+
 
 export default function TestPage() {
   const [shuffledTags, setShuffledTags] = useState<ShuffledTag[]>([])
