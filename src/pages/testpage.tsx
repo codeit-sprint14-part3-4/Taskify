@@ -38,18 +38,21 @@ export default function TestPage() {
   const [shuffledTags, setShuffledTags] = useState<ShuffledTag[]>([])
 
   useEffect(() => {
-    let availableColors = [...colors]
+    const savedTags = localStorage.getItem('shuffledTags')
 
-    const result = labels.map((label) => {
-      const randomIndex = Math.floor(Math.random() * availableColors.length)
-      const color = availableColors[randomIndex]
+    if (savedTags) {
+      setShuffledTags(JSON.parse(savedTags))
+    } else {
+      const shuffledColors = [...colors].sort(() => Math.random() - 0.5)
 
-      availableColors.splice(randomIndex, 1)
+      const result: ShuffledTag[] = labels.map((label, idx) => {
+        const color = shuffledColors[idx % shuffledColors.length]
+        return { label, color }
+      })
 
-      return { label, color }
-    })
-
-    setShuffledTags(result)
+      localStorage.setItem('shuffledTags', JSON.stringify(result))
+      setShuffledTags(result)
+    }
   }, [])
 
   return (
