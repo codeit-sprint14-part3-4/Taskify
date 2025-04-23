@@ -7,7 +7,7 @@
 .navWrapper {
   padding: 0.9375rem 5rem;
   width: 100%;
-  height: 2.4375rem;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,6 +15,11 @@
 .logo {
   width: 7.5625rem;
   height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
 }
 .login {
   width: 8.375rem;
@@ -37,8 +42,18 @@
 
 @media (max-width: 743px) {
   .navWrapper {
-    padding: 1rem 1.5rem;
-    height: 1.695rem;
+
+    padding: 1rem 2.5rem;
+  }
+  .logo {
+    height: 1.5625rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .image {
+    height: 1.5625rem;
+
   }
   .logotext {
     width: 0;

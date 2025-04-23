@@ -5,41 +5,52 @@ import { ButtonHTMLAttributes, ReactNode } from 'react'
 interface ButtonDashboardProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix'> {
   children?: ReactNode
-  textSize?: string
-  color?: string
-  backgroundColor?: string
+
   paddingHeight?: string
   paddingWidth?: string
+  gap?: string
   prefix?: ReactNode
   suffix?: ReactNode
+  color?: string
+
 }
 
 export default function ButtonDashboard({
   children,
-  onClick,
-  prefix,
-  suffix,
-  textSize,
-  color,
-  backgroundColor,
   paddingHeight,
   paddingWidth,
+  gap,
+  prefix,
+  suffix,
+  color,
   className,
   style,
+  onClick,
+
   ...rest
 }: ButtonDashboardProps) {
-  const buttonClass = clsx(textSize, color, backgroundColor, className)
+  const buttonClass = clsx(className)
 
-  const innerClass = clsx(styles.buttonInner, paddingHeight, paddingWidth, {
-    'flex justify-center items-center': !children, // 텍스트가 없으면 아이콘만 가운데 정렬
-    'gap-2 flex': children, // 텍스트가 있을 때, gap을 적용하고 flex로 배치
-  })
+  const innerClass = clsx(
+    styles.buttonInner,
+    paddingHeight,
+    paddingWidth,
+    color,
+    {
+      'flex justify-center items-center': !children,
+      flex: children,
+    },
+    gap
+  )
+
 
   return (
     <div>
       <button
         onClick={onClick}
-        className={clsx(styles.buttonWrapper, buttonClass, innerClass)}
+
+        className={clsx(styles.buttonWrapper, buttonClass)}
+
         style={style}
         {...rest}
       >
