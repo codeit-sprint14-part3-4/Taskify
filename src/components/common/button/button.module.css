@@ -1,0 +1,116 @@
+.button {
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-family: var(--font-family);
+}
+
+/*로그인 버튼*/
+.active {
+    cursor: pointer;
+}
+
+.inactive {
+    background-color: var(--gray-D9D9D9);
+    cursor: not-allowed;
+}
+
+.loginButton-large {
+    background-color: var(--violet-5534DhA);
+    color: var(--white-FFFFFF);
+    padding: 12px 236.5px;
+  }
+  
+  .loginButton-small {
+    background-color: var(--violet-5534DhA);
+    color: var(--white-FFFFFF);
+    padding: 12px 152px;
+  }
+
+
+/*수락, 거절 버튼*/
+  .acceptButton-large {
+    background-color: var(--violet-5534DhA);
+    color: var(--white-FFFFFF);
+    padding: 7px 44px; 
+  }
+  
+  .acceptButton-medium {
+    background-color: var(--violet-5534DhA);
+    color: var(--white-FFFFFF);
+    padding: 4px 29.5px;
+  }
+  
+  .acceptButton-small {
+    background-color: var(--violet-5534DhA);
+    color: var(--white-FFFFFF);
+    padding: 3px 23.5px; 
+  }
+
+  .rejectButton-large {
+    background-color: var(--white-FFFFFF);
+    color: var(--violet-5534DhA);
+    padding: 7px 44px; 
+  }
+
+  .rejectButton-medium {
+    background-color: var(--white-FFFFFF);
+    color: var(--violet-5534DhA);
+    padding: 4px 29.5px; 
+  }
+
+  .rejectButton-small {
+    background-color: var(--white-FFFFFF);
+    color: var(--violet-5534DhA);
+    padding: 3px 23.5px; 
+  }
+
+  /*확인, 취소 버튼*/
+  .cancelButton-large {
+    background-color: var(--white-FFFFFF);
+    color: var(--violet-5534DhA);
+    padding: 9px 56.5px;
+  }
+
+  .cancelButton-small {
+    background-color: var(--white-FFFFFF);
+    color: var(--violet-5534DhA);
+    padding: 11px 46px;
+  }
+
+  .confirmButton-large {
+    background-color: var(--violet-5534DhA);
+    color: var(--white-FFFFFF);
+    padding: 9px 56.5px;
+  }
+
+  .confirmButton-small {
+    background-color: var(--violet-5534DhA);
+    color: var(--white-FFFFFF);
+    padding: 11px 46px;
+  }
+
+  /*입력, 삭제 버튼*/
+  .inputButton-large {
+    background-color: var(--white-FFFFFF);
+    color: var(--violet-5534DhA);
+    padding: 5px 31.5px;
+  }
+  
+  .inputButton-small {
+    background-color: var(--white-FFFFFF);
+    color: var(--violet-5534DhA);
+    padding: 7px 31px;
+  }
+
+  .deleteButton-large {
+    background-color: var(--white-FFFFFF);
+    color: var(--violet-5534DhA);
+    padding: 4px 29.5px;
+  }
+  
+  .deleteButton-small {
+    background-color: var(--white-FFFFFF);
+    color: var(--violet-5534DhA);
+    padding: 7px 15.5px;
+  }
