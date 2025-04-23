@@ -8,10 +8,8 @@ export default function TestPage() {
       <div className={styles.sidebar}>
         <Sidebar />
       </div>
-      <div className={styles.content}>
-        <div className={styles.navbar}>
-          <HomeNavBar />
-        </div>
+      <div className={styles.navbar}>
+        <HomeNavBar />
         <main>본문내용을입력해주세요잉</main>
       </div>
     </div>
