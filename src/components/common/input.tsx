@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import styles from './input.module.css'
 
 interface InputProps {
   value: string
@@ -14,6 +15,7 @@ interface InputProps {
   padding?: string
   height?: string
   icon?: React.ReactNode
+  width?: string
 }
 
 const Input: React.FC<InputProps> = ({
@@ -25,9 +27,10 @@ const Input: React.FC<InputProps> = ({
   readOnly = false,
   error,
   className = '',
-  padding = 'py-2 px-3',
-  height = 'h-10',
+  padding = '14px 16px', // ✨ 기본 padding
+  height = '40px', // ✨ 기본 height
   icon,
+  width,
 }) => {
   return (
     <div className="flex flex-col">
@@ -39,14 +42,17 @@ const Input: React.FC<InputProps> = ({
           placeholder={placeholder}
           disabled={disabled}
           readOnly={readOnly}
-          className={`block w-full border rounded 
-            border-red-300
-            appearance-none
-            leading-none
-            ${padding} ${height}
-            ${error ? 'border-red-500' : 'border-gray-300'}
-            pr-10
-            ${className}`}
+          className={`
+            block appearance-none leading-none
+            ${styles.input}
+            ${error ? styles.error : ''}
+            ${className}
+          `}
+          style={{
+            width: width || '100%',
+            padding: padding,
+            height: height, // ✨ 여기도
+          }}
         />
         {icon && (
           <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
@@ -54,7 +60,7 @@ const Input: React.FC<InputProps> = ({
           </div>
         )}
       </div>
-      {error && <span className="text-red-500 text-xs mt-1">{error}</span>}
+      {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   )
 }

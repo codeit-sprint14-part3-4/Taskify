@@ -7,39 +7,24 @@ export default function Home() {
   const [value, setValue] = useState('')
   return (
     <div>
-      <ButtonDashboard
-        variant="textOnly"
-        startIcon={
-          <Image
-            src="../../assets/icon/add_box.svg"
-            alt="아이콘"
-            width={20}
-            height={20}
-          />
-        }
-      >
-        추가하기
-      </ButtonDashboard>
-
-      <ButtonDashboard
-        variant="iconOnly"
-        aria-label="아이템 추가"
-        startIcon={
-          <Image
-            src="/assets/icon/add_box.svg"
-            alt="아이콘"
-            width={24}
-            height={24}
-          />
-        }
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="비밀번호를 입력하세요"
+        type="passward"
       />
       <Input
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="크게 만들어진 인풋"
+        width="300px"
+        type="date"
       />
-
-      <div className="bg-red-500 w-40 h-40">Tailwind 작동 테스트</div>
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="이메일을 입력하세요"
+        type="email"
+      />
     </div>
   )
 }
