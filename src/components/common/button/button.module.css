@@ -1,0 +1,99 @@
+.button {
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-family: var(--font-family);
+}
+
+/*로그인 버튼*/
+.active {
+  cursor: pointer;
+}
+
+.inactive {
+  background-color: var(--gray-D9D9D9);
+  cursor: not-allowed;
+}
+
+/*variant*/
+
+.loginButton,
+.acceptButton,
+.confirmButton {
+  background-color: var(--violet-5534DhA);
+  color: var(--white-FFFFFF);
+}
+
+.rejectButton,
+.cancelButton,
+.inputButton,
+.deleteButton {
+  background-color: var(--white-FFFFFF);
+  color: var(--violet-5534DhA);
+}
+
+/*size*/
+
+.login-large {
+  padding: 12px 236.5px;
+}
+
+.login-small {
+  padding: 12px 152px;
+}
+
+.accept-large {
+  padding: 7px 44px;
+}
+
+.accept-medium {
+  padding: 4px 29.5px;
+}
+
+.accept-small {
+  padding: 3px 23.5px;
+}
+
+.reject-large {
+  padding: 7px 44px;
+}
+
+.reject-medium {
+  padding: 4px 29.5px;
+}
+
+.reject-small {
+  padding: 3px 23.5px;
+}
+
+.cancel-large {
+  padding: 9px 56.5px;
+}
+
+.cancel-small {
+  padding: 11px 46px;
+}
+
+.confirm-large {
+  padding: 9px 56.5px;
+}
+
+.confirm-small {
+  padding: 11px 46px;
+}
+
+.input-large {
+  padding: 5px 31.5px;
+}
+
+.input-small {
+  padding: 7px 31px;
+}
+
+.delete-large {
+  padding: 4px 29.5px;
+}
+
+.delete-small {
+  padding: 7px 15.5px;
+}
