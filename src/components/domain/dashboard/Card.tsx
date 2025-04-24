@@ -48,18 +48,18 @@ export default function Card({ cardInfo }: CardProps) {
       {/* 이미지: 현재 props로 받은 imageUrl 사용,
       추후 카드 상세 모달에서 이미지 업로드 API 연동 예정 */}
       {cardInfo.imageUrl && (
-        <div className="pt-[16px] px-[20px]">
+        <div className="pt-[1.6rem] px-[2rem]">
           <Image
             src={cardInfo.imageUrl}
             alt="카드 이미지"
-            className="w-full h-[160px] object-cover"
+            className="w-full h-[16rem] object-cover"
             width={500}
             height={0}
           />
         </div>
       )}
 
-      <div className="pt-[16px] pb-[16px] px-[20px] flex flex-col gap-2">
+      <div className="pt-[1.6rem] pb-[1.6rem] px-[2rem] flex flex-col gap-2">
         {/* 제목: 현재는 title props 그대로 사용,
         추후 모달에서 수정 가능한 입력 필드로 연동 예정 */}
         <h4 className="text-lg-medium" style={{ color: 'var(--black-333236)' }}>

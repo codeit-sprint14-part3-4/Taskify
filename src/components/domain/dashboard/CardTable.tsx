@@ -7,7 +7,7 @@ interface CardTableProps {
 
 export default function CardTable({ cards }: CardTableProps) {
   return (
-    <div className="flex flex-col gap-4 px-[20px] py-[8px]">
+    <div className="flex flex-col gap-4 px-[2rem] py-[0.8rem]">
       {cards.map((card) => (
         <Card key={card.id} cardInfo={card} />
       ))}

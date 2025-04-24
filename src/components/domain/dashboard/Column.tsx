@@ -21,16 +21,16 @@ export interface ColumnProps {
 
 export default function Column({ columnInfo }: ColumnProps) {
   return (
-    <div className="min-h-[100vh] w-[314px] bg-[var(--gray-FAFAFA)] rounded-md shadow-sm flex flex-col gap-2 pb-4">
+    <div className="min-h-[100vh] w-[31.4rem] bg-[var(--gray-FAFAFA)] rounded-md shadow-sm flex flex-col gap-2 pb-4">
       {/* 상단: 컬럼 제목 + 카드 개수 + 설정 버튼 */}
-      <div className="flex items-center justify-between px-[16px] pt-[22px]">
-        <div className="flex items-center gap-[12px]">
-          <div className="flex items-center gap-[8px]">
-            <div className="w-[8px] h-[8px] bg-[#5534DA] rounded-full" />
+      <div className="flex items-center justify-between px-[1.6rem] pt-[2.2rem]">
+        <div className="flex items-center gap-[1.2rem]">
+          <div className="flex items-center gap-[0.8rem]">
+            <div className="w-[0.8rem] h-[0.8rem] bg-[#5534DA] rounded-full" />
             <span className="text-sm-semibold">{columnInfo.title}</span>
           </div>
 
-          <span className="w-[20px] h-[20px] rounded-[4px] bg-[#EEEEEE] text-[#787486] text-xs-medium flex items-center justify-center">
+          <span className="w-[2rem] h-[2rem] rounded-[0.4rem] bg-[#EEEEEE] text-[#787486] text-xs-medium flex items-center justify-center">
             {columnInfo.cards.length}
           </span>
         </div>
@@ -46,13 +46,13 @@ export default function Column({ columnInfo }: ColumnProps) {
       </div>
 
       {/* + 버튼 */}
-      <div className="px-[20px] pt-[25px] pb-[16px]">
+      <div className="px-[2rem] pt-[2.5rem] pb-[1.6rem]">
         <ButtonDashboard
           onClick={columnInfo.onClickAdd}
-          paddingHeight="py-[9px]"
-          paddingWidth="px-[9px]"
+          paddingHeight="py-[0.9rem]"
+          paddingWidth="px-[0.9rem]"
           color="bg-white"
-          className="rounded-[6px] w-full flex justify-center items-center"
+          className="rounded-[0.6rem] w-full flex justify-center items-center"
           prefix={
             <Image
               src="/assets/icon/add_box.svg"
