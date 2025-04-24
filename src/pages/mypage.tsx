@@ -1,9 +1,8 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import Sidebar from '@/components/layout/sidebar/Sidebar'
+import styles from '@/pages/mypage.module.css'
 import Button from '@/components/common/button/Button'
-import styles from '@/styles/Mypage.module.css'
-
+import Sidebar from '@/components/layout/sidebar/Sidebar'
 export default function MyPage() {
   const router = useRouter()
 

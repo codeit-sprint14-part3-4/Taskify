@@ -15,9 +15,6 @@ type ButtonProps = {
   isActive?: boolean
   className?: string
   onClick?: () => void
-  style?: React.CSSProperties
-  width?: string | number
-  height?: string | number
 }
 
 export default function Button({
@@ -27,9 +24,6 @@ export default function Button({
   isActive = true, //기본적으로는 활성화, 로그인 버튼 등은 조건 불충족 시 false로
   className = '',
   onClick,
-  style,
-  width,
-  height,
 }: ButtonProps) {
   return (
     <button
@@ -42,11 +36,6 @@ export default function Button({
         className
       )}
       disabled={!isActive}
-      style={{
-        width,
-        height,
-        ...style, // 사용자가 전달한 style이 있으면 덮어쓰기 가능하게
-      }}
     >
       {children}
     </button>
