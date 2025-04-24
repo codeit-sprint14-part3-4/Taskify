@@ -19,7 +19,23 @@ export default function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isTermsAccepted, setIsTermsAccepted] = useState(false)
 
+  const [emailError, setEmailError] = useState('')
+  const [nameError, setNameError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [confirmPasswordError, setConfirmPasswordError] = useState('')
+
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+
+  const isFormValid =
+    email &&
+    name &&
+    password &&
+    confirmPassword &&
+    !emailError &&
+    !nameError &&
+    !passwordError &&
+    !confirmPasswordError &&
+    isTermsAccepted
 
   const { setAccessToken } = useAuthStore() // Zustand에서 토큰 저장 함수 가져오기
   const router = useRouter()
@@ -40,9 +56,15 @@ export default function Signup() {
 
       // 회원가입 성공 시 받은 토큰을 Zustand 상태에 저장
       setAccessToken(response.accessToken)
+      if (error.response?.status === 409) {
+        alert('이미 사용중인 이메일입니다.')
+      } else {
+        console.error(error)
+      }
 
       // 회원가입 후 대시보드 페이지로 이동
       router.push('/login')
+      alert('가입이 완료되었습니다.')
     } catch (error) {
       console.error('회원가입 오류:', error)
     }
@@ -81,11 +103,14 @@ export default function Signup() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="이메일을 입력하세요"
-              error={
-                email.length > 0 && !isEmail
-                  ? '이메일 형식으로 작성해 주세요.'
-                  : ''
-              }
+              onBlur={() => {
+                if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                  setEmailError('이메일 형식으로 작성해 주세요.')
+                } else {
+                  setNameError('')
+                }
+              }}
+              error={emailError}
             />
           </div>
           <div className={styles.wrapper_width}>
@@ -95,6 +120,14 @@ export default function Signup() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="닉네임을 입력해주세요"
+              onBlur={() => {
+                if (name.length > 10) {
+                  setNameError('열 자 이하로 작성해주세요.')
+                } else {
+                  setNameError('')
+                }
+              }}
+              error={nameError}
             />
           </div>
           <div className={styles.wrapper_width}>
@@ -119,11 +152,14 @@ export default function Signup() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호를 입력하세요"
               type={showPassword ? 'text' : 'password'}
-              error={
-                password.length > 0 && password.length < 9
-                  ? '8글자 이상 입력해 주세요.'
-                  : ''
-              }
+              onBlur={() => {
+                if (password.length < 8) {
+                  setPasswordError('8자 이상 입력해주세요.')
+                } else {
+                  setPasswordError('')
+                }
+              }}
+              error={passwordError}
             />
           </div>
           <div className={styles.wrapper_width}>
@@ -148,11 +184,14 @@ export default function Signup() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="비밀번호를 다시 한 번 입력하세요"
               type={showConfirmPassword ? 'text' : 'password'}
-              error={
-                confirmPassword && password !== confirmPassword
-                  ? '비밀번호를 확인해 주세요.'
-                  : ''
-              }
+              onBlur={() => {
+                if (password !== confirmPassword) {
+                  setConfirmPasswordError('비밀번호가 일치하지 않습니다.')
+                } else {
+                  setConfirmPasswordError('')
+                }
+              }}
+              error={confirmPasswordError}
             />
           </div>
 
@@ -170,7 +209,12 @@ export default function Signup() {
 
         <div className={styles.wrapper_bottom}>
           <Link href="/login">
-            <Button variant="login" size="large" onClick={handleSignup}>
+            <Button
+              variant="login"
+              size="large"
+              isActive={!isFormValid}
+              onClick={handleSignup}
+            >
               가입하기
             </Button>
           </Link>

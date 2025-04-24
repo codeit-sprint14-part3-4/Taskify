@@ -11,4 +11,5 @@ export default interface InputProps {
   height?: string
   icon?: React.ReactNode
   width?: string
+  onBlur?: React.FocusEventHandler
 }

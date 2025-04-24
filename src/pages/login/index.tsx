@@ -13,8 +13,13 @@ import Link from 'next/link'
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false) // 비밀번호 보이기/숨기기 상태
+  const [showPassword, setShowPassword] = useState(false)
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+
+  const isFormValid = email && password
 
   const { setAccessToken } = useAuthStore()
   const router = useRouter()
@@ -35,7 +40,7 @@ export default function Login() {
       router.push('/mydashboard')
     } catch (error) {
       console.error('로그인 실패:', error)
-      alert('로그인에 실패했습니다. 이메일과 비밀번호를 확인해 주세요.')
+      alert('비밀번호가 일치하지 않습니다.')
     }
   }
 
@@ -68,11 +73,14 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="이메일을 입력하세요"
-              error={
-                email.length > 0 && !isEmail
-                  ? '이메일 형식으로 작성해 주세요.'
-                  : ''
-              }
+              onBlur={() => {
+                if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                  setEmailError('이메일 형식으로 작성해 주세요.')
+                } else {
+                  setEmailError('')
+                }
+              }}
+              error={emailError}
             />
           </div>
           <div className={styles.wrapper_width}>
@@ -96,12 +104,15 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호를 입력하세요"
-              type={showPassword ? 'text' : 'password'} // type을 동적으로 변경
-              error={
-                password.length > 0 && password.length < 9
-                  ? '8글자 이상 입력해 주세요.'
-                  : ''
-              }
+              type={showPassword ? 'text' : 'password'}
+              onBlur={() => {
+                if (password.length < 8) {
+                  setPasswordError('8자 이상 입력해주세요.')
+                } else {
+                  setPasswordError('')
+                }
+              }}
+              error={passwordError}
             />
           </div>
         </div>
