@@ -1,29 +1,66 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import styles from './gnb.module.css'
-import logo_taskify from '../../../../public/assets/image/logo_taskify.svg'
-import text_taskify from '../../../../public/assets/image/text_taskify.svg'
+import styles from './footerbar.module.css'
 
 const Footerbar = () => {
   return (
-    <nav className={styles.nav}>
-      <div className={styles.navWrapper}>
-        <Link href={'/'} className={styles.logo}>
-          <Image src={logo_taskify} alt="Logo" className={styles.image} />
+    <footer className={styles.footer}>
+      <div>©codeit - 2025</div>
 
-          <Image src={text_taskify} alt="Logo" className={styles.logotext} />
+      <div className={styles.footerWrapper}>
+        <Link
+          href="https://github.com/codeit-sprint14-part3-4"
+          className={`${styles.footermidlink}`}
+        >
+          Git Hub
         </Link>
-
-        <ul className={styles.login}>
-          <li>
-            <Link href="/login">로그인</Link>
-          </li>
-          <li>
-            <Link href="/signup">회원가입</Link>
-          </li>
-        </ul>
+        <Link
+          href="https://github.com/codeit-sprint14-part3-4"
+          className={`${styles.footermidlink}`}
+        >
+          Privacy Policy
+        </Link>
+        <Link
+          href="https://github.com/codeit-sprint14-part3-4"
+          className={`${styles.footermidlink}`}
+        >
+          FAQ
+        </Link>
       </div>
-    </nav>
+
+      <ul className={styles.footerlastlink}>
+        <li>
+          <Link href="https://github.com/codeit-sprint14-part3-4">
+            <Image
+              src="/assets/icon/envelope-email-icon.svg"
+              alt="email address"
+              width={20}
+              height={20}
+            />
+          </Link>
+        </li>
+        <li>
+          <Link href="https://www.facebook.com/">
+            <Image
+              src="/assets/icon/facebook-icon.svg"
+              alt="facebook address"
+              width={22}
+              height={22}
+            />
+          </Link>
+        </li>
+        <li>
+          <Link href="https://www.instagram.com/">
+            <Image
+              src="/assets/icon/instagram-logo-icon.svg"
+              alt="instagram address"
+              width={22}
+              height={22}
+            />
+          </Link>
+        </li>
+      </ul>
+    </footer>
   )
 }
 

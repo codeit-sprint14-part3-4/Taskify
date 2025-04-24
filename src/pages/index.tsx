@@ -4,6 +4,7 @@ import Image from 'next/image'
 import styles from './index.module.css'
 import Button from '@/components/common/button/Button'
 import FeatureCard from '@/components/common/featureCard'
+import Footerbar from '@/components/layout/footerbar/Footerbar'
 
 export default function Home() {
   return (
@@ -88,7 +89,7 @@ export default function Home() {
           />
         </section>
       </div>
-      <footer></footer>
+      <Footerbar />
     </div>
   )
 }
