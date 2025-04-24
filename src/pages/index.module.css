@@ -6,92 +6,92 @@
   text-align: center;
 }
 .homepagelogo {
-  margin-top: 94px;
-  margin-bottom: 48px;
+  margin-top: 9.4rem;
+  margin-bottom: 4.8rem;
 }
 
 .homepagemaintext {
-  font-size: 76px;
-  line-height: 100px;
-  letter-spacing: -2px;
+  font-size: 7.6rem;
+  line-height: 10rem;
+  letter-spacing: -0.2rem;
 }
 
 .homepagespan {
   color: #5534da;
-  font-size: 90px;
-  line-height: 65px;
-  letter-spacing: -1px;
+  font-size: 9rem;
+  line-height: 6.5rem;
+  letter-spacing: -0.1rem;
   font-family: 'Montserrat';
 }
 
 .loginbutton {
-  margin-top: 111px;
+  margin-top: 11.1rem;
 }
 
 .pointer1 {
   background-color: #171717;
-  width: 1200px;
-  height: 600px;
-  border-radius: 8px;
+  width: 120rem;
+  height: 60rem;
+  border-radius: 0.8rem;
   display: flex;
   justify-self: center;
-  margin-top: 178px;
-  padding-top: 125px;
-  padding-left: 54px;
+  margin-top: 17.8rem;
+  padding-top: 12.5rem;
+  padding-left: 5.4rem;
 }
 
 .pointer1text {
   color: #9fa6b2;
-  font-size: 22px;
+  font-size: 2.2rem;
   text-align: left;
-  font-weight: 500;
+  font-weight: 0.5rem;
   font-family: 'Pretendard';
 }
 
 .pointer1maintext {
-  margin-top: 100px;
-  font-size: 48px;
+  margin-top: 10rem;
+  font-size: 4.8rem;
   font-family: 'Pretendard';
   color: #ffffff;
-  line-height: 64px;
+  line-height: 6.4rem;
   font-weight: bold;
 }
 
 .pointer2 {
   background-color: #171717;
-  width: 1200px;
-  height: 600px;
-  border-radius: 8px;
+  width: 120rem;
+  height: 60rem;
+  border-radius: 0.8rem;
   display: flex;
   justify-self: center;
-  margin-top: 92px;
+  margin-top: 9.2rem;
 }
 
 .pointer2text {
   color: #9fa6b2;
-  font-size: 22px;
+  font-size: 2.2rem;
   text-align: left;
   font-weight: 500;
   font-family: 'Pretendard';
 }
 
 .pointer2maintext {
-  margin-top: 100px;
-  font-size: 48px;
+  margin-top: 10rem;
+  font-size: 4.8rem;
   font-family: 'Pretendard';
   color: #ffffff;
-  line-height: 64px;
+  line-height: 6.4rem;
   font-weight: bold;
 }
 
 .pointer2box {
-  margin-left: 644px;
-  margin-top: 123px;
+  margin-left: 64.4rem;
+  margin-top: 12.3rem;
 }
 
 .linkcardlabel {
-  margin-top: 90px;
-  font-size: 28px;
+  margin-top: 9rem;
+  font-size: 2.8rem;
   color: #ffffff;
   font-weight: bold;
 }

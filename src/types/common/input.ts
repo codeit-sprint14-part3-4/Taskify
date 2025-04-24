@@ -7,8 +7,8 @@ export default interface InputProps {
   readOnly?: boolean
   error?: string
   className?: string
-  padding?: string
-  height?: string
+  paddingwidth?: string
+  paddingheight?: string
   icon?: React.ReactNode
   width?: string
 }
