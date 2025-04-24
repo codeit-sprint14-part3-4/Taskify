@@ -3,14 +3,14 @@
   flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 8rem 0 0 32rem;
-  min-height: 100vh;
+  padding: 0rem;
+  min-height: 80vh;
 }
 
 .content {
+  padding: 2rem 34rem;
   flex: 1;
   min-width: 0;
-  overflow-y: auto;
   max-width: 80rem;
 }
 
