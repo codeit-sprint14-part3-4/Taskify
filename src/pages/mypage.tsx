@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import styles from '@/pages/mypage.module.css'
 import Button from '@/components/common/button/Button'
 import Sidebar from '@/components/layout/sidebar/Sidebar'
+
 export default function MyPage() {
   const router = useRouter()
 
@@ -26,8 +27,8 @@ export default function MyPage() {
 
         <div className={styles.cardGroup}>
           {/* 프로필 섹션 */}
-          <div className={`${styles.card} ${styles.profileCard}`}>
-            <div className={styles.sectionTitle}>프로필</div>
+          <section className={`${styles.card} ${styles.profileCard}`}>
+            <h2 className={styles.sectionTitle}>프로필</h2>
             <div className={styles.profileWrapper}>
               <div className={styles.avatar}>+</div>
               <div className={styles.profileForm}>
@@ -40,11 +41,11 @@ export default function MyPage() {
                 </Button>
               </div>
             </div>
-          </div>
+          </section>
 
           {/* 비밀번호 변경 섹션 */}
-          <div className={`${styles.card} ${styles.passwordCard}`}>
-            <div className={styles.sectionTitle}>비밀번호 변경</div>
+          <section className={`${styles.card} ${styles.passwordCard}`}>
+            <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
             <div className={styles.passwordForm}>
               <label>현재 비밀번호</label>
               <input type="password" placeholder="비밀번호 입력" />
@@ -56,7 +57,7 @@ export default function MyPage() {
                 변경
               </Button>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>

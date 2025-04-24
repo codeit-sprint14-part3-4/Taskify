@@ -12,7 +12,6 @@
   min-width: 0;
   overflow-y: auto;
   max-width: 80rem;
-  box-sizing: border-box;
 }
 
 .backWrapper {
