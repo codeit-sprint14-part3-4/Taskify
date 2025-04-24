@@ -62,10 +62,7 @@ export default function Card({ cardInfo }: CardProps) {
       <div className="pt-[16px] pb-[16px] px-[20px] flex flex-col gap-2">
         {/* 제목: 현재는 title props 그대로 사용,
         추후 모달에서 수정 가능한 입력 필드로 연동 예정 */}
-        <h4
-          className="text-md-semibold"
-          style={{ color: 'var(--black-171717)' }}
-        >
+        <h4 className="text-lg-medium" style={{ color: 'var(--black-333236)' }}>
           {cardInfo.title}
         </h4>
 
