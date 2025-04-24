@@ -1,0 +1,24 @@
+.input {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 8px 12px;
+  height: 40px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: #5534da;
+}
+
+.error {
+  border-color: #d6173a;
+}
+
+.errorMessage {
+  color: #d6173a;
+  font-size: 12px;
+  margin-top: 4px;
+}

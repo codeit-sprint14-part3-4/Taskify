@@ -1,86 +1,58 @@
-import ButtonDashboard from '@/components/common/button/ButtonDashboard'
-import Image from 'next/image'
+import React from 'react'
 import Gnb from '@/components/layout/gnb/Gnb'
+import Image from 'next/image'
+import styles from './index.module.css'
+import Button from '@/components/common/button/Button'
 
 export default function Home() {
   return (
-    <div>
+    <div className="bg-black min-h-screen flex flex-col">
       <Gnb />
-      <ButtonDashboard
-        paddingHeight="py-6"
+      <div className={`${styles.maincontainer}`}>
+        <section className={`${styles.homepagetop}`}>
+          <div className={`${styles.homepagelogo} inline-block text-center`}>
+            <Image
+              src="/assets/image/desktop.svg"
+              alt="Taskify Logo"
+              width={772}
+              height={422}
+            />
+          </div>
+          <h1 className={`font-bold text-white ${styles.homepagemaintext}`}>
+            새로운 일정 관리
+            <span className={` ${styles.homepagespan}`}>Taskify</span>
+          </h1>
+          <Button className={`${styles.loginbutton}`}>로그인 하기</Button>
+        </section>
 
-        paddingWidth="px-21.5"
-        gap="gap-4"
+        <section className={`${styles.pointer1}  flex-col`}>
+          <span className={`${styles.pointer1text}`}>Point1</span>
+          <div className={`${styles.pointer1maintext} text-left`}>
+            <div>일의 우선 순위를</div>
+            <div>관리하세요</div>
+          </div>
+        </section>
 
-        className="text-2lg-bold"
-        prefix={
-          <Image
-            src="/assets/icon/add_box.svg"
-            alt="addbutton"
-            width={20}
-            height={20}
-            className="object-contain flex"
-          />
-        }
-      >
-        새로운 컬럼 추가하기
-      </ButtonDashboard>
+        <section className={`${styles.pointer2} flex flex-col text-left`}>
+          <div className={`${styles.pointer2box}`}>
+            <span className={`${styles.pointer2text}`}>Point2</span>
+            <div className={`${styles.pointer2maintext}`}>
+              <div>해야 할 일을</div>
+              <div>등록하세요</div>
+            </div>
+          </div>
+        </section>
 
-      <ButtonDashboard
+        <section className="flex justify-center w-full">
+          <span className={`${styles.linkcardlabel} mr-auto`}>
+            생산성을 높이는 다양한 설정⚡
+          </span>
+        </section>
 
-        paddingHeight="py-6"
-        paddingWidth="px-21.5"
-
-        prefix={
-          <Image
-            src="/assets/icon/add_box.svg"
-            alt="addbutton"
-            width={20}
-            height={20}
-            className="object-contain flex"
-          />
-        }
-      />
-      <ButtonDashboard
-        paddingHeight="py-6"
-        paddingWidth="px-6"
-
-        gap="gap-3"
-
-        suffix={
-          <Image
-            src="/assets/icon/add_box.svg"
-            alt="addbutton"
-            width={20}
-            height={20}
-            className="object-contain flex"
-          />
-        }
-      >
-        새로운 컬럼 추가하기
-      </ButtonDashboard>
-      <ButtonDashboard paddingHeight="py-3" paddingWidth="px-6">
-        새로운 컬럼 추가하기
-      </ButtonDashboard>
-
-      <ButtonDashboard
-        paddingHeight="py-3"
-        paddingWidth="px-6"
-        gap="gap-2"
-        style={{ color: 'var(--gray-787486)' }}
-        prefix={
-          <Image
-            src="/assets/icon/add_box_gray.svg"
-            alt="addbutton"
-            width={20}
-            height={20}
-            className="object-contain flex"
-          />
-        }
-      >
-        관리
-      </ButtonDashboard>
-
+        <section className="flex flex-row text">
+          <div></div>
+        </section>
+      </div>
     </div>
   )
 }
