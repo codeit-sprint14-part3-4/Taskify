@@ -3,8 +3,11 @@ import Gnb from '@/components/layout/gnb/Gnb'
 import Image from 'next/image'
 import styles from './index.module.css'
 import Button from '@/components/common/button/Button'
+import Input from '@/components/common/input'
+import { useState } from 'react'
 
 export default function Home() {
+  const [value, setvalue] = useState('')
   return (
     <div className="bg-black min-h-screen flex flex-col">
       <Gnb />

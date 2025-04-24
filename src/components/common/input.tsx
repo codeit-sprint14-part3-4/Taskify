@@ -14,7 +14,7 @@ const Input: React.FC<InputProps> = ({
   error,
   className = '',
   paddingwidth = 'px-1.4',
-  paddingheight = 'px-1.6',
+  paddingheight = 'py-1.6',
   icon,
   width,
 }) => {
@@ -33,8 +33,8 @@ const Input: React.FC<InputProps> = ({
             ${styles.input}
             ${error ? styles.error : ''}
             ${className}
-            ${paddingwidth} ${paddingheight}
           `}
+          width={width}
         />
         {icon && (
           <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
