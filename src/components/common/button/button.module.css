@@ -6,13 +6,12 @@
 }
 
 /*로그인 버튼*/
+.inactive {
+  background-color: var(--gray-9FA6B2);
+  cursor: not-allowed;
+}
 .active {
   cursor: pointer;
-}
-
-.inactive {
-  background-color: var(--gray-D9D9D9);
-  cursor: not-allowed;
 }
 
 /*variant*/
