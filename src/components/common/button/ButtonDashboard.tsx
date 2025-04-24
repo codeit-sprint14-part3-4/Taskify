@@ -12,7 +12,6 @@ interface ButtonDashboardProps
   prefix?: ReactNode
   suffix?: ReactNode
   color?: string
-
 }
 
 export default function ButtonDashboard({
@@ -43,21 +42,18 @@ export default function ButtonDashboard({
     gap
   )
 
-
   return (
     <div>
       <button
         onClick={onClick}
-
         className={clsx(styles.buttonWrapper, buttonClass)}
-
         style={style}
         {...rest}
       >
         <div className={innerClass}>
-          {prefix && <span>{prefix}</span>}
+          {prefix && <span className={styles.icon}>{prefix}</span>}
           {children && <span>{children}</span>}
-          {suffix && <span>{suffix}</span>}
+          {suffix && <span className={styles.icon}>{suffix}</span>}
         </div>
       </button>
     </div>
