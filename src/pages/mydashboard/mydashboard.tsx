@@ -26,7 +26,7 @@ export default function MyDashboard() {
           새로운 대시보드
         </ButtonDashboard>
 
-        <div className={styles.inviteSection}>
+        <section className={styles.inviteSection}>
           <div className={`${styles.inviteTitle} text-2xl-bold`}>
             초대받은 대시보드
           </div>
@@ -41,7 +41,7 @@ export default function MyDashboard() {
               아직 초대받은 대시보드가 없어요
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   )
