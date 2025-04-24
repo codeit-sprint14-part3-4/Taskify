@@ -1,0 +1,97 @@
+.maincontainer {
+  padding-left: 18%;
+  padding-right: 18%;
+}
+.homepagetop {
+  text-align: center;
+}
+.homepagelogo {
+  margin-top: 94px;
+  margin-bottom: 48px;
+}
+
+.homepagemaintext {
+  font-size: 76px;
+  line-height: 100px;
+  letter-spacing: -2px;
+}
+
+.homepagespan {
+  color: #5534da;
+  font-size: 90px;
+  line-height: 65px;
+  letter-spacing: -1px;
+  font-family: 'Montserrat';
+}
+
+.loginbutton {
+  margin-top: 111px;
+}
+
+.pointer1 {
+  background-color: #171717;
+  width: 1200px;
+  height: 600px;
+  border-radius: 8px;
+  display: flex;
+  justify-self: center;
+  margin-top: 178px;
+  padding-top: 125px;
+  padding-left: 54px;
+}
+
+.pointer1text {
+  color: #9fa6b2;
+  font-size: 22px;
+  text-align: left;
+  font-weight: 500;
+  font-family: 'Pretendard';
+}
+
+.pointer1maintext {
+  margin-top: 100px;
+  font-size: 48px;
+  font-family: 'Pretendard';
+  color: #ffffff;
+  line-height: 64px;
+  font-weight: bold;
+}
+
+.pointer2 {
+  background-color: #171717;
+  width: 1200px;
+  height: 600px;
+  border-radius: 8px;
+  display: flex;
+  justify-self: center;
+  margin-top: 92px;
+}
+
+.pointer2text {
+  color: #9fa6b2;
+  font-size: 22px;
+  text-align: left;
+  font-weight: 500;
+  font-family: 'Pretendard';
+}
+
+.pointer2maintext {
+  margin-top: 100px;
+  font-size: 48px;
+  font-family: 'Pretendard';
+  color: #ffffff;
+  line-height: 64px;
+  font-weight: bold;
+}
+
+.pointer2box {
+  margin-left: 644px;
+  margin-top: 123px;
+}
+
+.linkcardlabel {
+  margin-top: 90px;
+  font-size: 28px;
+  color: #ffffff;
+  font-weight: bold;
+}
