@@ -1,0 +1,36 @@
+.featureCardFrame {
+  width: 37.8rem;
+  height: 38.4rem;
+  color: #ffffff;
+}
+
+.cardboxtop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
+  width: 37.8rem;
+  height: 26rem;
+  background-color: #4b4b4b;
+}
+
+.cardboxbottom {
+  background-color: #171717;
+  font-family: 'Pretendard';
+  padding: 3.3rem 3.2rem;
+  width: 37.8rem;
+  height: 12.4rem;
+  border-bottom-left-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
+}
+
+.cardh3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.cardtext {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
