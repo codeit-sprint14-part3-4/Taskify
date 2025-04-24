@@ -21,7 +21,7 @@ export default function Button({
   children,
   size = 'large', //기본값은 loginButton-large
   variant = 'login', //기본값은 login
-  isActive = true, //기본적으로는 활성화, 로그인 버튼 등은 조건 불충족 시 false로
+  isActive = false,
   className = '',
   onClick,
 }: ButtonProps) {
