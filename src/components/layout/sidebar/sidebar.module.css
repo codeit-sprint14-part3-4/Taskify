@@ -1,11 +1,13 @@
 .sidebar {
   top: 0;
   left: 0;
-  width: 300px;
-  height: 100%;
+
+  width: 30rem;
+  padding: 2rem 2.4rem;
+  height: 100vh;
+
   background-color: var(--white-FFFFFF);
   border-right: 1px solid var(--gray-D9D9D9);
-  padding: 20px 24px;
   box-sizing: border-box;
   transition: all 0.3s ease;
   display: flex;
@@ -18,15 +20,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 4rem;
 }
 
 .logoIcon {
-  width: 30px;
+  width: 3rem;
 }
 
 .logoTitle {
-  width: 80px;
+  width: 8rem;
 }
 
 .menu {
@@ -40,7 +42,7 @@
   align-items: center;
   justify-content: space-between;
   color: var(--gray-787486);
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
   width: 100%;
 }
 
@@ -57,19 +59,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 0.4rem;
 }
 
 .addButton img {
-  width: 20px;
-  height: 20px;
+  width: 2rem;
+  height: 2rem;
 }
 
-/* 태블릿 (768px ~ 1024px) */
-@media (max-width: 1024px) {
+/* 태블릿 (1023px 이하) */
+@media (max-width: 1023px) {
   .sidebar {
-    width: 160px;
-    padding: 20px 16px;
+    width: 16rem;
+    padding: 2rem 1.6rem;
   }
 
   .logoTitle {
@@ -77,15 +79,15 @@
   }
 
   .logoIcon {
-    width: 30px;
+    width: 3rem;
   }
 }
 
 /* 모바일 (767px 이하) */
 @media (max-width: 767px) {
   .sidebar {
-    width: 67px;
-    padding: 20px 13px;
+    width: 6.7rem;
+    padding: 2rem 1.3rem;
     align-items: center;
   }
 
@@ -94,20 +96,20 @@
   }
 
   .logoIcon {
-    width: 24px;
-    height: 27px;
+    width: 2.4rem;
+    height: 2.7rem;
   }
 
   .menuItem {
     flex-direction: column;
     justify-content: center;
-    margin-bottom: 38px;
+    margin-bottom: 3.8rem;
   }
 
   .link {
     display: none;
   }
   .addButton {
-    margin-top: -20px;
+    margin-top: -2rem;
   }
 }

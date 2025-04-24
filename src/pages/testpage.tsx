@@ -1,3 +1,7 @@
+import Tag from '@/components/common/tag/Tag'
+
+import { useState, useEffect } from 'react'
+
 
 import Sidebar from '@/components/layout/sidebar/Sidebar'
 import HomeNavBar from '@/components/layout/gnb/HomeNavBar'
