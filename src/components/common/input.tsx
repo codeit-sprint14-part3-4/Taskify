@@ -4,6 +4,29 @@ import React from 'react'
 import styles from './input.module.css'
 import InputProps from '@/types/common/input'
 
+const parsePaddingValue = (val?: string) => {
+  if (!val) return {}
+
+  const match = val.match(/^(px|py)-([\d.]+)$/)
+  if (!match) return {}
+
+  const [, direction, size] = match
+  const remValue = `${size}rem`
+
+  if (direction === 'px') {
+    return {
+      paddingRight: remValue,
+    }
+  } else if (direction === 'py') {
+    return {
+      paddingTop: remValue,
+      paddingBottom: remValue,
+    }
+  }
+
+  return {}
+}
+
 const Input: React.FC<InputProps> = ({
   value,
   onChange,
@@ -13,11 +36,16 @@ const Input: React.FC<InputProps> = ({
   readOnly = false,
   error,
   className = '',
-  paddingwidth = 'px-1.4',
-  paddingheight = 'py-1.6',
+  paddingwidth = 'px-1',
+  paddingheight = 'py-1',
   icon,
-  width,
 }) => {
+  const style = {
+    paddingLeft: '1.5rem',
+    ...parsePaddingValue(paddingwidth),
+    ...parsePaddingValue(paddingheight),
+  }
+
   return (
     <div className="flex flex-col">
       <div className="relative">
@@ -34,7 +62,7 @@ const Input: React.FC<InputProps> = ({
             ${error ? styles.error : ''}
             ${className}
           `}
-          width={width}
+          style={style}
         />
         {icon && (
           <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
