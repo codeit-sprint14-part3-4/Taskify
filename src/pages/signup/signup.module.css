@@ -68,6 +68,8 @@
   flex-direction: column;
   gap: 2.4rem;
   padding-top: 2.4rem;
+  font-size: 1.8rem;
+  font-weight: 500;
 }
 .wrapper_floor {
   display: flex;

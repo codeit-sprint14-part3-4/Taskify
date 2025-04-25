@@ -24,8 +24,6 @@ export default function Signup() {
   const [passwordError, setPasswordError] = useState('')
   const [confirmPasswordError, setConfirmPasswordError] = useState('')
 
-  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-
   const isFormValid =
     email &&
     name &&
@@ -54,19 +52,16 @@ export default function Signup() {
       }
       const response = await usersService.postUsers(body) // 회원가입 API 호출
 
-      // 회원가입 성공 시 받은 토큰을 Zustand 상태에 저장
       setAccessToken(response.accessToken)
-      if (error.response?.status === 409) {
-        alert('이미 사용중인 이메일입니다.')
-      } else {
-        console.error(error)
-      }
 
-      // 회원가입 후 대시보드 페이지로 이동
       router.push('/login')
       alert('가입이 완료되었습니다.')
     } catch (error) {
-      console.error('회원가입 오류:', error)
+      if (error.response?.status === 409) {
+        alert('이미 사용중인 이메일입니다.')
+      } else {
+        console.error('회원가입 오류:', error)
+      }
     }
   }
 
@@ -107,7 +102,7 @@ export default function Signup() {
                 if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
                   setEmailError('이메일 형식으로 작성해 주세요.')
                 } else {
-                  setNameError('')
+                  setEmailError('')
                 }
               }}
               error={emailError}
@@ -212,7 +207,7 @@ export default function Signup() {
             <Button
               variant="login"
               size="large"
-              isActive={!isFormValid}
+              isActive={!!isFormValid}
               onClick={handleSignup}
             >
               가입하기

@@ -14,8 +14,6 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
@@ -118,7 +116,12 @@ export default function Login() {
         </div>
 
         <div className={styles.wrapper_bottom}>
-          <Button variant="login" size="large" onClick={handleLogin}>
+          <Button
+            variant="login"
+            size="large"
+            isActive={!!isFormValid}
+            onClick={handleLogin}
+          >
             로그인
           </Button>
           <div className={styles.wrapper_floor}>
