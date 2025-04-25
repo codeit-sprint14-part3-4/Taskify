@@ -39,6 +39,11 @@ const Input: React.FC<InputProps> = ({
   paddingwidth = 'px-1',
   paddingheight = 'py-1',
   icon,
+<<<<<<< HEAD
+=======
+  width,
+  onBlur,
+>>>>>>> 9a1b6182d428810a292865937fff06e1d49b40f4
 }) => {
   const style = {
     paddingLeft: '1.5rem',
@@ -52,6 +57,7 @@ const Input: React.FC<InputProps> = ({
         <input
           type={type}
           value={value}
+          onBlur={onBlur}
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}

@@ -1,0 +1,90 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 22.3rem;
+}
+
+.wrapper_size {
+  width: 52rem;
+  height: 65.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.flex_center_column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 3rem;
+}
+.wrapper_image {
+  position: relative;
+  width: 20rem;
+  height: 19rem;
+}
+.wrapper_logo_name {
+  position: relative;
+  width: 20rem;
+  height: 5.5rem;
+  margin-top: 3rem;
+}
+
+.logo_welcome {
+  color: var(--black-333236);
+}
+.wrapper_middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--black-333236);
+  gap: 0.9rem;
+  width: -webkit-fill-available;
+}
+.wrapper_width {
+  width: -webkit-fill-available;
+}
+.login_font {
+  padding-bottom: 0.8rem;
+  position: relative;
+}
+.hide_icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  position: absolute;
+  cursor: pointer;
+  left: 48rem;
+  top: 4.2rem;
+  z-index: 1;
+}
+.wrapper_bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2.4rem;
+  padding-top: 2.4rem;
+}
+.wrapper_floor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.link {
+  color: var(--violet-5534DhA);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: darkblue;
+}
+
+.link:visited {
+  color: var(--red-D6173A);
+}
