@@ -9,20 +9,29 @@ const Footerbar = () => {
 
       <div className={styles.footerWrapper}>
         <Link
-          href="https://github.com/codeit-sprint14-part3-4"
+          href="https://github.com/codeit-sprint14-part3-4/Taskify"
           className={`${styles.footermidlink}`}
+          passHref
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Git Hub
         </Link>
         <Link
-          href="https://github.com/codeit-sprint14-part3-4"
+          href="https://github.com/codeit-sprint14-part3-4/Taskify"
           className={`${styles.footermidlink}`}
+          passHref
+          target="_blank"
+          rel="noopener noreferrer"
         >
           Privacy Policy
         </Link>
         <Link
-          href="https://github.com/codeit-sprint14-part3-4"
+          href="https://github.com/codeit-sprint14-part3-4/Taskify"
           className={`${styles.footermidlink}`}
+          passHref
+          target="_blank"
+          rel="noopener noreferrer"
         >
           FAQ
         </Link>
@@ -30,7 +39,12 @@ const Footerbar = () => {
 
       <ul className={styles.footerlastlink}>
         <li>
-          <Link href="https://github.com/codeit-sprint14-part3-4">
+          <Link
+            href="https://github.com/codeit-sprint14-part3-4/Taskify"
+            passHref
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Image
               src="/assets/icon/envelope-email-icon.svg"
               alt="email address"
@@ -40,7 +54,12 @@ const Footerbar = () => {
           </Link>
         </li>
         <li>
-          <Link href="https://www.facebook.com/">
+          <Link
+            href="https://www.facebook.com/"
+            passHref
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Image
               src="/assets/icon/facebook-icon.svg"
               alt="facebook address"
@@ -50,7 +69,12 @@ const Footerbar = () => {
           </Link>
         </li>
         <li>
-          <Link href="https://www.instagram.com/">
+          <Link
+            href="https://www.instagram.com/"
+            passHref
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Image
               src="/assets/icon/instagram-logo-icon.svg"
               alt="instagram address"

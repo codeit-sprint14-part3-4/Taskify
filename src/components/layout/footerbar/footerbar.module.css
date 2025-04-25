@@ -28,13 +28,13 @@
 @media (max-width: 743px) {
   .footer {
     flex-direction: column;
-    margin: 12.048rem auto 9rem;
+    margin: 12rem auto 9rem;
     padding: 0%;
     font-size: 1.2rem;
     font-weight: 400;
   }
   .footerlastlink {
     margin-top: 6.8rem;
-    gap: 2.046rem;
+    gap: 2rem;
   }
 }

@@ -16,7 +16,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
         <div className={`${styles.cardboximage}`}>
           <Image
             src={imageSrc}
-            alt={title}
+            alt="이미지 텍스쳐"
             width={width || 100}
             height={height || 100}
           />

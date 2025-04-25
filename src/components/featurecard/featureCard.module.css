@@ -1,7 +1,8 @@
 .featureCardFrame {
-  width: 37.8rem;
+  width: 100%;
+  max-width: 37.8rem;
   height: 38.4rem;
-  color: #ffffff;
+  color: var(--white-FFFFFF);
 }
 
 .cardboxtop {
@@ -12,11 +13,11 @@
   border-top-right-radius: 0.8rem;
   width: 37.8rem;
   height: 26rem;
-  background-color: #4b4b4b;
+  background-color: var(--black-4B4B4B);
 }
 
 .cardboxbottom {
-  background-color: #171717;
+  background-color: var(--black-171717);
   font-family: 'Pretendard';
   padding: 3.3rem 3.2rem;
   width: 37.8rem;

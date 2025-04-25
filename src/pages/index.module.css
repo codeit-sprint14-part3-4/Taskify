@@ -59,7 +59,7 @@
   right: 0;
   bottom: 0;
   width: 59.4rem;
-  height: 49.749rem;
+  height: 49.7rem;
 }
 
 .pointer1text {
@@ -183,15 +183,15 @@
     margin: 0;
   }
   .homepagelogo {
-    width: 53.725rem;
-    height: 31.476rem;
+    width: 53.7rem;
+    height: 31.4rem;
   }
   .pointer1image {
-    width: 51.939rem;
+    width: 51.9rem;
     height: 43.5rem;
   }
   .pointer2image {
-    width: 36.044rem;
+    width: 36rem;
     height: 41.5rem;
     left: 15.2rem;
   }
@@ -203,7 +203,7 @@
 @media (max-width: 767px) {
   .cardListWrapper {
     flex-direction: column;
-    gap: 4.048rem;
+    gap: 4rem;
   }
   .linkcardlabel {
     margin: 9rem 0 4.2rem;
@@ -247,7 +247,7 @@
   }
 
   .pointer1image {
-    width: 29.611rem;
+    width: 29.6rem;
     height: 24.8rem;
   }
 
@@ -260,7 +260,7 @@
   }
 
   .pointer2image {
-    width: 21.713rem;
+    width: 21.7rem;
     height: 25rem;
     left: 6.3rem;
     bottom: 0;

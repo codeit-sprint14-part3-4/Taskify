@@ -22,14 +22,14 @@ export default function Home() {
             />
           </div>
 
-          <span
+          <h1
             className={`font-bold text-white ${styles.homepagemaintext} ${styles.line}`}
           >
             새로운 일정 관리
-            <span className={` ${styles.homepagespan} ${styles.line}`}>
+            <h2 className={` ${styles.homepagespan} ${styles.line}`}>
               Taskify
-            </span>
-          </span>
+            </h2>
+          </h1>
           <Link href={'/login'}>
             <Button
               variant="login"
