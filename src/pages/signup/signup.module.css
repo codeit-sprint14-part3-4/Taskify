@@ -1,0 +1,122 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 22.3rem;
+}
+
+.wrapper_size {
+  width: 52rem;
+  height: 65.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.flex_center_column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 3rem;
+}
+.wrapper_image {
+  position: relative;
+  width: 20rem;
+  height: 19rem;
+}
+.wrapper_logo_name {
+  position: relative;
+  width: 20rem;
+  height: 5.5rem;
+  margin-top: 3rem;
+}
+
+.logo_welcome {
+  color: var(--black-333236);
+}
+.wrapper_middle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--black-333236);
+  gap: 1.6rem;
+  width: -webkit-fill-available;
+}
+.wrapper_width {
+  width: -webkit-fill-available;
+}
+.login_font {
+  padding-bottom: 0.8rem;
+  position: relative;
+}
+.hide_icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  position: absolute;
+  cursor: pointer;
+  left: 48rem;
+  top: 4.2rem;
+  z-index: 1;
+}
+.wrapper_bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2.4rem;
+  padding-top: 2.4rem;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+.wrapper_floor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.link {
+  color: var(--violet-5534DhA);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: darkblue;
+}
+
+.link:visited {
+  color: var(--red-D6173A);
+}
+.terms_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+.custom_select {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--gray-D9D9D9);
+  appearance: none;
+
+  border-radius: 0.25rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.custom_select:checked {
+  background-color: oklch(0.94 0.03 295.46);
+  border: 1px solid var(--gray-D9D9D9);
+
+  background-image: url('/assets/icon/check.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.2rem 1.2rem;
+}
+.check_icon {
+  width: 1.4rem;
+  height: 1.4rem;
+}
