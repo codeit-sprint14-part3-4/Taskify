@@ -7,8 +7,8 @@ export default interface InputProps {
   readOnly?: boolean
   error?: string
   className?: string
-  paddingwidth?: string
-  paddingheight?: string
+  padding?: string
+  height?: string
   icon?: React.ReactNode
   width?: string
   onBlur?: React.FocusEventHandler
