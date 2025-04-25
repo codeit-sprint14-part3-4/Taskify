@@ -5,7 +5,7 @@ import Button from '@/components/common/button/Button'
 import { authService } from '../../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,7 +17,9 @@ export default function Login() {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  const isFormValid = email && password
+  const isFormValid = useMemo(() => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && password.length >= 8
+  }, [email, password])
 
   const { setAccessToken } = useAuthStore()
   const router = useRouter()
@@ -50,18 +52,20 @@ export default function Login() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.wrapper_size}>
-        <Link href="/mydashboard">
-          <div className={styles.flex_center_column}>
-            <div className={styles.wrapper_image}>
-              <Image src="/assets/icon/logo-icon.svg" alt="로고" fill />
+        <Link href="/mydashboard" legacyBehavior>
+          <a>
+            <div className={styles.flex_center_column}>
+              <div className={styles.wrapper_image}>
+                <Image src="/assets/icon/logo-icon.svg" alt="로고" fill />
+              </div>
+              <div className={styles.wrapper_logo_name}>
+                <Image src="/assets/icon/logo-title.svg" alt="로고" fill />
+              </div>
+              <div className={`${styles.logo_welcome} text-xl-medium`}>
+                다시 오신 것을 환영합니다!
+              </div>
             </div>
-            <div className={styles.wrapper_logo_name}>
-              <Image src="/assets/icon/logo-title.svg" alt="로고" fill />
-            </div>
-            <div className={`${styles.logo_welcome} text-xl-medium`}>
-              다시 오신 것을 환영합니다!
-            </div>
-          </div>
+          </a>
         </Link>
         <div className={`${styles.wrapper_middle} text-lg-medium`}>
           <div className={styles.wrapper_width}>

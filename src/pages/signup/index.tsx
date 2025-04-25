@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
+import ButtonDashboard from '@/components/common/button/ButtonDashboard'
 
 export default function Signup() {
   const [email, setEmail] = useState('')
@@ -51,7 +52,7 @@ export default function Signup() {
         password: password,
       }
       const response = await usersService.postUsers(body) // 회원가입 API 호출
-
+      console.log(response)
       setAccessToken(response.accessToken)
 
       router.push('/login')
@@ -59,6 +60,12 @@ export default function Signup() {
     } catch (error) {
       if (error.response?.status === 409) {
         alert('이미 사용중인 이메일입니다.')
+      } else if (error.response?.status === 400) {
+        alert('이메일 형식으로 작성해주세요.')
+      } else if (error.response?.status === 401) {
+        alert('Unauthorized')
+      } else if (error.response?.status === 403) {
+        alert('Forbidden')
       } else {
         console.error('회원가입 오류:', error)
       }
@@ -203,16 +210,14 @@ export default function Signup() {
         </div>
 
         <div className={styles.wrapper_bottom}>
-          <Link href="/login">
-            <Button
-              variant="login"
-              size="large"
-              isActive={!!isFormValid}
-              onClick={handleSignup}
-            >
-              가입하기
-            </Button>
-          </Link>
+          <Button
+            variant="login"
+            size="large"
+            isActive={!!isFormValid}
+            onClick={handleSignup}
+          >
+            가입하기
+          </Button>
         </div>
       </div>
     </div>

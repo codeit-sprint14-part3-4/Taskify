@@ -6,7 +6,7 @@
 }
 .nav_wrapper {
   height: 4.5rem;
-  border-bottom: 1px solid var(--gray-D9D9D9);
+  border-bottom: 0.1rem solid var(--gray-D9D9D9);
 }
 .nav_left {
   cursor: pointer;
@@ -28,7 +28,7 @@
 }
 .name_mark {
   padding-left: 2rem;
-  border-left: 1px solid var(--gray-D9D9D9);
+  border-left: 0.1rem solid var(--gray-D9D9D9);
 }
 .name {
   padding: 0 5rem 0 2.5rem;
@@ -37,7 +37,7 @@
 .icon {
 }
 /*태블릿*/
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .flex_center_space_between {
     width: 100%;
   }

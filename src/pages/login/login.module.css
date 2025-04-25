@@ -43,10 +43,10 @@
   flex-direction: column;
   color: var(--black-333236);
   gap: 0.9rem;
-  width: -webkit-fill-available;
+  width: 100%;
 }
 .wrapper_width {
-  width: -webkit-fill-available;
+  width: 100%;
 }
 .login_font {
   padding-bottom: 0.8rem;
