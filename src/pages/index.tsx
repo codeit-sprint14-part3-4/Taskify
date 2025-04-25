@@ -6,6 +6,73 @@ import Button from '@/components/common/button/Button'
 import FeatureCard from '@/components/featurecard/FeatureCard'
 import Footerbar from '@/components/layout/footerbar/Footerbar'
 import Link from 'next/link'
+import { GetServerSideProps } from 'next'
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context
+
+  // 쿠키에서 accessToken 추출
+  const accessToken = req.cookies.accessToken
+
+  if (!accessToken) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  try {
+    // fetch를 사용한 API 호출
+    const response = await fetch('https://api.example.com/dashboards', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('대시보드 정보를 가져오는 데 실패했습니다.')
+    }
+
+    const dashboards = await response.json()
+
+    if (!dashboards || dashboards.length === 0) {
+      return {
+        redirect: {
+          destination: '/dashboard/create',
+          permanent: false,
+        },
+      }
+    }
+
+    // createdAt 기준으로 정렬
+    dashboards.sort(
+      (a: any, b: any) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    )
+
+    const firstDashboardId = dashboards[0].id
+
+    return {
+      redirect: {
+        destination: `/dashboard/${firstDashboardId}`,
+        permanent: false,
+      },
+    }
+  } catch (err) {
+    console.error('Fetch Error:', err)
+
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+}
 
 export default function Home() {
   return (
