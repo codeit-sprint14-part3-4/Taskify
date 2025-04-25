@@ -8,7 +8,7 @@ export default function TestPage() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.navbar}>
-        <Gnb />
+        <HomeNavBar />
         <main>본문내용을입력해주세요잉</main>
       </div>
     </div>

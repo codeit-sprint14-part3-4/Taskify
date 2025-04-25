@@ -2,12 +2,15 @@ import ButtonDashboard from '@/components/common/button/ButtonDashboard'
 import styles from './mydashboard.module.css'
 import Image from 'next/image'
 
+import HomeNavBar from '@/components/layout/gnb/HomeNavBar'
+import Sidebar from '@/components/layout/sidebar/Sidebar'
+
 export default function MyDashboard() {
   return (
     <div className={styles.container}>
-      {/*Sidebar*/}
+      <Sidebar />
       <main className={styles.main}>
-        {/*Gnb*/}
+        <HomeNavBar />
         <ButtonDashboard
           paddingHeight="py-[22px]"
           paddingWidth="px-[99px]"

@@ -21,7 +21,7 @@ export default function Login() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && password.length >= 8
   }, [email, password])
 
-  const { setAccessToken } = useAuthStore()
+  const { setAccessToken } = useAuthStore() // 토큰 관리
   const router = useRouter()
 
   const handleLogin = async () => {
@@ -32,7 +32,7 @@ export default function Login() {
       }
 
       const response = await authService.postAuth(body)
-
+      console.log(response)
       // accessToken을 Zustand에 저장
       setAccessToken(response.accessToken)
 
@@ -67,7 +67,15 @@ export default function Login() {
             </div>
           </a>
         </Link>
-        <div className={`${styles.wrapper_middle} text-lg-medium`}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (isFormValid) {
+              handleLogin()
+            }
+          }}
+          className={`${styles.wrapper_middle} text-lg-medium`}
+        >
           <div className={styles.wrapper_width}>
             <div className={styles.login_font}>이메일</div>
             <Input
@@ -85,6 +93,7 @@ export default function Login() {
               error={emailError}
             />
           </div>
+
           <div className={styles.wrapper_width}>
             <div className={styles.login_font}>
               비밀번호
@@ -117,24 +126,24 @@ export default function Login() {
               error={passwordError}
             />
           </div>
-        </div>
 
-        <div className={styles.wrapper_bottom}>
-          <Button
-            variant="login"
-            size="large"
-            isActive={!!isFormValid}
-            onClick={handleLogin}
-          >
-            로그인
-          </Button>
-          <div className={styles.wrapper_floor}>
-            <div>회원이 아니신가요?</div>
-            <Link href="/signup">
-              <div className={styles.link}>회원가입하기</div>
-            </Link>
+          <div className={styles.wrapper_bottom}>
+            <Button
+              variant="login"
+              size="large"
+              isActive={!!isFormValid}
+              type="submit"
+            >
+              로그인
+            </Button>
+            <div className={styles.wrapper_floor}>
+              <div>회원이 아니신가요?</div>
+              <Link href="/signup">
+                <div className={styles.link}>회원가입하기</div>
+              </Link>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   )

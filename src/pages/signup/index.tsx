@@ -9,7 +9,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
-import ButtonDashboard from '@/components/common/button/ButtonDashboard'
 
 export default function Signup() {
   const [email, setEmail] = useState('')
@@ -97,128 +96,140 @@ export default function Signup() {
             </div>
           </div>
         </Link>
-        <div className={`${styles.wrapper_middle} text-lg-medium`}>
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>이메일</div>
-            <Input
-              padding="1.2rem 1.6rem"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="이메일을 입력하세요"
-              onBlur={() => {
-                if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                  setEmailError('이메일 형식으로 작성해 주세요.')
-                } else {
-                  setEmailError('')
-                }
-              }}
-              error={emailError}
-            />
-          </div>
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>닉네임</div>
-            <Input
-              padding="1.2rem 1.6rem"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="닉네임을 입력해주세요"
-              onBlur={() => {
-                if (name.length > 10) {
-                  setNameError('열 자 이하로 작성해주세요.')
-                } else {
-                  setNameError('')
-                }
-              }}
-              error={nameError}
-            />
-          </div>
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>
-              비밀번호
-              <div
-                className={styles.hide_icon}
-                onClick={togglePasswordVisibility}
-              >
-                <Image
-                  src={`/assets/icon/${
-                    showPassword ? 'open_hide.svg' : 'hide_icon.svg'
-                  }`}
-                  alt="비밀번호 보이기/숨기기 아이콘"
-                  fill
-                />
-              </div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (isFormValid) {
+              handleSignup()
+            }
+          }}
+          className={`${styles.wrapper_middle} text-lg-medium`}
+        >
+          <div className={`${styles.wrapper_middle} text-lg-medium`}>
+            <div className={styles.wrapper_width}>
+              <div className={styles.login_font}>이메일</div>
+              <Input
+                padding="1.2rem 1.6rem"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일을 입력하세요"
+                onBlur={() => {
+                  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    setEmailError('이메일 형식으로 작성해 주세요.')
+                  } else {
+                    setEmailError('')
+                  }
+                }}
+                error={emailError}
+              />
             </div>
-            <Input
-              padding="1.2rem 1.6rem"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호를 입력하세요"
-              type={showPassword ? 'text' : 'password'}
-              onBlur={() => {
-                if (password.length < 8) {
-                  setPasswordError('8자 이상 입력해주세요.')
-                } else {
-                  setPasswordError('')
-                }
-              }}
-              error={passwordError}
-            />
-          </div>
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>
-              비밀번호 확인
-              <div
-                className={styles.hide_icon}
-                onClick={toggleConfirmPasswordVisibility}
-              >
-                <Image
-                  src={`/assets/icon/${
-                    showConfirmPassword ? 'open_hide.svg' : 'hide_icon.svg'
-                  }`}
-                  alt="비밀번호 보이기/숨기기 아이콘"
-                  fill
-                />
-              </div>
+            <div className={styles.wrapper_width}>
+              <div className={styles.login_font}>닉네임</div>
+              <Input
+                padding="1.2rem 1.6rem"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="닉네임을 입력해주세요"
+                onBlur={() => {
+                  if (name.length > 10) {
+                    setNameError('열 자 이하로 작성해주세요.')
+                  } else {
+                    setNameError('')
+                  }
+                }}
+                error={nameError}
+              />
             </div>
-            <Input
-              padding="1.2rem 1.6rem"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="비밀번호를 다시 한 번 입력하세요"
-              type={showConfirmPassword ? 'text' : 'password'}
-              onBlur={() => {
-                if (password !== confirmPassword) {
-                  setConfirmPasswordError('비밀번호가 일치하지 않습니다.')
-                } else {
-                  setConfirmPasswordError('')
-                }
-              }}
-              error={confirmPasswordError}
-            />
+            <div className={styles.wrapper_width}>
+              <div className={styles.login_font}>
+                비밀번호
+                <div
+                  className={styles.hide_icon}
+                  onClick={togglePasswordVisibility}
+                >
+                  <Image
+                    src={`/assets/icon/${
+                      showPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                    }`}
+                    alt="비밀번호 보이기/숨기기 아이콘"
+                    fill
+                  />
+                </div>
+              </div>
+              <Input
+                padding="1.2rem 1.6rem"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호를 입력하세요"
+                type={showPassword ? 'text' : 'password'}
+                onBlur={() => {
+                  if (password.length < 8) {
+                    setPasswordError('8자 이상 입력해주세요.')
+                  } else {
+                    setPasswordError('')
+                  }
+                }}
+                error={passwordError}
+              />
+            </div>
+            <div className={styles.wrapper_width}>
+              <div className={styles.login_font}>
+                비밀번호 확인
+                <div
+                  className={styles.hide_icon}
+                  onClick={toggleConfirmPasswordVisibility}
+                >
+                  <Image
+                    src={`/assets/icon/${
+                      showConfirmPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                    }`}
+                    alt="비밀번호 보이기/숨기기 아이콘"
+                    fill
+                  />
+                </div>
+              </div>
+              <Input
+                padding="1.2rem 1.6rem"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="비밀번호를 다시 한 번 입력하세요"
+                type={showConfirmPassword ? 'text' : 'password'}
+                onBlur={() => {
+                  if (password !== confirmPassword) {
+                    setConfirmPasswordError('비밀번호가 일치하지 않습니다.')
+                  } else {
+                    setConfirmPasswordError('')
+                  }
+                }}
+                error={confirmPasswordError}
+              />
+            </div>
+
+            <div className={styles.terms_wrapper}>
+              <input
+                className={styles.custom_select}
+                type="checkbox"
+                id="terms"
+                checked={isTermsAccepted}
+                onChange={() => setIsTermsAccepted(!isTermsAccepted)}
+              />
+              <label htmlFor="terms">이용약관에 동의합니다.</label>
+            </div>
           </div>
 
-          <div className={styles.terms_wrapper}>
-            <input
-              className={styles.custom_select}
-              type="checkbox"
-              id="terms"
-              checked={isTermsAccepted}
-              onChange={() => setIsTermsAccepted(!isTermsAccepted)}
-            />
-            <label htmlFor="terms">이용약관에 동의합니다.</label>
+          <div className={styles.wrapper_bottom}>
+            <Button
+              variant="login"
+              size="large"
+              isActive={!!isFormValid}
+              onClick={handleSignup}
+              type="submit"
+            >
+              가입하기
+            </Button>
           </div>
-        </div>
-
-        <div className={styles.wrapper_bottom}>
-          <Button
-            variant="login"
-            size="large"
-            isActive={!!isFormValid}
-            onClick={handleSignup}
-          >
-            가입하기
-          </Button>
-        </div>
+        </form>
       </div>
     </div>
   )

@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: center;
   padding-top: 22.3rem;
+  transition: all 0.3s ease;
 }
 
 .wrapper_size {
@@ -12,6 +13,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  transition: all 0.3s ease;
 }
 
 .flex_center_column {
@@ -44,6 +46,7 @@
   color: var(--black-333236);
   gap: 0.9rem;
   width: 100%;
+  transition: all 0.3s ease;
 }
 .wrapper_width {
   width: 100%;
@@ -60,6 +63,7 @@
   left: 48rem;
   top: 4.2rem;
   z-index: 1;
+  transition: all 0.3s ease;
 }
 .wrapper_bottom {
   display: flex;
@@ -87,4 +91,24 @@
 
 .link:visited {
   color: var(--red-D6173A);
+}
+@media (max-width: 1023px) {
+  .wrapper {
+    padding-top: 24.95rem;
+  }
+}
+@media (max-width: 743px) {
+  .wrapper {
+    padding-top: 8.87rem;
+  }
+  .wrapper_size {
+    width: 35.1rem;
+    height: 63.5rem;
+  }
+  .wrapper_middle {
+    gap: 0.8rem;
+  }
+  .hide_icon {
+    left: 31rem;
+  }
 }

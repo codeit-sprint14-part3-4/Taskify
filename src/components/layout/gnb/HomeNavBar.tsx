@@ -3,11 +3,12 @@ import ButtonDashboard from '@/components/common/button/ButtonDashboard'
 import Image from 'next/image'
 
 import clsx from 'clsx'
+
 export default function HomeNavBar() {
   return (
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
       <div className={clsx(styles.flex_center_space_between, styles.nav_left)}>
-        <div className={styles.dashboard_title}>제목</div>
+        <div className={`${styles.dashboard_title} text-xl-bold`}>제목</div>
         <div>왕관(필수아님)</div>
       </div>
       <div className={styles.flex_center_space_between}>
@@ -19,8 +20,8 @@ export default function HomeNavBar() {
         >
           <div className={styles.nav_right_center_border}>
             <ButtonDashboard
-              paddingHeight="py-2"
-              paddingWidth="px-4"
+              paddingHeight="py-3"
+              paddingWidth="px-6.5"
               gap="gap-2"
               style={{
                 color: 'var(--gray-787486)',
@@ -42,8 +43,8 @@ export default function HomeNavBar() {
           </div>
           <div className={styles.button_invitation}>
             <ButtonDashboard
-              paddingHeight="py-2"
-              paddingWidth="px-4"
+              paddingHeight="py-3"
+              paddingWidth="px-6.5"
               gap="gap-2"
               style={{
                 color: 'var(--gray-787486)',
@@ -69,7 +70,7 @@ export default function HomeNavBar() {
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >
           <div className={styles.name_mark}>마크</div>
-          <div className={styles.name}>이름</div>
+          <div className={`${styles.name} text-lg-medium`}>이름</div>
         </div>
       </div>
     </div>

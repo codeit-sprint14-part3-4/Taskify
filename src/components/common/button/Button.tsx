@@ -1,5 +1,6 @@
 import styles from './button.module.css'
 import classNames from 'classnames'
+import { type } from './../../../types/common/tag'
 
 type ButtonProps = {
   children: React.ReactNode
@@ -15,6 +16,7 @@ type ButtonProps = {
   isActive?: boolean
   className?: string
   onClick?: () => void
+  type?: 'button' | 'submit' | 'reset' // 김수연 수정함. 엔터 누르면 버튼 누르고 제출되도록 변경하였습니다.
 }
 
 export default function Button({

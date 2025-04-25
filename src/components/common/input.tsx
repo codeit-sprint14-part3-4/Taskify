@@ -18,6 +18,7 @@ const Input: React.FC<InputProps> = ({
   icon,
   width,
   onBlur,
+  onKeyDown,
 }) => {
   return (
     <div className="flex flex-col">
@@ -27,6 +28,7 @@ const Input: React.FC<InputProps> = ({
           value={value}
           onBlur={onBlur}
           onChange={onChange}
+          onKeyDown={onKeyDown}
           placeholder={placeholder}
           disabled={disabled}
           readOnly={readOnly}

@@ -5,23 +5,23 @@
   width: auto;
 }
 .nav_wrapper {
-  height: 4.5rem;
+  height: 7rem;
   border-bottom: 0.1rem solid var(--gray-D9D9D9);
 }
 .nav_left {
   cursor: pointer;
 }
 .dashboard_title {
-  padding: 0 0.5rem 0 2.5rem;
+  padding: 0 0.8rem 0 4rem;
 }
 .nav_right_center_border {
-  padding-right: 2rem;
+  padding-right: 1.6rem;
 }
 .button_invitation {
-  padding-right: 2.5rem;
+  padding-right: 4rem;
 }
 .nav_right {
-  padding-right: 2.5rem;
+  padding-right: 8rem;
 }
 .nickname_tag {
   width: max-content;
