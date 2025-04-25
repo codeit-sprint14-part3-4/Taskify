@@ -102,17 +102,16 @@
   border: 1px solid var(--gray-D9D9D9);
   appearance: none;
 
-  background-color: white; /* 배경색 명시해주면 좋아 */
   border-radius: 0.25rem;
   cursor: pointer;
   position: relative;
 }
 
 .custom_select:checked {
-  background-color: oklch(0.94 0.03 295.46); /* 배경 색상 */
+  background-color: oklch(0.94 0.03 295.46);
   border: 1px solid var(--gray-D9D9D9);
 
-  background-image: url('/assets/icon/check.svg'); /* 체크 이미지 경로 */
+  background-image: url('/assets/icon/check.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 1.2rem 1.2rem;
