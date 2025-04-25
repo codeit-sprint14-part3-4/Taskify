@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (!dashboards || dashboards.length === 0) {
       return {
         redirect: {
-          destination: '/dashboard/create',
+          destination: '/mydashboard',
           permanent: false,
         },
       }
