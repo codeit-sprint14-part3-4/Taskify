@@ -5,45 +5,47 @@
   align-items: center;
 }
 .navWrapper {
-  padding: 0.9375rem 5rem;
+  padding: 1.5rem 8rem;
   width: 100%;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: padding 0.3s ease, width 0.3s ease, font-size 0.3s ease;
 }
 .logo {
-  width: 7.5625rem;
+  width: 12.1rem;
   height: 100%;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  transition: padding 0.3s ease, width 0.3s ease, font-size 0.3s ease;
 }
+
 .login {
-  width: 8.375rem;
+  width: 13.4rem;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: padding 0.3s ease, width 0.3s ease, font-size 0.3s ease;
 }
-
+.logotext {
+  transition: all 0.3s ease;
+}
 .login li a {
   text-decoration: none;
   color: var(--white-FFFFFF);
 }
 
-@media (max-width: 1919px) {
+@media (max-width: 1023px) {
   .navWrapper {
-    padding: 0.9375rem 2.5rem;
+    padding: 1.55rem 4rem;
   }
 }
 
 @media (max-width: 743px) {
   .navWrapper {
-
-    padding: 1rem 2.5rem;
+    padding: 1.6rem 2.4rem;
   }
   .logo {
     height: 1.5625rem;
@@ -52,16 +54,17 @@
     justify-content: space-between;
   }
   .image {
-    height: 1.5625rem;
-
+    height: 2.7rem;
   }
   .logotext {
     width: 0;
     height: 0;
+    opacity: 0;
+    transform: scale(0);
   }
   .login {
     font-size: 14px;
-    width: 6.875rem;
+    width: 11rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
