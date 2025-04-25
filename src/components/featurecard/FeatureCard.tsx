@@ -13,14 +13,15 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   return (
     <div className={`${styles.featureCardFrame}`}>
       <div className={`${styles.cardboxtop}`}>
-        <div className={`${styles.cardboximage}`}>
-          <Image
-            src={imageSrc}
-            alt="이미지 텍스쳐"
-            width={width || 100}
-            height={height || 100}
-            priority
-          />
+        <div
+          className={styles.cardboximage}
+          style={{
+            width: `${width}px`,
+            height: `${height}px`,
+            position: 'relative',
+          }}
+        >
+          <Image src={imageSrc} alt="이미지 텍스쳐" fill priority />
         </div>
       </div>
       <div className={`${styles.cardboxbottom}`}>

@@ -16,6 +16,12 @@
   background-color: var(--black-4B4B4B);
 }
 
+.cardimage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 .cardboxbottom {
   background-color: var(--black-171717);
   font-family: 'Pretendard';
