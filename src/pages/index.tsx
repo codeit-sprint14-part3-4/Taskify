@@ -3,12 +3,13 @@ import Gnb from '@/components/layout/gnb/Gnb'
 import Image from 'next/image'
 import styles from './index.module.css'
 import Button from '@/components/common/button/Button'
-import FeatureCard from '@/components/common/featureCard'
+import FeatureCard from '@/components/featurecard/FeatureCard'
 import Footerbar from '@/components/layout/footerbar/Footerbar'
+import Link from 'next/link'
 
 export default function Home() {
   return (
-    <div className="bg-black min-h-screen flex flex-col">
+    <div className={`${styles.container} min-h-screen flex flex-col`}>
       <Gnb />
       <div className={`${styles.maincontainer}`}>
         <section className={`${styles.homepagetop}`}>
@@ -16,40 +17,54 @@ export default function Home() {
             <Image
               src="/assets/image/desktop.svg"
               alt="Taskify Logo"
-              width={772}
-              height={422}
+              fill
+              className={styles.image}
             />
           </div>
-          <h1 className={`font-bold text-white ${styles.homepagemaintext}`}>
+
+          <span
+            className={`font-bold text-white ${styles.homepagemaintext} ${styles.line}`}
+          >
             새로운 일정 관리
-            <span className={` ${styles.homepagespan}`}>Taskify</span>
-          </h1>
-          <Button className={`${styles.loginbutton}`}>로그인 하기</Button>
+            <span className={` ${styles.homepagespan} ${styles.line}`}>
+              Taskify
+            </span>
+          </span>
+          <Link href={'/login'}>
+            <Button
+              variant="login"
+              size="large"
+              isActive={true}
+              className={`${styles.loginbutton}`}
+            >
+              로그인 하기
+            </Button>
+          </Link>
         </section>
 
         <section className={`${styles.pointer1}  flex-col`}>
-          <Image
-            src="/assets/image/landing1.svg"
-            alt="landingpage image"
-            width={594}
-            height={497.49}
-            className={`${styles.landingimage1}`}
-          />
+          <div className={`${styles.pointer1image}`}>
+            <Image
+              src="/assets/image/landing1.svg"
+              alt="landingpage image"
+              fill
+            />
+          </div>
           <span className={`${styles.pointer1text}`}>Point1</span>
-          <div className={`${styles.pointer1maintext} text-left`}>
+          <div className={`${styles.pointer1maintext}`}>
             <div>일의 우선 순위를</div>
             <div>관리하세요</div>
           </div>
         </section>
 
-        <section className={`${styles.pointer2} flex flex-col text-left`}>
-          <Image
-            src="/assets/image/landing2.svg"
-            alt="landingpage image"
-            width={436}
-            height={502}
-            className={`${styles.landingimage2}`}
-          />
+        <section className={`${styles.pointer2} flex flex-col `}>
+          <div className={`${styles.pointer2image}`}>
+            <Image
+              src="/assets/image/landing2.svg"
+              alt="landingpage image"
+              fill
+            />
+          </div>
           <div className={`${styles.pointer2box}`}>
             <span className={`${styles.pointer2text}`}>Point2</span>
             <div className={`${styles.pointer2maintext}`}>
@@ -58,12 +73,11 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <section className="flex justify-center w-full">
+        <div className="flex justify-center w-full">
           <span className={`${styles.linkcardlabel} mr-auto`}>
             생산성을 높이는 다양한 설정⚡
           </span>
-        </section>
+        </div>
 
         <section className={`${styles.cardListWrapper}`}>
           <FeatureCard
@@ -89,7 +103,9 @@ export default function Home() {
           />
         </section>
       </div>
-      <Footerbar />
+      <div className={styles.footerline}>
+        <Footerbar />
+      </div>
     </div>
   )
 }

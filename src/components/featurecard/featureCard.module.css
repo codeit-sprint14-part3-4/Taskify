@@ -34,3 +34,23 @@
   font-size: 1.6rem;
   font-weight: 500;
 }
+
+@media (max-width: 1023px) {
+}
+
+@media (max-width: 767px) {
+  .cardboxtop {
+    padding-left: 4.2rem;
+    padding-right: 4.1rem;
+    width: 34.3rem;
+    height: 23.5rem;
+  }
+  .cardboxbottom {
+    width: 34.3rem;
+    height: 11.252rem;
+  }
+  .featureCardFrame {
+    width: 34.3rem;
+    height: 34.852rem;
+  }
+}
