@@ -16,10 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (!accessToken) {
     return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
+      props: {},
     }
   }
 
@@ -38,6 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 
     const dashboards = await response.json()
+    //const dashboards = (await response.json()).data//
 
     if (!dashboards || dashboards.length === 0) {
       return {
@@ -85,6 +83,7 @@ export default function Home() {
               src="/assets/image/desktop.svg"
               alt="Taskify Logo"
               fill
+              priority
               className={styles.image}
             />
           </div>
@@ -93,9 +92,9 @@ export default function Home() {
             className={`font-bold text-white ${styles.homepagemaintext} ${styles.line}`}
           >
             새로운 일정 관리
-            <h2 className={` ${styles.homepagespan} ${styles.line}`}>
+            <span className={` ${styles.homepagespan} ${styles.line}`}>
               Taskify
-            </h2>
+            </span>
           </h1>
           <Link href={'/login'}>
             <Button
@@ -115,6 +114,7 @@ export default function Home() {
               src="/assets/image/landing1.svg"
               alt="landingpage image"
               fill
+              priority
             />
           </div>
           <span className={`${styles.pointer1text}`}>Point1</span>
@@ -130,6 +130,7 @@ export default function Home() {
               src="/assets/image/landing2.svg"
               alt="landingpage image"
               fill
+              priority
             />
           </div>
           <div className={`${styles.pointer2box}`}>

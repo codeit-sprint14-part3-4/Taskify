@@ -19,6 +19,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
             alt="이미지 텍스쳐"
             width={width || 100}
             height={height || 100}
+            priority
           />
         </div>
       </div>
