@@ -7,7 +7,7 @@ import type {
 import { handleError } from '../../utils/handleError'
 import { useAuthStore } from '@/stores/auth'
 
-const BASE_URL = 'https://sp-taskify-api.vercel.app/14-4'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || ''
 
 // POST: 회원가입
 const postUsers = async (body: CreateUserBody): Promise<User> => {

@@ -2,6 +2,7 @@ import styles from './homenavbar.module.css'
 import Image from 'next/image'
 import clsx from 'clsx'
 
+import Badge from '@/components/common/badge/Badge'
 import ButtonDashboard from '@/components/common/button/ButtonDashboard'
 import { useDashboardInfo } from '@/hooks/useDashboardInfo'
 
@@ -12,10 +13,8 @@ export default function HomeNavBar({
   dashboardId: number
   pageType: 'mydashboard' | 'dashboard'
 }) {
-  const { dashboardTitle, hasCrown, memberCount } = useDashboardInfo(
-    dashboardId,
-    pageType
-  )
+  const { dashboardTitle, hasCrown, memberCount, userId, userName } =
+    useDashboardInfo(dashboardId, pageType)
 
   return (
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
@@ -95,7 +94,8 @@ export default function HomeNavBar({
         <div
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >
-          <div className={`${styles.name} text-lg-medium`}>이름</div>
+          {userId && <Badge label={userId.charAt(0).toUpperCase()} />}
+          <div className={`${styles.name} text-lg-medium`}>{userName}</div>
         </div>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import styles from './button.module.css'
 import classNames from 'classnames'
-import { type } from './../../../types/common/tag'
 
 type ButtonProps = {
   children: React.ReactNode
