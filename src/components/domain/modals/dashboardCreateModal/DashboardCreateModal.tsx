@@ -22,7 +22,7 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
   ]
 
   const handleCreateDashboard = () => {
-    const dashboardId = '1234' /*API 로직 필요요*/
+    const dashboardId = '1234' /*API 로직 필요*/
     onClose()
     router.push(`/dashboard/${dashboardId}`)
   }
