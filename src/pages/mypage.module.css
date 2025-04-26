@@ -3,14 +3,15 @@
   flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 8rem 0 0 32rem;
-  min-height: 100vh;
+  padding: 0rem;
+  min-height: 80vh;
+  background-color: var(--gray-FAFAFA);
 }
 
 .content {
+  padding: 2rem 34rem;
   flex: 1;
   min-width: 0;
-  overflow-y: auto;
   max-width: 80rem;
 }
 
@@ -53,7 +54,6 @@
   background: var(--white-FFFFFF);
   padding: 3.2rem;
   border-radius: 1.2rem;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
 .profileCard {
