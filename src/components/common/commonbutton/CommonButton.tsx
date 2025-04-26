@@ -1,5 +1,5 @@
-import styles from './button.module.css'
-import classNames from 'classnames'
+import clsx from 'clsx'
+import styles from './commonButton.module.css'
 
 type ButtonProps = {
   children: React.ReactNode
@@ -21,7 +21,7 @@ export default function Button({
   return (
     <button
       onClick={onClick}
-      className={classNames(
+      className={clsx(
         styles.button,
         isActive && styles[`${variant}`],
         isActive ? styles.active : styles.inactive,

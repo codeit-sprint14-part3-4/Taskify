@@ -1,5 +1,5 @@
 .button {
-  border: 1px solid var(--gray-D9D9D9);
+  border: 0.1rem solid var(--gray-D9D9D9);
   cursor: pointer;
   border-radius: 0.8rem;
   font-family: var(--font-family);

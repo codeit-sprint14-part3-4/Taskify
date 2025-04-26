@@ -1,6 +1,6 @@
 import styles from './dashboardCreateModal.module.css'
 import Input from '@/components/common/input'
-import Button from '@/components/common/button/Button'
+import Button from '@/components/common/commonbutton/CommonButton'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
@@ -10,16 +10,16 @@ interface DashboardModalProps {
 
 export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
   const [text, setText] = useState('')
-  const [selectedColor, setSelectedColor] = useState<string | null>(null)
   const router = useRouter()
-
   const COLORS = [
-    'var(--green-7AC555)',
-    'var(--purple-760DDE)',
-    'var(--orange-FFA500)',
-    'var(--blue-76A5EA)',
-    'var(--pink-E876EA)',
-  ]
+    { id: 1, color: 'var(--green-7AC555)' },
+    { id: 2, color: 'var(--purple-760DDE)' },
+    { id: 3, color: 'var(--orange-FFA500)' },
+    { id: 4, color: 'var(--blue-76A5EA)' },
+    { id: 5, color: 'var(--pink-E876EA)' },
+  ] as const
+  type ColorType = (typeof COLORS)[number]
+  const [selectedColor, setSelectedColor] = useState<ColorType | null>(null)
 
   const handleCreateDashboard = () => {
     const dashboardId = '1234' /*API 로직 필요*/
@@ -45,18 +45,18 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
           padding="2.5rem 1.5rem" /*padding 사이즈를 시안에 있는 걸 넣으면 시안 이미지처럼 안나오는데..? */
           className={styles.input}
         />
-        <div className={styles.colorBadge_container}>
-          {COLORS.map((color) => (
+        <div className={styles.color_badge_container}>
+          {COLORS.map((item) => (
             <button
-              key={color}
-              onClick={() => setSelectedColor(color)}
-              className={`${styles.colorBadge} ${
-                selectedColor === color ? styles.selected : ''
+              key={item.id}
+              onClick={() => setSelectedColor(item)}
+              className={`${styles.color_badge} ${
+                selectedColor?.id === item.id ? styles.selected : ''
               }`}
-              style={{ backgroundColor: color }}
+              style={{ backgroundColor: item.color }}
             >
               {' '}
-              {selectedColor === color && (
+              {selectedColor?.id === item.id && (
                 <span className={styles.check}>✓</span>
               )}
             </button>

@@ -1,4 +1,4 @@
-import ButtonDashboard from '@/components/common/button/ButtonDashboard'
+import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import styles from './mydashboard.module.css'
 import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
 import Image from 'next/image'
@@ -37,18 +37,18 @@ export default function MyDashboard() {
           새로운 대시보드
         </ButtonDashboard>
 
-        <section className={styles.inviteSection}>
-          <div className={`${styles.inviteTitle} text-2xl-bold`}>
+        <section className={styles.invite_section}>
+          <div className={`${styles.invite_title} text-2xl-bold`}>
             초대받은 대시보드
           </div>
-          <div className={styles.inviteBox}>
+          <div className={styles.invite_box}>
             <Image
               src="/assets/icon/email.svg"
               alt="email"
               width={100}
               height={100}
             />
-            <div className={styles.inviteMessage}>
+            <div className={styles.invite_message}>
               아직 초대받은 대시보드가 없어요
             </div>
           </div>
