@@ -13,31 +13,33 @@ export default function Toast({
   message,
   onClose,
   duration = 3000,
-  type = 'success', // 기본값은 success
+  type = 'success', // 기본값 success
 }: ToastProps) {
   const [isVisible, setIsVisible] = useState(true)
 
-  // 자동 닫힘 타이머 설정
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false)
-      setTimeout(onClose, 300) // fade-out 애니메이션 후 onClose 호출
-    }, duration)
+    let timer: NodeJS.Timeout
 
-    return () => clearTimeout(timer)
+    if (duration > 0) {
+      timer = setTimeout(() => {
+        setIsVisible(false)
+        setTimeout(onClose, 300) // fade-out 후 onClose
+      }, duration)
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer)
+    }
   }, [duration, onClose])
 
-  // 닫힌 상태면 렌더링하지 않음
   if (!isVisible) return null
 
-  // 타입에 따른 스타일 클래스
   const toastClass = styles[type]
 
   return (
     <div className={`${styles.toast} ${toastClass}`}>
       <p>{message}</p>
 
-      {/* 닫기 버튼 */}
       <button
         className={styles.closeButton}
         onClick={() => setIsVisible(false)}

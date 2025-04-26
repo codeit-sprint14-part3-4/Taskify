@@ -50,7 +50,6 @@
   font-size: 1.4rem;
   border: 0.1rem solid var(--gray-D9D9D9);
   border-radius: 0.8rem;
-  box-sizing: border-box;
 }
 
 /* 인풋 포커스 */
