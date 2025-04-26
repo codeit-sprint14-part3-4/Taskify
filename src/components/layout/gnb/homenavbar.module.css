@@ -27,11 +27,11 @@
   width: max-content;
 }
 .name_mark {
-  padding-left: 2rem;
+  padding-left: 3.2rem;
   border-left: 0.1rem solid var(--gray-D9D9D9);
 }
 .name {
-  padding: 0 5rem 0 2.5rem;
+  padding-left: 1.3rem;
   cursor: pointer;
 }
 .icon {

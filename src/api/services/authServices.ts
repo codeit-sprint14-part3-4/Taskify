@@ -5,7 +5,7 @@ import type {
 } from '../../types/api/auth'
 import { handleError } from '../../utils/handleError'
 
-const BASE_URL = 'https://sp-taskify-api.vercel.app/14-4'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || ''
 
 // POST: 로그인
 // 로그인 요청을 보내고 LoginResponse 타입의 결과를 반환하는 비동기 함수
