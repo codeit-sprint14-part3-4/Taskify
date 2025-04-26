@@ -4,22 +4,29 @@ import FormModal from '@/components/modal/FormModal'
 import Toast from '@/components/toast/Toast'
 
 export default function ModalTestPage() {
+  // 모달 상태
   const [openSmall, setOpenSmall] = useState(false)
   const [openLarge, setOpenLarge] = useState(false)
   const [openAlertSmall, setOpenAlertSmall] = useState(false)
   const [openAlertLarge, setOpenAlertLarge] = useState(false)
 
+  // FormModal 상태
   const [openFormSmall, setOpenFormSmall] = useState(false)
   const [openFormLarge, setOpenFormLarge] = useState(false)
   const [openFormSmallWithClose, setOpenFormSmallWithClose] = useState(false)
   const [openFormLargeWithClose, setOpenFormLargeWithClose] = useState(false)
 
+  // 컬럼 데이터 관리
   const [columnName, setColumnName] = useState('')
   const [error, setError] = useState('')
   const [columns, setColumns] = useState<string[]>([])
 
+  // 토스트 상태
   const [toastMessage, setToastMessage] = useState('')
   const [showingToast, setShowingToast] = useState(false)
+  const [toastType, setToastType] = useState<
+    'create' | 'delete' | 'success' | 'info'
+  >('success')
 
   const resetFormState = () => {
     setColumnName('')
@@ -28,9 +35,14 @@ export default function ModalTestPage() {
     setOpenFormLarge(false)
   }
 
-  const showToast = (msg: string) => {
+  const showToast = (
+    msg: string,
+    type: 'create' | 'delete' | 'success' | 'info'
+  ) => {
     setToastMessage(msg)
+    setToastType(type)
     setShowingToast(true)
+
     setTimeout(() => {
       setShowingToast(false)
       setToastMessage('')
@@ -44,23 +56,30 @@ export default function ModalTestPage() {
       setError('이름을 입력해주세요.')
       return
     }
-
     if (columns.includes(trimmed)) {
       setError('중복된 컬럼 이름입니다.')
       return
     }
 
     setColumns((prev) => [...prev, trimmed])
-    showToast(`컬럼 생성: ${trimmed}`)
-
-    // 여기서 모달 상태를 명시적으로 닫아야 함 !!!
+    showToast(`컬럼 생성: ${trimmed}`, 'create')
     resetFormState()
     setOpenFormSmallWithClose(false)
     setOpenFormLargeWithClose(false)
   }
 
+  const handleDelete = () => {
+    setColumns([])
+    showToast('모든 컬럼이 삭제되었습니다!', 'delete')
+  }
+
+  const handleConfirm = () => {
+    showToast('확인되었습니다!', 'success')
+  }
+
   return (
     <>
+      {/* 버튼 영역 */}
       <div className="flex flex-col items-center justify-center gap-6 mt-[100px]">
         {/* 기본 Modal 버튼 */}
         <button
@@ -108,41 +127,20 @@ export default function ModalTestPage() {
           FormModal - Large
         </button>
 
-        {/* FormModal 버튼 - 닫기 버튼 포함 */}
-        <button
-          onClick={() => {
-            resetFormState()
-            setOpenFormSmallWithClose(true)
-          }}
-          className="px-10 py-4 bg-pink-600 text-white rounded-lg"
-        >
-          FormModal - Small (닫기)
-        </button>
-        <button
-          onClick={() => {
-            resetFormState()
-            setOpenFormLargeWithClose(true)
-          }}
-          className="px-10 py-6 bg-pink-800 text-white rounded-lg"
-        >
-          FormModal - Large (닫기)
-        </button>
-
-        {/* 컬럼 목록 표시(중복 체크하기) */}
+        {/* 컬럼 목록 */}
         <div className="px-20 mt-16 text-2xl text-black">
           <strong>현재 컬럼:</strong> {columns.join(', ') || '없음'}
         </div>
       </div>
 
-      {/* 기본 모달 설정하기*/}
+      {/* 모달 영역 */}
       {openSmall && (
         <Modal
           size="small"
           message="컬럼의 모든 카드가 삭제됩니다."
           onConfirm={() => {
-            setColumns([])
-            showToast('모든 컬럼이 삭제되었습니다!')
             setOpenSmall(false)
+            setTimeout(() => handleDelete(), 50)
           }}
           onCancel={() => setOpenSmall(false)}
           confirmLabel="삭제"
@@ -155,9 +153,8 @@ export default function ModalTestPage() {
           size="large"
           message="컬럼의 모든 카드가 삭제됩니다."
           onConfirm={() => {
-            setColumns([])
-            showToast('모든 컬럼이 삭제되었습니다!')
             setOpenLarge(false)
+            setTimeout(() => handleDelete(), 50)
           }}
           onCancel={() => setOpenLarge(false)}
           confirmLabel="삭제"
@@ -165,12 +162,15 @@ export default function ModalTestPage() {
         />
       )}
 
-      {/* 경고 모달 창 설정*/}
+      {/* 확인 모달 영역 */}
       {openAlertSmall && (
         <Modal
           size="small"
           message="비밀번호가 일치하지 않습니다."
-          onConfirm={() => setOpenAlertSmall(false)}
+          onConfirm={() => {
+            setOpenAlertSmall(false)
+            setTimeout(() => handleConfirm(), 50)
+          }}
           confirmLabel="확인"
         />
       )}
@@ -179,12 +179,15 @@ export default function ModalTestPage() {
         <Modal
           size="large"
           message="비밀번호가 일치하지 않습니다."
-          onConfirm={() => setOpenAlertLarge(false)}
+          onConfirm={() => {
+            setOpenAlertLarge(false)
+            setTimeout(() => handleConfirm(), 50)
+          }}
           confirmLabel="확인"
         />
       )}
 
-      {/* Form 모달 창 설정*/}
+      {/* Form 모달 영역 */}
       {openFormSmall && (
         <FormModal
           size="small"
@@ -214,48 +217,12 @@ export default function ModalTestPage() {
           cancelLabel="취소"
         />
       )}
-      {/* Form 모달 창 설정 - 닫기 버튼 포함 */}
-      {openFormSmallWithClose && (
-        <FormModal
-          size="small"
-          title="새 컬럼 생성"
-          inputLabel="이름"
-          inputValue={columnName}
-          onChange={(e) => setColumnName(e.target.value)}
-          onConfirm={handleCreate}
-          onCancel={() => {
-            resetFormState()
-            setOpenFormSmallWithClose(false)
-          }}
-          errorMessage={error}
-          confirmLabel="생성"
-          cancelLabel="취소"
-          showCloseButton // 닫기 버튼
-        />
-      )}
 
-      {openFormLargeWithClose && (
-        <FormModal
-          size="large"
-          title="새 컬럼 생성"
-          inputLabel="이름"
-          inputValue={columnName}
-          onChange={(e) => setColumnName(e.target.value)}
-          onConfirm={handleCreate}
-          onCancel={() => {
-            resetFormState()
-            setOpenFormLargeWithClose(false)
-          }}
-          errorMessage={error}
-          confirmLabel="생성"
-          cancelLabel="취소"
-          showCloseButton // 닫기 버튼
-        />
-      )}
-      {/* 토스트 메시지 */}
+      {/* 토스트 영역 */}
       {showingToast && (
         <Toast
           message={toastMessage}
+          type={toastType}
           onClose={() => {
             setShowingToast(false)
             setToastMessage('')

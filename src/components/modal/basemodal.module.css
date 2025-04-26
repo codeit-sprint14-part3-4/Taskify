@@ -13,7 +13,7 @@
   animation: fadeIn 0.25s ease-out forwards;
 }
 
-/* 공통 모달 CSS*/
+/* 공통 모달 기본 스타일 */
 .modal {
   font-family: var(--font-family);
   background: var(--white-FFFFFF);
@@ -32,7 +32,7 @@
   margin-top: 3rem;
 }
 
-/* 공통 버튼 */
+/* 공통 버튼 스타일 */
 .cancelButton,
 .confirmButton {
   font-family: var(--font-family);
@@ -45,7 +45,7 @@
 .cancelButton {
   background: var(--white-FFFFFF);
   color: var(--gray-787486);
-  border: 1px solid var(--gray-D9D9D9);
+  border: 0.1rem solid var(--gray-D9D9D9);
 }
 
 .confirmButton {
@@ -67,7 +67,7 @@
 @keyframes modalPop {
   0% {
     opacity: 0;
-    transform: scale(0.96) translateY(-10px);
+    transform: scale(0.96) translateY(-1rem);
   }
   100% {
     opacity: 1;

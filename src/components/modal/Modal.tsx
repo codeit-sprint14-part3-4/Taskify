@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from '@/components/modal/modal.module.css'
 import baseStyle from './basemodal.module.css'
+import ModalButton from './ModalButton'
 import { ModalProps } from '@/types/common/modal'
 
 export default function Modal({
@@ -12,52 +13,62 @@ export default function Modal({
   cancelLabel,
 }: ModalProps) {
   const isAlertOnly = !onCancel
+  const confirmText = confirmLabel || (onCancel ? '삭제' : '확인')
 
-  const confirmSizeClass = isAlertOnly
-    ? size === 'large'
-      ? styles.alertConfirmLarge
-      : styles.alertConfirmSmall
-    : size === 'large'
-    ? styles.confirmLarge
-    : styles.confirmSmall
+  // 모달 크기에 따른 스타일 계산
+  const getModalClassNames = (size: string, isAlertOnly: boolean) => {
+    let confirmClass = ''
+    let modalClass = ''
+    let messageClass = ''
 
-  const modalSizeClass = isAlertOnly
-    ? size === 'large'
-      ? styles.alertLarge
-      : styles.alertSmall
-    : size === 'large'
-    ? styles.large
-    : styles.small
+    if (isAlertOnly) {
+      confirmClass =
+        size === 'large' ? styles.alertConfirmLarge : styles.alertConfirmSmall
+      modalClass = size === 'large' ? styles.alertLarge : styles.alertSmall
+      messageClass =
+        size === 'large' ? styles.alertMessageLarge : styles.alertMessageSmall
+    } else {
+      confirmClass =
+        size === 'large' ? styles.confirmLarge : styles.confirmSmall
+      modalClass = size === 'large' ? styles.large : styles.small
+      messageClass =
+        size === 'large' ? styles.messageLarge : styles.messageSmall
+    }
 
-  const messageClass = isAlertOnly
-    ? size === 'large'
-      ? styles.alertMessageLarge
-      : styles.alertMessageSmall
-    : size === 'large'
-    ? styles.messageLarge
-    : styles.messageSmall
+    return { confirmClass, modalClass, messageClass }
+  }
+
+  const { confirmClass, modalClass, messageClass } = getModalClassNames(
+    size,
+    isAlertOnly
+  )
 
   return (
     <div className={baseStyle.overlay}>
-      <div className={`${baseStyle.modal} ${modalSizeClass}`}>
+      <div className={`${baseStyle.modal} ${modalClass}`}>
+        {/* 메시지 */}
         <p className={messageClass}>{message}</p>
+
+        {/* 버튼 그룹 */}
         <div className={baseStyle.buttonGroup}>
+          {/* 취소 버튼 (onCancel이 있을 때만) */}
           {!isAlertOnly && (
-            <button
-              className={`${baseStyle.cancelButton} ${
-                size === 'large' ? styles.cancelLarge : styles.cancelSmall
-              }`}
+            <ModalButton
+              type="button"
               onClick={onCancel}
-            >
-              {cancelLabel || '취소'}
-            </button>
+              label={cancelLabel || '취소'}
+              isCancel={true}
+              size={size}
+            />
           )}
-          <button
-            className={`${baseStyle.confirmButton} ${confirmSizeClass}`}
+
+          {/* 확인 버튼 */}
+          <ModalButton
+            type="submit"
             onClick={onConfirm}
-          >
-            {confirmLabel || (onCancel ? '삭제' : '확인')}
-          </button>
+            label={confirmText}
+            size={size}
+          />
         </div>
       </div>
     </div>

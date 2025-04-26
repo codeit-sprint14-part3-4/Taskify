@@ -1,7 +1,8 @@
-import Image from 'next/image'
 import React from 'react'
+import Image from 'next/image'
 import styles from './formmodal.module.css'
 import baseStyle from './basemodal.module.css'
+import ModalButton from './ModalButton'
 import { FormModalProps } from '@/types/common/formmodal'
 
 export default function FormModal({
@@ -19,12 +20,15 @@ export default function FormModal({
 }: FormModalProps) {
   const isLarge = size === 'large'
   const closeIconSize = isLarge ? 36 : 24
+  const inputId = 'modal-input' // 고유 id
 
   return (
     <div className={baseStyle.overlay}>
       <div className={`${baseStyle.modal} ${styles[size]}`}>
+        {/* 모달 헤더 */}
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{title}</h2>
+
           {showCloseButton && (
             <button
               className={styles.closeButton}
@@ -41,43 +45,51 @@ export default function FormModal({
           )}
         </div>
 
+        {/* 폼 영역 */}
         <form
           onSubmit={(e) => {
             e.preventDefault()
             onConfirm()
           }}
         >
-          <label className={styles.modalLabel}>{inputLabel}</label>
+          {/* 인풋 라벨 */}
+          <label htmlFor={inputId} className={styles.modalLabel}>
+            {inputLabel}
+          </label>
+
+          {/* 인풋 필드 */}
           <input
             type="text"
+            id={inputId}
             value={inputValue}
             onChange={onChange}
             className={`${styles.modalInput} ${
               errorMessage ? styles.errorInput : ''
             }`}
           />
+
+          {/* 에러 메시지 */}
           {errorMessage && (
             <p className={styles.errorMessage}>{errorMessage}</p>
           )}
 
+          {/* 버튼 그룹 */}
           <div className={baseStyle.buttonGroup}>
-            <button
-              type="button"
-              className={`${baseStyle.cancelButton} ${
-                isLarge ? styles.cancelLarge : styles.cancelSmall
-              }`}
-              onClick={onCancel}
-            >
-              {cancelLabel}
-            </button>
-            <button
+            {onCancel && (
+              <ModalButton
+                type="button"
+                onClick={onCancel}
+                label={cancelLabel}
+                isCancel={true}
+                size={size}
+              />
+            )}
+            <ModalButton
               type="submit"
-              className={`${baseStyle.confirmButton} ${
-                isLarge ? styles.confirmLarge : styles.confirmSmall
-              }`}
-            >
-              {confirmLabel}
-            </button>
+              onClick={onConfirm}
+              label={confirmLabel}
+              size={size}
+            />
           </div>
         </form>
       </div>
