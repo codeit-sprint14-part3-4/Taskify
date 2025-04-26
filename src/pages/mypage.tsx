@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import styles from '@/pages/mypage.module.css'
-import Button from '@/components/common/button/Button'
+import Button from '@/components/common/commonbutton/CommonButton'
 import Sidebar from '@/components/layout/sidebar/Sidebar'
 import HomeNavBar from '@/components/layout/gnb/HomeNavBar'
 
