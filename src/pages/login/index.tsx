@@ -1,6 +1,6 @@
 import styles from './login.module.css'
 
-import Input from '@/components/common/Input'
+import Input from '@/components/common/input'
 import Button from '@/components/common/button/Button'
 import { authService } from '../../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
@@ -10,9 +10,9 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
-const KAKAO_CLIENT_ID = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+// const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+// const KAKAO_CLIENT_ID = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -22,24 +22,22 @@ export default function Login() {
   const [passwordError, setPasswordError] = useState('')
   //
 
-  const handleGoogleLogin = () => {
-    const redirectUri = process.env.NEXT_PUBLIC_BASE_URL
-      ? `${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`
-      : `${process.env.BASE_URL}/auth/google` // 로컬 환경에서 BASE_URL을 대체
+  // const handleGoogleLogin = () => {
+  //   const redirectUri = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`
 
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=profile email`
-  }
+  //   window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=profile email`
+  // }
 
-  const handleKakaoLogin = () => {
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${BASE_URL}/auth/kakao&response_type=code`
-  }
+  // const handleKakaoLogin = () => {
+  //   window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${BASE_URL}/auth/kakao&response_type=code`
+  // }
   //
   const isFormValid = useMemo(() => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && password.length >= 8
   }, [email, password])
 
   const { setAccessToken } = useAuthStore() // 토큰 관리
-  // const router = useRouter()
+  const router = useRouter()
 
   const handleLogin = async () => {
     try {
@@ -143,22 +141,7 @@ export default function Login() {
               error={passwordError}
             />
           </div>
-          <Button
-            type="button"
-            className={styles.google_button}
-            onClick={handleGoogleLogin}
-          >
-            구글로 로그인하기
-          </Button>
 
-          {/* 카카오 로그인 버튼 */}
-          <Button
-            type="button"
-            className={styles.kakao_button}
-            onClick={handleKakaoLogin}
-          >
-            카카오로 로그인하기
-          </Button>
           <div className={styles.wrapper_bottom}>
             <Button
               variant="login"

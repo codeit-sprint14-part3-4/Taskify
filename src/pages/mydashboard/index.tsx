@@ -10,7 +10,7 @@ export default function MyDashboard() {
     <div className={styles.container}>
       <Sidebar />
       <main className={styles.main}>
-        <HomeNavBar />
+        <HomeNavBar pageType="mydashboard" />
         <ButtonDashboard
           paddingHeight="py-[22px]"
           paddingWidth="px-[99px]"

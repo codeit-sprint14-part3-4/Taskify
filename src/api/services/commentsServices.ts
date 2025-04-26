@@ -5,14 +5,18 @@ import type {
   UpdateCommentBody,
 } from '../../types/api/comments'
 import { handleError } from '../../utils/handleError'
+import { useAuthStore } from '@/stores/auth'
 
-const BASE_URL = 'https://sp-taskify-api.vercel.app/14-4'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || ''
 
 // POST: 댓글 생성
-const postComments = async (
-  body: CreateCommentBody,
-  accessToken: string
-): Promise<Comment> => {
+const postComments = async (body: CreateCommentBody): Promise<Comment> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/comments`, {
     method: 'POST',
     headers: {
@@ -30,10 +34,15 @@ const postComments = async (
 // GET: 댓글 목록 조회 (무한 스크롤)
 const getComments = async (
   cardId: number,
-  accessToken: string,
   size = 10,
   cursorId?: number
 ): Promise<GetCommentsResponse> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(
     `${BASE_URL}/comments?size=${size}${
       cursorId !== undefined ? `&cursorId=${cursorId}` : ''
@@ -53,9 +62,14 @@ const getComments = async (
 // PUT: 댓글 수정
 const putComments = async (
   commentId: number,
-  body: UpdateCommentBody,
-  accessToken: string
+  body: UpdateCommentBody
 ): Promise<Comment> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/comments/${commentId}`, {
     method: 'PUT',
     headers: {
@@ -71,10 +85,13 @@ const putComments = async (
 }
 
 // DELETE: 댓글 삭제
-const deleteComments = async (
-  commentId: number,
-  accessToken: string
-): Promise<void> => {
+const deleteComments = async (commentId: number): Promise<void> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/comments/${commentId}`, {
     method: 'DELETE',
     headers: {
