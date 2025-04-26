@@ -49,17 +49,19 @@ export default function Column({ columnInfo }: ColumnProps) {
       <div className="px-[2rem] pt-[2.5rem] pb-[1.6rem]">
         <ButtonDashboard
           onClick={columnInfo.onClickAdd}
-          paddingHeight="py-[0.9rem]"
-          paddingWidth="px-[0.9rem]"
           color="bg-white"
-          className="rounded-[0.6rem] w-full flex justify-center items-center"
+          className="rounded-[0.6rem] w-full flex justify-center items-center py-[0.9rem]"
           prefix={
-            <Image
-              src="/assets/icon/add_box.svg"
-              alt="카드 추가 버튼"
-              width={22}
-              height={22}
-            />
+            <div className="w-[22px] h-[22px] shrink-0">
+              <Image
+                src="/assets/icon/add_box.svg"
+                alt="카드 추가 버튼"
+                width={22}
+                height={22}
+                unoptimized
+                style={{ width: '22px', height: '22px', display: 'block' }}
+              />
+            </div>
           }
         />
       </div>
