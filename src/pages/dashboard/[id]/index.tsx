@@ -99,7 +99,7 @@ export default function DashboardPage() {
         <HomeNavBar />
 
         {/* 컬럼 리스트 */}
-        <div className="flex overflow-x-auto">
+        <div className="flex overflow-x-auto pl-[30rem]">
           {columns.map((column) => (
             <Column key={column.id} columnInfo={column} />
           ))}

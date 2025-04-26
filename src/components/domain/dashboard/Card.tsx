@@ -68,7 +68,7 @@ export default function Card({ cardInfo }: CardProps) {
 
         {/* 태그 리스트: 랜덤 스타일 태그 사용 중,
         추후 모달에서 태그 추가/삭제 및 색상 재지정 연동 예정*/}
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-[0.6rem]">
           {cardInfo.tags.map((tag, idx) => (
             <Tag key={idx} label={tag.label} color={tag.color} />
           ))}
@@ -82,9 +82,9 @@ export default function Card({ cardInfo }: CardProps) {
             <Image
               src="/assets/icon/calendar.svg"
               alt="달력 아이콘"
-              className="w-4 h-4 inline-block"
-              width={500}
-              height={0}
+              width={18}
+              height={18}
+              className="inline-block"
             />
             {/* 날짜는 string으로 받은 값 (ex: '2025-12-31')이며,
             추후 카드 상세 모달에서 Date 객체로 변환하여 처리할 예정 */}
@@ -97,9 +97,9 @@ export default function Card({ cardInfo }: CardProps) {
             <Image
               src={cardInfo.assignee.profileImageUrl}
               alt="프로필 이미지"
-              className="w-6 h-6 rounded-full object-cover"
               width={24}
               height={24}
+              className="w-6 h-6 rounded-full object-cover"
             />
           </div>
         </div>

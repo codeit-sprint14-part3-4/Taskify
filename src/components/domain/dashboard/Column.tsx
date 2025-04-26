@@ -21,13 +21,13 @@ export interface ColumnProps {
 
 export default function Column({ columnInfo }: ColumnProps) {
   return (
-    <div className="min-h-[100vh] w-[31.4rem] bg-[var(--gray-FAFAFA)] rounded-md shadow-sm flex flex-col gap-2 pb-4">
+    <div className="min-h-[calc(100vh-4.5rem)] w-[31.4rem] bg-[var(--gray-FAFAFA)] rounded-md shadow-sm flex flex-col">
       {/* 상단: 컬럼 제목 + 카드 개수 + 설정 버튼 */}
       <div className="flex items-center justify-between px-[1.6rem] pt-[2.2rem]">
         <div className="flex items-center gap-[1.2rem]">
           <div className="flex items-center gap-[0.8rem]">
             <div className="w-[0.8rem] h-[0.8rem] bg-[#5534DA] rounded-full" />
-            <span className="text-sm-semibold">{columnInfo.title}</span>
+            <span className="text-lg-medium">{columnInfo.title}</span>
           </div>
 
           <span className="w-[2rem] h-[2rem] rounded-[0.4rem] bg-[#EEEEEE] text-[#787486] text-xs-medium flex items-center justify-center">
