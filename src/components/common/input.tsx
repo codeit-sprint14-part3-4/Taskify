@@ -4,7 +4,7 @@ import React from 'react'
 import styles from './input.module.css'
 import InputProps from '@/types/common/input'
 
-const Input: React.FC<InputProps> = ({
+const CommonInput: React.FC<InputProps> = ({
   value,
   onChange,
   type = 'text',
@@ -53,4 +53,4 @@ const Input: React.FC<InputProps> = ({
   )
 }
 
-export default Input
+export default CommonInput
