@@ -1,14 +1,25 @@
 import ButtonDashboard from '@/components/common/button/ButtonDashboard'
 import styles from './mydashboard.module.css'
+import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
 import Image from 'next/image'
+import { useState } from 'react'
 
 export default function MyDashboard() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const handleCreateDashboardModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const handleCloseDashboardModal = () => {
+    setIsModalOpen(false)
+  }
   return (
     <div className={styles.container}>
       {/*Sidebar*/}
       <main className={styles.main}>
         {/*Gnb*/}
         <ButtonDashboard
+          onClick={handleCreateDashboardModal}
           paddingHeight="py-[22px]"
           paddingWidth="px-[99px]"
           gap="gap-3"
@@ -42,6 +53,10 @@ export default function MyDashboard() {
             </div>
           </div>
         </section>
+
+        {isModalOpen && (
+          <DashboardCreateModal onClose={handleCloseDashboardModal} />
+        )}
       </main>
     </div>
   )

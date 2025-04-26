@@ -1,17 +1,10 @@
-import styles from './Button.module.css'
+import styles from './button.module.css'
 import classNames from 'classnames'
 
 type ButtonProps = {
   children: React.ReactNode
-  variant?:
-    | 'login'
-    | 'accept'
-    | 'reject'
-    | 'cancel'
-    | 'confirm'
-    | 'input'
-    | 'delete'
-  size?: 'large' | 'medium' | 'small' //가로가 긴 거를 large로 구분
+  variant?: 'primary' | 'secondary'
+  padding: string
   isActive?: boolean
   className?: string
   onClick?: () => void
@@ -19,8 +12,8 @@ type ButtonProps = {
 
 export default function Button({
   children,
-  size = 'large', //기본값은 loginButton-large
-  variant = 'login', //기본값은 login
+  variant = 'primary', //기본값은 login
+  padding = '1.4rem 1.4rem',
   isActive = false,
   className = '',
   onClick,
@@ -30,11 +23,11 @@ export default function Button({
       onClick={onClick}
       className={classNames(
         styles.button,
-        styles[`${variant}Button`],
-        styles[`${variant}-${size}`], //기본은 login-large
+        isActive && styles[`${variant}`],
         isActive ? styles.active : styles.inactive,
         className
       )}
+      style={{ padding: padding }}
       disabled={!isActive}
     >
       {children}

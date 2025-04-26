@@ -1,0 +1,68 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--white-FFFFFF);
+  border-radius: 1.6rem;
+  padding: 3.2rem;
+  width: 100%;
+  min-width: 28rem;
+  max-width: 58.4rem;
+}
+
+.dashboard_title_margin {
+  margin-bottom: 2.4rem;
+}
+
+.dashboard_name_margin {
+  margin-bottom: 0.8rem;
+}
+
+.input {
+  border-radius: 0.8rem;
+}
+
+.colorBadge_container {
+  display: flex;
+  margin: 16px 0 40px 0;
+  gap: 1.2rem;
+}
+
+.colorBadge {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border 0.2s ease;
+}
+
+.colorBadge:hover {
+  opacity: 0.8;
+}
+
+.check {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.button_container {
+  display: flex;
+  justify-content: center;
+  gap: 1.6rem;
+}
