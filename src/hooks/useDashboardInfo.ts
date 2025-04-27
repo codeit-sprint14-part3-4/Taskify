@@ -11,7 +11,7 @@ export function useDashboardInfo(
   const [memberCount, setMemberCount] = useState(0)
   const [hasCrown, setHasCrown] = useState(false)
   const [userName, setUserName] = useState('')
-
+  const [userEmail, setUserEmail] = useState('')
   useEffect(() => {
     const fetchDashboardDetails = async () => {
       try {
@@ -38,7 +38,9 @@ export function useDashboardInfo(
     const fetchUser = async () => {
       try {
         const userData = await usersService.getUsers()
+        console.log(userData)
         setUserName(userData.nickname)
+        setUserEmail(userData.email)
       } catch (error) {
         console.error('내 정보 조회 실패:', error)
       }
@@ -52,5 +54,5 @@ export function useDashboardInfo(
     }
   }, [dashboardId, pageType])
 
-  return { dashboardTitle, hasCrown, memberCount, userName }
+  return { dashboardTitle, hasCrown, memberCount, userName, userEmail }
 }

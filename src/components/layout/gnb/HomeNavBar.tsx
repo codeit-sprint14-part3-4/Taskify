@@ -13,14 +13,14 @@ export default function HomeNavBar({
   dashboardId: number
   pageType: 'mydashboard' | 'dashboard'
 }) {
-  const { dashboardTitle, hasCrown, memberCount, userId, userName } =
+  const { dashboardTitle, hasCrown, memberCount, userId, userName, userEmail } =
     useDashboardInfo(dashboardId, pageType)
 
   return (
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
       <div className={clsx(styles.flex_center_space_between, styles.nav_left)}>
         <div className={`${styles.dashboard_title} text-xl-bold`}>
-          {pageType === 'mydashboard' ? '내 대시보드' : '대시보드'}
+          {pageType === 'mydashboard' ? '내 대시보드' : '대시보드제목'}
           {dashboardTitle}
         </div>
         <div>
@@ -94,7 +94,7 @@ export default function HomeNavBar({
         <div
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >
-          {userId && <Badge label={userId.charAt(0).toUpperCase()} />}
+          {userEmail && <Badge email={userEmail} />}
           <div className={`${styles.name} text-lg-medium`}>{userName}</div>
         </div>
       </div>

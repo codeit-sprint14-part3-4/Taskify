@@ -67,7 +67,7 @@ export default function Login() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.wrapper_size}>
-        <Link href="/mydashboard" legacyBehavior>
+        <Link href="/" legacyBehavior>
           <a>
             <div className={styles.flex_center_column}>
               <div className={styles.wrapper_image}>

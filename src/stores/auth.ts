@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 type AuthState = {
   accessToken: string | null
@@ -6,21 +7,24 @@ type AuthState = {
   clearAccessToken: () => void
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  accessToken:
-    typeof window !== 'undefined'
-      ? sessionStorage.getItem('accessToken') // 토큰 get
-      : null,
-  setAccessToken: (token) => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('accessToken', token) // 토큰 불러옴
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      accessToken: null,
+      setAccessToken: (token) => {
+        set({ accessToken: token })
+      },
+      clearAccessToken: () => {
+        set({ accessToken: null })
+      },
+    }),
+    {
+      name: 'auth-storage',
+      storage:
+        typeof window !== 'undefined' &&
+        window.location.hostname === 'localhost'
+          ? createJSONStorage(() => localStorage) // 개발환경에서는 로컬스토리지 사용
+          : createJSONStorage(() => sessionStorage), // 배포 환경에서는 세션스토리지 사용
     }
-    set({ accessToken: token })
-  },
-  clearAccessToken: () => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('accessToken') // 토큰 clear
-    }
-    set({ accessToken: null })
-  },
-}))
+  )
+)

@@ -83,7 +83,7 @@ export default function Signup() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.wrapper_size}>
-        <Link href="/mydashboard">
+        <Link href="/">
           <div className={styles.flex_center_column}>
             <div className={styles.wrapper_image}>
               <Image src="/assets/icon/logo-icon.svg" alt="로고" fill />
@@ -196,13 +196,19 @@ export default function Signup() {
                 placeholder="비밀번호를 다시 한 번 입력하세요"
                 type={showConfirmPassword ? 'text' : 'password'}
                 onBlur={() => {
-                  if (password !== confirmPassword) {
+                  // 8자 미만일 때 에러 처리
+                  if (confirmPassword.length < 8) {
+                    setConfirmPasswordError('8자 이상 입력해주세요.')
+                  } else if (password !== confirmPassword) {
+                    // 비밀번호가 일치하지 않으면 에러 처리
                     setConfirmPasswordError('비밀번호가 일치하지 않습니다.')
                   } else {
+                    // 비밀번호 확인이 일치하면 에러 메시지 삭제
                     setConfirmPasswordError('')
                   }
                 }}
                 error={confirmPasswordError}
+                className={confirmPasswordError ? styles.errorBorder : ''}
               />
             </div>
 
@@ -228,6 +234,12 @@ export default function Signup() {
             >
               가입하기
             </Button>
+            <div className={styles.wrapper_floor}>
+              <div>이미 회원이신가요?</div>
+              <Link href="/login">
+                <div className={styles.link}>로그인하기</div>
+              </Link>
+            </div>
           </div>
         </form>
       </div>
