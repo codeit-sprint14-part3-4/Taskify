@@ -1,0 +1,92 @@
+.small {
+  padding: 2.2rem 3.9rem;
+}
+
+.large {
+  padding: 2.7rem 2rem;
+}
+
+/* 모달 헤더 */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.modalTitle {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* 닫기 버튼 */
+.closeButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  opacity: 0.8;
+}
+
+/* 인풋 라벨 */
+.modalLabel {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+/* 인풋 필드 */
+.modalInput {
+  width: 100%;
+  padding: 1.4rem;
+  font-size: 1.4rem;
+  border: 0.1rem solid var(--gray-D9D9D9);
+  border-radius: 0.8rem;
+}
+
+/* 인풋 포커스 */
+.modalInput:focus {
+  border-color: #5534da;
+  outline: none;
+}
+
+/* 에러 인풋 */
+.errorInput {
+  border-color: var(--red-D6173A);
+  background: #fff4f4;
+}
+
+/* 에러 메시지 */
+.errorMessage {
+  font-size: 1.3rem;
+  color: var(--red-D6173A);
+  margin-top: 0.8rem;
+  margin-bottom: 1.6rem;
+}
+
+/* 버튼 크기 */
+.cancelSmall {
+  padding: 1.1rem 4.6rem;
+}
+
+.cancelLarge {
+  padding: 1.3rem 11.3rem;
+  font-size: 1.6rem;
+}
+
+.confirmSmall {
+  padding: 1.1rem 4.6rem;
+}
+
+.confirmLarge {
+  padding: 1.3rem 11.3rem;
+  font-size: 1.6rem;
+}
