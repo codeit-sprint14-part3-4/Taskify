@@ -1,0 +1,164 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContainer {
+  width: 73rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 1rem; /* 2xl */
+  padding: 3rem 3.8rem 0 1.8rem;
+  position: relative;
+}
+.modaltop {
+  width: 67.4rem;
+  height: 3.2rem;
+}
+
+.topRightButtons {
+  display: flex;
+  position: absolute;
+  width: 8.3rem;
+  height: 3.2rem;
+  top: 3rem;
+  right: 3.8rem;
+  gap: 2.4rem;
+  align-items: center;
+  justify-content: center;
+}
+.closebutton {
+  position: relative;
+  width: 1.7rem;
+  height: 1.7rem;
+}
+.kebabbutton {
+  position: relative;
+  width: 0.4rem;
+  height: 1.7rem;
+}
+.buttonbox {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+.assigneebox {
+  position: absolute;
+  right: 2.8rem;
+  top: 8.5rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2.4rem;
+  border: 0.1rem solid var(--gray-D9D9D9);
+  border-radius: 0.8rem;
+  width: 20rem;
+  height: 15.5rem;
+  padding: 1.3rem 1.6rem;
+  display: flex;
+  gap: 1.6rem;
+  flex-direction: column;
+}
+
+.assigneespans {
+  font-size: 1.2rem;
+  line-height: 2rem;
+  font-weight: 600;
+  color: var(--black-000000);
+}
+
+.dropdownMenu {
+  z-index: 9999;
+  position: absolute;
+  top: 2.5rem;
+  right: 0;
+  background: white;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+}
+
+.sectionInfo {
+  margin-top: 3rem;
+}
+
+.assigneeInfo,
+.dueDateInfo {
+  color: #4b5563; /* text-gray-600 */
+}
+
+.cardStatus {
+  font-size: 0.875rem;
+  color: #6b7280; /* text-gray-500 */
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cardDescription {
+  color: #374151; /* text-gray-700 */
+  white-space: pre-wrap;
+}
+
+.imageWrapper {
+  position: relative;
+  margin-top: 1rem;
+  width: 44.5rem;
+  height: 26rem;
+}
+
+.commentSection {
+  margin-top: 2rem;
+}
+
+.commentInputArea {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.commentList {
+  margin-top: 1rem;
+  max-height: 30rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.commentCard {
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.commentMeta {
+  font-size: 0.875rem;
+  color: #6b7280; /* text-gray-500 */
+}
+
+.commentContent {
+  color: #374151; /* text-gray-800 */
+}
+
+.commentButtons {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.loadingText {
+  text-align: center;
+  color: #6b7280; /* text-gray-500 */
+}

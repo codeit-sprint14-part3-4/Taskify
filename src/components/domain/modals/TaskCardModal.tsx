@@ -4,24 +4,15 @@ import Image from 'next/image'
 import Tag from '@/components/common/tag/Tag'
 import type { TagColor } from '@/types/common/tag'
 import CommonInput from '@/components/common/input'
+import styles from './TaskCardModal.module.css'
 
-function getRelativeTime(dateString: string) {
-  const now = new Date()
-  const past = new Date(dateString)
-  const diffInSeconds = Math.floor((now.getTime() - past.getTime()) / 1000)
+export const formatDate = (isoDate: string): string => {
+  const date = new Date(isoDate)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
 
-  if (diffInSeconds < 60) {
-    return `${diffInSeconds}초 전`
-  } else if (diffInSeconds < 3600) {
-    const minutes = Math.floor(diffInSeconds / 60)
-    return `${minutes}분 전`
-  } else if (diffInSeconds < 86400) {
-    const hours = Math.floor(diffInSeconds / 3600)
-    return `${hours}시간 전`
-  } else {
-    const days = Math.floor(diffInSeconds / 86400)
-    return `${days}일 전`
-  }
+  return `${year}.${month}.${day}` // 연도.월.일
 }
 
 interface Comment {
@@ -146,86 +137,88 @@ export default function TaskCardModal({
   }, [])
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center">
-      <div className="w-[58.4rem] max-h-[90vh] overflow-y-auto bg-white rounded-2xl p-8 relative">
-        <div className="absolute top-4 right-4 flex items-center gap-2">
-          <button onClick={() => setIsDropdownOpen((prev) => !prev)}>
-            <Image
-              src="/assets/icon/kebab.svg"
-              alt="메뉴"
-              width={24}
-              height={24}
-            />
-          </button>
-          <button onClick={onClose}>
-            <Image
-              src="/assets/icon/close.svg"
-              alt="닫기"
-              width={24}
-              height={24}
-            />
-          </button>
-          {isDropdownOpen && (
-            <div className="absolute top-10 right-0 bg-white shadow-lg rounded-md border">
-              <button
-                className="block w-full text-left p-2"
-                onClick={() => onEdit(card)}
-              >
-                수정하기
-              </button>
-              <button
-                className="block w-full text-left p-2 text-red-500"
-                onClick={() => {
-                  if (confirm('정말 삭제하시겠습니까?')) {
-                    onDelete(card.id)
-                  }
-                }}
-              >
-                삭제하기
-              </button>
-            </div>
-          )}
-        </div>
+    <div className={styles.overlay}>
+      <div className={styles.modalContainer}>
+        <div className={styles.modaltop}>
+          <h1 className={`text-2xl-bold ${styles.cardTitle}`}>{card.title}</h1>
+          <div className={styles.topRightButtons}>
+            <button
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
+              className={styles.buttonbox}
+            >
+              <div className={styles.kebabbutton}>
+                <Image src="/assets/icon/kebab.svg" alt="메뉴" fill />
+              </div>
+            </button>
+            {isDropdownOpen && (
+              <div className={styles.dropdownMenu}>
+                <button
+                  className="block w-full text-left p-2"
+                  onClick={() => onEdit(card)}
+                >
+                  수정하기
+                </button>
+                <button
+                  className="block w-full text-left p-2 text-red-500"
+                  onClick={() => {
+                    if (confirm('정말 삭제하시겠습니까?')) {
+                      onDelete(card.id)
+                    }
+                  }}
+                >
+                  삭제하기
+                </button>
+              </div>
+            )}
 
-        <div className="mt-12">
-          <section>
-            <div className="text-gray-600">담당자: {card.assignee.name}</div>
-            <div className="text-gray-600">마감일: {card.dueDate}</div>
-          </section>
-          <h2 className="text-2xl font-bold mt-4">{card.title}</h2>
-          <div className="text-sm text-gray-500">상태: {card.status}</div>
-          <div className="flex flex-wrap gap-2 my-4">
-            {card.tags.map((tag, idx) => (
-              <Tag key={idx} label={tag.label} color={tag.color} />
-            ))}
+            <button onClick={onClose} className={styles.buttonbox}>
+              <div className={styles.closebutton}>
+                <Image src="/assets/icon/close.svg" alt="닫기" fill />
+              </div>
+            </button>
           </div>
-          <p className="text-gray-700 whitespace-pre-wrap">
-            {card.description}
-          </p>
+        </div>
+
+        <section className={styles.assigneebox}>
+          <div className={styles.assigneeInfo}>
+            <span className={styles.assigneespans}>담당자</span>
+            <br />
+            {card.assignee.name}
+          </div>
+          <div className={styles.dueDateInfo}>
+            <span className={styles.assigneespans}>마감일</span>
+            <br />
+            {formatDate(card.dueDate)}
+          </div>
+        </section>
+
+        <div className={`${styles.sectionInfo}`}>
+          <div className={styles.cardStatus}>상태: {card.status}</div>
+          <div className={styles.tagList}></div>
+          {card.tags.map((tag, idx) => (
+            <Tag key={idx} label={tag.label} color={tag.color} />
+          ))}
+          <p className={styles.cardDescription}>{card.description}</p>
           {card.imageUrl && (
-            <div className="mt-4">
-              <Image
-                src={card.imageUrl}
-                alt="카드 이미지"
-                width={300}
-                height={200}
-                className="rounded-lg"
-              />
+            <div className={styles.imageWrapper}>
+              <Image src={card.imageUrl} alt="카드 이미지" fill />
             </div>
           )}
         </div>
 
-        <div className="mt-8">
-          <div className="flex gap-2">
+        <div className={styles.commentSection}>
+          <div className={styles.commentInputArea}>
             <CommonInput
               value={inputComment}
               onChange={(e) => setInputComment(e.target.value)}
               placeholder="댓글을 입력하세요"
-              className="flex-1 border rounded-lg p-2 outline-none"
+              width="45rem"
+              height="11rem"
+              padding="1.6rem"
             />
             <CommonButton
               padding="1.4rem"
-              variant="primary"
+              variant="secondary"
               isActive={!!inputComment.trim()}
               onClick={addComment}
             >
@@ -235,19 +228,16 @@ export default function TaskCardModal({
           <div
             ref={commentContainerRef}
             onScroll={handleScroll}
-            className="mt-4 max-h-[30rem] overflow-y-auto flex flex-col gap-4"
+            className={styles.commentList}
           >
             {comments.map((comment) => (
-              <div
-                key={comment.id}
-                className="p-4 border rounded-lg flex flex-col gap-2"
-              >
-                <div className="text-sm text-gray-500">
-                  {getRelativeTime(comment.createdAt)}
+              <div key={comment.id} className={styles.commentCard}>
+                <div className={styles.commentMeta}>
+                  {formatDate(comment.createdAt)}
                 </div>
-                <div className="text-gray-800">{comment.content}</div>
+                <div className={styles.commentContent}>{comment.content}</div>
                 {comment.userId === currentUserId && (
-                  <div className="flex gap-2 text-sm">
+                  <div className={styles.commentButtons}>
                     <button
                       onClick={() => {
                         const newContent = prompt('댓글 수정', comment.content)
@@ -268,9 +258,7 @@ export default function TaskCardModal({
               </div>
             ))}
             {isLoadingMore && (
-              <div className="text-center text-gray-500">
-                댓글 불러오는 중...
-              </div>
+              <div className={styles.loadingText}>댓글 불러오는 중...</div>
             )}
           </div>
         </div>

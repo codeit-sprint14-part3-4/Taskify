@@ -26,7 +26,7 @@ export default function TestPage() {
     dueDate: '2025-05-01',
     status: '진행 중',
     assignee: { id: 'user1', name: '홍길동' },
-    imageUrl: '/assets/sample.jpg',
+    imageUrl: '/assets/image/desktop.svg',
   }
 
   const currentUserId = 'user1' // 현재 로그인한 사용자 ID
