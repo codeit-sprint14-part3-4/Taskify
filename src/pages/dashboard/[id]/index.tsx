@@ -87,8 +87,9 @@ export default function DashboardPage() {
     setColumns(dummy)
   }, [])
 
+  //  dashboardId={1}> id로 받을 수 있게 나중에 바꿔주세요!(지금은 임시)
   return (
-    <Layout>
+    <Layout pageType="dashboard" dashboardId={1}>
       {/* 컬럼 리스트 */}
       <div className="flex overflow-x-auto">
         {columns.map((column) => (

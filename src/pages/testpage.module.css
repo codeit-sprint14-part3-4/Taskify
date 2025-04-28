@@ -1,0 +1,8 @@
+.invite_section {
+  width: 102.2rem;
+  height: 62rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

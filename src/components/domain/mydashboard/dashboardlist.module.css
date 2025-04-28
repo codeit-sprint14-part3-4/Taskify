@@ -1,0 +1,30 @@
+.wrapper {
+  width: 33.2rem;
+  height: 7rem;
+  border-radius: 0.8rem;
+  background-color: var(--white-FFFFFF);
+}
+.main_wrapper {
+  display: flex;
+  align-items: center;
+  padding: 2.6rem 2rem 1.8rem;
+  justify-content: space-between;
+}
+.main_left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.inviter_name {
+  padding-left: 21.1rem;
+}
+.button_wrapper {
+  padding-left: 22rem;
+  display: flex;
+
+  width: 17.8rem;
+  gap: 1rem;
+  font-weight: 500;
+
+  font-size: 1.4rem;
+}
