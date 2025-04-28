@@ -5,10 +5,14 @@ import Button from '@/components/common/button/Button'
 import { authService } from '../../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
+
+// const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+// const KAKAO_CLIENT_ID = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -16,10 +20,23 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  //
 
-  const isFormValid = email && password
+  // const handleGoogleLogin = () => {
+  //   const redirectUri = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`
 
-  const { setAccessToken } = useAuthStore()
+  //   window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=profile email`
+  // }
+
+  // const handleKakaoLogin = () => {
+  //   window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${BASE_URL}/auth/kakao&response_type=code`
+  // }
+  //
+  const isFormValid = useMemo(() => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && password.length >= 8
+  }, [email, password])
+
+  const { setAccessToken } = useAuthStore() // 토큰 관리
   const router = useRouter()
 
   const handleLogin = async () => {
@@ -30,7 +47,7 @@ export default function Login() {
       }
 
       const response = await authService.postAuth(body)
-
+      console.log(response)
       // accessToken을 Zustand에 저장
       setAccessToken(response.accessToken)
 
@@ -50,20 +67,30 @@ export default function Login() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.wrapper_size}>
-        <Link href="/mydashboard">
-          <div className={styles.flex_center_column}>
-            <div className={styles.wrapper_image}>
-              <Image src="/assets/icon/logo-icon.svg" alt="로고" fill />
+        <Link href="/" legacyBehavior>
+          <a>
+            <div className={styles.flex_center_column}>
+              <div className={styles.wrapper_image}>
+                <Image src="/assets/icon/logo-icon.svg" alt="로고" fill />
+              </div>
+              <div className={styles.wrapper_logo_name}>
+                <Image src="/assets/icon/logo-title.svg" alt="로고" fill />
+              </div>
+              <div className={`${styles.logo_welcome} text-xl-medium`}>
+                다시 오신 것을 환영합니다!
+              </div>
             </div>
-            <div className={styles.wrapper_logo_name}>
-              <Image src="/assets/icon/logo-title.svg" alt="로고" fill />
-            </div>
-            <div className={`${styles.logo_welcome} text-xl-medium`}>
-              다시 오신 것을 환영합니다!
-            </div>
-          </div>
+          </a>
         </Link>
-        <div className={`${styles.wrapper_middle} text-lg-medium`}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (isFormValid) {
+              handleLogin()
+            }
+          }}
+          className={`${styles.wrapper_middle} text-lg-medium`}
+        >
           <div className={styles.wrapper_width}>
             <div className={styles.login_font}>이메일</div>
             <Input
@@ -81,6 +108,7 @@ export default function Login() {
               error={emailError}
             />
           </div>
+
           <div className={styles.wrapper_width}>
             <div className={styles.login_font}>
               비밀번호
@@ -113,24 +141,24 @@ export default function Login() {
               error={passwordError}
             />
           </div>
-        </div>
 
-        <div className={styles.wrapper_bottom}>
-          <Button
-            variant="login"
-            size="large"
-            isActive={!!isFormValid}
-            onClick={handleLogin}
-          >
-            로그인
-          </Button>
-          <div className={styles.wrapper_floor}>
-            <div>회원이 아니신가요?</div>
-            <Link href="/signup">
-              <div className={styles.link}>회원가입하기</div>
-            </Link>
+          <div className={styles.wrapper_bottom}>
+            <Button
+              variant="login"
+              size="large"
+              isActive={!!isFormValid}
+              type="submit"
+            >
+              로그인
+            </Button>
+            <div className={styles.wrapper_floor}>
+              <div>회원이 아니신가요?</div>
+              <Link href="/signup">
+                <div className={styles.link}>회원가입하기</div>
+              </Link>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   )

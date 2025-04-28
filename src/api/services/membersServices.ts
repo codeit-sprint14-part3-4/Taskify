@@ -1,15 +1,21 @@
-import type { Member, GetMembersResponse } from '../../types/api/menmbers'
+import type { GetMembersResponse } from '../../types/api/menmbers'
 import { handleError } from '../../utils/handleError'
+import { useAuthStore } from '@/stores/auth'
 
-const BASE_URL = 'https://sp-taskify-api.vercel.app/14-4'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || ''
 
 // GET: 대시보드 멤버 목록 조회
 const getMembers = async (
   page = 1,
   size = 20,
-  dashboardId: number,
-  accessToken: string
+  dashboardId: number
 ): Promise<GetMembersResponse> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(
     `${BASE_URL}/members?dashboardId=${dashboardId}&page=${page}&size=${size}`,
     {
@@ -25,10 +31,13 @@ const getMembers = async (
 }
 
 // DELETE: 대시보드 멤버 삭제
-const deleteMembers = async (
-  memberId: number,
-  accessToken: string
-): Promise<void> => {
+const deleteMembers = async (memberId: number): Promise<void> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/members/${memberId}`, {
     method: 'DELETE',
     headers: {
