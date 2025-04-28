@@ -10,9 +10,9 @@ type ButtonProps = {
   onClick?: () => void
 }
 
-export default function Button({
+export default function CommonButton({
   children,
-  variant = 'primary', //기본값은 login
+  variant = 'primary',
   padding = '1.4rem 1.4rem',
   isActive = false,
   className = '',

@@ -4,7 +4,7 @@ import React from 'react'
 import styles from './input.module.css'
 import InputProps from '@/types/common/input'
 
-const Input: React.FC<InputProps> = ({
+const CommonInput: React.FC<InputProps> = ({
   value,
   onChange,
   type = 'text',
@@ -18,6 +18,7 @@ const Input: React.FC<InputProps> = ({
   icon,
   width,
   onBlur,
+  onKeyDown,
 }) => {
   return (
     <div className="flex flex-col">
@@ -27,6 +28,7 @@ const Input: React.FC<InputProps> = ({
           value={value}
           onBlur={onBlur}
           onChange={onChange}
+          onKeyDown={onKeyDown}
           placeholder={placeholder}
           disabled={disabled}
           readOnly={readOnly}
@@ -53,4 +55,4 @@ const Input: React.FC<InputProps> = ({
   )
 }
 
-export default Input
+export default CommonInput

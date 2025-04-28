@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: center;
   padding-top: 22.3rem;
+  transition: all 0.3s ease;
 }
 
 .wrapper_size {
@@ -12,6 +13,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  transition: all 0.3s ease;
 }
 
 .flex_center_column {
@@ -43,10 +45,11 @@
   flex-direction: column;
   color: var(--black-333236);
   gap: 1.6rem;
-  width: -webkit-fill-available;
+  width: 100%;
+  transition: all 0.3s ease;
 }
 .wrapper_width {
-  width: -webkit-fill-available;
+  width: 100%;
 }
 .login_font {
   padding-bottom: 0.8rem;
@@ -60,6 +63,7 @@
   left: 48rem;
   top: 4.2rem;
   z-index: 1;
+  transition: all 0.3s ease;
 }
 .wrapper_bottom {
   display: flex;
@@ -99,7 +103,7 @@
 .custom_select {
   width: 2rem;
   height: 2rem;
-  border: 1px solid var(--gray-D9D9D9);
+  border: 0.1rem solid var(--gray-D9D9D9);
   appearance: none;
 
   border-radius: 0.25rem;
@@ -109,7 +113,7 @@
 
 .custom_select:checked {
   background-color: oklch(0.94 0.03 295.46);
-  border: 1px solid var(--gray-D9D9D9);
+  border: 0.1rem solid var(--gray-D9D9D9);
 
   background-image: url('/assets/icon/check.svg');
   background-repeat: no-repeat;
@@ -119,4 +123,24 @@
 .check_icon {
   width: 1.4rem;
   height: 1.4rem;
+}
+@media (max-width: 1023px) {
+  .wrapper {
+    padding-top: 24.95rem;
+  }
+}
+@media (max-width: 743px) {
+  .wrapper {
+    padding-top: 8.87rem;
+  }
+  .wrapper_size {
+    width: 35.1rem;
+    height: 63.5rem;
+  }
+  .wrapper_middle {
+    gap: 0.8rem;
+  }
+  .hide_icon {
+    left: 31rem;
+  }
 }
