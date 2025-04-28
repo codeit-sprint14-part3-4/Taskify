@@ -7,16 +7,16 @@ interface BadgeProps {
 
 const getRandomColor = () => {
   const colors = [
-    '#f7dbdb',
-    '#f9eee3',
-    '#fef7db',
-    '#e7f7db',
-    '#dbe6f7',
-    '#e8dbf7',
-    '#f7dbf0',
-    '#dbf7f3',
-    '#f2e6db',
-    '#f0f0f0',
+    '#FFC85A',
+    '#FDD446',
+    '#9DD7ED',
+    '#C4B1A2',
+    '#F4D7DA',
+    '#A3C4A2',
+    '#FF787A',
+    '#F4BEFF',
+    '#BEC3FF',
+    '#BF57B5',
   ]
   const randomIndex = Math.floor(Math.random() * colors.length)
   return colors[randomIndex]

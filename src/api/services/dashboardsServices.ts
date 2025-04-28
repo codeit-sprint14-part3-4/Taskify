@@ -202,7 +202,6 @@ export const dashboardsService = {
   postDashboards,
   getDashboards,
   getDashboardsDetail,
-  getDashboardsDetail,
   putDashboards,
   deleteDashboards,
   postDashboardsInvitations,
