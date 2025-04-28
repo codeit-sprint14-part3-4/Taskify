@@ -213,12 +213,11 @@ export default function TaskCardCreateModal() {
             </div>
             {/* 숨겨진 파일 인풋 */}
             <input
-              className=""
+              className="hidden"
               ref={inputRef}
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              style={{ display: 'none' }}
             />
           </div>
           <div className="w-full flex justify-center items-center gap-[0.8rem]">
