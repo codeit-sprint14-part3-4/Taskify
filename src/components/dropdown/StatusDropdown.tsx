@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
-// API에서 상태 데이터를 받아와서 사용해야함
-type Status = 'To Do' | 'On Progress' | 'Done'
+export enum Status {
+  TODO = 'To Do',
+  ON_PROGRESS = 'On Progress',
+  DONE = 'Done',
+}
 
 interface StatusDropdownProps {
   value: Status
   onChange: (status: Status) => void
 }
 
-const statusOptions: Status[] = ['To Do', 'On Progress', 'Done']
+const statusOptions: Status[] = [Status.TODO, Status.ON_PROGRESS, Status.DONE]
 
 export default function StatusDropdown({
   value,
@@ -27,19 +30,29 @@ export default function StatusDropdown({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isOpen) {
         setIsOpen(false)
-
-        // 포커스 해제
         const activeElement = document.activeElement as HTMLElement
         activeElement?.blur()
       }
     }
 
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
+
     document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('mousedown', handleClickOutside)
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [isOpen])
+
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div
@@ -48,11 +61,11 @@ export default function StatusDropdown({
       >
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className={`w-full h-12 md:w-[217px] md:h-[48px] flex justify-between items-center px-4 py-3 rounded-md text-lg bg-white focus:outline-none 
-    ${isOpen ? 'border-[#5534DA]' : 'border-[#D9D9D9]'} border`}
+          className={`w-full h-12 md:w-[217px] md:h-[48px] flex justify-between items-center px-4 py-3 rounded-[8px] text-[14px] font-medium bg-white focus:outline-none 
+          ${isOpen ? 'border-[#5534DA]' : 'border-[#D9D9D9]'} border`}
         >
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-2 bg-[#F1E5FF] rounded-full">
+            <div className="inline-flex items-center gap-2 px-3 py-2 bg-[rgba(85,52,218,0.08)] rounded-full">
               <span className="w-2 h-2 rounded-full bg-[#5534DA]" />
               <span className="text-[#5534DA]">{value}</span>
             </div>
@@ -63,18 +76,24 @@ export default function StatusDropdown({
             width={24}
             height={24}
             className={`transition-transform duration-300 ${
-              isOpen ? 'rotate-180' : '' // 180도로 회전 시킴
+              isOpen ? 'rotate-180' : ''
             }`}
           />
         </button>
 
         {isOpen && (
-          <ul className="absolute z-10 mt-2 w-full border border-[#D9D9D9] bg-white rounded-md transition-all duration-300 origin-top md:w-[217px] max-h-60 overflow-y-auto">
+          <ul className="absolute z-10 mt-2 w-full border border-[#D9D9D9] bg-white rounded-[8px] transition-all duration-300 origin-top md:w-[217px] max-h-60 overflow-y-auto">
             {statusOptions.map((status) => (
               <li
                 key={status}
                 onClick={() => handleSelect(status)}
-                className="flex items-center gap-3 px-4 hover:bg-gray-100 cursor-pointer text-lg w-full h-12 md:h-[48px]"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSelect(status)
+                  }
+                }}
+                tabIndex={0}
+                className="flex items-center gap-3 px-4 hover:bg-gray-100 cursor-pointer text-[14px] font-medium w-full h-12 md:h-[48px] focus:outline-none focus:bg-gray-200"
               >
                 {value === status ? (
                   <Image
@@ -86,8 +105,7 @@ export default function StatusDropdown({
                 ) : (
                   <div className="w-[22px] h-[22px]" />
                 )}
-
-                <div className="inline-flex items-center gap-2 px-3 py-2 bg-[#F1E5FF] rounded-full">
+                <div className="inline-flex items-center gap-2 px-3 py-2 bg-[rgba(85,52,218,0.08)] rounded-full">
                   <span className="w-2 h-2 rounded-full bg-[#5534DA]" />
                   <span className="text-[#5534DA]">{status}</span>
                 </div>
