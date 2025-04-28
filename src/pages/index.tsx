@@ -2,7 +2,7 @@ import React from 'react'
 import Gnb from '@/components/layout/gnb/Gnb'
 import Image from 'next/image'
 import styles from './index.module.css'
-import Button from '@/components/common/button/Button'
+import Button from '@/components/common/commonbutton/CommonButton'
 import FeatureCard from '@/components/featurecard/FeatureCard'
 import Footerbar from '@/components/layout/footerbar/Footerbar'
 import Link from 'next/link'
@@ -103,8 +103,8 @@ export default function Home() {
             </h1>
             <Link href={'/login'}>
               <Button
-                variant="login"
-                size="large"
+                variant="primary"
+                padding="1.4rem 10rem"
                 isActive={true}
                 className={`${styles.loginbutton}`}
               >
