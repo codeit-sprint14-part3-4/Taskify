@@ -1,9 +1,13 @@
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { ko } from 'date-fns/locale'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Image from 'next/image'
 import Input from '@/components/common/input'
 import Tag from '@/components/common/tag/Tag'
 import type { TagColor } from '@/types/common/tag'
 import { useRef, useState } from 'react'
+import styles from '@/components/domain/modals/custom-datepicker.module.css'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -22,6 +26,7 @@ export default function TaskCardCreateModal() {
   const [selectValue, setSelectValue] = useState('')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [inputValue, setInputValue] = useState('')
   const [tags, setTags] = useState<{ label: string; color: TagColor }[]>([])
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
@@ -136,7 +141,6 @@ export default function TaskCardCreateModal() {
             <label className="text-2lg-medium text-[var(--black-000000)]">
               마감일
             </label>
-            {/* 날짜 입력 라이브러리 도입 */}
             <div
               className={`group flex items-center w-full h-[5rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]`}
             >
@@ -147,11 +151,20 @@ export default function TaskCardCreateModal() {
                 height={22}
                 className="mr-[0.8rem]"
               />
-              {/* 날짜 입력 input */}
-              <input
-                type="text"
-                placeholder="날짜를 입력해 주세요"
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date: Date | null) => setSelectedDate(date)}
+                dateFormat="yyyy.MM.dd HH:mm"
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={30}
+                timeCaption="시간"
+                placeholderText="날짜를 입력해 주세요"
                 className="flex-1 bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
+                calendarClassName={styles.calendar} // 캘린더 박스 스타일
+                popperClassName={styles.popper} // 팝업(달력) 스타일
+                dayClassName={() => styles.day} // 하루하루 날짜 스타일
+                locale={ko}
               />
             </div>
           </div>
