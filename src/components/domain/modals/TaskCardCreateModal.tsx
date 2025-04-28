@@ -54,7 +54,7 @@ export default function TaskCardCreateModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-[--black-000000] bg-opacity-70 flex justify-center items-center">
+    <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.7)] flex justify-center items-center">
       <div className="w-[58.4rem] h-[96.6rem] max-h-[calc(100vh-10rem)] bg-[var(--white-FFFFFF)] rounded-2xl">
         <div className="p-[3.2rem]">
           <h2 className="pb-[3.2rem] text-2xl-bold text-[var(--black-000000)]">
