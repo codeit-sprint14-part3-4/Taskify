@@ -193,12 +193,23 @@ export default function TaskCardModal({
         </section>
 
         <div className={`${styles.sectionInfo}`}>
-          <div className={styles.cardStatus}>상태: {card.status}</div>
-          <div className={styles.tagList}></div>
-          {card.tags.map((tag, idx) => (
-            <Tag key={idx} label={tag.label} color={tag.color} />
-          ))}
+          <div className={styles.statusTagRow}>
+            <div className={styles.cardStatus}>{card.status}</div>
+            <div className={styles.tagList}>
+              <Image
+                src="/assets/icon/vector-icon.svg"
+                alt="상태와 태그 경계선"
+                width={2}
+                height={20}
+              />
+            </div>
+            {card.tags.map((tag, idx) => (
+              <Tag key={idx} label={tag.label} color={tag.color} />
+            ))}
+          </div>
+
           <p className={styles.cardDescription}>{card.description}</p>
+
           {card.imageUrl && (
             <div className={styles.imageWrapper}>
               <Image src={card.imageUrl} alt="카드 이미지" fill />
@@ -207,23 +218,25 @@ export default function TaskCardModal({
         </div>
 
         <div className={styles.commentSection}>
-          <div className={styles.commentInputArea}>
-            <CommonInput
-              value={inputComment}
-              onChange={(e) => setInputComment(e.target.value)}
-              placeholder="댓글을 입력하세요"
-              width="45rem"
-              height="11rem"
-              padding="1.6rem"
-            />
-            <CommonButton
-              padding="1.4rem"
-              variant="secondary"
-              isActive={!!inputComment.trim()}
-              onClick={addComment}
-            >
-              입력
-            </CommonButton>
+          <div>
+            <label className={styles.commentlabel}>댓글</label>
+            <div className={styles.commentInputArea}>
+              <textarea
+                value={inputComment}
+                onChange={(e) => setInputComment(e.target.value)}
+                placeholder="댓글을 입력하세요"
+                className={`${styles.textareainput} resize-none`}
+              />
+              <div className={styles.commentinputbutton}>
+                <button
+                  onClick={addComment}
+                  disabled={!inputComment.trim()}
+                  className={styles.commentbutton}
+                >
+                  입력
+                </button>
+              </div>
+            </div>
           </div>
           <div
             ref={commentContainerRef}
