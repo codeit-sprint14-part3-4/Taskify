@@ -144,10 +144,9 @@ export default function Login() {
 
           <div className={styles.wrapper_bottom}>
             <Button
-              variant="primary"
-              padding="1.2rem 1.6rem"
+              padding="1.2rem 0"
+              className="w-full"
               isActive={!!isFormValid}
-              // type="submit"
             >
               로그인
             </Button>

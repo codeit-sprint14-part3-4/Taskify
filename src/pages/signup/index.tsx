@@ -230,7 +230,7 @@ export default function Signup() {
               padding="1.2rem 1.6rem"
               isActive={!!isFormValid}
               onClick={handleSignup}
-              type="submit"
+              // type="submit"
             >
               가입하기
             </CommonButton>
