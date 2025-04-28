@@ -4,6 +4,9 @@ import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModa
 import Image from 'next/image'
 import { useState } from 'react'
 
+import HomeNavBar from '@/components/layout/gnb/HomeNavBar'
+import Sidebar from '@/components/layout/sidebar/Sidebar'
+
 export default function MyDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const handleCreateDashboardModal = () => {
@@ -15,9 +18,9 @@ export default function MyDashboard() {
   }
   return (
     <div className={styles.container}>
-      {/*Sidebar*/}
+      <Sidebar />
       <main className={styles.main}>
-        {/*Gnb*/}
+        <HomeNavBar pageType="mydashboard" />
         <ButtonDashboard
           onClick={handleCreateDashboardModal}
           paddingHeight="py-[22px]"

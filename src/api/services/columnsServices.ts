@@ -6,14 +6,18 @@ import type {
   UploadColumnImageResponse,
 } from '../../types/api/columns'
 import { handleError } from '../../utils/handleError'
+import { useAuthStore } from '@/stores/auth'
 
-const BASE_URL = 'https://sp-taskify-api.vercel.app/14-4'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || ''
 
 // POST: 컬럼 생성
-const postColumns = async (
-  body: CreateColumnBody,
-  accessToken: string
-): Promise<Column> => {
+const postColumns = async (body: CreateColumnBody): Promise<Column> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/columns`, {
     method: 'POST',
     headers: {
@@ -29,10 +33,13 @@ const postColumns = async (
 }
 
 // GET: 컬럼 목록 조회
-const getColumns = async (
-  dashboardId: number,
-  accessToken: string
-): Promise<GetColumnsResponse> => {
+const getColumns = async (dashboardId: number): Promise<GetColumnsResponse> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/columns?dashboardId=${dashboardId}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -47,9 +54,14 @@ const getColumns = async (
 // PUT: 컬럼 수정
 const putColumns = async (
   columnId: number,
-  body: UpdateColumnBody,
-  accessToken: string
+  body: UpdateColumnBody
 ): Promise<Column> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/columns/${columnId}`, {
     method: 'PUT',
     headers: {
@@ -65,10 +77,13 @@ const putColumns = async (
 }
 
 // DELETE: 컬럼 삭제
-const deleteColumns = async (
-  columnId: number,
-  accessToken: string
-): Promise<void> => {
+const deleteColumns = async (columnId: number): Promise<void> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/columns/${columnId}`, {
     method: 'DELETE',
     headers: {
@@ -82,9 +97,14 @@ const deleteColumns = async (
 // POST: 카드 이미지 업로드
 const postColumnsImage = async (
   columnId: number,
-  file: File,
-  accessToken: string
+  file: File
 ): Promise<UploadColumnImageResponse> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const formData = new FormData()
   formData.append('image', file)
 

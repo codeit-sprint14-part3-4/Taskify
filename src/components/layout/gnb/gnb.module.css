@@ -63,7 +63,7 @@
     transform: scale(0);
   }
   .login {
-    font-size: 14px;
+    font-size: 1.4rem;
     width: 11rem;
     display: flex;
     align-items: center;
