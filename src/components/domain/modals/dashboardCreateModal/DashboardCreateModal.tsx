@@ -1,8 +1,11 @@
 import styles from './dashboardCreateModal.module.css'
 import Input from '@/components/common/input'
-import Button from '@/components/common/commonbutton/CommonButton'
+import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { CreateDashboardBody } from '@/types/api/dashboards'
+import { dashboardsService } from '@/api/services/dashboardsServices'
+import { useAuthStore } from '@/stores/auth'
 
 interface DashboardModalProps {
   onClose: () => void
@@ -11,6 +14,8 @@ interface DashboardModalProps {
 export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
   const [text, setText] = useState('')
   const router = useRouter()
+
+  const accessToken = useAuthStore((state) => state.accessToken) //이 부분 설명 필요
   const COLORS = [
     { id: 1, color: 'var(--green-7AC555)' },
     { id: 2, color: 'var(--purple-760DDE)' },
@@ -21,10 +26,28 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
   type ColorType = (typeof COLORS)[number]
   const [selectedColor, setSelectedColor] = useState<ColorType | null>(null)
 
-  const handleCreateDashboard = () => {
-    const dashboardId = '1234' /*API 로직 필요*/
-    onClose()
-    router.push(`/dashboard/${dashboardId}`)
+  const handleCreateDashboard = async () => {
+    const body: CreateDashboardBody = {
+      title: text,
+      color: selectedColor?.color || '', //색상이 선택되지 않으면 빈 문자열
+    }
+
+    if (!accessToken) {
+      alert('세션에 토큰이 없습니다.')
+      return
+    }
+
+    try {
+      const newDashBoard = await dashboardsService.postDashboards(
+        body,
+        accessToken
+      )
+      onClose()
+      router.push(`/dashboard/${newDashBoard.id}`)
+    } catch (error) {
+      console.error('대시보드 생성 중 오류 발생:', error)
+      alert('대시보드 생성에 실패했습니다. 다시 시도해주세요.')
+    }
   }
 
   const isCreatable = text.trim() !== '' && selectedColor !== null
@@ -64,22 +87,22 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
         </div>
 
         <div className={styles.button_container}>
-          <Button
+          <CommonButton
             onClick={onClose}
             variant="secondary"
             padding="1.4rem 11.4rem"
             isActive={true}
           >
             취소
-          </Button>
-          <Button
+          </CommonButton>
+          <CommonButton
             onClick={handleCreateDashboard}
             variant="primary"
             padding="1.4rem 11.4rem"
             isActive={isCreatable}
           >
             생성
-          </Button>
+          </CommonButton>
         </div>
       </div>
     </div>
