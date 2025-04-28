@@ -3,7 +3,7 @@ import styles from './signup.module.css'
 import { usersService } from '../../api/services/usersServices'
 import { useAuthStore } from '@/stores/auth'
 import Input from '@/components/common/input'
-import Button from '@/components/common/commonbutton/CommonButton'
+import CommonButton from '@/components/common/commonbutton/CommonButton'
 
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -225,15 +225,15 @@ export default function Signup() {
           </div>
 
           <div className={styles.wrapper_bottom}>
-            <Button
-              variant="login"
-              size="large"
+            <CommonButton
+              variant="primary"
+              padding="1.2rem 1.6rem"
               isActive={!!isFormValid}
               onClick={handleSignup}
               type="submit"
             >
               가입하기
-            </Button>
+            </CommonButton>
             <div className={styles.wrapper_floor}>
               <div>이미 회원이신가요?</div>
               <Link href="/login">

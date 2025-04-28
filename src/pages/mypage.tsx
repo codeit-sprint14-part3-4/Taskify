@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import styles from '@/pages/mypage.module.css'
-import Button from '@/components/common/commonbutton/CommonButton'
+import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Sidebar from '@/components/layout/sidebar/Sidebar'
 import HomeNavBar from '@/components/layout/gnb/HomeNavBar'
 import Modal from '@/components/domain/modals/Modal'
@@ -277,6 +277,7 @@ export default function MyPage() {
                 </label>
 
                 <div className={styles.profileForm}>
+
                   <label htmlFor="email">이메일</label>
                   <input
                     id="email"
@@ -306,9 +307,19 @@ export default function MyPage() {
                         : styles.inactiveButton
                     }`}
                     onClick={handleSaveProfile}
+
+                  <label>이메일</label>
+                  <input type="email" placeholder="Taskify@gmail.com" />
+                  <label>닉네임</label>
+                  <input type="text" placeholder="닉네임 입력" />
+                  <CommonButton
+                    variant="primary"
+                    padding="1.2rem 1.2rem"
+                    className={styles.saveButton}
+
                   >
                     저장
-                  </Button>
+                  </CommonButton>
                 </div>
               </div>
             </section>
@@ -317,6 +328,7 @@ export default function MyPage() {
             <section className={`${styles.card} ${styles.passwordCard}`}>
               <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
               <div className={styles.passwordForm}>
+
                 <label htmlFor="currentPassword">현재 비밀번호</label>
                 <input
                   id="currentPassword"
@@ -365,6 +377,21 @@ export default function MyPage() {
                     변경
                   </Button>
                 </div>
+
+                <label>현재 비밀번호</label>
+                <input type="password" placeholder="비밀번호 입력" />
+                <label>새 비밀번호</label>
+                <input type="password" placeholder="새 비밀번호 입력" />
+                <label>새 비밀번호 확인</label>
+                <input type="password" placeholder="새 비밀번호 입력" />
+                <CommonButton
+                  variant="primary"
+                  padding="1.2rem 1.2rem"
+                  className={styles.changeButton}
+                >
+                  변경
+                </CommonButton>
+
               </div>
             </section>
           </div>
