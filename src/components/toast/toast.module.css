@@ -1,0 +1,79 @@
+.toast {
+  position: fixed;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 40rem;
+  max-width: 50rem;
+  padding: 3rem 8rem;
+  border-radius: 2rem;
+  font-size: 1.8rem;
+  font-family: var(--font-family);
+  font-weight: 600;
+  text-align: center;
+  z-index: 9999;
+  opacity: 1;
+  animation: fadeSlide 1s ease-in-out forwards;
+}
+
+/* 삭제 토스트 */
+.toast.delete {
+  background-color: #f87171;
+  color: white;
+}
+
+/* 생성 토스트 */
+.toast.create {
+  background-color: var(--violet-5534DhA);
+  color: white;
+}
+
+/* 성공 토스트 */
+.toast.success {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* 정보 토스트 */
+.toast.info {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* 애니메이션 */
+@keyframes fadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(2rem);
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(2rem);
+  }
+}
+
+/* 닫기 버튼 */
+.toast .closeButton {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2.4rem;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.closeButton img {
+  width: 2.4rem;
+  height: 2.4rem;
+  filter: brightness(0) invert(1);
+}

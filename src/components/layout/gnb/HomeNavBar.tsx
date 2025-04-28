@@ -1,5 +1,5 @@
 import styles from './homenavbar.module.css'
-import ButtonDashboard from '@/components/common/button/ButtonDashboard'
+import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Image from 'next/image'
 
 import clsx from 'clsx'

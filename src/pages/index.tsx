@@ -2,7 +2,7 @@ import React from 'react'
 import Gnb from '@/components/layout/gnb/Gnb'
 import Image from 'next/image'
 import styles from './index.module.css'
-import Button from '@/components/common/button/Button'
+import Button from '@/components/common/commonbutton/CommonButton'
 
 export default function Home() {
   return (
