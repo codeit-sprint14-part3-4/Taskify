@@ -1,9 +1,13 @@
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { ko } from 'date-fns/locale'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Image from 'next/image'
 import Input from '@/components/common/input'
 import Tag from '@/components/common/tag/Tag'
 import type { TagColor } from '@/types/common/tag'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import styles from '@/components/domain/modals/custom-datepicker.module.css'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -22,11 +26,29 @@ export default function TaskCardCreateModal() {
   const [selectValue, setSelectValue] = useState('')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [inputValue, setInputValue] = useState('')
   const [tags, setTags] = useState<{ label: string; color: TagColor }[]>([])
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
   ])
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [preview, setPreview] = useState<string | null>(null)
+
+  const handleImageClick = () => {
+    inputRef.current?.click()
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectValue(e.target.value)
@@ -54,8 +76,8 @@ export default function TaskCardCreateModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-[--black-000000] bg-opacity-70 flex justify-center items-center">
-      <div className="w-[58.4rem] h-[96.6rem] max-h-[calc(100vh-10rem)] bg-[var(--white-FFFFFF)] rounded-2xl">
+    <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.7)] flex justify-center items-center">
+      <div className="w-[58.4rem] bg-[var(--white-FFFFFF)] rounded-2xl">
         <div className="p-[3.2rem]">
           <h2 className="pb-[3.2rem] text-2xl-bold text-[var(--black-000000)]">
             할 일 생성
@@ -105,12 +127,12 @@ export default function TaskCardCreateModal() {
                 *
               </span>
             </label>
-            <div className="w-full border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]">
+            <div className="w-full min-h-[12.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]">
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="설명을 입력해 주세요"
-                className="w-full px-[1.6rem] pt-[1.5rem] pb-[8.5rem] border border-[var(--gray-D9D9D9)] rounded-lg bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none border-none"
+                className="w-full min-h-[12.6rem] px-[1.6rem] py-[1.5rem] border border-[var(--gray-D9D9D9)] rounded-lg bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none border-none"
                 wrap="soft"
               />
             </div>
@@ -119,7 +141,6 @@ export default function TaskCardCreateModal() {
             <label className="text-2lg-medium text-[var(--black-000000)]">
               마감일
             </label>
-            {/* 날짜 입력 라이브러리 도입 */}
             <div
               className={`group flex items-center w-full h-[5rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]`}
             >
@@ -130,11 +151,20 @@ export default function TaskCardCreateModal() {
                 height={22}
                 className="mr-[0.8rem]"
               />
-              {/* 날짜 입력 input */}
-              <input
-                type="text"
-                placeholder="날짜를 입력해 주세요"
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date: Date | null) => setSelectedDate(date)}
+                dateFormat="yyyy.MM.dd HH:mm"
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={30}
+                timeCaption="시간"
+                placeholderText="날짜를 입력해 주세요"
                 className="flex-1 bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
+                calendarClassName={styles.calendar} // 캘린더 박스 스타일
+                popperClassName={styles.popper} // 팝업(달력) 스타일
+                dayClassName={() => styles.day} // 하루하루 날짜 스타일
+                locale={ko}
               />
             </div>
           </div>
@@ -161,14 +191,34 @@ export default function TaskCardCreateModal() {
             <label className="text-2lg-medium text-[var(--black-000000)]">
               이미지
             </label>
-            <div className="w-[7.6rem] h-[7.6rem] flex items-center justify-center rounded-[0.6rem] bg-[#F5F5F5] cursor-pointer">
-              <Image
-                src="/assets/icon/add.svg"
-                alt="이미지 추가"
-                width={17}
-                height={17}
-              />
+            <div
+              onClick={handleImageClick}
+              className="w-[7.6rem] h-[7.6rem] relative flex items-center justify-center rounded-[0.6rem] bg-[#F5F5F5] cursor-pointer overflow-hidden"
+            >
+              {preview ? (
+                <Image
+                  src={preview}
+                  alt="업로드된 이미지"
+                  fill
+                  className="rounded-[0.6rem] object-cover"
+                />
+              ) : (
+                <Image
+                  src="/assets/icon/add.svg"
+                  alt="이미지 추가"
+                  width={17}
+                  height={17}
+                />
+              )}
             </div>
+            {/* 숨겨진 파일 인풋 */}
+            <input
+              className="hidden"
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
           </div>
           <div className="w-full flex justify-center items-center gap-[0.8rem]">
             <CommonButton
