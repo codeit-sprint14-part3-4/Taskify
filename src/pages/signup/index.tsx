@@ -1,83 +1,167 @@
 import styles from './signup.module.css'
 
+import { useFormSignup } from '@/hooks/useFormSignup'
+import { SignupAction } from '@/types/common/actionTypes'
 import { usersService } from '../../api/services/usersServices'
-import { useAuthStore } from '@/stores/auth'
 import Input from '@/components/common/input'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
+import Modal from '@/components/modal/Modal'
 
-import { useState } from 'react'
+import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 
+// 상태 초기화
+const initialState = {
+  email: '',
+  name: '',
+  password: '',
+  confirmPassword: '',
+  showPassword: false,
+  showConfirmPassword: false,
+  isTermsAccepted: false,
+  emailError: '',
+  nameError: '',
+  passwordError: '',
+  confirmPasswordError: '',
+  showPasswordModal: false,
+  errorMessage: '',
+  toastMessage: '',
+  showingToast: false,
+  toastType: 'success' as 'create' | 'delete' | 'success' | 'info',
+}
+
+// 상태 변화에 따른 액션들 + 타입은 타입 폴더에 정리
+const reducer = (state: typeof initialState, action: SignupAction) => {
+  switch (action.type) {
+    case 'SET_EMAIL':
+      return { ...state, email: action.payload }
+    case 'SET_NAME':
+      return { ...state, name: action.payload }
+    case 'SET_PASSWORD':
+      return { ...state, password: action.payload }
+    case 'SET_CONFIRM_PASSWORD':
+      return { ...state, confirmPassword: action.payload }
+    case 'TOGGLE_PASSWORD_VISIBILITY':
+      return { ...state, showPassword: !state.showPassword }
+    case 'TOGGLE_CONFIRM_PASSWORD_VISIBILITY':
+      return { ...state, showConfirmPassword: !state.showConfirmPassword }
+    case 'SET_TERMS_ACCEPTED':
+      return { ...state, isTermsAccepted: !state.isTermsAccepted }
+    case 'SET_EMAIL_ERROR':
+      return { ...state, emailError: action.payload }
+    case 'SET_NAME_ERROR':
+      return { ...state, nameError: action.payload }
+    case 'SET_PASSWORD_ERROR':
+      return { ...state, passwordError: action.payload }
+    case 'SET_CONFIRM_PASSWORD_ERROR':
+      return { ...state, confirmPasswordError: action.payload }
+    case 'SET_MODAL':
+      return {
+        ...state,
+        showPasswordModal: action.payload.show,
+        errorMessage: action.payload.message,
+      }
+    case 'SET_TOAST':
+      return {
+        ...state,
+        toastMessage: action.payload.message,
+        toastType: action.payload.type,
+        showingToast: true,
+      }
+    case 'HIDE_TOAST':
+      return {
+        ...state,
+        showingToast: false,
+        toastMessage: '',
+        toastType: 'success',
+      }
+    default:
+      return state
+  }
+}
+
 export default function Signup() {
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isTermsAccepted, setIsTermsAccepted] = useState(false)
-
-  const [emailError, setEmailError] = useState('')
-  const [nameError, setNameError] = useState('')
-  const [passwordError, setPasswordError] = useState('')
-  const [confirmPasswordError, setConfirmPasswordError] = useState('')
-
-  const isFormValid =
-    email &&
-    name &&
-    password &&
-    confirmPassword &&
-    !emailError &&
-    !nameError &&
-    !passwordError &&
-    !confirmPasswordError &&
-    isTermsAccepted
-
-  const { setAccessToken } = useAuthStore() // Zustand에서 토큰 저장 함수 가져오기
+  const [state, dispatch] = useReducer(reducer, initialState)
   const router = useRouter()
+  useFormSignup(state, dispatch)
+  // 폼 유효성 체크
+  const isFormValid =
+    state.email &&
+    state.name &&
+    state.password &&
+    state.confirmPassword &&
+    !state.emailError &&
+    !state.nameError &&
+    !state.passwordError &&
+    !state.confirmPasswordError &&
+    state.isTermsAccepted
 
+  // 회원가입 요청 함수
   const handleSignup = async () => {
-    if (!isTermsAccepted) {
-      alert('이용약관에 동의해주세요.') // 이용약관 동의 여부 체크
+    if (!state.isTermsAccepted) {
+      alert('이용약관에 동의해주세요.')
       return
     }
 
     try {
       const body = {
-        email: email,
-        nickname: name,
-        password: password,
+        email: state.email,
+        nickname: state.name,
+        password: state.password,
       }
-      const response = await usersService.postUsers(body) // 회원가입 API 호출
+      const response = await usersService.postUsers(body)
       console.log(response)
-      setAccessToken(response.accessToken)
-
-      router.push('/login')
-      alert('가입이 완료되었습니다.')
-    } catch (error) {
-      if (error.response?.status === 409) {
-        alert('이미 사용중인 이메일입니다.')
-      } else if (error.response?.status === 400) {
-        alert('이메일 형식으로 작성해주세요.')
-      } else if (error.response?.status === 401) {
-        alert('Unauthorized')
-      } else if (error.response?.status === 403) {
-        alert('Forbidden')
-      } else {
-        console.error('회원가입 오류:', error)
-      }
+      // 회원가입 성공 시 토스트 메시지 표시
+      showToast('가입이 완료되었습니다.', 'success')
+      dispatch({
+        // 밑 dispatch와 다르게 타입을 나누어 payload 처리
+        type: 'SET_MODAL',
+        payload: { show: true, message: '가입이 완료되었습니다.' },
+      })
+    } catch (error: any) {
+      console.error('회원가입 실패:', error)
+      // 오류 발생 시 토스트 메시지 표시
+      showToast('회원가입 중 문제가 발생했습니다.', error)
+      dispatch({
+        type: 'SET_MODAL',
+        payload: {
+          show: true,
+          message: error.message || '회원가입 중 문제가 발생했습니다.',
+        },
+      })
     }
   }
 
-  // 비밀번호 보이기/숨기기 토글 함수
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev)
+  // Toast 메시지 처리 함수
+  const showToast = (
+    msg: string,
+    type: 'create' | 'delete' | 'success' | 'info'
+  ) => {
+    dispatch({ type: 'SET_TOAST', payload: { message: msg, type: type } })
+    setTimeout(() => {
+      dispatch({ type: 'HIDE_TOAST' })
+    }, 3000)
   }
 
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword((prev) => !prev)
+  // 닉네임 입력 후 유효성 검사
+  const handleNameBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const newName = e.target.value
+
+    if (/^[a-zA-Z0-9ㄱ-ㅎ가-힣]*$/.test(newName)) {
+      dispatch({ type: 'SET_NAME_ERROR', payload: '' })
+      dispatch({ type: 'SET_NAME', payload: newName })
+    } else {
+      dispatch({
+        type: 'SET_NAME_ERROR',
+        payload: '특수문자는 입력할 수 없습니다.',
+      })
+    }
+
+    if (newName.length > 10) {
+      dispatch({ type: 'SET_NAME_ERROR', payload: '10자 이하로 작성해주세요.' })
+    }
   }
 
   return (
@@ -111,34 +195,35 @@ export default function Signup() {
               <div className={styles.login_font}>이메일</div>
               <Input
                 padding="1.2rem 1.6rem"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={state.email}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_EMAIL', payload: e.target.value })
+                }
                 placeholder="이메일을 입력하세요"
                 onBlur={() => {
-                  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                    setEmailError('이메일 형식으로 작성해 주세요.')
+                  if (!state.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    dispatch({
+                      type: 'SET_EMAIL_ERROR',
+                      payload: '이메일 형식으로 작성해 주세요.',
+                    })
                   } else {
-                    setEmailError('')
+                    dispatch({ type: 'SET_EMAIL_ERROR', payload: '' })
                   }
                 }}
-                error={emailError}
+                error={state.emailError}
               />
             </div>
             <div className={styles.wrapper_width}>
               <div className={styles.login_font}>닉네임</div>
               <Input
                 padding="1.2rem 1.6rem"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={state.name}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_NAME', payload: e.target.value })
+                }
+                onBlur={handleNameBlur}
                 placeholder="닉네임을 입력해주세요"
-                onBlur={() => {
-                  if (name.length > 10) {
-                    setNameError('열 자 이하로 작성해주세요.')
-                  } else {
-                    setNameError('')
-                  }
-                }}
-                error={nameError}
+                error={state.nameError}
               />
             </div>
             <div className={styles.wrapper_width}>
@@ -146,11 +231,13 @@ export default function Signup() {
                 비밀번호
                 <div
                   className={styles.hide_icon}
-                  onClick={togglePasswordVisibility}
+                  onClick={() =>
+                    dispatch({ type: 'TOGGLE_PASSWORD_VISIBILITY' })
+                  }
                 >
                   <Image
                     src={`/assets/icon/${
-                      showPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                      state.showPassword ? 'open_hide.svg' : 'hide_icon.svg'
                     }`}
                     alt="비밀번호 보이기/숨기기 아이콘"
                     fill
@@ -159,18 +246,23 @@ export default function Signup() {
               </div>
               <Input
                 padding="1.2rem 1.6rem"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={state.password}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_PASSWORD', payload: e.target.value })
+                }
                 placeholder="비밀번호를 입력하세요"
-                type={showPassword ? 'text' : 'password'}
+                type={state.showPassword ? 'text' : 'password'}
                 onBlur={() => {
-                  if (password.length < 8) {
-                    setPasswordError('8자 이상 입력해주세요.')
+                  if (state.password.length < 8) {
+                    dispatch({
+                      type: 'SET_PASSWORD_ERROR',
+                      payload: '8자 이상 입력해주세요.',
+                    })
                   } else {
-                    setPasswordError('')
+                    dispatch({ type: 'SET_PASSWORD_ERROR', payload: '' })
                   }
                 }}
-                error={passwordError}
+                error={state.passwordError}
               />
             </div>
             <div className={styles.wrapper_width}>
@@ -178,11 +270,15 @@ export default function Signup() {
                 비밀번호 확인
                 <div
                   className={styles.hide_icon}
-                  onClick={toggleConfirmPasswordVisibility}
+                  onClick={() =>
+                    dispatch({ type: 'TOGGLE_CONFIRM_PASSWORD_VISIBILITY' })
+                  }
                 >
                   <Image
                     src={`/assets/icon/${
-                      showConfirmPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                      state.showConfirmPassword
+                        ? 'open_hide.svg'
+                        : 'hide_icon.svg'
                     }`}
                     alt="비밀번호 보이기/숨기기 아이콘"
                     fill
@@ -191,24 +287,34 @@ export default function Signup() {
               </div>
               <Input
                 padding="1.2rem 1.6rem"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={state.confirmPassword}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'SET_CONFIRM_PASSWORD',
+                    payload: e.target.value,
+                  })
+                }
                 placeholder="비밀번호를 다시 한 번 입력하세요"
-                type={showConfirmPassword ? 'text' : 'password'}
+                type={state.showConfirmPassword ? 'text' : 'password'}
                 onBlur={() => {
-                  // 8자 미만일 때 에러 처리
-                  if (confirmPassword.length < 8) {
-                    setConfirmPasswordError('8자 이상 입력해주세요.')
-                  } else if (password !== confirmPassword) {
-                    // 비밀번호가 일치하지 않으면 에러 처리
-                    setConfirmPasswordError('비밀번호가 일치하지 않습니다.')
+                  if (state.confirmPassword.length < 8) {
+                    dispatch({
+                      type: 'SET_CONFIRM_PASSWORD_ERROR',
+                      payload: '8자 이상 입력해주세요.',
+                    })
+                  } else if (state.password !== state.confirmPassword) {
+                    dispatch({
+                      type: 'SET_CONFIRM_PASSWORD_ERROR',
+                      payload: '비밀번호가 일치하지 않습니다.',
+                    })
                   } else {
-                    // 비밀번호 확인이 일치하면 에러 메시지 삭제
-                    setConfirmPasswordError('')
+                    dispatch({
+                      type: 'SET_CONFIRM_PASSWORD_ERROR',
+                      payload: '',
+                    })
                   }
                 }}
-                error={confirmPasswordError}
-                className={confirmPasswordError ? styles.errorBorder : ''}
+                error={state.confirmPasswordError}
               />
             </div>
 
@@ -217,8 +323,8 @@ export default function Signup() {
                 className={styles.custom_select}
                 type="checkbox"
                 id="terms"
-                checked={isTermsAccepted}
-                onChange={() => setIsTermsAccepted(!isTermsAccepted)}
+                checked={state.isTermsAccepted}
+                onChange={() => dispatch({ type: 'SET_TERMS_ACCEPTED' })}
               />
               <label htmlFor="terms">이용약관에 동의합니다.</label>
             </div>
@@ -226,14 +332,28 @@ export default function Signup() {
 
           <div className={styles.wrapper_bottom}>
             <CommonButton
-              variant="primary"
-              padding="1.2rem 1.6rem"
+              padding="1.2rem 0"
+              className="w-full text-white bg-[var(--gray-9FA6B2)]"
               isActive={!!isFormValid}
-              onClick={handleSignup}
-              // type="submit"
             >
               가입하기
             </CommonButton>
+            {state.showPasswordModal && (
+              <Modal
+                size="large"
+                message={state.errorMessage}
+                onConfirm={() => {
+                  dispatch({
+                    type: 'SET_MODAL',
+                    payload: { show: false, message: '' },
+                  })
+                  if (state.errorMessage === '가입이 완료되었습니다.') {
+                    router.push('/login')
+                  }
+                }}
+                confirmLabel="확인"
+              />
+            )}
             <div className={styles.wrapper_floor}>
               <div>이미 회원이신가요?</div>
               <Link href="/login">

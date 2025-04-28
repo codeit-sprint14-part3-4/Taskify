@@ -74,6 +74,7 @@
   padding-top: 2.4rem;
   font-size: 1.8rem;
   font-weight: 500;
+  width: 100%;
 }
 .wrapper_floor {
   display: flex;
