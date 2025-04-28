@@ -1,13 +1,12 @@
 import styles from './homenavbar.module.css'
-<<<<<<< HEAD
+
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
-=======
->>>>>>> feature/loginsignup
+
 import Image from 'next/image'
 import clsx from 'clsx'
 
 import Badge from '@/components/common/badge/Badge'
-import ButtonDashboard from '@/components/common/button/ButtonDashboard'
+
 import { useDashboardInfo } from '@/hooks/useDashboardInfo'
 
 export default function HomeNavBar({
@@ -17,8 +16,10 @@ export default function HomeNavBar({
   dashboardId: number
   pageType: 'mydashboard' | 'dashboard'
 }) {
-  const { dashboardTitle, hasCrown, memberCount, userId, userName, userEmail } =
-    useDashboardInfo(dashboardId, pageType)
+  const { dashboardTitle, hasCrown, userName, userEmail } = useDashboardInfo(
+    dashboardId,
+    pageType
+  )
 
   return (
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
