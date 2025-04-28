@@ -5,8 +5,9 @@ import type {
   UploadUserImageResponse,
 } from '../../types/api/users'
 import { handleError } from '../../utils/handleError'
+import { useAuthStore } from '@/stores/auth'
 
-const BASE_URL = 'https://sp-taskify-api.vercel.app/14-4'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || ''
 
 // POST: 회원가입
 const postUsers = async (body: CreateUserBody): Promise<User> => {
@@ -24,7 +25,13 @@ const postUsers = async (body: CreateUserBody): Promise<User> => {
 }
 
 // GET: 내 정보 조회
-const getUsers = async (accessToken: string): Promise<User> => {
+const getUsers = async (): Promise<User> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/users/me`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -37,10 +44,12 @@ const getUsers = async (accessToken: string): Promise<User> => {
 }
 
 // PUT: 내 정보 수정
-const putUsers = async (
-  body: UpdateUserBody,
-  accessToken: string
-): Promise<User> => {
+const putUsers = async (body: UpdateUserBody): Promise<User> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
   const res = await fetch(`${BASE_URL}/users/me`, {
     method: 'PUT',
     headers: {
@@ -57,9 +66,13 @@ const putUsers = async (
 
 // POST: 프로필 이미지 업로드
 const postUsersMeImage = async (
-  file: File,
-  accessToken: string
+  file: File
 ): Promise<UploadUserImageResponse> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
   const formData = new FormData()
   formData.append('image', file)
 

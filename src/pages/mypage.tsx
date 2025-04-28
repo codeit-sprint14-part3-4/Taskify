@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import styles from '@/pages/mypage.module.css'
-import Button from '@/components/common/commonbutton/CommonButton'
+import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Sidebar from '@/components/layout/sidebar/Sidebar'
 import HomeNavBar from '@/components/layout/gnb/HomeNavBar'
 
@@ -39,9 +39,13 @@ export default function MyPage() {
                   <input type="email" placeholder="Taskify@gmail.com" />
                   <label>닉네임</label>
                   <input type="text" placeholder="닉네임 입력" />
-                  <Button variant="confirm" className={styles.saveButton}>
+                  <CommonButton
+                    variant="primary"
+                    padding="1.2rem 1.2rem"
+                    className={styles.saveButton}
+                  >
                     저장
-                  </Button>
+                  </CommonButton>
                 </div>
               </div>
             </section>
@@ -56,9 +60,13 @@ export default function MyPage() {
                 <input type="password" placeholder="새 비밀번호 입력" />
                 <label>새 비밀번호 확인</label>
                 <input type="password" placeholder="새 비밀번호 입력" />
-                <Button variant="confirm" className={styles.changeButton}>
+                <CommonButton
+                  variant="primary"
+                  padding="1.2rem 1.2rem"
+                  className={styles.changeButton}
+                >
                   변경
-                </Button>
+                </CommonButton>
               </div>
             </section>
           </div>

@@ -4,8 +4,9 @@ import type {
   ChangePasswordBody,
 } from '../../types/api/auth'
 import { handleError } from '../../utils/handleError'
+import { useAuthStore } from '@/stores/auth'
 
-const BASE_URL = 'https://sp-taskify-api.vercel.app/14-4'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || ''
 
 // POST: 로그인
 // 로그인 요청을 보내고 LoginResponse 타입의 결과를 반환하는 비동기 함수
@@ -27,10 +28,13 @@ const postAuth = async (reqLoginBody: LoginBody): Promise<LoginResponse> => {
 }
 
 // PUT: 비밀번호 변경
-const putAuth = async (
-  reqBody: ChangePasswordBody,
-  accessToken: string
-): Promise<void> => {
+const putAuth = async (reqBody: ChangePasswordBody): Promise<void> => {
+  const accessToken = useAuthStore.getState().accessToken
+
+  if (!accessToken) {
+    throw new Error('사용자 인증 토큰이 없습니다.')
+  }
+
   const res = await fetch(`${BASE_URL}/auth/password`, {
     method: 'PUT',
     headers: {
