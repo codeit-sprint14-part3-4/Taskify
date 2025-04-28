@@ -1,7 +1,7 @@
 import styles from './login.module.css'
 
 import Input from '@/components/common/input'
-import Button from '@/components/common/button/Button'
+import Button from '@/components/common/commonbutton/CommonButton'
 import { authService } from '../../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
 

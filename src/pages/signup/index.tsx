@@ -3,7 +3,7 @@ import styles from './signup.module.css'
 import { usersService } from '../../api/services/usersServices'
 import { useAuthStore } from '@/stores/auth'
 import Input from '@/components/common/input'
-import Button from '@/components/common/button/Button'
+import Button from '@/components/common/commonbutton/CommonButton'
 
 import { useState } from 'react'
 import { useRouter } from 'next/router'

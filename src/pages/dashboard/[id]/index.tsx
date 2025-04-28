@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Column, { ColumnInfo } from '@/components/domain/dashboard/Column'
-import ButtonDashboard from '@/components/common/button/ButtonDashboard'
+import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Layout from '@/components/layout/layout'
 
 export default function DashboardPage() {
