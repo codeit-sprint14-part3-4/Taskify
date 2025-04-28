@@ -1,4 +1,4 @@
-import Button from '@/components/common/button/Button'
+import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Image from 'next/image'
 import Input from '@/components/common/input'
 import Tag from '@/components/common/tag/Tag'
@@ -171,19 +171,22 @@ export default function TaskCardCreateModal() {
             </div>
           </div>
           <div className="w-full flex justify-center items-center gap-[0.8rem]">
-            <Button
-              variant="cancel"
-              className="w-full h-[5.4rem] px-[1.4rem] py-[11.4rem] rounded-lg text-[var(--gray-787486)] text-lg-medium border border-[var(--gray-D9D9D9)]"
+            <CommonButton
+              variant="secondary"
+              padding="1.4rem 11.4rem"
+              isActive={true}
+              className="w-full h-[5.4rem] rounded-lg text-[var(--gray-787486)] text-lg-medium border border-[var(--gray-D9D9D9)]"
             >
               취소
-            </Button>
-            <Button
-              variant="confirm"
+            </CommonButton>
+            <CommonButton
+              variant="primary"
+              padding="1.4rem 11.4rem"
               isActive={true}
               className="w-full h-[5.4rem] bg-[var(--violet-5534DhA)] text-[var(--white-FFFFFF)] text-lg-semibold"
             >
               생성
-            </Button>
+            </CommonButton>
           </div>
         </div>
       </div>
