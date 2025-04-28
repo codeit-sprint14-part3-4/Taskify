@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { CreateDashboardBody } from '@/types/api/dashboards'
 import { dashboardsService } from '@/api/services/dashboardsServices'
-import { useAuthStore } from '@/stores/auth'
 
 interface DashboardModalProps {
   onClose: () => void
@@ -15,13 +14,12 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
   const [text, setText] = useState('')
   const router = useRouter()
 
-  const accessToken = useAuthStore((state) => state.accessToken) //이 부분 설명 필요
   const COLORS = [
-    { id: 1, color: 'var(--green-7AC555)' },
-    { id: 2, color: 'var(--purple-760DDE)' },
-    { id: 3, color: 'var(--orange-FFA500)' },
-    { id: 4, color: 'var(--blue-76A5EA)' },
-    { id: 5, color: 'var(--pink-E876EA)' },
+    { id: 1, color: '#7AC555' },
+    { id: 2, color: '#760DDE' },
+    { id: 3, color: '#FFA500' },
+    { id: 4, color: '#76A5EA' },
+    { id: 5, color: '#E876EA' },
   ] as const
   type ColorType = (typeof COLORS)[number]
   const [selectedColor, setSelectedColor] = useState<ColorType | null>(null)
@@ -32,21 +30,20 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
       color: selectedColor?.color || '', //색상이 선택되지 않으면 빈 문자열
     }
 
-    if (!accessToken) {
-      alert('세션에 토큰이 없습니다.')
-      return
-    }
-
     try {
-      const newDashBoard = await dashboardsService.postDashboards(
-        body,
-        accessToken
-      )
+      const newDashBoard = await dashboardsService.postDashboards(body)
       onClose()
       router.push(`/dashboard/${newDashBoard.id}`)
     } catch (error) {
-      console.error('대시보드 생성 중 오류 발생:', error)
-      alert('대시보드 생성에 실패했습니다. 다시 시도해주세요.')
+      if (error.response?.status === 401) {
+        /*인증되지 않은 요청*/
+        alert('로그인 후 사용해주세요.')
+      } else if (error.response?.status === 500) {
+        alert('서버 오류가 발생 했습니다')
+      } else {
+        console.error('대시보드 생성 중 오류 발생:', error)
+        alert('대시보드 생성에 실패했습니다. 다시 시도해주세요.')
+      }
     }
   }
 
