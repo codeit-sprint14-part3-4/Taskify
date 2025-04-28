@@ -1,21 +1,19 @@
 import { useState } from 'react'
-import StatusDropdown from '@/components/dropdown/StatusDropdown'
+import StatusDropdown, { Status } from '@/components/dropdown/StatusDropdown' // Status enum 가져오기
 import UserDropdown from '@/components/dropdown/UserDropdown'
 
 export default function TestPage() {
-  const [status, setStatus] = useState<'To Do' | 'On Progress' | 'Done'>(
-    'To Do'
-  )
+  const [status, setStatus] = useState<Status>(Status.TODO) // enum으로 사용
   const [selectedUser, setSelectedUser] = useState({
     id: 1,
     name: '하하',
-    badgeColor: 'bg-green-300',
+    badgeColor: '#A3C4A2',
   })
 
   const users = [
-    { id: 1, name: '하하', badgeColor: 'bg-green-300' },
-    { id: 2, name: '김희철', badgeColor: 'bg-orange-300' },
-    { id: 3, name: '장동민', badgeColor: 'bg-red-200' },
+    { id: 1, name: '하하', badgeColor: '#A3C4A2' },
+    { id: 2, name: '김희철', badgeColor: '#EDC4A6' },
+    { id: 3, name: '장동민', badgeColor: '#F5A9B8' },
   ]
 
   return (

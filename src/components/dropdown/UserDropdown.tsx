@@ -33,8 +33,7 @@ export default function UserDropdown({
     if (!name) return 'U'
     const firstChar = name.trim().charAt(0)
     const isEnglish = /^[A-Za-z]$/.test(firstChar)
-    // API 서버에서 이름을 가져와서 사용해야함
-    const hangulToRoman: { [key: string]: string } = {
+    const hangulToRoman: Record<string, string> = {
       하: 'H',
       배: 'B',
       김: 'K',
@@ -47,7 +46,6 @@ export default function UserDropdown({
       윤: 'Y',
       장: 'J',
     }
-
     return isEnglish ? firstChar.toUpperCase() : hangulToRoman[firstChar] || 'U'
   }, [])
 
@@ -55,17 +53,25 @@ export default function UserDropdown({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isOpen) {
         setIsOpen(false)
+        ;(document.activeElement as HTMLElement)?.blur()
+      }
+    }
 
-        // 포커스 해제
-        const activeElement = document.activeElement as HTMLElement
-        activeElement?.blur()
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
       }
     }
 
     document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('mousedown', handleClickOutside)
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [isOpen])
 
@@ -75,14 +81,17 @@ export default function UserDropdown({
         ref={dropdownRef}
         className="relative inline-block w-full max-w-sm min-w-[200px] md:w-[217px]"
       >
+        {/* 버튼 */}
         <button
+          type="button"
           onClick={() => setIsOpen((prev) => !prev)}
-          className={`w-full h-12 md:w-[217px] md:h-[48px] flex justify-between items-center px-4 py-3 rounded-md text-lg bg-white focus:outline-none 
-    ${isOpen ? 'border-[#5534DA]' : 'border-[#D9D9D9]'} border`}
+          className={`w-full h-12 md:w-[217px] md:h-[48px] flex justify-between items-center px-4 py-3 rounded-[8px] text-[16px] font-regular bg-white focus:outline-none
+          ${isOpen ? 'border-[#5534DA]' : 'border-[#D9D9D9]'} border`}
         >
           <div className="flex items-center gap-3">
             <div
-              className={`w-8 h-8 flex items-center justify-center rounded-full text-white text-sm ${selectedUser.badgeColor}`}
+              style={{ backgroundColor: selectedUser.badgeColor }}
+              className="w-[26px] h-[26px] flex items-center justify-center rounded-full text-white text-[16px] font-regular"
             >
               {getInitial(selectedUser.name)}
             </div>
@@ -99,14 +108,18 @@ export default function UserDropdown({
           />
         </button>
 
+        {/* 드롭다운 리스트 */}
         {isOpen && (
-          <ul className="absolute z-10 mt-2 w-full border border-[#D9D9D9] bg-white rounded-md transition-all duration-300 origin-top md:w-[217px] max-h-60 overflow-y-auto">
+          <ul className="absolute z-10 mt-2 w-full border border-[#D9D9D9] bg-white rounded-[8px] transition-all duration-300 origin-top md:w-[217px] max-h-60 overflow-y-auto">
             {users.map((user) => (
               <li
                 key={user.id}
                 onClick={() => handleSelect(user)}
-                className="flex items-center gap-3 px-4 hover:bg-gray-100 cursor-pointer text-lg w-full h-12 md:h-[48px]"
+                onKeyDown={(e) => e.key === 'Enter' && handleSelect(user)}
+                tabIndex={0}
+                className="flex items-center gap-3 px-4 hover:bg-gray-100 cursor-pointer text-[16px] font-regular w-full h-12 md:h-[48px] focus:outline-none focus:bg-gray-200"
               >
+                {/* 체크 표시 */}
                 {selectedUser.id === user.id ? (
                   <Image
                     src="/assets/image/check.svg"
@@ -117,9 +130,12 @@ export default function UserDropdown({
                 ) : (
                   <div className="w-[22px] h-[22px]" />
                 )}
+
+                {/* 유저 이름 + 뱃지 */}
                 <div className="flex items-center gap-3 flex-1">
                   <div
-                    className={`w-8 h-8 flex items-center justify-center rounded-full text-white text-sm ${user.badgeColor}`}
+                    style={{ backgroundColor: user.badgeColor }}
+                    className="w-[26px] h-[26px] flex items-center justify-center rounded-full text-white text-[16px] font-regular"
                   >
                     {getInitial(user.name)}
                   </div>
