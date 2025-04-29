@@ -11,7 +11,7 @@ export default function ColorPin({
     <button
       key={id}
       onClick={onClick}
-      className={`${styles.color_badge} ${isSelected ? styles.selected : ''}`}
+      className={`${styles.color_pin} ${isSelected ? styles.selected : ''}`}
       style={{ backgroundColor: color }}
     >
       {isSelected && <span className={styles.check}>✓</span>}

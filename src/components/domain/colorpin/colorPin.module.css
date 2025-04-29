@@ -1,4 +1,4 @@
-.color_badge {
+.color_pin {
   width: 3.2rem;
   height: 3.2rem;
   border-radius: 50%;
@@ -11,7 +11,7 @@
   transition: border 0.2s ease;
 }
 
-.color_badge:hover {
+.color_pin:hover {
   opacity: 0.8;
 }
 

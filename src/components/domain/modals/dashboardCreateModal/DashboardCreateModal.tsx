@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { CreateDashboardBody } from '@/types/api/dashboards'
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import ColorPin from '@/components/domain/colorpin/ColorPin'
+import { useColorPicker } from '@/hooks/useColorPicker'
 
 interface DashboardModalProps {
   onClose: () => void
@@ -15,15 +16,17 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
   const [text, setText] = useState('')
   const router = useRouter()
 
-  const COLORS = [
-    { id: 1, color: '#7AC555' },
-    { id: 2, color: '#760DDE' },
-    { id: 3, color: '#FFA500' },
-    { id: 4, color: '#76A5EA' },
-    { id: 5, color: '#E876EA' },
-  ] as const
-  type ColorType = (typeof COLORS)[number]
-  const [selectedColor, setSelectedColor] = useState<ColorType | null>(null)
+  const { selectedColor, handleColorSelect, COLORS } = useColorPicker()
+
+  // const COLORS = [
+  //   { id: 1, color: '#7AC555' },
+  //   { id: 2, color: '#760DDE' },
+  //   { id: 3, color: '#FFA500' },
+  //   { id: 4, color: '#76A5EA' },
+  //   { id: 5, color: '#E876EA' },
+  // ] as const
+  // type ColorType = (typeof COLORS)[number]
+  // const [selectedColor, setSelectedColor] = useState<ColorType | null>(null)
 
   const handleCreateDashboard = async () => {
     const body: CreateDashboardBody = {
@@ -66,14 +69,14 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
           padding="2.5rem 1.5rem" /*padding 사이즈를 시안에 있는 걸 넣으면 시안 이미지처럼 안나오는데..? */
           className={styles.input}
         />
-        <div className={styles.color_badge_container}>
+        <div className={styles.color_pin_container}>
           {COLORS.map((item) => (
             <ColorPin
               key={item.id}
               id={item.id}
               color={item.color}
               isSelected={selectedColor?.id === item.id}
-              onClick={() => setSelectedColor(item)}
+              onClick={() => handleColorSelect(item)}
             ></ColorPin>
           ))}
         </div>
