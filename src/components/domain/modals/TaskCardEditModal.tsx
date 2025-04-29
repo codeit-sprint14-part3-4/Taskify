@@ -66,13 +66,13 @@ export default function TaskCardEditModal({
     }
   }
 
-  const statusSelectChangeHandler = (
+  const handleChangeStatusSelect = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setStatusValue(e.target.value)
   }
 
-  const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectValue(e.target.value)
   }
 
@@ -113,7 +113,7 @@ export default function TaskCardEditModal({
               </label>
               <select
                 value={statusValue}
-                onChange={statusSelectChangeHandler}
+                onChange={handleChangeStatusSelect}
                 className={`w-full h-[4.8rem] px-[1.6rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-md text-lg-regular outline-none
                   ${
                     statusValue === ''
@@ -139,7 +139,7 @@ export default function TaskCardEditModal({
               </label>
               <select
                 value={selectValue}
-                onChange={selectChangeHandler}
+                onChange={handleChangeSelect}
                 className={`w-full h-[4.8rem] px-[1.6rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-md text-lg-regular outline-none
                   ${
                     selectValue === ''
