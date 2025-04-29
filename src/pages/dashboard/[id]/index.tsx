@@ -1,91 +1,30 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import Column, { ColumnInfo } from '@/components/domain/dashboard/Column'
+import Column from '@/components/domain/dashboard/Column' //
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Layout from '@/components/layout/layout'
+import { columnsService } from '@/api/services/columnsServices'
+import { ColumnType } from '@/types/api/columns'
+import { useRouter } from 'next/router'
 
 export default function DashboardPage() {
-  const [columns, setColumns] = useState<ColumnInfo[]>([])
+  const [columns, setColumns] = useState<ColumnType[]>([])
+
+  const { query } = useRouter()
+  const dashboardId = Number(query.id)
+
+  const getColumns = async () => {
+    const columnsData = await columnsService.getColumns(dashboardId)
+    setColumns(columnsData.data)
+  }
 
   useEffect(() => {
-    // 임시 더미 데이터
-    const dummy: ColumnInfo[] = [
-      {
-        id: 1,
-        title: 'To Do',
-        dashboardId: 1,
-        teamId: '14-4',
-        cards: [
-          {
-            id: 201,
-            title: '새로운 일정 관리 Taskify',
-            tags: [
-              { label: '프로젝트', color: 'tag-orange' },
-              { label: '백엔드', color: 'tag-pink' },
-              { label: '상', color: 'tag-blue' },
-            ],
-            dueDate: '2025-12-31',
-            assignee: {
-              id: 1,
-              nickname: 'B',
-              profileImageUrl: '/images/profile-b.jpg',
-            },
-            imageUrl: '', // 이미지 없는 카드
-          },
-          {
-            id: 202,
-            title: '새로운 일정 관리 Taskify',
-            tags: [
-              { label: '프로젝트', color: 'tag-orange' },
-              { label: '백엔드', color: 'tag-pink' },
-              { label: '상', color: 'tag-blue' },
-            ],
-            dueDate: '2025-04-24',
-            assignee: {
-              id: 1,
-              nickname: 'B',
-              profileImageUrl: '/images/profile-b.jpg',
-            },
-            imageUrl: '/images/sample-1.jpg', // 실제 이미지 경로
-          },
-          {
-            id: 203,
-            title: '새로운 일정 관리 Taskify',
-            tags: [
-              { label: '프로젝트', color: 'tag-orange' },
-              { label: '상', color: 'tag-blue' },
-            ],
-            dueDate: '2025-04-24',
-            assignee: {
-              id: 1,
-              nickname: 'B',
-              profileImageUrl: '/images/profile-b.jpg',
-            },
-            imageUrl: '', // 이미지 없는 카드
-          },
-        ],
-      },
-      {
-        id: 2,
-        title: 'On Progress',
-        dashboardId: 1,
-        teamId: '14-4',
-        cards: [
-          /* 카드 데이터 */
-        ],
-      },
-      {
-        id: 3,
-        title: 'Done',
-        dashboardId: 1,
-        teamId: '14-4',
-        cards: [
-          /* 카드 데이터 */
-        ],
-      },
-    ]
-    setColumns(dummy)
-  }, [])
+    if (!query.id) return
+    getColumns()
+  }, [query.id])
+
+  // 404 리다이렉트 구현 필요
+  if (!dashboardId) return
 
   return (
     <Layout>

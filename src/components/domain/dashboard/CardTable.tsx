@@ -1,8 +1,9 @@
 // 카드 리스트들
-import Card, { CardInfo } from '@/components/domain/dashboard/Card'
+import Card from '@/components/domain/dashboard/Card'
+import { CardType } from '@/types/api/cards'
 
 interface CardTableProps {
-  cards: CardInfo[]
+  cards: CardType[]
 }
 
 export default function CardTable({ cards }: CardTableProps) {
