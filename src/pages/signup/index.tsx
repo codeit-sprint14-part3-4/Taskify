@@ -7,7 +7,7 @@ import Input from '@/components/common/input'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Modal from '@/components/modal/Modal'
 
-import { useReducer } from 'react'
+import { useReducer, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,7 +15,7 @@ import Link from 'next/link'
 // 상태 초기화
 const initialState = {
   email: '',
-  name: '',
+  nickname: '',
   password: '',
   confirmPassword: '',
   showPassword: false,
@@ -38,7 +38,7 @@ const reducer = (state: typeof initialState, action: SignupAction) => {
     case 'SET_EMAIL':
       return { ...state, email: action.payload }
     case 'SET_NAME':
-      return { ...state, name: action.payload }
+      return { ...state, nickname: action.payload }
     case 'SET_PASSWORD':
       return { ...state, password: action.payload }
     case 'SET_CONFIRM_PASSWORD':
@@ -85,18 +85,22 @@ const reducer = (state: typeof initialState, action: SignupAction) => {
 export default function Signup() {
   const [state, dispatch] = useReducer(reducer, initialState)
   const router = useRouter()
-  useFormSignup(state, dispatch)
   // 폼 유효성 체크
-  const isFormValid =
-    state.email &&
-    state.name &&
-    state.password &&
-    state.confirmPassword &&
-    !state.emailError &&
-    !state.nameError &&
-    !state.passwordError &&
-    !state.confirmPasswordError &&
-    state.isTermsAccepted
+  useFormSignup(state, dispatch)
+
+  const isFormValid = useMemo(() => {
+    return (
+      state.email &&
+      state.nickname &&
+      state.password &&
+      state.confirmPassword &&
+      !state.emailError &&
+      !state.nameError &&
+      !state.passwordError &&
+      !state.confirmPasswordError &&
+      state.isTermsAccepted
+    )
+  }, [state])
 
   // 회원가입 요청 함수
   const handleSignup = async () => {
@@ -108,7 +112,7 @@ export default function Signup() {
     try {
       const body = {
         email: state.email,
-        nickname: state.name,
+        nickname: state.nickname,
         password: state.password,
       }
       const response = await usersService.postUsers(body)
@@ -143,25 +147,6 @@ export default function Signup() {
     setTimeout(() => {
       dispatch({ type: 'HIDE_TOAST' })
     }, 3000)
-  }
-
-  // 닉네임 입력 후 유효성 검사
-  const handleNameBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const newName = e.target.value
-
-    if (/^[a-zA-Z0-9ㄱ-ㅎ가-힣]*$/.test(newName)) {
-      dispatch({ type: 'SET_NAME_ERROR', payload: '' })
-      dispatch({ type: 'SET_NAME', payload: newName })
-    } else {
-      dispatch({
-        type: 'SET_NAME_ERROR',
-        payload: '특수문자는 입력할 수 없습니다.',
-      })
-    }
-
-    if (newName.length > 10) {
-      dispatch({ type: 'SET_NAME_ERROR', payload: '10자 이하로 작성해주세요.' })
-    }
   }
 
   return (
@@ -200,37 +185,6 @@ export default function Signup() {
                   dispatch({ type: 'SET_EMAIL', payload: e.target.value })
                 }
                 placeholder="이메일을 입력하세요"
-                onBlur={async () => {
-                  if (!state.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                    dispatch({
-                      type: 'SET_EMAIL_ERROR',
-                      payload: '이메일 형식으로 작성해 주세요.',
-                    })
-                    return
-                  }
-
-                  try {
-                    const response = await usersService.checkEmailDuplicate(
-                      state.email
-                    )
-                    // ✅ 서버에 이메일 중복 체크 API 호출
-                    if (response.exists) {
-                      // 서버 응답에서 '존재한다'면
-                      dispatch({
-                        type: 'SET_EMAIL_ERROR',
-                        payload: '이미 사용 중인 이메일입니다.',
-                      })
-                    } else {
-                      dispatch({ type: 'SET_EMAIL_ERROR', payload: '' })
-                    }
-                  } catch (error) {
-                    console.error('이메일 중복 체크 실패', error)
-                    dispatch({
-                      type: 'SET_EMAIL_ERROR',
-                      payload: '이메일 확인 중 문제가 발생했습니다.',
-                    })
-                  }
-                }}
                 error={state.emailError}
               />
             </div>
@@ -238,11 +192,10 @@ export default function Signup() {
               <div className={styles.login_font}>닉네임</div>
               <Input
                 padding="1.2rem 1.6rem"
-                value={state.name}
+                value={state.nickname}
                 onChange={(e) =>
                   dispatch({ type: 'SET_NAME', payload: e.target.value })
                 }
-                onBlur={handleNameBlur}
                 placeholder="닉네임을 입력해주세요"
                 error={state.nameError}
               />
@@ -273,16 +226,6 @@ export default function Signup() {
                 }
                 placeholder="비밀번호를 입력하세요"
                 type={state.showPassword ? 'text' : 'password'}
-                onBlur={() => {
-                  if (state.password.length < 8) {
-                    dispatch({
-                      type: 'SET_PASSWORD_ERROR',
-                      payload: '8자 이상 입력해주세요.',
-                    })
-                  } else {
-                    dispatch({ type: 'SET_PASSWORD_ERROR', payload: '' })
-                  }
-                }}
                 error={state.passwordError}
               />
             </div>
@@ -317,24 +260,6 @@ export default function Signup() {
                 }
                 placeholder="비밀번호를 다시 한 번 입력하세요"
                 type={state.showConfirmPassword ? 'text' : 'password'}
-                onBlur={() => {
-                  if (state.confirmPassword.length < 8) {
-                    dispatch({
-                      type: 'SET_CONFIRM_PASSWORD_ERROR',
-                      payload: '8자 이상 입력해주세요.',
-                    })
-                  } else if (state.password !== state.confirmPassword) {
-                    dispatch({
-                      type: 'SET_CONFIRM_PASSWORD_ERROR',
-                      payload: '비밀번호가 일치하지 않습니다.',
-                    })
-                  } else {
-                    dispatch({
-                      type: 'SET_CONFIRM_PASSWORD_ERROR',
-                      payload: '',
-                    })
-                  }
-                }}
                 error={state.confirmPasswordError}
               />
             </div>

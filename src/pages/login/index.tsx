@@ -167,19 +167,6 @@ export default function Login() {
                 dispatch({ type: 'SET_EMAIL', payload: e.target.value })
               }
               placeholder="이메일을 입력하세요"
-              onBlur={() => {
-                if (
-                  !state.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) &&
-                  state.email.length > 0
-                ) {
-                  dispatch({
-                    type: 'SET_EMAIL_ERROR',
-                    payload: '이메일 형식으로 작성해 주세요.',
-                  })
-                } else {
-                  dispatch({ type: 'SET_EMAIL_ERROR', payload: '' })
-                }
-              }}
               error={state.emailError}
             />
           </div>
@@ -208,16 +195,6 @@ export default function Login() {
               }
               placeholder="비밀번호를 입력하세요"
               type={state.showPassword ? 'text' : 'password'}
-              onBlur={() => {
-                if (state.password.length < 8) {
-                  dispatch({
-                    type: 'SET_PASSWORD_ERROR',
-                    payload: '8자 이상 입력해주세요.',
-                  })
-                } else {
-                  dispatch({ type: 'SET_PASSWORD_ERROR', payload: '' })
-                }
-              }}
               error={state.passwordError}
             />
           </div>
