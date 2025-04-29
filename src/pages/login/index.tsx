@@ -168,7 +168,10 @@ export default function Login() {
               }
               placeholder="이메일을 입력하세요"
               onBlur={() => {
-                if (!state.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                if (
+                  !state.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) &&
+                  state.email.length > 0
+                ) {
                   dispatch({
                     type: 'SET_EMAIL_ERROR',
                     payload: '이메일 형식으로 작성해 주세요.',

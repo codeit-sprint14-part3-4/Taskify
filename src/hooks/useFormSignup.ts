@@ -19,7 +19,10 @@ export const useFormSignup = (
 ) => {
   // 이메일 유효성 검사
   useEffect(() => {
-    if (state.email && !state.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    if (
+      state.email.length > 0 &&
+      !state.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+    ) {
       dispatch({
         type: 'SET_EMAIL_ERROR',
         payload: '이메일 형식으로 작성해 주세요.',

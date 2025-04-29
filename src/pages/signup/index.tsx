@@ -200,14 +200,35 @@ export default function Signup() {
                   dispatch({ type: 'SET_EMAIL', payload: e.target.value })
                 }
                 placeholder="이메일을 입력하세요"
-                onBlur={() => {
+                onBlur={async () => {
                   if (!state.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
                     dispatch({
                       type: 'SET_EMAIL_ERROR',
                       payload: '이메일 형식으로 작성해 주세요.',
                     })
-                  } else {
-                    dispatch({ type: 'SET_EMAIL_ERROR', payload: '' })
+                    return
+                  }
+
+                  try {
+                    const response = await usersService.checkEmailDuplicate(
+                      state.email
+                    )
+                    // ✅ 서버에 이메일 중복 체크 API 호출
+                    if (response.exists) {
+                      // 서버 응답에서 '존재한다'면
+                      dispatch({
+                        type: 'SET_EMAIL_ERROR',
+                        payload: '이미 사용 중인 이메일입니다.',
+                      })
+                    } else {
+                      dispatch({ type: 'SET_EMAIL_ERROR', payload: '' })
+                    }
+                  } catch (error) {
+                    console.error('이메일 중복 체크 실패', error)
+                    dispatch({
+                      type: 'SET_EMAIL_ERROR',
+                      payload: '이메일 확인 중 문제가 발생했습니다.',
+                    })
                   }
                 }}
                 error={state.emailError}
