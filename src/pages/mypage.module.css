@@ -7,11 +7,9 @@
   min-height: 80vh;
   background-color: var(--gray-FAFAFA);
 }
-
 .content {
-  padding: 2rem 34rem;
+  padding: 0.9rem 32rem;
   flex: 1;
-  min-width: 0;
   max-width: 80rem;
 }
 
@@ -53,7 +51,7 @@
   width: 66.9rem;
   background: var(--white-FFFFFF);
   padding: 3.2rem;
-  border-radius: 1.2rem;
+  border-radius: 1.6rem;
 }
 
 .profileCard {
@@ -80,8 +78,8 @@
 .avatar {
   width: 18.2rem;
   height: 18.2rem;
-  border: 1px dashed var(--gray-D9D9D9);
-  border-radius: 1.2rem;
+  border: 0.1rem var(--gray-D9D9D9);
+  border-radius: 1.6rem;
   font-size: 3.2rem;
   font-family: var(--font-family);
   color: var(--violet-5534DhA);
@@ -92,11 +90,16 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.6rem;
+}
 .avatar:hover {
-  background-color: var(--white-FFFFFF);
+  background-color: var(--gray-FAFAFA);
   border-color: var(--gray-9FA6B2);
-  color: var(--black-4B4B4B);
+  color: var(--violet-5534DhA);
 }
 
 .profileForm,
@@ -122,9 +125,14 @@
   margin-bottom: 1.6rem;
   font-size: 1.4rem;
   font-family: var(--font-family);
-  border: 1px solid var(--gray-D9D9D9);
-  border-radius: 0.6rem;
-  box-sizing: border-box;
+  border: 0.1rem solid var(--gray-D9D9D9);
+  border-radius: 0.8rem;
+}
+
+.profileForm input:focus,
+.passwordForm input:focus {
+  border: 0.1rem solid var(--violet-5534DhA);
+  outline: none;
 }
 
 .profileForm input {
@@ -134,34 +142,54 @@
 .profileForm input:last-of-type {
   margin-bottom: 2.4rem;
 }
-
+.inputError {
+  border: 0.1rem solid var(--red-D6173A);
+}
 .passwordForm input {
   padding: 1.5rem;
 }
 
-.passwordForm input:last-of-type {
-  margin-bottom: 2.4rem;
+.errorMessage {
+  color: var(--red-D6173A);
+  font-size: 1.4rem;
+  margin-top: -1.6rem;
 }
 
 .saveButton,
 .changeButton {
   font-family: var(--font-family);
   font-weight: 600;
+  padding: 1.5rem;
   border: none;
   border-radius: 0.8rem;
   color: var(--white-FFFFFF);
   background-color: var(--violet-5534DhA);
   cursor: pointer;
+  width: 100%;
 }
 
+.activeButton {
+  background-color: var(--violet-5534DhA);
+  cursor: pointer;
+}
+
+.inactiveButton {
+  background-color: var(--gray-D9D9D9);
+  cursor: not-allowed;
+}
 .saveButton {
   padding: 1.5rem;
 }
 
 .changeButton {
   padding: 1.5rem;
+  margin-top: 0.8rem;
 }
-
+.emailInput {
+  color: var(--gray-9FA6B2);
+  background-color: transparent;
+  border: none;
+}
 /* 태블릿 (max-width: 1023px) */
 @media (max-width: 1023px) {
   .layout {
