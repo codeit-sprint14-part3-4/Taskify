@@ -1,45 +1,10 @@
 import Image from 'next/image'
 import Tag from '@/components/common/tag/Tag' // 개별 카드
-
-// API의 경우, [GET] 카드 목록 조회 사용
-type TagColor =
-  | 'tag-orange'
-  | 'tag-pink'
-  | 'tag-blue'
-  | 'tag-green'
-  | 'tag-purple'
-  | 'tag-yellow'
-  | 'tag-red'
-  | 'tag-teal'
-  | 'tag-brown'
-  | 'tag-gray'
-
-// Tag.ts와 연동 필요
-export interface CardTag {
-  label: string
-  color: TagColor // 예: 'tag-orange'
-}
-
-// API 연동
-interface Assignee {
-  id: number
-  nickname: string
-  profileImageUrl: string
-}
-
-// API 연동
-export interface CardInfo {
-  id: number
-  title: string
-  tags: CardTag[]
-  dueDate: string
-  assignee: Assignee
-  imageUrl?: string
-}
+import { CardType } from '@/types/api/cards'
 
 // 내부에서만 사용
 export interface CardProps {
-  cardInfo: CardInfo
+  cardInfo: CardType
 }
 
 export default function Card({ cardInfo }: CardProps) {
@@ -94,13 +59,14 @@ export default function Card({ cardInfo }: CardProps) {
           <div className="flex items-center gap-2">
             {/* 추후 assignee.profileImageUrl로 프로필 이미지 표시 예정
               현재는 nickname 텍스트만 출력 중 */}
-            <Image
+            {/* assignee에 프로필 이미지가 추가 안된 상태여서 에러가 나는 상황 */}
+            {/* <Image
               src={cardInfo.assignee.profileImageUrl}
               alt="프로필 이미지"
               width={24}
               height={24}
               className="w-6 h-6 rounded-full object-cover"
-            />
+            /> */}
           </div>
         </div>
       </div>

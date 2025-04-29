@@ -1,8 +1,10 @@
-export interface Card {
+import { TagProps } from '../common/tag'
+
+export interface CardType {
   id: number
   title: string
   description: string
-  tags: string[]
+  tags: TagProps[]
   dueDate: string
   assignee: {
     profileImageUrl: string
@@ -19,7 +21,7 @@ export interface Card {
 export interface GetCardsResponse {
   cursorId: number
   totalCount: number
-  cards: Card[]
+  cards: CardType[]
 }
 
 export interface CreateCardBody {

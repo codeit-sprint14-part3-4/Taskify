@@ -1,4 +1,4 @@
-export interface Column {
+export interface ColumnType {
   id: number
   title: string
   teamId: string
@@ -17,7 +17,7 @@ export interface UpdateColumnBody {
 
 export interface GetColumnsResponse {
   result: string
-  data: Column[]
+  data: ColumnType[]
 }
 
 export interface UploadColumnImageResponse {
