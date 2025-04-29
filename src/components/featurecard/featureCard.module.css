@@ -1,0 +1,57 @@
+.featureCardFrame {
+  width: 100%;
+  max-width: 37.8rem;
+  height: 38.4rem;
+  color: var(--white-FFFFFF);
+}
+
+.cardboxtop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
+  width: 37.8rem;
+  height: 26rem;
+  background-color: var(--black-4B4B4B);
+}
+
+.cardboxbottom {
+  background-color: var(--black-171717);
+  font-family: 'Pretendard';
+  padding: 3.3rem 3.2rem;
+  width: 37.8rem;
+  height: 12.4rem;
+  border-bottom-left-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
+}
+
+.cardh3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.cardtext {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+@media (max-width: 1023px) {
+}
+
+@media (max-width: 767px) {
+  .cardboxtop {
+    padding-left: 4.2rem;
+    padding-right: 4.1rem;
+    width: 34.3rem;
+    height: 23.5rem;
+  }
+  .cardboxbottom {
+    width: 34.3rem;
+    height: 11.252rem;
+  }
+  .featureCardFrame {
+    width: 34.3rem;
+    height: 34.852rem;
+  }
+}

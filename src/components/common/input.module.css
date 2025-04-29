@@ -1,12 +1,9 @@
 .input {
-  width: 100%;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-  padding: 8px 12px;
-  height: 40px;
+  border: 0.1rem solid #d9d9d9;
+  border-radius: 0.6rem;
+  height: 4rem;
   outline: none;
   box-sizing: border-box;
-  transition: border-color 0.2s ease;
 }
 
 .input:focus {
@@ -19,6 +16,6 @@
 
 .errorMessage {
   color: #d6173a;
-  font-size: 12px;
-  margin-top: 4px;
+  font-size: 1.2rem;
+  margin-top: 0.4rem;
 }

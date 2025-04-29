@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+
 html {
   font-size: 62.5% !important;
 }
@@ -226,4 +227,124 @@ body {
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
+}
+
+/* 달력 전체 */
+.react-datepicker {
+  font-family: 'Pretendard', sans-serif !important;
+  font-size: 1.6rem !important;
+  border: 1px solid var(--gray-D9D9D9) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 1.2rem !important;
+  display: flex !important;
+}
+
+/* 월 전체 컨테이너 */
+.react-datepicker__month-container {
+  width: 34rem !important;
+}
+
+/* 달력 헤더 */
+.react-datepicker__header {
+  background-color: white !important;
+  border-color: rgb(223, 223, 223) !important;
+}
+
+/* 현재 월 표시 */
+.react-datepicker__current-month {
+  font-size: 2rem !important;
+  color: #5534da !important;
+}
+
+/* 요일 (일, 월, 화, ...) */
+.react-datepicker__day-name {
+  width: 4.8rem !important;
+  line-height: 4.8rem !important;
+  margin: 0 auto !important;
+  color: #5534da !important;
+}
+
+/* 날짜 */
+.react-datepicker__day {
+  width: 4.8rem !important;
+  line-height: 4.8rem !important;
+  margin: 0 auto !important;
+  border-radius: 100% !important;
+}
+
+/* 시간 리스트 항목 */
+.react-datepicker__time-name {
+  width: 4.8rem !important;
+  line-height: 4.8rem !important;
+  margin: 0 auto !important;
+}
+
+/* 시간 선택 전체 컨테이너 */
+.react-datepicker__time-container {
+  width: 10rem !important;
+  border-left: 1px solid var(--gray-D9D9D9) !important;
+}
+
+/* 시간 선택 영역 */
+.react-datepicker__time-list {
+  height: 27rem !important; /* 고정 높이 */
+  overflow-y: scroll !important; /* 세로 스크롤 */
+  font-size: 1.6rem !important;
+  padding: 1rem !important;
+}
+
+/* 시간 선택 영역 내부 항목 */
+.react-datepicker__time-list-item {
+  padding: 0 !important;
+}
+
+/* 시간 헤더 */
+.react-datepicker-time__header {
+  font-size: 1.5rem !important;
+  color: #5534da !important;
+}
+
+/* 시간 리스트 박스 */
+.react-datepicker__time-box {
+  margin: 0 !important;
+}
+
+/* 네비게이션 (이전, 다음) */
+.react-datepicker__navigation--previous,
+.react-datepicker__navigation--next {
+  position: absolute !important;
+  top: 1rem !important;
+}
+
+/* 다음 버튼 */
+.react-datepicker__navigation--next {
+  right: 12rem !important;
+}
+
+/* 헤더 - 시간 선택 있을 때 */
+.react-datepicker__header--has-time-select {
+  border-radius: 0.8rem 0 0 0 !important;
+}
+
+/* 헤더 - 시간 영역 */
+.react-datepicker__header--time {
+  border-radius: 0 0.8rem 0 0 !important;
+}
+
+/* 선택된 날짜 */
+.react-datepicker__day--selected {
+  background-color: #5534da !important;
+  border-radius: 100% !important;
+}
+
+/* 키보드로 선택된 날짜 */
+.react-datepicker__day--keyboard-selected {
+  background-color: #5534da !important;
+  border-radius: 100% !important;
+  color: white !important;
+}
+
+/* 선택된 시간 */
+.react-datepicker__time-list-item--selected {
+  background-color: #5534da !important;
 }

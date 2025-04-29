@@ -1,9 +1,13 @@
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { ko } from 'date-fns/locale'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Image from 'next/image'
 import Input from '@/components/common/input'
 import Tag from '@/components/common/tag/Tag'
 import type { TagColor } from '@/types/common/tag'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import styles from '@/components/domain/modals/custom-datepicker.module.css'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -37,11 +41,30 @@ export default function TaskCardEditModal({
   const [selectValue, setSelectValue] = useState(cardInfo.assignee)
   const [title, setTitle] = useState(cardInfo.title)
   const [description, setDescription] = useState(cardInfo.description)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [inputValue, setInputValue] = useState('')
   const [tags, setTags] = useState(cardInfo.tags)
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
   ])
+
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [preview, setPreview] = useState<string | null>(null)
+
+  const handleImageClick = () => {
+    inputRef.current?.click()
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   const statusSelectChangeHandler = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -76,7 +99,7 @@ export default function TaskCardEditModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.7)] flex justify-center items-center">
-      <div className="w-[58.4rem] max-h-[calc(100vh-10rem)] bg-[var(--white-FFFFFF)] rounded-2xl overflow-auto">
+      <div className="w-[58.4rem] bg-[var(--white-FFFFFF)] rounded-2xl overflow-auto">
         <div className="p-[3.2rem]">
           <h2 className="pb-[3.2rem] text-2xl-bold text-[var(--black-333236)]">
             할 일 수정
@@ -175,7 +198,9 @@ export default function TaskCardEditModal({
             <label className="text-2lg-medium text-[var(--black-333236)]">
               마감일
             </label>
-            <div className="group flex items-center w-full h-[5rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]">
+            <div
+              className={`group flex items-center w-full h-[5rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]`}
+            >
               <Image
                 src="/assets/icon/calendar.svg"
                 alt="달력 아이콘"
@@ -183,10 +208,20 @@ export default function TaskCardEditModal({
                 height={22}
                 className="mr-[0.8rem]"
               />
-              <input
-                type="text"
-                placeholder="날짜를 입력해 주세요"
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date: Date | null) => setSelectedDate(date)}
+                dateFormat="yyyy.MM.dd HH:mm"
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={30}
+                timeCaption="시간"
+                placeholderText="날짜를 입력해 주세요"
                 className="flex-1 bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
+                calendarClassName={styles.calendar} // 캘린더 박스 스타일
+                popperClassName={styles.popper} // 팝업(달력) 스타일
+                dayClassName={() => styles.day} // 하루하루 날짜 스타일
+                locale={ko}
               />
             </div>
           </div>
@@ -216,13 +251,15 @@ export default function TaskCardEditModal({
             <label className="text-2lg-medium text-[var(--black-000000)]">
               이미지
             </label>
-            <div className="relative w-[7.6rem] h-[7.6rem] rounded-[0.6rem] overflow-hidden cursor-pointer">
-              {/* 현재 직접 이미지 첨부 */}
+            <div
+              className="relative w-[7.6rem] h-[7.6rem] rounded-[0.6rem] overflow-hidden cursor-pointer"
+              onClick={handleImageClick}
+            >
               <Image
-                src="/assets/icon/example-edit-image.svg"
-                alt="example image"
-                width={76}
-                height={76}
+                src={preview || '/assets/icon/example-edit-image.svg'}
+                alt="업로드된 이미지"
+                fill
+                className="object-cover"
               />
               <div className="absolute inset-0 bg-[rgba(0,0,0,0.6)] flex items-center justify-center">
                 <Image
@@ -232,6 +269,13 @@ export default function TaskCardEditModal({
                   height={17}
                 />
               </div>
+              <input
+                className="hidden"
+                ref={inputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
             </div>
           </div>
 

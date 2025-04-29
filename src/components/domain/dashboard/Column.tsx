@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import CardTable from '@/components/domain/dashboard/CardTable'
 import { CardInfo } from '@/components/domain/dashboard/Card'
-import ButtonDashboard from '@/components/common/button/ButtonDashboard'
+import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 
 export interface ColumnInfo {
   id: number // 컬럼 ID (수정/삭제 시 사용), 드래그 앤 드롭에서 고유 식별자로 활용
