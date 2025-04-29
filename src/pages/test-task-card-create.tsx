@@ -1,8 +1,9 @@
-import TaskCardModal from '@/components/domain/modals/TaskCardModal' // 경로 맞게 수정!
+import TaskCardModal from '@/components/domain/modals/TaskCardModal'
 import { useState } from 'react'
 
 export default function TestPage() {
   const [isModalOpen, setIsModalOpen] = useState(true)
+
   type TagColor =
     | 'tag-orange'
     | 'tag-pink'
@@ -25,11 +26,11 @@ export default function TestPage() {
     ],
     dueDate: '2025-05-01',
     status: '진행 중',
-    assignee: { id: 'user1', name: '홍길동' },
+    assignee: { id: 1, name: '홍길동' },
     imageUrl: '/assets/image/desktop.svg',
   }
 
-  const currentUserId = 'user1' // 현재 로그인한 사용자 ID
+  const currentUserId = 1
 
   return (
     <>
@@ -40,11 +41,9 @@ export default function TestPage() {
           onClose={() => setIsModalOpen(false)}
           onEdit={(card) => {
             console.log('수정할 카드 데이터:', card)
-            // 수정 모달 열기 연결 예정
           }}
           onDelete={(cardId) => {
             console.log('삭제할 카드 ID:', cardId)
-            // 카드 삭제 후 목록 갱신 필요
             setIsModalOpen(false)
           }}
         />

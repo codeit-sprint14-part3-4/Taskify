@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Image from 'next/image'
 import Tag from '@/components/common/tag/Tag'
 import type { TagColor } from '@/types/common/tag'
-import CommonInput from '@/components/common/input'
+import { commentsService } from '@/api/services/commentsServices'
+import type { Comment } from '@/types/api/comments'
 import styles from './TaskCardModal.module.css'
 
 export const formatDate = (isoDate: string): string => {
@@ -11,15 +11,7 @@ export const formatDate = (isoDate: string): string => {
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
-
-  return `${year}.${month}.${day}` // 연도.월.일
-}
-
-interface Comment {
-  id: string
-  userId: string
-  content: string
-  createdAt: string
+  return `${year}.${month}.${day}`
 }
 
 interface CardData {
@@ -29,13 +21,13 @@ interface CardData {
   tags: { label: string; color: TagColor }[]
   dueDate: string
   status: string
-  assignee: { id: string; name: string }
+  assignee: { id: number; name: string }
   imageUrl?: string
 }
 
 interface Props {
   card: CardData
-  currentUserId: string
+  currentUserId: number
   onClose: () => void
   onEdit: (card: CardData) => void
   onDelete: (cardId: string) => void
@@ -52,27 +44,29 @@ export default function TaskCardModal({
   const [inputComment, setInputComment] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [cursorId, setCursorId] = useState<number | null>(null)
   const commentContainerRef = useRef<HTMLDivElement>(null)
 
-  const fetchComments = async () => {
+  const fetchComments = async (isLoadMore = false) => {
     try {
-      const response = await fetch(
-        `https://sp-taskify-api.vercel.app/comments?cardId=${card.id}`
+      const data = await commentsService.getComments(
+        Number(card.id),
+        10,
+        isLoadMore ? cursorId ?? undefined : undefined
       )
-      if (!response.ok) {
-        throw new Error('댓글 불러오기 실패: 서버 오류')
-      }
-      const data = await response.json()
-      setComments(data)
+      setComments((prev) =>
+        isLoadMore ? [...prev, ...data.comments] : data.comments
+      )
+      setCursorId(data.cursorId)
     } catch (error) {
       console.error('댓글 불러오기 실패', error)
     }
   }
 
   const loadMoreComments = async () => {
+    if (!cursorId) return
     setIsLoadingMore(true)
-    await new Promise((res) => setTimeout(res, 1000))
-    await fetchComments()
+    await fetchComments(true)
     setIsLoadingMore(false)
   }
 
@@ -88,18 +82,12 @@ export default function TaskCardModal({
   const addComment = async () => {
     if (!inputComment.trim()) return
     try {
-      const response = await fetch(
-        'https://sp-taskify-api.vercel.app/comments',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            cardId: card.id,
-            content: inputComment,
-          }),
-        }
-      )
-      const newComment = await response.json()
+      const newComment = await commentsService.postComments({
+        cardId: Number(card.id),
+        content: inputComment,
+        columnId: 0,
+        dashboardId: 0,
+      })
       setComments((prev) => [newComment, ...prev])
       setInputComment('')
     } catch (error) {
@@ -107,13 +95,9 @@ export default function TaskCardModal({
     }
   }
 
-  const editComment = async (id: string, newContent: string) => {
+  const editComment = async (id: number, newContent: string) => {
     try {
-      await fetch(`https://sp-taskify-api.vercel.app/comments/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: newContent }),
-      })
+      await commentsService.putComments(id, { content: newContent })
       setComments((prev) =>
         prev.map((comment) =>
           comment.id === id ? { ...comment, content: newContent } : comment
@@ -124,11 +108,9 @@ export default function TaskCardModal({
     }
   }
 
-  const deleteComment = async (id: string) => {
+  const deleteComment = async (id: number) => {
     try {
-      await fetch(`https://sp-taskify-api.vercel.app/comments/${id}`, {
-        method: 'DELETE',
-      })
+      await commentsService.deleteComments(id)
       setComments((prev) => prev.filter((comment) => comment.id !== id))
     } catch (error) {
       console.error('댓글 삭제 실패', error)
@@ -164,16 +146,13 @@ export default function TaskCardModal({
                 <button
                   className="block w-full text-left p-2 text-red-500"
                   onClick={() => {
-                    if (confirm('정말 삭제하시겠습니까?')) {
-                      onDelete(card.id)
-                    }
+                    if (confirm('정말 삭제하시겠습니까?')) onDelete(card.id)
                   }}
                 >
                   삭제하기
                 </button>
               </div>
             )}
-
             <button onClick={onClose} className={styles.buttonbox}>
               <div className={styles.closebutton}>
                 <Image src="/assets/icon/close.svg" alt="닫기" fill />
@@ -195,20 +174,14 @@ export default function TaskCardModal({
           </div>
         </section>
 
-        <div className={`${styles.sectionInfo}`}>
+        <div className={styles.sectionInfo}>
           <div className={styles.statusTagRow}>
             <div className={styles.cardStatus}>{card.status}</div>
             <div className={styles.tagList}>
-              <Image
-                src="/assets/icon/vector-icon.svg"
-                alt="상태와 태그 경계선"
-                width={2}
-                height={20}
-              />
+              {card.tags.map((tag, index) => (
+                <Tag key={index} label={tag.label} color={tag.color} />
+              ))}
             </div>
-            {card.tags.map((tag, idx) => (
-              <Tag key={idx} label={tag.label} color={tag.color} />
-            ))}
           </div>
 
           <p className={styles.cardDescription}>{card.description}</p>
@@ -241,6 +214,7 @@ export default function TaskCardModal({
               </div>
             </div>
           </div>
+
           <div
             ref={commentContainerRef}
             onScroll={handleScroll}
@@ -252,7 +226,7 @@ export default function TaskCardModal({
                   {formatDate(comment.createdAt)}
                 </div>
                 <div className={styles.commentContent}>{comment.content}</div>
-                {comment.userId === currentUserId && (
+                {comment.author.id === currentUserId && (
                   <div className={styles.commentButtons}>
                     <button
                       onClick={() => {
