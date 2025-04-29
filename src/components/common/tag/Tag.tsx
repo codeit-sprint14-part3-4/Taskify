@@ -20,7 +20,7 @@ export default function Tag({
       } text-md-regular relative`}
     >
       {label}
-      {isDeletable && onDelete && (
+      {isDeletable && (
         <button
           type="button"
           onClick={onDelete}
