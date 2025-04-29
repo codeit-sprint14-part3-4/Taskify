@@ -59,6 +59,9 @@ export default function TaskCardModal({
       const response = await fetch(
         `https://sp-taskify-api.vercel.app/comments?cardId=${card.id}`
       )
+      if (!response.ok) {
+        throw new Error('댓글 불러오기 실패: 서버 오류')
+      }
       const data = await response.json()
       setComments(data)
     } catch (error) {
@@ -212,7 +215,7 @@ export default function TaskCardModal({
 
           {card.imageUrl && (
             <div className={styles.imageWrapper}>
-              <Image src={card.imageUrl} alt="카드 이미지" fill />
+              <Image src={card.imageUrl} alt="카드 이미지" fill priority />
             </div>
           )}
         </div>
