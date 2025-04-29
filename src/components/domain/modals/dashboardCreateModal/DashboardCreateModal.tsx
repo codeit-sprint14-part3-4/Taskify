@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { CreateDashboardBody } from '@/types/api/dashboards'
 import { dashboardsService } from '@/api/services/dashboardsServices'
+import ColorPin from '@/components/domain/colorpin/ColorPin'
 
 interface DashboardModalProps {
   onClose: () => void
@@ -34,7 +35,7 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
       const newDashBoard = await dashboardsService.postDashboards(body)
       onClose()
       router.push(`/dashboard/${newDashBoard.id}`)
-    } catch (error) {
+    } catch (error: any) {
       if (error.response?.status === 401) {
         /*인증되지 않은 요청*/
         alert('로그인 후 사용해주세요.')
@@ -67,19 +68,13 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
         />
         <div className={styles.color_badge_container}>
           {COLORS.map((item) => (
-            <button
+            <ColorPin
               key={item.id}
+              id={item.id}
+              color={item.color}
+              isSelected={selectedColor?.id === item.id}
               onClick={() => setSelectedColor(item)}
-              className={`${styles.color_badge} ${
-                selectedColor?.id === item.id ? styles.selected : ''
-              }`}
-              style={{ backgroundColor: item.color }}
-            >
-              {' '}
-              {selectedColor?.id === item.id && (
-                <span className={styles.check}>✓</span>
-              )}
-            </button>
+            ></ColorPin>
           ))}
         </div>
 
