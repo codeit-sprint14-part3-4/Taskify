@@ -66,13 +66,13 @@ export default function TaskCardEditModal({
     }
   }
 
-  const handleChangeStatusSelect = (
+  const statusSelectChangeHandler = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setStatusValue(e.target.value)
   }
 
-  const handleChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectValue(e.target.value)
   }
 
@@ -97,6 +97,10 @@ export default function TaskCardEditModal({
     }
   }
 
+  const handleRemoveTag = (index: number) => {
+    setTags((prevTags) => prevTags.filter((_, i) => i !== index))
+  }
+
   return (
     <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.7)] flex justify-center items-center">
       <div className="w-[58.4rem] bg-[var(--white-FFFFFF)] rounded-2xl overflow-auto">
@@ -113,7 +117,7 @@ export default function TaskCardEditModal({
               </label>
               <select
                 value={statusValue}
-                onChange={handleChangeStatusSelect}
+                onChange={statusSelectChangeHandler}
                 className={`w-full h-[4.8rem] px-[1.6rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-md text-lg-regular outline-none
                   ${
                     statusValue === ''
@@ -139,7 +143,7 @@ export default function TaskCardEditModal({
               </label>
               <select
                 value={selectValue}
-                onChange={handleChangeSelect}
+                onChange={selectChangeHandler}
                 className={`w-full h-[4.8rem] px-[1.6rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-md text-lg-regular outline-none
                   ${
                     selectValue === ''
@@ -233,7 +237,13 @@ export default function TaskCardEditModal({
             </label>
             <div className="flex flex-wrap w-full min-h-[5rem] px-[1.6rem] py-[1rem] border border-[var(--gray-D9D9D9)] rounded-lg gap-[1rem] focus-within:border-[var(--violet-5534DhA)]">
               {tags.map((tag, idx) => (
-                <Tag key={idx} label={tag.label} color={tag.color} />
+                <Tag
+                  key={idx}
+                  label={tag.label}
+                  color={tag.color}
+                  isDeletable
+                  onDelete={() => handleRemoveTag(idx)}
+                />
               ))}
               <input
                 type="text"
