@@ -1,12 +1,8 @@
 import DashboardList from '@/components/domain/mydashboard/DashboardList'
-import styles from './testpage.module.css'
 
-import InvitedList from '@/components/domain/mydashboard/InvitedList'
-
-export default function MyDashboard() {
+export default function MyDashboardPage() {
   return (
-    <div className={styles.invite_section}>
-      <InvitedList />
+    <div>
       <DashboardList />
     </div>
   )

@@ -17,11 +17,11 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
 
   const accessToken = useAuthStore((state) => state.accessToken) //이 부분 설명 필요
   const COLORS = [
-    { id: 1, color: 'var(--green-7AC555)' },
-    { id: 2, color: 'var(--purple-760DDE)' },
-    { id: 3, color: 'var(--orange-FFA500)' },
-    { id: 4, color: 'var(--blue-76A5EA)' },
-    { id: 5, color: 'var(--pink-E876EA)' },
+    { id: 1, color: '#7AC555' },
+    { id: 2, color: '#760DDE' },
+    { id: 3, color: '#FFA500' },
+    { id: 4, color: '#76A5EA' },
+    { id: 5, color: '#E876EA' },
   ] as const
   type ColorType = (typeof COLORS)[number]
   const [selectedColor, setSelectedColor] = useState<ColorType | null>(null)
