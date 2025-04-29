@@ -7,7 +7,6 @@
   min-height: 80vh;
   background-color: var(--gray-FAFAFA);
 }
-
 .content {
   padding: 0.9rem 32rem;
   flex: 1;
@@ -79,7 +78,7 @@
 .avatar {
   width: 18.2rem;
   height: 18.2rem;
-  border: 0.1rem dashed var(--gray-D9D9D9);
+  border: 0.1rem var(--gray-D9D9D9);
   border-radius: 1.6rem;
   font-size: 3.2rem;
   font-family: var(--font-family);
@@ -98,9 +97,9 @@
   border-radius: 1.6rem;
 }
 .avatar:hover {
-  background-color: var(--white-FFFFFF);
+  background-color: var(--gray-FAFAFA);
   border-color: var(--gray-9FA6B2);
-  color: var(--black-4B4B4B);
+  color: var(--violet-5534DhA);
 }
 
 .profileForm,
@@ -143,13 +142,11 @@
 .profileForm input:last-of-type {
   margin-bottom: 2.4rem;
 }
-
+.inputError {
+  border: 0.1rem solid var(--red-D6173A);
+}
 .passwordForm input {
   padding: 1.5rem;
-}
-
-.passwordForm input:last-of-type {
-  margin-bottom: 2.4rem;
 }
 
 .errorMessage {
@@ -186,8 +183,13 @@
 
 .changeButton {
   padding: 1.5rem;
+  margin-top: 0.8rem;
 }
-
+.emailInput {
+  color: var(--gray-9FA6B2);
+  background-color: transparent;
+  border: none;
+}
 /* 태블릿 (max-width: 1023px) */
 @media (max-width: 1023px) {
   .layout {

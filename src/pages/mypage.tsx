@@ -1,29 +1,46 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import styles from '@/pages/mypage.module.css'
-import CommonButton from '@/components/common/commonbutton/CommonButton'
+import Button from '@/components/common/commonbutton/CommonButton'
 import Sidebar from '@/components/layout/sidebar/Sidebar'
 import HomeNavBar from '@/components/layout/gnb/HomeNavBar'
 import Modal from '@/components/domain/modals/Modal'
-import { useState } from 'react'
+
+import { usersService } from '@/api/services/usersServices'
+import { authService } from '@/api/services/authServices'
 
 export default function MyPage() {
   const router = useRouter()
 
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmNewPassword, setConfirmNewPassword] = useState('')
+  const [email, setEmail] = useState('')
   const [nickname, setNickname] = useState('')
   const [profileImage, setProfileImage] = useState<File | null>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
 
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmNewPassword, setConfirmNewPassword] = useState('')
+
   const [currentPasswordError, setCurrentPasswordError] = useState('')
   const [newPasswordError, setNewPasswordError] = useState('')
-  const [confirmNewPasswordError, setConfirmNewPasswordError] = useState('')
+  const [confirmPasswordError, setConfirmPasswordError] = useState('')
 
-  // Modal 상태
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
+
+  useEffect(() => {
+    async function fetchUserInfo() {
+      try {
+        const user = await usersService.getUsers()
+        setNickname(user.nickname || '')
+        setEmail(user.email || '')
+      } catch (error) {
+        console.error('사용자 정보 가져오기 실패', error)
+      }
+    }
+    fetchUserInfo()
+  }, [])
 
   const openModal = (message: string) => {
     setModalMessage(message)
@@ -31,87 +48,12 @@ export default function MyPage() {
   }
 
   const closeModal = () => {
-    setModalMessage('')
     setIsModalOpen(false)
+    setModalMessage('')
   }
 
-  // 비밀번호 변경 로직
-  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setNewPassword(value)
-
-    if (confirmNewPassword && value !== confirmNewPassword) {
-      setNewPasswordError('비밀번호가 일치하지 않습니다.')
-    } else {
-      setNewPasswordError('')
-    }
-  }
-  const handleChangePassword = async () => {
-    if (newPassword.length < 8) {
-      openModal('새 비밀번호는 최소 8자 이상이어야 합니다.')
-      return
-    }
-    if (newPassword !== confirmNewPassword) {
-      openModal('비밀번호가 일치하지 않습니다.')
-      return
-    }
-
-    try {
-      const rawAuth = localStorage.getItem('persist:auth')
-      if (!rawAuth) {
-        openModal('로그인이 필요합니다.')
-        return
-      }
-
-      const parsedAuth = JSON.parse(rawAuth)
-      const { accessToken } = parsedAuth.state
-
-      if (!accessToken) {
-        openModal('액세스 토큰이 없습니다.')
-        return
-      }
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/password`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({
-            password: currentPassword,
-            newPassword: newPassword,
-          }),
-        }
-      )
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        openModal(errorData.message || '비밀번호 변경에 실패했습니다.')
-        return
-      }
-
-      openModal('비밀번호가 성공적으로 변경되었습니다!')
-      setCurrentPassword('')
-      setNewPassword('')
-      setConfirmNewPassword('')
-      setNewPasswordError('')
-    } catch (error) {
-      openModal('비밀번호 변경 중 오류가 발생했습니다.')
-    }
-  }
-  const handleConfirmPasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value
-    setConfirmNewPassword(value)
-
-    if (newPassword !== value) {
-      setNewPasswordError('비밀번호가 일치하지 않습니다.')
-    } else {
-      setNewPasswordError('')
-    }
+  const handleNicknameFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.select()
   }
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,101 +75,138 @@ export default function MyPage() {
     }
   }
 
-  // 이메일 입력 필드 유지
+  const handleCurrentPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value
+    setCurrentPassword(value)
+
+    if (value.length > 0 && value.length < 8) {
+      setCurrentPasswordError('현재 비밀번호는 최소 8자 이상이어야 합니다.')
+    } else {
+      setCurrentPasswordError('')
+    }
+  }
+
+  const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setNewPassword(value)
+    validatePasswords(value, confirmNewPassword)
+  }
+
+  const handleConfirmPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value
+    setConfirmNewPassword(value)
+    validatePasswords(newPassword, value)
+  }
+
+  const validatePasswords = (newPass: string, confirmPass: string) => {
+    const hasUpperCase = /[A-Z]/.test(newPass)
+    const hasLowerCase = /[a-z]/.test(newPass)
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPass)
+
+    if (newPass.length > 0 && newPass.length < 8) {
+      setNewPasswordError('비밀번호는 최소 8자 이상이어야 합니다.')
+    } else if (
+      newPass.length > 0 &&
+      !(hasUpperCase || hasLowerCase || hasSpecialChar)
+    ) {
+      setNewPasswordError(
+        '비밀번호에는 대문자, 소문자 또는 특수문자 중 하나 이상이 포함되어야 합니다.'
+      )
+    } else {
+      setNewPasswordError('')
+    }
+
+    if (confirmPass.length > 0 && confirmPass.length < 8) {
+      setConfirmPasswordError('비밀번호는 최소 8자 이상이어야 합니다.')
+    } else if (newPass && confirmPass && newPass !== confirmPass) {
+      setConfirmPasswordError('비밀번호가 일치하지 않습니다.')
+    } else {
+      setConfirmPasswordError('')
+    }
+  }
+
   const handleSaveProfile = async () => {
-    if (!nickname && !profileImage) {
-      openModal('닉네임이나 프로필 이미지를 수정해야 합니다.')
+    if (nickname.trim().length < 2 && !profileImage) {
+      openModal('닉네임을 2자 이상 입력하거나 프로필 이미지를 수정해야 합니다.')
       return
     }
 
     try {
-      const rawAuth = localStorage.getItem('persist:auth')
-      if (!rawAuth) {
-        openModal('로그인이 필요합니다.')
-        return
-      }
+      let profileImageUrl: string | undefined
 
-      const parsedAuth = JSON.parse(rawAuth)
-      const { accessToken } = parsedAuth.state
-
-      if (!accessToken) {
-        openModal('로그인이 필요합니다.')
-        return
-      }
-
-      let profileImageUrl = ''
       if (profileImage) {
-        profileImageUrl = await uploadProfileImage(profileImage)
+        const uploadResponse = await usersService.postUsersMeImage(profileImage)
+        profileImageUrl = uploadResponse.profileImageUrl
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({
-            nickname: nickname || undefined,
-            profileImageUrl: profileImageUrl || undefined,
-          }),
-        }
-      )
+      await usersService.putUsers({
+        nickname: nickname || '',
+        profileImageUrl,
+      })
 
-      if (!response.ok) {
-        let errorMsg
-        try {
-          errorMsg = await response.json()
-        } catch (e) {
-          errorMsg = await response.text()
-        }
-        openModal(`서버 오류: ${JSON.stringify(errorMsg)}`)
-        return
-      }
-
-      const successData = await response.json()
       openModal('😊 프로필이 성공적으로 수정되었습니다!')
     } catch (error) {
+      console.error('프로필 저장 에러:', error)
       openModal('프로필 저장 중 오류가 발생했습니다.')
     }
   }
 
-  const uploadProfileImage = async (file: File): Promise<string> => {
-    const formData = new FormData()
-    formData.append('image', file)
+  const handleChangePassword = async () => {
+    const hasUpperCase = /[A-Z]/.test(newPassword)
+    const hasLowerCase = /[a-z]/.test(newPassword)
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword)
 
-    const rawAuth = localStorage.getItem('persist:auth')
-    const parsedAuth = JSON.parse(rawAuth || '{}')
-    const { accessToken } = parsedAuth.state
-
-    if (!accessToken) {
-      throw new Error('액세스 토큰이 없습니다.')
+    if (currentPassword.length < 8) {
+      openModal('현재 비밀번호는 최소 8자 이상이어야 합니다.')
+      return
+    }
+    if (newPassword.length < 8) {
+      openModal('새 비밀번호는 최소 8자 이상이어야 합니다.')
+      return
+    }
+    if (!(hasUpperCase || hasLowerCase || hasSpecialChar)) {
+      openModal(
+        '새 비밀번호에는 대문자, 소문자 또는 특수문자 중 하나 이상이 포함되어야 합니다.'
+      )
+      return
+    }
+    if (newPassword !== confirmNewPassword) {
+      openModal('비밀번호가 일치하지 않습니다.')
+      return
     }
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/users/me/image`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: formData,
-      }
-    )
-
-    if (!response.ok) {
-      throw new Error('이미지 업로드에 실패했습니다.')
+    try {
+      await authService.putAuth({
+        password: currentPassword,
+        newPassword,
+      })
+      openModal('비밀번호가 성공적으로 변경되었습니다!')
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmNewPassword('')
+      setCurrentPasswordError('')
+      setNewPasswordError('')
+      setConfirmPasswordError('')
+    } catch (error) {
+      openModal('비밀번호 변경 중 오류가 발생했습니다.')
     }
-
-    const data = await response.json()
-    return data.profileImageUrl
   }
 
-  // 비밀번호 변경 버튼 활성화 여부
   const isPasswordValid =
-    newPassword.length >= 8 && newPassword === confirmNewPassword
-  const isProfileSaveValid = nickname || profileImage
+    currentPassword.length >= 8 &&
+    newPassword.length >= 8 &&
+    confirmNewPassword.length >= 8 &&
+    newPassword === confirmNewPassword &&
+    (/[A-Z]/.test(newPassword) ||
+      /[a-z]/.test(newPassword) ||
+      /[!@#$%^&*(),.?":{}|<>]/.test(newPassword))
+
+  const isSaveButtonActive =
+    nickname.trim().length >= 2 || profileImage !== null
 
   return (
     <div className={styles.navbar}>
@@ -253,7 +232,7 @@ export default function MyPage() {
           </div>
 
           <div className={styles.cardGroup}>
-            {/* 프로필 섹션 */}
+            {/* 프로필 카드 */}
             <section className={`${styles.card} ${styles.profileCard}`}>
               <h2 className={styles.sectionTitle}>프로필</h2>
               <div className={styles.profileWrapper}>
@@ -277,14 +256,13 @@ export default function MyPage() {
                 </label>
 
                 <div className={styles.profileForm}>
-
                   <label htmlFor="email">이메일</label>
                   <input
                     id="email"
                     name="email"
                     type="email"
                     placeholder="Codeit@naver.com"
-                    value=""
+                    value={email}
                     disabled
                   />
 
@@ -293,51 +271,45 @@ export default function MyPage() {
                     id="nickname"
                     name="nickname"
                     type="text"
-                    placeholder="닉네임 입력 (최대 10자)"
+                    placeholder="닉네임 입력 (최소 2자 이상, 최대 10자)"
                     value={nickname}
                     onChange={handleNicknameChange}
+                    onFocus={handleNicknameFocus}
                   />
 
                   <Button
                     variant="primary"
-                    isActive={nickname.length > 0 || profileImage !== null}
+                    isActive={isSaveButtonActive}
                     className={`${styles.saveButton} ${
-                      nickname.length > 0 || profileImage !== null
+                      isSaveButtonActive
                         ? styles.activeButton
                         : styles.inactiveButton
                     }`}
-                    onClick={handleSaveProfile}
-
-                  <label>이메일</label>
-                  <input type="email" placeholder="Taskify@gmail.com" />
-                  <label>닉네임</label>
-                  <input type="text" placeholder="닉네임 입력" />
-                  <CommonButton
-                    variant="primary"
-                    padding="1.2rem 1.2rem"
-                    className={styles.saveButton}
-
+                    onClick={isSaveButtonActive ? handleSaveProfile : undefined}
                   >
                     저장
-                  </CommonButton>
+                  </Button>
                 </div>
               </div>
             </section>
 
-            {/* 비밀번호 변경 섹션 */}
+            {/* 비밀번호 변경 카드 */}
             <section className={`${styles.card} ${styles.passwordCard}`}>
               <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
               <div className={styles.passwordForm}>
-
                 <label htmlFor="currentPassword">현재 비밀번호</label>
                 <input
                   id="currentPassword"
                   name="currentPassword"
                   type="password"
-                  placeholder="현재 비밀번호 입력"
+                  placeholder="현재 비밀번호 입력 (8자 이상)"
                   value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  onChange={handleCurrentPasswordChange}
+                  className={currentPasswordError ? styles.inputError : ''}
                 />
+                {currentPasswordError && (
+                  <p className={styles.errorMessage}>{currentPasswordError}</p>
+                )}
 
                 <label htmlFor="newPassword">새 비밀번호</label>
                 <input
@@ -347,7 +319,11 @@ export default function MyPage() {
                   placeholder="새 비밀번호 입력 (8자 이상)"
                   value={newPassword}
                   onChange={handleNewPasswordChange}
+                  className={newPasswordError ? styles.inputError : ''}
                 />
+                {newPasswordError && (
+                  <p className={styles.errorMessage}>{newPasswordError}</p>
+                )}
 
                 <label htmlFor="confirmNewPassword">새 비밀번호 확인</label>
                 <input
@@ -357,13 +333,13 @@ export default function MyPage() {
                   placeholder="새 비밀번호 다시 입력"
                   value={confirmNewPassword}
                   onChange={handleConfirmPasswordChange}
-                  className={newPasswordError ? styles.inputError : ''}
+                  className={confirmPasswordError ? styles.inputError : ''}
                 />
-                {newPasswordError && (
-                  <p className={styles.errorMessage}>{newPasswordError}</p>
+                {confirmPasswordError && (
+                  <p className={styles.errorMessage}>{confirmPasswordError}</p>
                 )}
 
-                <div style={{ marginTop: '1rem' }}>
+                <div>
                   <Button
                     variant="primary"
                     isActive={isPasswordValid}
@@ -377,21 +353,6 @@ export default function MyPage() {
                     변경
                   </Button>
                 </div>
-
-                <label>현재 비밀번호</label>
-                <input type="password" placeholder="비밀번호 입력" />
-                <label>새 비밀번호</label>
-                <input type="password" placeholder="새 비밀번호 입력" />
-                <label>새 비밀번호 확인</label>
-                <input type="password" placeholder="새 비밀번호 입력" />
-                <CommonButton
-                  variant="primary"
-                  padding="1.2rem 1.2rem"
-                  className={styles.changeButton}
-                >
-                  변경
-                </CommonButton>
-
               </div>
             </section>
           </div>
