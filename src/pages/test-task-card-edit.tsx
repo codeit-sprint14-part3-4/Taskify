@@ -21,11 +21,17 @@ const dummyCardInfo: {
   ],
   imageUrl: '/assets/image/sample-image.png',
 }
-
+const users = [
+  { id: 1, name: '김이영', badgeColor: '#EF4444' },
+  { id: 2, name: '박해일', badgeColor: '#34D399' },
+  { id: 3, name: '이원구', badgeColor: '#FBBF24' },
+  { id: 4, name: '이아이', badgeColor: '#22C55E' },
+  { id: 5, name: '이지사', badgeColor: '#5534DA' },
+]
 export default function TestTaskCardEditPage() {
   return (
     <div className="flex justify-center items-center h-screen bg-[var(--gray-FAFAFA)]">
-      <TaskCardEditModal cardInfo={dummyCardInfo} />
+      <TaskCardEditModal cardInfo={dummyCardInfo} users={users} />
     </div>
   )
 }
