@@ -11,7 +11,9 @@ export const formatDate = (isoDate: string): string => {
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
-  return `${year}.${month}.${day}`
+  const hour = String(date.getHours()).padStart(2, '0')
+  const minute = String(date.getMinutes()).padStart(2, '0')
+  return `${year}.${month}.${day} ${hour}:${minute}`
 }
 
 interface CardData {
@@ -46,6 +48,7 @@ export default function TaskCardModal({
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [cursorId, setCursorId] = useState<number | null>(null)
   const commentContainerRef = useRef<HTMLDivElement>(null)
+  const observerTargetRef = useRef<HTMLDivElement>(null)
 
   const fetchComments = async (isLoadMore = false) => {
     try {
@@ -68,15 +71,6 @@ export default function TaskCardModal({
     setIsLoadingMore(true)
     await fetchComments(true)
     setIsLoadingMore(false)
-  }
-
-  const handleScroll = () => {
-    if (!commentContainerRef.current) return
-    const { scrollTop, clientHeight, scrollHeight } =
-      commentContainerRef.current
-    if (scrollTop + clientHeight >= scrollHeight - 50 && !isLoadingMore) {
-      loadMoreComments()
-    }
   }
 
   const addComment = async () => {
@@ -120,6 +114,28 @@ export default function TaskCardModal({
   useEffect(() => {
     fetchComments()
   }, [])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries
+        if (entry.isIntersecting && !isLoadingMore && cursorId) {
+          loadMoreComments()
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (observerTargetRef.current) {
+      observer.observe(observerTargetRef.current)
+    }
+
+    return () => {
+      if (observerTargetRef.current) {
+        observer.unobserve(observerTargetRef.current)
+      }
+    }
+  }, [isLoadingMore, cursorId])
 
   return (
     <div className={styles.overlay}>
@@ -215,11 +231,7 @@ export default function TaskCardModal({
             </div>
           </div>
 
-          <div
-            ref={commentContainerRef}
-            onScroll={handleScroll}
-            className={styles.commentList}
-          >
+          <div ref={commentContainerRef} className={styles.commentList}>
             {comments.map((comment) => (
               <div key={comment.id} className={styles.commentCard}>
                 <div className={styles.commentMeta}>
@@ -247,6 +259,8 @@ export default function TaskCardModal({
                 )}
               </div>
             ))}
+            <div ref={observerTargetRef} style={{ height: '0.1rem' }} />
+
             {isLoadingMore && (
               <div className={styles.loadingText}>댓글 불러오는 중...</div>
             )}

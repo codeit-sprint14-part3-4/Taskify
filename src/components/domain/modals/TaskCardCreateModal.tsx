@@ -8,6 +8,7 @@ import Tag from '@/components/common/tag/Tag'
 import type { TagColor } from '@/types/common/tag'
 import { useRef, useState } from 'react'
 import styles from '@/components/domain/modals/custom-datepicker.module.css'
+import UserDropdown from '@/components/dropdown/UserDropdown'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -32,6 +33,16 @@ export default function TaskCardCreateModal() {
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
   ])
+  const users = [
+    { id: 1, name: '김이영', badgeColor: '#EF4444' },
+    { id: 2, name: '박해일', badgeColor: '#34D399' },
+    { id: 3, name: '이원구', badgeColor: '#FBBF24' },
+    { id: 4, name: '이아이', badgeColor: '#22C55E' },
+    { id: 5, name: '이지사', badgeColor: '#5534DA' },
+  ]
+
+  const [selectedUser, setSelectedUser] = useState(users[0])
+
   const inputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
 
@@ -83,27 +94,15 @@ export default function TaskCardCreateModal() {
             할 일 생성
           </h2>
           <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-            {/* 구현해주시는 드롭 다운 UI 적용시켜야하는 부분 */}
             <label className="text-2lg-medium text-[var(--black-000000)]">
               담당자
             </label>
-            <select
-              value={selectValue}
-              onChange={selectChangeHandler}
-              className={`w-full h-[4.8rem] px-[1.6rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-md text-lg-regular outline-none
-                  ${
-                    selectValue === ''
-                      ? 'text-[var(--gray-9FA6B2)]'
-                      : 'text-[var(--black-333236)]'
-                  }
-                  focus:border-[var(--violet-5534DhA)] focus:ring-0 focus:outline-none
-                `}
-            >
-              <option value="" disabled hidden>
-                이름을 입력해 주세요
-              </option>
-              <option value="하잉">하잉</option>
-            </select>
+            {/* UserDropdown 바로 사용 */}
+            <UserDropdown
+              users={users}
+              selectedUser={selectedUser}
+              onChange={setSelectedUser}
+            />
           </div>
           <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
             <label className="text-2lg-medium text-[var(--black-000000)] flex items-center gap-[2px]">
