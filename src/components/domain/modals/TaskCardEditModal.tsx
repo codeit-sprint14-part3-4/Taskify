@@ -108,6 +108,7 @@ export default function TaskCardEditModal({
               <label className="text-2lg-medium text-[var(--black-333236)]">
                 상태
               </label>
+              <StatusDropdown value={statusValue} onChange={setStatusValue} />
             </div>
 
             {/* 담당자 */}

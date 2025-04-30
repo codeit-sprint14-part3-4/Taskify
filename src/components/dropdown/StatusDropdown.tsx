@@ -124,7 +124,7 @@ export default function StatusDropdown({
         <ul className="absolute z-10 mt-[0.8rem] w-full border border-[#D9D9D9] bg-[var(--white-FFFFFF)] rounded-[0.8rem] transition-all duration-300 origin-top max-h-[24rem] overflow-y-auto">
           {statusOptions.map((status, index) => (
             <li
-              key={`status-${index}`}
+              key={status}
               ref={(el) => setItemRef(el, index)}
               onClick={() => handleSelect(status)}
               className={`flex items-center gap-[1.2rem] px-[1.6rem] cursor-pointer w-full h-[4.8rem] text-[1.4rem] font-medium transition-colors duration-200 ${
