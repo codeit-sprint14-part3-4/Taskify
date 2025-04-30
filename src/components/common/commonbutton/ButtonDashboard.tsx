@@ -5,7 +5,6 @@ import { ButtonHTMLAttributes, ReactNode } from 'react'
 interface ButtonDashboardProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix'> {
   children?: ReactNode
-
   paddingHeight?: string
   paddingWidth?: string
   gap?: string
