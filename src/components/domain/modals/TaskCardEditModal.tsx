@@ -104,7 +104,6 @@ export default function TaskCardEditModal({
               <label className="text-2lg-medium text-[var(--black-333236)]">
                 상태
               </label>
-              <StatusDropdown value={statusValue} onChange={setStatusValue} />
             </div>
 
             {/* 담당자 */}
@@ -112,6 +111,7 @@ export default function TaskCardEditModal({
               <label className="text-2lg-medium text-[var(--black-333236)]">
                 담당자
               </label>
+
               <UserDropdown
                 users={users}
                 selectedUser={selectedUser}
@@ -201,7 +201,13 @@ export default function TaskCardEditModal({
             </label>
             <div className="flex flex-wrap w-full min-h-[5rem] px-[1.6rem] py-[1rem] border border-[var(--gray-D9D9D9)] rounded-lg gap-[1rem] focus-within:border-[var(--violet-5534DhA)]">
               {tags.map((tag, idx) => (
-                <Tag key={idx} label={tag.label} color={tag.color} />
+                <Tag
+                  key={idx}
+                  label={tag.label}
+                  color={tag.color}
+                  isDeletable
+                  onDelete={() => handleRemoveTag(idx)}
+                />
               ))}
               <input
                 value={inputValue}
