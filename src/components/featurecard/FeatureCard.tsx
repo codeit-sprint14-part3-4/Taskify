@@ -7,8 +7,8 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   imageSrc,
   title,
   description,
-  width,
-  height,
+  imgwidth,
+  imgheight,
 }) => {
   return (
     <div className={`${styles.featureCardFrame}`}>
@@ -16,8 +16,8 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
         <div
           className={styles.cardboximage}
           style={{
-            width: `${width}px`,
-            height: `${height}px`,
+            width: imgwidth,
+            height: imgheight,
             position: 'relative',
           }}
         >
