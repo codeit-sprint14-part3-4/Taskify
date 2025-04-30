@@ -21,10 +21,8 @@ const MyInvitedDashboard = () => {
     const keyword = e.target.value
     setSearchTerm(keyword)
 
-    const results = data.filter(
-      (item) =>
-        item.name.toLowerCase().includes(keyword.toLowerCase()) ||
-        item.inviter.toLowerCase().includes(keyword.toLowerCase())
+    const results = data.filter((item) =>
+      item.name.toLowerCase().includes(keyword.toLowerCase())
     )
 
     setFilteredData(results)
