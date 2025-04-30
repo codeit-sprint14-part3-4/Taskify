@@ -1,25 +1,30 @@
 // 컬럼 전체 한 세트
 import Image from 'next/image'
 import CardTable from '@/components/domain/dashboard/CardTable'
-import { CardInfo } from '@/components/domain/dashboard/Card'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
-
-export interface ColumnInfo {
-  id: number // 컬럼 ID (수정/삭제 시 사용), 드래그 앤 드롭에서 고유 식별자로 활용
-  title: string // 컬럼 제목
-  dashboardId: number // 이 컬럼이 속한 대시보드 ID, 카드 추가, 수정 시 해당 컬럼이 어느 대시보드에 포함되는지
-  teamId: string // 팀 식별자, 팀 단위 요청 시 API 파라미터로 필요
-  cards: CardInfo[] // 이 컬럼에 포함된 카드 리스트
-  onClickAdd?: () => void // 카드 생성 버튼 핸들러
-  onClickEdit?: () => void // 컬럼 설정(수정/삭제) 버튼 핸들러
-}
+import { ColumnType } from '@/types/api/columns'
+import { CardType } from '@/types/api/cards'
+import { cardsService } from '@/api/services/cardsServices'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
 // 내부에서만 사용
 export interface ColumnProps {
-  columnInfo: ColumnInfo
+  columnInfo: ColumnType
 }
 
 export default function Column({ columnInfo }: ColumnProps) {
+  const [cards, setCards] = useState<CardType[]>()
+
+  const getCards = async () => {
+    const cardsData = await cardsService.getCards(10, columnInfo.id)
+    setCards(cardsData.cards)
+  }
+
+  useEffect(() => {
+    getCards()
+  }, [])
+
   return (
     <div className="min-h-[calc(100vh-4.5rem)] w-[31.4rem] bg-[var(--gray-FAFAFA)] rounded-md shadow-sm flex flex-col">
       {/* 상단: 컬럼 제목 + 카드 개수 + 설정 버튼 */}
@@ -31,11 +36,12 @@ export default function Column({ columnInfo }: ColumnProps) {
           </div>
 
           <span className="w-[2rem] h-[2rem] rounded-[0.4rem] bg-[#EEEEEE] text-[#787486] text-xs-medium flex items-center justify-center">
-            {columnInfo.cards.length}
+            {/* && 연산자 사용 이유 : getCards는 비동기로 동작, cards가 확정적으로 동작하지 않음. cards가 있을 때만 cards.length가 동작할 수 있게 */}
+            {cards && cards.length}
           </span>
         </div>
-
-        <button onClick={columnInfo.onClickEdit}>
+        {/* onClick 이벤트 추가 요망 */}
+        <button>
           <Image
             src="/assets/icon/settings_logo.svg"
             alt="설정 아이콘"
@@ -48,7 +54,7 @@ export default function Column({ columnInfo }: ColumnProps) {
       {/* + 버튼 */}
       <div className="px-[2rem] pt-[2.5rem] pb-[1.6rem]">
         <ButtonDashboard
-          onClick={columnInfo.onClickAdd}
+          // onclickAdd 이벤트 추가 요망
           color="bg-white"
           className="rounded-[0.6rem] w-full flex justify-center items-center py-[0.9rem]"
           prefix={
@@ -67,7 +73,7 @@ export default function Column({ columnInfo }: ColumnProps) {
       </div>
 
       {/* 카드 리스트 */}
-      <CardTable cards={columnInfo.cards} />
+      {cards && <CardTable cards={cards} />}
     </div>
   )
 }

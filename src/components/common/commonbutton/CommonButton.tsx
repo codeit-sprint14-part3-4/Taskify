@@ -4,7 +4,7 @@ import styles from './commonButton.module.css'
 type ButtonProps = {
   children: React.ReactNode
   variant?: 'primary' | 'secondary'
-  padding: string
+  padding?: string
   isActive?: boolean
   className?: string
   onClick?: () => void

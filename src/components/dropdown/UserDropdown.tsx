@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import Image from 'next/image'
 
-interface User {
+export interface User {
   id: number
   name: string
   badgeColor: string
@@ -11,20 +11,34 @@ interface UserDropdownProps {
   users: User[]
   selectedUser: User
   onChange: (user: User) => void
+  mode?: 'search' | 'select'
+  className?: string
 }
 
 export default function UserDropdown({
   users,
   selectedUser,
   onChange,
+  mode = 'search',
+  className = '',
 }: UserDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+  const [focusedIndex, setFocusedIndex] = useState(0)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const filteredUsers = useMemo(() => {
+    return mode === 'search'
+      ? users.filter((user) => user.name.startsWith(inputValue))
+      : users
+  }, [users, inputValue, mode])
 
   const handleSelect = useCallback(
     (user: User) => {
       onChange(user)
+      setInputValue(user.name)
       setIsOpen(false)
+      setFocusedIndex(0)
     },
     [onChange]
   )
@@ -50,13 +64,12 @@ export default function UserDropdown({
   }, [])
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) {
-        setIsOpen(false)
-        ;(document.activeElement as HTMLElement)?.blur()
-      }
+    if (mode === 'search') {
+      setInputValue(selectedUser.name)
     }
+  }, [selectedUser, mode])
 
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -65,87 +78,149 @@ export default function UserDropdown({
         setIsOpen(false)
       }
     }
-
-    document.addEventListener('keydown', handleKeyDown)
     document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('mousedown', handleClickOutside)
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (!isOpen) return
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setFocusedIndex((prev) => (prev + 1) % filteredUsers.length)
     }
-  }, [isOpen])
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setFocusedIndex(
+        (prev) => (prev - 1 + filteredUsers.length) % filteredUsers.length
+      )
+    }
+    if (e.key === 'Enter' && filteredUsers.length > 0) {
+      e.preventDefault()
+      handleSelect(filteredUsers[focusedIndex])
+    }
+  }
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
-      <div
-        ref={dropdownRef}
-        className="relative inline-block w-full max-w-sm min-w-[200px] md:w-[217px]"
-      >
-        {/* 버튼 */}
-        <button
-          type="button"
-          onClick={() => setIsOpen((prev) => !prev)}
-          className={`w-full h-12 md:w-[217px] md:h-[48px] flex justify-between items-center px-4 py-3 rounded-[8px] text-[16px] font-regular bg-white focus:outline-none
-          ${isOpen ? 'border-[#5534DA]' : 'border-[#D9D9D9]'} border`}
-        >
-          <div className="flex items-center gap-3">
-            <div
-              style={{ backgroundColor: selectedUser.badgeColor }}
-              className="w-[26px] h-[26px] flex items-center justify-center rounded-full text-white text-[16px] font-regular"
-            >
-              {getInitial(selectedUser.name)}
-            </div>
-            <span className="truncate">{selectedUser.name}</span>
+    <div ref={dropdownRef} className="relative w-full">
+      <div className="relative flex items-center">
+        {inputValue && filteredUsers.length > 0 ? (
+          <div
+            style={{ backgroundColor: selectedUser.badgeColor }}
+            className="absolute left-[1.6rem] w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-white text-[1.4rem] font-bold z-10"
+          >
+            {getInitial(selectedUser.name)}
           </div>
+        ) : (
+          <div className="absolute left-[1.6rem] w-[2.6rem] h-[2.6rem]" />
+        )}
+
+        {mode === 'search' ? (
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value)
+              setIsOpen(true)
+              setFocusedIndex(0)
+            }}
+            onFocus={() => setIsOpen(true)}
+            onKeyDown={handleKeyDown}
+            placeholder="이름을 입력해 주세요"
+            className={`w-full h-[4.8rem] pl-[5.6rem] pr-[4rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] text-[1.6rem] outline-none ${
+              inputValue === ''
+                ? 'text-[var(--gray-9FA6B2)]'
+                : 'text-[var(--black-333236)]'
+            } focus:border-[var(--violet-5534DhA)] focus:ring-0 ${className}`}
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setIsOpen((prev) => !prev)}
+            onKeyDown={handleKeyDown}
+            className={`w-full h-[4.8rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] text-left text-[1.6rem] outline-none ${
+              selectedUser.name === ''
+                ? 'text-[var(--gray-9FA6B2)]'
+                : 'text-[var(--black-333236)]'
+            } focus:border-[var(--violet-5534DhA)] focus:ring-0 bg-white flex items-center justify-between`}
+          >
+            <div className="flex items-center gap-[0.8rem]">
+              <div
+                style={{ backgroundColor: selectedUser.badgeColor }}
+                className="w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-white text-[1.4rem] font-bold"
+              >
+                {getInitial(selectedUser.name)}
+              </div>
+              <span className="truncate leading-none">{selectedUser.name}</span>
+            </div>
+
+            <Image
+              src="/assets/image/arrow-down.svg"
+              alt="Arrow Down"
+              width={20}
+              height={20}
+              className={`transition-transform duration-300 ${
+                isOpen ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
+        )}
+
+        {mode === 'search' && (
           <Image
             src="/assets/image/arrow-down.svg"
             alt="Arrow Down"
             width={24}
             height={24}
-            className={`transition-transform duration-300 ${
+            className={`absolute right-[1.6rem] transition-transform duration-300 ${
               isOpen ? 'rotate-180' : ''
             }`}
           />
-        </button>
+        )}
+      </div>
 
-        {/* 드롭다운 리스트 */}
-        {isOpen && (
-          <ul className="absolute z-10 mt-2 w-full border border-[#D9D9D9] bg-white rounded-[8px] transition-all duration-300 origin-top md:w-[217px] max-h-60 overflow-y-auto">
-            {users.map((user) => (
+      {isOpen && (
+        <ul className="absolute z-20 mt-[0.8rem] w-full border border-[#D9D9D9] bg-white rounded-[0.8rem] transition-all duration-300 origin-top max-h-[20rem] overflow-y-auto">
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map((user, index) => (
               <li
                 key={user.id}
                 onClick={() => handleSelect(user)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSelect(user)}
-                tabIndex={0}
-                className="flex items-center gap-3 px-4 hover:bg-gray-100 cursor-pointer text-[16px] font-regular w-full h-12 md:h-[48px] focus:outline-none focus:bg-gray-200"
+                className={`flex items-center gap-[1.2rem] px-[1.6rem] cursor-pointer w-full h-[4.8rem] text-[1.6rem] transition-colors duration-200 ${
+                  index === focusedIndex
+                    ? 'bg-gray-200'
+                    : user.id === selectedUser.id
+                    ? 'bg-gray-100'
+                    : 'hover:bg-gray-100'
+                }`}
               >
-                {/* 체크 표시 */}
-                {selectedUser.id === user.id ? (
+                {user.id === selectedUser.id ? (
                   <Image
                     src="/assets/image/check.svg"
-                    alt="check"
+                    alt="선택됨"
                     width={22}
                     height={22}
+                    className="mr-[0.8rem]"
                   />
                 ) : (
-                  <div className="w-[22px] h-[22px]" />
+                  <div className="w-[2.2rem] h-[2.2rem] mr-[0.8rem]" />
                 )}
-
-                {/* 유저 이름 + 뱃지 */}
-                <div className="flex items-center gap-3 flex-1">
-                  <div
-                    style={{ backgroundColor: user.badgeColor }}
-                    className="w-[26px] h-[26px] flex items-center justify-center rounded-full text-white text-[16px] font-regular"
-                  >
-                    {getInitial(user.name)}
-                  </div>
-                  <span className="truncate">{user.name}</span>
+                <div
+                  style={{ backgroundColor: user.badgeColor }}
+                  className="w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-white text-[1.4rem] font-bold"
+                >
+                  {getInitial(user.name)}
                 </div>
+                <span className="truncate">{user.name}</span>
               </li>
-            ))}
-          </ul>
-        )}
-      </div>
+            ))
+          ) : (
+            <div className="flex items-center justify-center w-full h-[4.8rem] text-[1.6rem] text-red-500 bg-[var(--gray-F5F5F5)] rounded-[0.8rem]">
+              😟 일치하는 사용자가 없습니다!!
+            </div>
+          )}
+        </ul>
+      )}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Modal from '@/components/modal/Modal'
-import FormModal from '@/components/modal/FormModal'
 import Toast from '@/components/toast/Toast'
+import Modal from '@/components/domain/modals/Modal'
+import FormModal from '@/components/domain/modals/FormModal'
 
 export default function ModalTestPage() {
   // 모달 상태

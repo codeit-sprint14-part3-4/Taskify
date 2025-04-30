@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 
 export enum Status {
@@ -19,8 +19,12 @@ export default function StatusDropdown({
   onChange,
 }: StatusDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [focusedIndex, setFocusedIndex] = useState(0)
   const dropdownRef = useRef<HTMLDivElement>(null)
-
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([])
+  const setItemRef = useCallback((el: HTMLLIElement | null, index: number) => {
+    if (el) itemRefs.current[index] = el
+  }, [])
   const handleSelect = (status: Status) => {
     onChange(status)
     setIsOpen(false)
@@ -28,10 +32,29 @@ export default function StatusDropdown({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) {
+      if (!isOpen) return
+
+      if (event.key === 'Escape') {
         setIsOpen(false)
         const activeElement = document.activeElement as HTMLElement
         activeElement?.blur()
+      }
+
+      if (event.key === 'ArrowDown') {
+        event.preventDefault()
+        setFocusedIndex((prev) => (prev + 1) % statusOptions.length)
+      }
+
+      if (event.key === 'ArrowUp') {
+        event.preventDefault()
+        setFocusedIndex(
+          (prev) => (prev - 1 + statusOptions.length) % statusOptions.length
+        )
+      }
+
+      if (event.key === 'Enter') {
+        event.preventDefault()
+        handleSelect(statusOptions[focusedIndex])
       }
     }
 
@@ -51,69 +74,85 @@ export default function StatusDropdown({
       document.removeEventListener('keydown', handleKeyDown)
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isOpen])
+  }, [isOpen, focusedIndex])
+
+  // 🧹 포커스된 항목 스크롤 맞추기
+  useEffect(() => {
+    if (isOpen && itemRefs.current[focusedIndex]) {
+      itemRefs.current[focusedIndex]?.scrollIntoView({
+        block: 'nearest',
+        behavior: 'smooth',
+      })
+    }
+  }, [focusedIndex, isOpen])
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div
-        ref={dropdownRef}
-        className="relative inline-block w-full max-w-sm min-w-[200px] md:w-[217px]"
+    <div
+      ref={dropdownRef}
+      className="relative w-full max-w-sm min-w-[20rem] md:w-[21.7rem]"
+    >
+      <button
+        type="button"
+        onClick={() => {
+          setIsOpen((prev) => !prev)
+          setFocusedIndex(statusOptions.findIndex((s) => s === value))
+        }}
+        className={`w-full h-[4.8rem] flex justify-between items-center px-[1.6rem] rounded-[0.8rem] text-[1.4rem] font-medium bg-white border ${
+          isOpen
+            ? 'border-[var(--violet-5534DhA)]'
+            : 'border-[var(--gray-D9D9D9)]'
+        } focus:outline-none transition-colors duration-200`}
       >
-        <button
-          onClick={() => setIsOpen((prev) => !prev)}
-          className={`w-full h-12 md:w-[217px] md:h-[48px] flex justify-between items-center px-4 py-3 rounded-[8px] text-[14px] font-medium bg-white focus:outline-none 
-          ${isOpen ? 'border-[#5534DA]' : 'border-[#D9D9D9]'} border`}
-        >
-          <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-2 bg-[rgba(85,52,218,0.08)] rounded-full">
-              <span className="w-2 h-2 rounded-full bg-[#5534DA]" />
-              <span className="text-[#5534DA]">{value}</span>
-            </div>
+        <div className="flex items-center gap-[1.2rem]">
+          <div className="inline-flex items-center gap-[0.8rem] px-[1.2rem] py-[0.8rem] bg-[rgba(85,52,218,0.08)] rounded-full">
+            <span className="w-[0.8rem] h-[0.8rem] rounded-full bg-[#5534DA]" />
+            <span className="text-[#5534DA]">{value}</span>
           </div>
-          <Image
-            src="/assets/image/arrow-down.svg"
-            alt="Arrow Down"
-            width={24}
-            height={24}
-            className={`transition-transform duration-300 ${
-              isOpen ? 'rotate-180' : ''
-            }`}
-          />
-        </button>
+        </div>
+        <Image
+          src="/assets/image/arrow-down.svg"
+          alt="Arrow Down"
+          width={24}
+          height={24}
+          className={`transition-transform duration-300 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
 
-        {isOpen && (
-          <ul className="absolute z-10 mt-2 w-full border border-[#D9D9D9] bg-white rounded-[8px] transition-all duration-300 origin-top md:w-[217px] max-h-60 overflow-y-auto">
-            {statusOptions.map((status) => (
-              <li
-                key={status}
-                onClick={() => handleSelect(status)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSelect(status)
-                  }
-                }}
-                tabIndex={0}
-                className="flex items-center gap-3 px-4 hover:bg-gray-100 cursor-pointer text-[14px] font-medium w-full h-12 md:h-[48px] focus:outline-none focus:bg-gray-200"
-              >
-                {value === status ? (
-                  <Image
-                    src="/assets/image/check.svg"
-                    alt="check"
-                    width={22}
-                    height={22}
-                  />
-                ) : (
-                  <div className="w-[22px] h-[22px]" />
-                )}
-                <div className="inline-flex items-center gap-2 px-3 py-2 bg-[rgba(85,52,218,0.08)] rounded-full">
-                  <span className="w-2 h-2 rounded-full bg-[#5534DA]" />
-                  <span className="text-[#5534DA]">{status}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {isOpen && (
+        <ul className="absolute z-10 mt-[0.8rem] w-full border border-[#D9D9D9] bg-white rounded-[0.8rem] transition-all duration-300 origin-top max-h-[24rem] overflow-y-auto">
+          {statusOptions.map((status, index) => (
+            <li
+              key={status}
+              ref={(el) => setItemRef(el, index)}
+              onClick={() => handleSelect(status)}
+              className={`flex items-center gap-[1.2rem] px-[1.6rem] cursor-pointer w-full h-[4.8rem] text-[1.4rem] font-medium transition-colors duration-200 ${
+                index === focusedIndex
+                  ? 'bg-gray-200'
+                  : value === status
+                  ? 'bg-gray-100'
+                  : 'hover:bg-gray-100'
+              }`}
+            >
+              {value === status ? (
+                <Image
+                  src="/assets/image/check.svg"
+                  alt="선택됨"
+                  width={22}
+                  height={22}
+                />
+              ) : (
+                <div className="w-[2.2rem] h-[2.2rem]" />
+              )}
+              <div className="inline-flex items-center gap-[0.8rem] px-[1.2rem] py-[0.8rem] bg-[rgba(85,52,218,0.08)] rounded-full">
+                <span className="w-[0.8rem] h-[0.8rem] rounded-full bg-[#5534DA]" />
+                <span className="text-[#5534DA]">{status}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

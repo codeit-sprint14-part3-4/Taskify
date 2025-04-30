@@ -14,8 +14,8 @@ export interface CreateUserBody {
 }
 
 export interface UpdateUserBody {
-  nickname: string
-  profileImageUrl: string
+  nickname?: string
+  profileImageUrl?: string
 }
 
 export interface UploadUserImageResponse {
