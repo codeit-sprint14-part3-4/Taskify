@@ -59,7 +59,7 @@
 | 기능 개발 브랜치 | `feature/기능명` | `feature/dashboard-modal` |
 | 긴급 수정 브랜치 | `hotfix/이슈명` | `hotfix/login-error` |
 | 릴리즈 준비 브랜치 | `release/버전명` | `release/v1.0.0` |
-
+| 스타일 수정 브랜치 | `style/스타일설명` |	`style/fix-spacing` |
 ---
 
 ## 🛠️ 사용 기술 스택 (Tech Stack)
