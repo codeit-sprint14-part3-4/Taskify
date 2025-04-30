@@ -9,7 +9,7 @@ import { useFormSignup } from '@/hooks/useFormSignup'
 import { usersService } from '../../api/services/usersServices'
 import Input from '@/components/common/input'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import Modal from '@/components/modal/Modal'
+import Modal from '@/components/domain/modals/Modal'
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false)
