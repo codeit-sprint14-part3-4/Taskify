@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import { ButtonHTMLAttributes, ReactNode } from 'react'
 
-import ArrorRight from '../../../../public/assets/image/arrow-right.svg'
+import ArrowRight from '../../../../public/assets/image/arrow-right.svg'
 
 interface DashboardList
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix'> {
@@ -26,8 +26,8 @@ const DashboardList = ({ children, suffix, onClick }: DashboardList) => {
         </div>
         <div>
           <Image
-            src={ArrorRight}
-            alt="Arrow Left"
+            src={ArrowRight}
+            alt="ArrowRight"
             width={7}
             height={14}
             className="object-contain"
