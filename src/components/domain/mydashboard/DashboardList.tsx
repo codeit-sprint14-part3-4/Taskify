@@ -67,7 +67,7 @@ export default function MyDashboard() {
             {dashboard.title}
           </DashBoardListButton>
         ))}
-        <div className={styles.page_wrapper}>
+        <div className={`${styles.page_wrapper} text-md-regular `}>
           <div className={styles.botton_gap}>
             <span>
               {page} 페이지 중 {totalPages}
