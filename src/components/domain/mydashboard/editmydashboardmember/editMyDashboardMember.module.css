@@ -1,0 +1,33 @@
+.edit_member_container {
+  background-color: var(--white-FFFFFF);
+  max-width: 62rem;
+  padding: 2.6rem 2.8rem;
+}
+
+.edit_member_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit_member_name_header {
+  margin-top: 4rem;
+  color: var(--gray-9FA6B2);
+}
+
+.edit_member_name {
+  color: var(--black-333236);
+}
+
+.member_delete_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.1rem solid var(--gray-EEEEEE);
+  padding: 1.6rem 0;
+}
+
+.edit_delete_button {
+  color: var(--violet-5534DhA);
+  border-radius: 0.4rem;
+}

@@ -1,0 +1,6 @@
+.edit_container {
+  background-color: var(--gray-FAFAFA);
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
