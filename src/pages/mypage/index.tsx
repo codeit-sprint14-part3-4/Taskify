@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import styles from '@/pages/mypage.module.css'
+import styles from '@/pages/mypage/mypage.module.css'
 
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Sidebar from '@/components/layout/sidebar/Sidebar'
@@ -357,7 +357,7 @@ export default function MyPage() {
             </section>
           </div>
         </div>
-        
+
         {isModalOpen && (
           <Modal
             message={modalMessage}
