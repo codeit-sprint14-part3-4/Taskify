@@ -1,5 +1,5 @@
 import type {
-  Column,
+  ColumnType,
   CreateColumnBody,
   UpdateColumnBody,
   GetColumnsResponse,
@@ -11,7 +11,7 @@ import { useAuthStore } from '@/stores/auth'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || ''
 
 // POST: 컬럼 생성
-const postColumns = async (body: CreateColumnBody): Promise<Column> => {
+const postColumns = async (body: CreateColumnBody): Promise<ColumnType> => {
   const accessToken = useAuthStore.getState().accessToken
 
   if (!accessToken) {
@@ -55,7 +55,7 @@ const getColumns = async (dashboardId: number): Promise<GetColumnsResponse> => {
 const putColumns = async (
   columnId: number,
   body: UpdateColumnBody
-): Promise<Column> => {
+): Promise<ColumnType> => {
   const accessToken = useAuthStore.getState().accessToken
 
   if (!accessToken) {
