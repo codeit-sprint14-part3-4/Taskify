@@ -8,7 +8,7 @@ export interface User {
 }
 
 interface UserDropdownProps {
-  users?: User[] // ✅ 외부 데이터로부터 들어오기 때문에 optional 처리
+  users?: User[] 
   selectedUser?: User
   onChange: (user: User) => void
   mode?: 'search' | 'select'
@@ -16,7 +16,7 @@ interface UserDropdownProps {
 }
 
 export default function UserDropdown({
-  users = [], // ✅ fallback
+  users = [], 
   selectedUser,
   onChange,
   mode = 'search',
