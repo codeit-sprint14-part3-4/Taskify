@@ -1,14 +1,14 @@
-import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import styles from './mydashboard.module.css'
-import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
 import Image from 'next/image'
 import { useState } from 'react'
 
-import HomeNavBar from '@/components/layout/gnb/HomeNavBar'
-import Sidebar from '@/components/layout/sidebar/Sidebar'
+import Layout from '@/components/layout/layout'
+import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
+import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 
 export default function MyDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+
   const handleCreateDashboardModal = () => {
     setIsModalOpen(true)
   }
@@ -16,11 +16,11 @@ export default function MyDashboard() {
   const handleCloseDashboardModal = () => {
     setIsModalOpen(false)
   }
+
   return (
-    <div className={styles.container}>
-      <Sidebar />
-      <main className={styles.main}>
-        <HomeNavBar pageType="mydashboard" />
+    <Layout pageType="mydashboard">
+      <main className="p-16">
+        {/* 새로운 대시보드 버튼 */}
         <ButtonDashboard
           onClick={handleCreateDashboardModal}
           paddingHeight="py-[22px]"
@@ -40,6 +40,7 @@ export default function MyDashboard() {
           새로운 대시보드
         </ButtonDashboard>
 
+        {/* 초대받은 대시보드 영역 */}
         <section className={styles.invite_section}>
           <div className={`${styles.invite_title} text-2xl-bold`}>
             초대받은 대시보드
@@ -57,10 +58,11 @@ export default function MyDashboard() {
           </div>
         </section>
 
+        {/* 대시보드 생성 모달 */}
         {isModalOpen && (
           <DashboardCreateModal onClose={handleCloseDashboardModal} />
         )}
       </main>
-    </div>
+    </Layout>
   )
 }

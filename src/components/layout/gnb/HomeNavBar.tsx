@@ -1,12 +1,9 @@
 import styles from './homenavbar.module.css'
-
-import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
-
 import Image from 'next/image'
 import clsx from 'clsx'
 
+import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Badge from '@/components/common/badge/Badge'
-
 import { useDashboardInfo } from '@/hooks/useDashboardInfo'
 
 export default function HomeNavBar({
@@ -14,9 +11,9 @@ export default function HomeNavBar({
   pageType,
 }: {
   dashboardId: number
-  pageType: 'mydashboard' | 'dashboard'
+  pageType: 'mydashboard' | 'dashboard' | 'mypage'
 }) {
-  const { dashboardTitle, hasCrown, userName, userEmail } = useDashboardInfo(
+  const { dashboardTitle, hasCrown, userName } = useDashboardInfo(
     dashboardId,
     pageType
   )
@@ -25,8 +22,9 @@ export default function HomeNavBar({
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
       <div className={clsx(styles.flex_center_space_between, styles.nav_left)}>
         <div className={`${styles.dashboard_title} text-xl-bold`}>
-          {pageType === 'mydashboard' ? '내 대시보드' : '대시보드제목'}
-          {dashboardTitle}
+          {pageType === 'mydashboard' && '내 대시보드'}
+          {pageType === 'dashboard' && (dashboardTitle || '대시보드 제목 없음')}
+          {pageType === 'mypage' && '계정관리'}
         </div>
         <div>
           {pageType === 'mydashboard' && hasCrown && (
@@ -99,7 +97,7 @@ export default function HomeNavBar({
         <div
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >
-          {userEmail && <Badge email={userEmail} />}
+          {userName && <Badge nickname={userName} />}
           <div className={`${styles.name} text-lg-medium`}>{userName}</div>
         </div>
       </div>

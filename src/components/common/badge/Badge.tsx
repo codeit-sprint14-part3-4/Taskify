@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import styles from './Badge.module.css'
 
 interface BadgeProps {
-  email: string
+  nickname: string
 }
 
 const getRandomColor = () => {
@@ -22,22 +22,22 @@ const getRandomColor = () => {
   return colors[randomIndex]
 }
 
-const Badge = ({ email }: BadgeProps) => {
+const Badge = ({ nickname }: BadgeProps) => {
   const [bgColor, setBgColor] = useState<string>('')
 
   useEffect(() => {
     setBgColor(getRandomColor())
   }, [])
 
-  const getFirstLetter = (email: string) => {
-    const firstLetter = email?.charAt(0)?.toUpperCase() || ''
+  const getFirstLetter = (nickname: string) => {
+    const firstLetter = nickname?.charAt(0)?.toUpperCase() || ''
     return firstLetter
   }
 
   return (
     <div className={styles.badgeWrapper}>
       <div className={styles.badge} style={{ backgroundColor: bgColor }}>
-        {getFirstLetter(email)}
+        {getFirstLetter(nickname)}
       </div>
     </div>
   )

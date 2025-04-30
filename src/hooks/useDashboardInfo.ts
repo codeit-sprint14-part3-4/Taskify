@@ -5,7 +5,7 @@ import { usersService } from '@/api/services/usersServices'
 
 export function useDashboardInfo(
   dashboardId: number,
-  pageType: 'mydashboard' | 'dashboard'
+  pageType: 'mydashboard' | 'dashboard' | 'mypage'
 ) {
   const [dashboardTitle, setDashboardTitle] = useState('')
   const [memberCount, setMemberCount] = useState(0)
