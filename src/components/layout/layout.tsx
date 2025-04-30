@@ -3,7 +3,7 @@ import Sidebar from './sidebar/Sidebar'
 
 interface LayoutProps {
   children: React.ReactNode
-  pageType: 'mydashboard' | 'dashboard'
+  pageType: 'mydashboard' | 'dashboard' | 'mypage'
   dashboardId?: number
 }
 
