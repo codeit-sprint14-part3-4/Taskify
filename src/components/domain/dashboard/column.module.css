@@ -1,0 +1,74 @@
+.column {
+  min-height: calc(100vh - 7rem);
+  width: 31.4rem;
+  background-color: var(--gray-FAFAFA);
+  border-radius: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--gray-D9D9D9);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+  padding-top: 2.2rem;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.dotTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: #5534da;
+  border-radius: 9999px;
+}
+
+.cardCount {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.4rem;
+  background-color: #eeeeee;
+  color: #787486;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addButtonWrapper {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 2.5rem;
+  padding-bottom: 1.6rem;
+}
+
+.addButton {
+  border-radius: 0.6rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+.addIcon {
+  width: 2.2rem;
+  height: 2.2rem;
+  flex-shrink: 0;
+}
