@@ -1,45 +1,43 @@
-import styles from './login.module.css'
+'use client'
 
-import Input from '@/components/common/input'
-import Button from '@/components/common/commonbutton/CommonButton'
-import { authService } from '../../api/services/authServices'
-import { useAuthStore } from '@/stores/auth'
-
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
+import styles from './login.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
 
-// const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
-// const KAKAO_CLIENT_ID = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID
-// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+import Input from '@/components/common/input'
+import CommonButton from '@/components/common/commonbutton/CommonButton'
+import { authService } from '../../api/services/authServices'
+import { useAuthStore } from '@/stores/auth'
+import Modal from '@/components/modal/Modal'
+import { useFormSignup } from '@/hooks/useFormSignup'
 
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [emailError, setEmailError] = useState('')
-  const [passwordError, setPasswordError] = useState('')
-  //
-
-  // const handleGoogleLogin = () => {
-  //   const redirectUri = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`
-
-  //   window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=profile email`
-  // }
-
-  // const handleKakaoLogin = () => {
-  //   window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${BASE_URL}/auth/kakao&response_type=code`
-  // }
-  //
-  const isFormValid = useMemo(() => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && password.length >= 8
-  }, [email, password])
-
-  const { setAccessToken } = useAuthStore() // 토큰 관리
+  const [showPasswordModal, setShowPasswordModal] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const router = useRouter()
 
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    emailError,
+    passwordError,
+    isFormLoginValid,
+  } = useFormSignup()
+
+  const { setAccessToken } = useAuthStore()
+
+  // 로그인 요청 함수
   const handleLogin = async () => {
+    if (!email || !password || emailError || passwordError) {
+      alert('입력된 정보에 오류가 있습니다.')
+      return
+    }
+
     try {
       const body = {
         email,
@@ -47,21 +45,13 @@ export default function Login() {
       }
 
       const response = await authService.postAuth(body)
-      console.log(response)
-      // accessToken을 Zustand에 저장
       setAccessToken(response.accessToken)
-
-      // 대시보드로 이동
       router.push('/mydashboard')
-    } catch (error) {
+    } catch (error: any) {
       console.error('로그인 실패:', error)
-      alert('비밀번호가 일치하지 않습니다.')
+      setErrorMessage(error?.message || '로그인 중 문제가 발생했습니다.')
+      setShowPasswordModal(true)
     }
-  }
-
-  // 비밀번호 보이기/숨기기 토글 함수
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev)
   }
 
   return (
@@ -82,10 +72,11 @@ export default function Login() {
             </div>
           </a>
         </Link>
+
         <form
           onSubmit={(e) => {
             e.preventDefault()
-            if (isFormValid) {
+            if (isFormLoginValid) {
               handleLogin()
             }
           }}
@@ -98,13 +89,6 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="이메일을 입력하세요"
-              onBlur={() => {
-                if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                  setEmailError('이메일 형식으로 작성해 주세요.')
-                } else {
-                  setEmailError('')
-                }
-              }}
               error={emailError}
             />
           </div>
@@ -114,7 +98,7 @@ export default function Login() {
               비밀번호
               <div
                 className={styles.hide_icon}
-                onClick={togglePasswordVisibility}
+                onClick={() => setShowPassword((prev) => !prev)}
               >
                 <Image
                   src={`/assets/icon/${
@@ -131,26 +115,31 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호를 입력하세요"
               type={showPassword ? 'text' : 'password'}
-              onBlur={() => {
-                if (password.length < 8) {
-                  setPasswordError('8자 이상 입력해주세요.')
-                } else {
-                  setPasswordError('')
-                }
-              }}
               error={passwordError}
             />
           </div>
 
           <div className={styles.wrapper_bottom}>
-            <Button
-              variant="primary"
-              padding="1.2rem 1.6rem"
-              isActive={!!isFormValid}
-              // type="submit"
+            <CommonButton
+              padding="1.2rem 0"
+              className="w-full text-white bg-[var(--gray-9FA6B2)]"
+              isActive={!!isFormLoginValid}
             >
               로그인
-            </Button>
+            </CommonButton>
+
+            {showPasswordModal && (
+              <Modal
+                size="large"
+                message={errorMessage}
+                onConfirm={() => {
+                  setShowPasswordModal(false)
+                  setErrorMessage('')
+                }}
+                confirmLabel="확인"
+              />
+            )}
+
             <div className={styles.wrapper_floor}>
               <div>회원이 아니신가요?</div>
               <Link href="/signup">
