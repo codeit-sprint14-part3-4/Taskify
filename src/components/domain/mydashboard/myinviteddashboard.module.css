@@ -38,7 +38,7 @@
 
 .invitationlist {
   display: grid;
-  grid-template-columns: repeat(3, 28rem);
+  grid-template-columns: 28rem 22rem 28rem;
   align-items: center;
   justify-items: start;
   padding-bottom: 2rem;
@@ -47,4 +47,10 @@
   font-weight: 400;
   line-height: 2.6rem;
   margin: 2rem 0;
+}
+
+.buttonsction {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.4rem;
 }

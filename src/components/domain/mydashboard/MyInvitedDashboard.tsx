@@ -35,17 +35,21 @@ const MyInvitedDashboard = () => {
         <h1 className={styles.inviteddashboardh1}>초대받은 대시보드</h1>
         <div className={styles.inputbox}>
           <CommonInput
+            padding="0.7rem 0 0.7rem 4.8rem"
             value={searchTerm}
             onChange={handleSearch}
             placeholder="검색"
             icon={
-              <Image
-                src="assets/icon/searchicon.svg"
-                alt="검색 아이콘"
-                width={16}
-                height={16}
-              />
+              <div className="ml-[1.6rem] p-[0.3rem]">
+                <Image
+                  src="assets/icon/searchicon.svg"
+                  alt="검색 아이콘"
+                  width={16}
+                  height={16}
+                />
+              </div>
             }
+            iconPosition="left"
           />
         </div>
       </div>
@@ -62,13 +66,21 @@ const MyInvitedDashboard = () => {
           <div key={index} className={styles.invitationlist}>
             <div>{item.name}</div>
             <div>{item.inviter}</div>
-            <div className="flex gap-2">
-              <button className="border border-gray-300 px-3 py-1 rounded">
+            <div className={styles.buttonsction}>
+              <CommonButton
+                padding="0.7rem 2.9rem"
+                isActive={true}
+                className={styles.customButtonSize}
+              >
                 수락
-              </button>
-              <button className="border border-gray-300 px-3 py-1 rounded">
+              </CommonButton>
+              <CommonButton
+                padding="0.7rem 2.9rem"
+                variant="secondary"
+                isActive={true}
+              >
                 거절
-              </button>
+              </CommonButton>
             </div>
           </div>
         ))}
