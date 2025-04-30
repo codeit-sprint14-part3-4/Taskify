@@ -8,15 +8,15 @@ export interface User {
 }
 
 interface UserDropdownProps {
-  users: User[]
-  selectedUser: User
+  users?: User[] 
+  selectedUser?: User
   onChange: (user: User) => void
   mode?: 'search' | 'select'
   className?: string
 }
 
 export default function UserDropdown({
-  users,
+  users = [], 
   selectedUser,
   onChange,
   mode = 'search',
@@ -28,13 +28,15 @@ export default function UserDropdown({
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const filteredUsers = useMemo(() => {
+    const safeUsers = Array.isArray(users) ? users : []
     return mode === 'search'
-      ? users.filter((user) => user.name.startsWith(inputValue))
-      : users
+      ? safeUsers.filter((user) => user.name?.startsWith(inputValue))
+      : safeUsers
   }, [users, inputValue, mode])
 
   const handleSelect = useCallback(
     (user: User) => {
+      if (!user || typeof user.id !== 'number' || !user.name) return
       onChange(user)
       setInputValue(user.name)
       setIsOpen(false)
@@ -43,8 +45,8 @@ export default function UserDropdown({
     [onChange]
   )
 
-  const getInitial = useCallback((name: string) => {
-    if (!name) return 'U'
+  const getInitial = useCallback((name?: string) => {
+    if (!name || typeof name !== 'string') return 'U'
     const firstChar = name.trim().charAt(0)
     const isEnglish = /^[A-Za-z]$/.test(firstChar)
     const hangulToRoman: Record<string, string> = {
@@ -64,7 +66,7 @@ export default function UserDropdown({
   }, [])
 
   useEffect(() => {
-    if (mode === 'search') {
+    if (mode === 'search' && selectedUser) {
       setInputValue(selectedUser.name)
     }
   }, [selectedUser, mode])
@@ -84,7 +86,6 @@ export default function UserDropdown({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (!isOpen) return
-
     if (e.key === 'ArrowDown') {
       e.preventDefault()
       setFocusedIndex((prev) => (prev + 1) % filteredUsers.length)
@@ -104,10 +105,10 @@ export default function UserDropdown({
   return (
     <div ref={dropdownRef} className="relative w-full">
       <div className="relative flex items-center">
-        {inputValue && filteredUsers.length > 0 ? (
+        {inputValue && filteredUsers.length > 0 && selectedUser ? (
           <div
             style={{ backgroundColor: selectedUser.badgeColor }}
-            className="absolute left-[1.6rem] w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-white text-[1.4rem] font-bold z-10"
+            className="absolute left-[1.6rem] w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-[var(--white-FFFFFF)] text-[1.4rem] font-bold z-10"
           >
             {getInitial(selectedUser.name)}
           </div>
@@ -127,7 +128,9 @@ export default function UserDropdown({
             onFocus={() => setIsOpen(true)}
             onKeyDown={handleKeyDown}
             placeholder="이름을 입력해 주세요"
-            className={`w-full h-[4.8rem] pl-[5.6rem] pr-[4rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] text-[1.6rem] outline-none ${
+            className={`w-full h-[4.8rem] ${
+              selectedUser ? 'pl-[5.6rem]' : 'pl-[1.6rem]'
+            } pr-[4rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] text-lg-regular outline-none placeholder-[var(--gray-9FA6B2)] ${
               inputValue === ''
                 ? 'text-[var(--gray-9FA6B2)]'
                 : 'text-[var(--black-333236)]'
@@ -138,20 +141,22 @@ export default function UserDropdown({
             type="button"
             onClick={() => setIsOpen((prev) => !prev)}
             onKeyDown={handleKeyDown}
-            className={`w-full h-[4.8rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] text-left text-[1.6rem] outline-none ${
-              selectedUser.name === ''
-                ? 'text-[var(--gray-9FA6B2)]'
-                : 'text-[var(--black-333236)]'
-            } focus:border-[var(--violet-5534DhA)] focus:ring-0 bg-white flex items-center justify-between`}
+            className={`w-full h-[4.8rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] text-left text-lg-regular outline-none ${
+              selectedUser?.name
+                ? 'text-[var(--black-333236)]'
+                : 'text-[var(--gray-9FA6B2)]'
+            } focus:border-[var(--violet-5534DhA)] focus:ring-0 bg-[var(--white-FFFFFF)] flex items-center justify-between ${className}`}
           >
             <div className="flex items-center gap-[0.8rem]">
               <div
-                style={{ backgroundColor: selectedUser.badgeColor }}
-                className="w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-white text-[1.4rem] font-bold"
+                style={{ backgroundColor: selectedUser?.badgeColor ?? '#ccc' }}
+                className="w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-[var(--white-FFFFFF)] text-[1.4rem] font-bold"
               >
-                {getInitial(selectedUser.name)}
+                {selectedUser ? getInitial(selectedUser.name) : '?'}
               </div>
-              <span className="truncate leading-none">{selectedUser.name}</span>
+              <span className="truncate leading-none">
+                {selectedUser?.name || '이름을 입력해 주세요'}
+              </span>
             </div>
 
             <Image
@@ -180,42 +185,46 @@ export default function UserDropdown({
       </div>
 
       {isOpen && (
-        <ul className="absolute z-20 mt-[0.8rem] w-full border border-[#D9D9D9] bg-white rounded-[0.8rem] transition-all duration-300 origin-top max-h-[20rem] overflow-y-auto">
+        <ul className="absolute z-20 mt-[0.8rem] w-full border border-[var(--gray-D9D9D9)] bg-[var(--white-FFFFFF)] rounded-[0.8rem] transition-all duration-300 origin-top max-h-[20rem] overflow-y-auto">
           {filteredUsers.length > 0 ? (
-            filteredUsers.map((user, index) => (
-              <li
-                key={user.id}
-                onClick={() => handleSelect(user)}
-                className={`flex items-center gap-[1.2rem] px-[1.6rem] cursor-pointer w-full h-[4.8rem] text-[1.6rem] transition-colors duration-200 ${
-                  index === focusedIndex
-                    ? 'bg-gray-200'
-                    : user.id === selectedUser.id
-                    ? 'bg-gray-100'
-                    : 'hover:bg-gray-100'
-                }`}
-              >
-                {user.id === selectedUser.id ? (
-                  <Image
-                    src="/assets/image/check.svg"
-                    alt="선택됨"
-                    width={22}
-                    height={22}
-                    className="mr-[0.8rem]"
-                  />
-                ) : (
-                  <div className="w-[2.2rem] h-[2.2rem] mr-[0.8rem]" />
-                )}
-                <div
-                  style={{ backgroundColor: user.badgeColor }}
-                  className="w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-white text-[1.4rem] font-bold"
+            filteredUsers.map((user, index) => {
+              if (!user || typeof user.id !== 'number' || !user.name)
+                return null
+              return (
+                <li
+                  key={`user-${user.id}`}
+                  onClick={() => handleSelect(user)}
+                  className={`flex items-center gap-[1.2rem] px-[1.6rem] cursor-pointer w-full h-[4.8rem] text-lg-regular transition-colors duration-200 ${
+                    index === focusedIndex
+                      ? 'bg-[var(--gray-EEEEEE)]'
+                      : user.id === selectedUser?.id
+                      ? 'bg-[var(--gray-FAFAFA)]'
+                      : 'hover:bg-[var(--gray-FAFAFA)]'
+                  }`}
                 >
-                  {getInitial(user.name)}
-                </div>
-                <span className="truncate">{user.name}</span>
-              </li>
-            ))
+                  {user.id === selectedUser?.id ? (
+                    <Image
+                      src="/assets/image/check.svg"
+                      alt="선택됨"
+                      width={22}
+                      height={22}
+                      className="mr-[0.8rem]"
+                    />
+                  ) : (
+                    <div className="w-[2.2rem] h-[2.2rem] mr-[0.8rem]" />
+                  )}
+                  <div
+                    style={{ backgroundColor: user.badgeColor }}
+                    className="w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-[var(--white-FFFFFF)] text-[1.4rem] font-bold"
+                  >
+                    {getInitial(user.name)}
+                  </div>
+                  <span className="truncate">{user.name}</span>
+                </li>
+              )
+            })
           ) : (
-            <div className="flex items-center justify-center w-full h-[4.8rem] text-[1.6rem] text-red-500 bg-[var(--gray-F5F5F5)] rounded-[0.8rem]">
+            <div className="flex items-center justify-center w-full h-[4.8rem] text-lg-regular text-[var(--red-D6173A)] bg-[var(--gray-FAFAFA)] rounded-[0.8rem]">
               😟 일치하는 사용자가 없습니다!!
             </div>
           )}

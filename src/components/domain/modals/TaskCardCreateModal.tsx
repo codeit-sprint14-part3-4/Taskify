@@ -41,7 +41,10 @@ export default function TaskCardCreateModal() {
     { id: 5, name: '이지사', badgeColor: '#5534DA' },
   ]
 
-  const [selectedUser, setSelectedUser] = useState(users[0])
+  // 변경된 부분: 처음엔 선택된 유저 없음
+  const [selectedUser, setSelectedUser] = useState<
+    (typeof users)[0] | undefined
+  >(undefined)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
@@ -102,6 +105,7 @@ export default function TaskCardCreateModal() {
               users={users}
               selectedUser={selectedUser}
               onChange={setSelectedUser}
+              mode="search"
             />
           </div>
           <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
@@ -131,7 +135,7 @@ export default function TaskCardCreateModal() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="설명을 입력해 주세요"
-                className="w-full min-h-[12.6rem] px-[1.6rem] py-[1.5rem] border border-[var(--gray-D9D9D9)] rounded-lg bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none border-none"
+                className="w-full min-h-[12.6rem] px-[1.6rem] py-[1.5rem] border-none bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none"
                 wrap="soft"
               />
             </div>

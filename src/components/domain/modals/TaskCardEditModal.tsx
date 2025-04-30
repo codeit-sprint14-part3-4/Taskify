@@ -95,7 +95,7 @@ export default function TaskCardEditModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.7)] flex justify-center items-center">
-      <div className="w-[58.4rem] bg-white rounded-2xl overflow-auto">
+      <div className="w-[58.4rem] bg-[var(--white-FFFFFF)] rounded-2xl overflow-auto">
         <div className="p-[3.2rem]">
           <h2 className="pb-[3.2rem] text-2xl-bold text-[var(--black-333236)]">
             할 일 수정
@@ -116,6 +116,7 @@ export default function TaskCardEditModal({
               <label className="text-2lg-medium text-[var(--black-333236)]">
                 담당자
               </label>
+
               <UserDropdown
                 users={users}
                 selectedUser={selectedUser}
@@ -162,7 +163,7 @@ export default function TaskCardEditModal({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="설명을 입력해 주세요"
-                className="w-full px-[1.6rem] pt-[1.5rem] pb-[8.5rem] bg-white text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none rounded-lg"
+                className="w-full px-[1.6rem] pt-[1.5rem] pb-[8.5rem] bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none rounded-lg"
               />
             </div>
           </div>
@@ -214,6 +215,7 @@ export default function TaskCardEditModal({
                 />
               ))}
               <input
+                type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleTagKeyDown}
@@ -270,7 +272,7 @@ export default function TaskCardEditModal({
               variant="primary"
               padding="1.4rem 11.4rem"
               isActive={true}
-              className="w-full h-[5.4rem] bg-[var(--violet-5534DhA)] text-white text-lg-semibold"
+              className="w-full h-[5.4rem] bg-[var(--violet-5534DhA)] text-[var(--white-FFFFFF)] text-lg-semibold"
             >
               수정
             </CommonButton>
