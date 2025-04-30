@@ -1,13 +1,16 @@
+import { useRef, useState } from 'react'
+import Image from 'next/image'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { ko } from 'date-fns/locale'
+
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import Image from 'next/image'
 import Input from '@/components/common/input'
 import Tag from '@/components/common/tag/Tag'
-import type { TagColor } from '@/types/common/tag'
-import { useRef, useState } from 'react'
+import UserDropdown, { type User } from '@/components/dropdown/UserDropdown'
+import StatusDropdown, { Status } from '@/components/dropdown/StatusDropdown'
 import styles from '@/components/domain/modals/custom-datepicker.module.css'
+import type { TagColor } from '@/types/common/tag'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -22,6 +25,14 @@ const TAG_COLORS: TagColor[] = [
   'tag-gray',
 ]
 
+const users: User[] = [
+  { id: 1, name: '김코딩', badgeColor: '#5534DA' },
+  { id: 2, name: '박해커', badgeColor: '#34D399' },
+  { id: 3, name: '이원', badgeColor: '#FBBF24' },
+  { id: 4, name: '이아이', badgeColor: '#34D399' },
+  { id: 5, name: '이렇케', badgeColor: '#5534DA' },
+]
+
 interface TaskCardEditModalProps {
   cardInfo: {
     status: string
@@ -32,13 +43,19 @@ interface TaskCardEditModalProps {
     tags: { label: string; color: TagColor }[]
     imageUrl: string
   }
+  users: User[]
 }
 
 export default function TaskCardEditModal({
   cardInfo,
 }: TaskCardEditModalProps) {
-  const [statusValue, setStatusValue] = useState(cardInfo.status)
-  const [selectValue, setSelectValue] = useState(cardInfo.assignee)
+  const defaultUser =
+    users.find((u) => u.name === cardInfo.assignee) || users[0]
+  const defaultStatus =
+    Object.values(Status).find((s) => s === cardInfo.status) || Status.TODO
+
+  const [statusValue, setStatusValue] = useState<Status>(defaultStatus)
+  const [selectedUser, setSelectedUser] = useState<User>(defaultUser)
   const [title, setTitle] = useState(cardInfo.title)
   const [description, setDescription] = useState(cardInfo.description)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -47,52 +64,27 @@ export default function TaskCardEditModal({
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
   ])
-
-  const inputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const handleImageClick = () => {
-    inputRef.current?.click()
-  }
+  const handleImageClick = () => inputRef.current?.click()
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const reader = new FileReader()
-      reader.onloadend = () => {
-        setPreview(reader.result as string)
-      }
+      reader.onloadend = () => setPreview(reader.result as string)
       reader.readAsDataURL(file)
     }
-  }
-
-  const statusSelectChangeHandler = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setStatusValue(e.target.value)
-  }
-
-  const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectValue(e.target.value)
   }
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
       const randomIndex = Math.floor(Math.random() * availableColors.length)
       const selectedColor = availableColors[randomIndex]
-
       setTags([...tags, { label: inputValue.trim(), color: selectedColor }])
-
-      const newAvailableColors = availableColors.filter(
-        (color) => color !== selectedColor
-      )
-
-      if (newAvailableColors.length === 0) {
-        setAvailableColors([...TAG_COLORS])
-      } else {
-        setAvailableColors(newAvailableColors)
-      }
-
+      const newColors = availableColors.filter((c) => c !== selectedColor)
+      setAvailableColors(newColors.length ? newColors : [...TAG_COLORS])
       setInputValue('')
     }
   }
@@ -103,61 +95,40 @@ export default function TaskCardEditModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.7)] flex justify-center items-center">
-      <div className="w-[58.4rem] bg-[var(--white-FFFFFF)] rounded-2xl overflow-auto">
+      <div className="w-[58.4rem] bg-white rounded-2xl overflow-auto">
         <div className="p-[3.2rem]">
           <h2 className="pb-[3.2rem] text-2xl-bold text-[var(--black-333236)]">
             할 일 수정
           </h2>
-          {/* 상태 + 담당자 드롭다운 가로 정렬 */}
+
+          {/* 상태 + 담당자 */}
           <div className="flex w-full gap-[3.2rem]">
-            {/* 상태 드롭다운 추가 */}
-            <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
+            {/* 상태 */}
+            <div className="flex flex-col pb-[3.2rem] gap-[0.8rem] w-[21.7rem]">
               <label className="text-2lg-medium text-[var(--black-333236)]">
                 상태
               </label>
-              <select
-                value={statusValue}
-                onChange={statusSelectChangeHandler}
-                className={`w-full h-[4.8rem] px-[1.6rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-md text-lg-regular outline-none
-                  ${
-                    statusValue === ''
-                      ? 'text-[var(--gray-9FA6B2)]'
-                      : 'text-[var(--black-333236)]'
-                  }
-                  focus:border-[var(--violet-5534DhA)] focus:ring-0 focus:outline-none
-                `}
-              >
-                <option value="" disabled hidden>
-                  상태를 선택해 주세요
-                </option>
-                <option value="To Do">To Do</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Done">Done</option>
-              </select>
+              <StatusDropdown value={statusValue} onChange={setStatusValue} />
             </div>
 
-            {/* 담당자 드롭다운 */}
-            <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
+            {/* 담당자 */}
+            <div className="flex flex-col pb-[3.2rem] gap-[0.8rem] w-[21.7rem]">
               <label className="text-2lg-medium text-[var(--black-333236)]">
                 담당자
               </label>
-              <select
-                value={selectValue}
-                onChange={selectChangeHandler}
-                className={`w-full h-[4.8rem] px-[1.6rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-md text-lg-regular outline-none
+              <UserDropdown
+                users={users}
+                selectedUser={selectedUser}
+                onChange={setSelectedUser}
+                mode="select"
+                className={`h-[4.8rem] px-[1.6rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-md text-lg-regular outline-none
                   ${
-                    selectValue === ''
+                    selectedUser.name === ''
                       ? 'text-[var(--gray-9FA6B2)]'
                       : 'text-[var(--black-333236)]'
                   }
-                  focus:border-[var(--violet-5534DhA)] focus:ring-0 focus:outline-none
-                `}
-              >
-                <option value="" disabled hidden>
-                  이름을 입력해 주세요
-                </option>
-                <option value="배유철">배유철</option>
-              </select>
+                  focus:border-[var(--violet-5534DhA)] focus:ring-0 focus:outline-none`}
+              />
             </div>
           </div>
 
@@ -165,7 +136,7 @@ export default function TaskCardEditModal({
           <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
             <label className="text-2lg-medium text-[var(--black-333236)] flex items-center gap-[2px]">
               제목
-              <span className="text-[var(--violet-5534DhA)] text-lg-regular leading-none translate-y-[0.3rem]">
+              <span className="text-[var(--violet-5534DhA)] text-lg-regular">
                 *
               </span>
             </label>
@@ -182,7 +153,7 @@ export default function TaskCardEditModal({
           <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
             <label className="text-2lg-medium text-[var(--black-333236)] flex items-center gap-[2px]">
               설명
-              <span className="text-[var(--violet-5534DhA)] text-lg-regular leading-none translate-y-[0.3rem]">
+              <span className="text-[var(--violet-5534DhA)] text-lg-regular">
                 *
               </span>
             </label>
@@ -191,8 +162,7 @@ export default function TaskCardEditModal({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="설명을 입력해 주세요"
-                className="w-full px-[1.6rem] pt-[1.5rem] pb-[8.5rem] border-none rounded-lg bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none"
-                wrap="soft"
+                className="w-full px-[1.6rem] pt-[1.5rem] pb-[8.5rem] bg-white text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none rounded-lg"
               />
             </div>
           </div>
@@ -202,9 +172,7 @@ export default function TaskCardEditModal({
             <label className="text-2lg-medium text-[var(--black-333236)]">
               마감일
             </label>
-            <div
-              className={`group flex items-center w-full h-[5rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]`}
-            >
+            <div className="group flex items-center w-full h-[5rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]">
               <Image
                 src="/assets/icon/calendar.svg"
                 alt="달력 아이콘"
@@ -214,7 +182,7 @@ export default function TaskCardEditModal({
               />
               <DatePicker
                 selected={selectedDate}
-                onChange={(date: Date | null) => setSelectedDate(date)}
+                onChange={setSelectedDate}
                 dateFormat="yyyy.MM.dd HH:mm"
                 showTimeSelect
                 timeFormat="HH:mm"
@@ -222,9 +190,9 @@ export default function TaskCardEditModal({
                 timeCaption="시간"
                 placeholderText="날짜를 입력해 주세요"
                 className="flex-1 bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
-                calendarClassName={styles.calendar} // 캘린더 박스 스타일
-                popperClassName={styles.popper} // 팝업(달력) 스타일
-                dayClassName={() => styles.day} // 하루하루 날짜 스타일
+                calendarClassName={styles.calendar}
+                popperClassName={styles.popper}
+                dayClassName={() => styles.day}
                 locale={ko}
               />
             </div>
@@ -246,7 +214,6 @@ export default function TaskCardEditModal({
                 />
               ))}
               <input
-                type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleTagKeyDown}
@@ -303,7 +270,7 @@ export default function TaskCardEditModal({
               variant="primary"
               padding="1.4rem 11.4rem"
               isActive={true}
-              className="w-full h-[5.4rem] bg-[var(--violet-5534DhA)] text-[var(--white-FFFFFF)] text-lg-semibold"
+              className="w-full h-[5.4rem] bg-[var(--violet-5534DhA)] text-white text-lg-semibold"
             >
               수정
             </CommonButton>
