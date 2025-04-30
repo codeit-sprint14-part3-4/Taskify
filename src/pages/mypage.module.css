@@ -8,9 +8,7 @@
   background-color: var(--gray-FAFAFA);
 }
 .content {
-
-  padding: 2rem;
-
+  padding: 0.9rem 32rem;
   flex: 1;
   max-width: 80rem;
 }

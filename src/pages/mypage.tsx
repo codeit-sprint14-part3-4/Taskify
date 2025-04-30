@@ -3,17 +3,13 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import styles from '@/pages/mypage.module.css'
 
-
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-
-
 import Sidebar from '@/components/layout/sidebar/Sidebar'
 import HomeNavBar from '@/components/layout/gnb/HomeNavBar'
 import Modal from '@/components/domain/modals/Modal'
 
 import { usersService } from '@/api/services/usersServices'
 import { authService } from '@/api/services/authServices'
-
 
 export default function MyPage() {
   const router = useRouter()
@@ -214,7 +210,6 @@ export default function MyPage() {
     nickname.trim().length >= 2 || profileImage !== null
 
   return (
-
     <div className={styles.navbar}>
       <HomeNavBar dashboardId={1} pageType="mydashboard" />
       <div className={styles.layout}>
@@ -283,7 +278,7 @@ export default function MyPage() {
                     onFocus={handleNicknameFocus}
                   />
 
-                  <Button
+                  <CommonButton
                     variant="primary"
                     isActive={isSaveButtonActive}
                     className={`${styles.saveButton} ${
@@ -294,7 +289,7 @@ export default function MyPage() {
                     onClick={isSaveButtonActive ? handleSaveProfile : undefined}
                   >
                     저장
-                  </Button>
+                  </CommonButton>
                 </div>
               </div>
             </section>
@@ -346,7 +341,7 @@ export default function MyPage() {
                 )}
 
                 <div>
-                  <Button
+                  <CommonButton
                     variant="primary"
                     isActive={isPasswordValid}
                     className={`${styles.changeButton} ${
@@ -357,45 +352,22 @@ export default function MyPage() {
                     onClick={handleChangePassword}
                   >
                     변경
-                  </Button>
+                  </CommonButton>
                 </div>
-
               </div>
-            </div>
-          </section>
-
-          {/* 비밀번호 변경 섹션 */}
-          <section className={`${styles.card} ${styles.passwordCard}`}>
-            <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
-            <div className={styles.passwordForm}>
-              <label>현재 비밀번호</label>
-              <input type="password" placeholder="비밀번호 입력" />
-              <label>새 비밀번호</label>
-              <input type="password" placeholder="새 비밀번호 입력" />
-              <label>새 비밀번호 확인</label>
-              <input type="password" placeholder="새 비밀번호 입력" />
-              <CommonButton
-                variant="primary"
-                padding="1.2rem 1.2rem"
-                className={styles.changeButton}
-              >
-                변경
-              </CommonButton>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
+
+        {isModalOpen && (
+          <Modal
+            message={modalMessage}
+            onConfirm={closeModal}
+            size="large"
+            confirmLabel="확인"
+          />
+        )}
       </div>
-
-
-      {isModalOpen && (
-        <Modal
-          message={modalMessage}
-          onConfirm={closeModal}
-          size="large"
-          confirmLabel="확인"
-        />
-      )}
     </div>
-
   )
 }
