@@ -8,11 +8,10 @@ import Footerbar from '@/components/layout/footerbar/Footerbar'
 import Link from 'next/link'
 import { GetServerSideProps } from 'next'
 import AnimatedSection from '@/components/common/animatedSection/AnimatedSection'
+import type { Dashboard } from '@/types/api/dashboards'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context
-
-  // 쿠키에서 accessToken 추출
   const accessToken = req.cookies.accessToken
 
   if (!accessToken) {
@@ -22,8 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   try {
-    // fetch를 사용한 API 호출
-    const response = await fetch('${process.env.API_BASE_URL}/dashboards', {
+    const response = await fetch(`${process.env.API_BASE_URL}/dashboards`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -35,8 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       throw new Error('대시보드 정보를 가져오는 데 실패했습니다.')
     }
 
-    const dashboards = await response.json()
-    //const dashboards = (await response.json()).data//
+    const dashboards: Dashboard[] = await response.json()
 
     if (!dashboards || dashboards.length === 0) {
       return {
@@ -47,9 +44,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }
     }
 
-    // createdAt 기준으로 정렬
     dashboards.sort(
-      (a: any, b: any) =>
+      (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     )
 
