@@ -10,6 +10,14 @@
   align-items: center;
 }
 
+.button_background_image {
+  background-image: url('/public/assets/icon/add_box_gray.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
 .edit_invite_email_header {
   margin-top: 4rem;
   color: var(--gray-9FA6B2);

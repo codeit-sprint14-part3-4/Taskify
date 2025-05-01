@@ -14,8 +14,9 @@ export default function EditMyDashboardInviteLog() {
               variant="primary"
               padding="0.8rem 1.6rem"
               isActive={true}
-              className={`text-md-medium`}
+              className="button_background_image text-md-medium"
             >
+              {/*이벤트 핸들러 추가하기*/}
               초대하기
             </CommonButton>
           </div>
