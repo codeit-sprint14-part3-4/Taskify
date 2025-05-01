@@ -12,7 +12,7 @@
 }
 
 .inactive {
-  background-color: var(--gray--9FA6B2);
+  background-color: var(--gray-9FA6B2);
   cursor: not-allowed;
 }
 
