@@ -1,0 +1,29 @@
+.edit_container {
+  background-color: var(--white-FFFFFF);
+  max-width: 62rem;
+  padding: 3.2rem 2.8rem;
+}
+
+.dashboard_edit_title_margin {
+  margin-bottom: 2.4rem;
+}
+
+.dashboard_edit_name_margin {
+  margin-bottom: 0.8rem;
+}
+
+.edit_input {
+  border-radius: 0.8rem;
+}
+
+.edit_color_pin_container {
+  display: flex;
+  margin: 1.6rem 0 4rem 0;
+  gap: 1.2rem;
+}
+
+.button_container {
+  display: flex;
+  justify-content: center;
+  gap: 1.6rem;
+}

@@ -1,5 +1,5 @@
 import type {
-  Card,
+  CardType,
   GetCardsResponse,
   CreateCardBody,
   UpdateCardBody,
@@ -10,7 +10,7 @@ import { useAuthStore } from '@/stores/auth'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || ''
 
 // POST: 카드 생성
-const postCards = async (body: CreateCardBody): Promise<Card> => {
+const postCards = async (body: CreateCardBody): Promise<CardType> => {
   const accessToken = useAuthStore.getState().accessToken
 
   if (!accessToken) {
@@ -61,7 +61,7 @@ const getCards = async (
 const putCards = async (
   cardId: number,
   body: UpdateCardBody
-): Promise<Card> => {
+): Promise<CardType> => {
   const accessToken = useAuthStore.getState().accessToken
 
   if (!accessToken) {
@@ -82,7 +82,7 @@ const putCards = async (
 }
 
 // GET: 카드 상세 조회
-const getCardsDetail = async (cardId: number): Promise<Card> => {
+const getCardsDetail = async (cardId: number): Promise<CardType> => {
   const accessToken = useAuthStore.getState().accessToken
 
   if (!accessToken) {

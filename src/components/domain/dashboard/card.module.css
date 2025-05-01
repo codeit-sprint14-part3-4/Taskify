@@ -1,0 +1,61 @@
+.card {
+  width: 100%;
+  border-radius: 0.6rem;
+  background-color: white;
+  border: 0.1rem solid #d9d9d9;
+  overflow: hidden;
+}
+
+.imageWrapper {
+  padding-top: 1.6rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.image {
+  width: 100%;
+  height: 16rem;
+  object-fit: cover;
+}
+
+.content {
+  padding-top: 1.6rem;
+  padding-bottom: 1.6rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  font-weight: 500;
+  color: var(--gray-787486);
+}
+
+.dateSection {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.calendarIcon {
+  display: inline-block;
+}
+
+.assigneeSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

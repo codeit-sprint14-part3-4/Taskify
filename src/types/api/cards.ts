@@ -32,7 +32,7 @@ export interface CreateCardBody {
   description: string
   dueDate: string
   tags: string[]
-  imageUrl: string
+  imageUrl: string | null
 }
 
 export interface UpdateCardBody {
