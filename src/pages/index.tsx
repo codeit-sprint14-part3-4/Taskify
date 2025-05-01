@@ -135,7 +135,7 @@ export default function Home() {
               Point1
             </span>
             <div
-              className={`mt-10rem text-[4.8rem] font-pretendard text-[var(--white-FFFFFF)] leading-[6.4rem] font-bold`}
+              className={`mt-[10rem] text-[4.8rem] font-pretendard text-[var(--white-FFFFFF)] leading-[6.4rem] font-bold`}
             >
               <div>일의 우선 순위를</div>
               <div>관리하세요</div>
