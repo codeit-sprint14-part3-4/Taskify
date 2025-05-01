@@ -6,9 +6,12 @@ import Layout from '@/components/layout/layout'
 import { columnsService } from '@/api/services/columnsServices'
 import { ColumnType } from '@/types/api/columns'
 import { useRouter } from 'next/router'
+import TaskCardCreateModal from '@/components/domain/modals/taskcardcreatemodal/TaskCardCreateModal'
 
 export default function DashboardPage() {
   const [columns, setColumns] = useState<ColumnType[]>([])
+  const [isCardCreateModalOpen, setIsCardCreateModalOpen] = useState(false)
+  const [selectedColumnId, setSelectedColumnId] = useState<number>(-1)
 
   const { query } = useRouter()
   const dashboardId = Number(query.id)
@@ -16,6 +19,15 @@ export default function DashboardPage() {
   const getColumns = async () => {
     const columnsData = await columnsService.getColumns(dashboardId)
     setColumns(columnsData.data)
+  }
+
+  const handleCardCreateModalOpen = (columnId: number) => {
+    setSelectedColumnId(columnId)
+    setIsCardCreateModalOpen(true)
+  }
+
+  const handleCardCreateModalClose = () => {
+    setIsCardCreateModalOpen(false)
   }
 
   useEffect(() => {
@@ -32,7 +44,11 @@ export default function DashboardPage() {
       {/* 컬럼 리스트 */}
       <div className="flex overflow-x-auto">
         {columns.map((column) => (
-          <Column key={column.id} columnInfo={column} />
+          <Column
+            key={column.id}
+            columnInfo={column}
+            handleCardCreateModalOpen={handleCardCreateModalOpen}
+          />
         ))}
 
         {/* 새로운 컬럼 추가하기 버튼 */}
@@ -56,6 +72,13 @@ export default function DashboardPage() {
           </ButtonDashboard>
         </div>
       </div>
+      {isCardCreateModalOpen && (
+        <TaskCardCreateModal
+          dashboardId={dashboardId}
+          columnId={selectedColumnId}
+          handleCardCreateModalClose={handleCardCreateModalClose}
+        />
+      )}
     </Layout>
   )
 }
