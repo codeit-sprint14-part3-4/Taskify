@@ -24,15 +24,20 @@ const getInvitations = async (
     cursorId !== undefined ? `&cursorId=${cursorId}` : ''
   }${title ? `&title=${encodeURIComponent(title)}` : ''}`
 
-  const res = await fetch(query, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
+  try {
+    const res = await fetch(query, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
 
-  if (!res.ok) return handleError(res)
+    if (!res.ok) return handleError(res)
 
-  return res.json()
+    return res.json()
+  } catch (error) {
+    console.error('초대 목록 조회 실패:', error)
+    throw new Error('초대 목록 조회 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 // PUT: 초대 응답
@@ -46,18 +51,23 @@ const putInvitations = async (
     throw new Error('사용자 인증 토큰이 없습니다.')
   }
 
-  const res = await fetch(`${BASE_URL}/invitations/${invitationId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(body),
-  })
+  try {
+    const res = await fetch(`${BASE_URL}/invitations/${invitationId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(body),
+    })
 
-  if (!res.ok) return handleError(res)
+    if (!res.ok) return handleError(res)
 
-  return res.json()
+    return res.json()
+  } catch (error) {
+    console.error('초대 응답 실패:', error)
+    throw new Error('초대 응답 처리 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 export const invitationsService = {
