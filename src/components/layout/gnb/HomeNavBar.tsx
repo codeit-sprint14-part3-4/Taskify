@@ -5,17 +5,26 @@ import clsx from 'clsx'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Badge from '@/components/common/badge/Badge'
 import { useDashboardInfo } from '@/hooks/useDashboardInfo'
+import { useAuthStore } from '@/stores/auth'
+
+interface HomeNavBarProps {
+  dashboardId: number
+  pageType: 'mydashboard' | 'dashboard' | 'mypage'
+  members?: string[]
+  onInviteClick?: () => void
+}
 
 export default function HomeNavBar({
   dashboardId,
   pageType,
-}: {
-  dashboardId: number
-  pageType: 'mydashboard' | 'dashboard' | 'mypage'
-}) {
+  members,
+  onInviteClick,
+}: HomeNavBarProps) {
+  const { userData } = useAuthStore()
   const { dashboardTitle, hasCrown, userName } = useDashboardInfo(
     dashboardId,
-    pageType
+    pageType,
+    userData?.nickname ?? ''
   )
 
   return (
@@ -37,6 +46,7 @@ export default function HomeNavBar({
           )}
         </div>
       </div>
+
       <div className={styles.flex_center_space_between}>
         <div
           className={clsx(
@@ -57,7 +67,7 @@ export default function HomeNavBar({
               prefix={
                 <Image
                   src="/assets/icon/settings-logo.svg"
-                  alt="addbutton"
+                  alt="설정"
                   width={20}
                   height={20}
                   className={styles.icon}
@@ -80,20 +90,28 @@ export default function HomeNavBar({
               prefix={
                 <Image
                   src="/assets/icon/add-box-gray.svg"
-                  alt="addbutton"
+                  alt="초대 아이콘"
                   width={20}
                   height={20}
                   className={styles.icon}
                 />
               }
+              onClick={onInviteClick} // 상위 컴포넌트로부터 전달받은 클릭 핸들러
             >
               초대하기
             </ButtonDashboard>
           </div>
           <div className={styles.name_mark}>
-            {pageType === 'dashboard' && <div>명</div>}
+            {pageType === 'dashboard' && (
+              <div>
+                {members && members.length > 0
+                  ? `${members.length} 명`
+                  : '멤버 없음'}
+              </div>
+            )}
           </div>
         </div>
+
         <div
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >

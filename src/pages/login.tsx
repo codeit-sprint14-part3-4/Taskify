@@ -27,7 +27,7 @@ export default function Login() {
     isFormLoginValid,
   } = useFormSignup()
 
-  const { setAccessToken } = useAuthStore()
+  const { setAuth, setUserData } = useAuthStore()
 
   // 로그인 요청 함수
   const handleLogin = async () => {
@@ -37,18 +37,22 @@ export default function Login() {
     }
 
     try {
-      const body = {
-        email,
-        password,
-      }
-
+      const body = { email, password }
       const response = await authService.postAuth(body)
-      setAccessToken(response.accessToken)
+
+      const accessToken = response.accessToken
+      const userId = response.user.id
+      const userData = response.user
+
+      setAuth(accessToken, userId)
+      setUserData(userData)
       router.push('/mydashboard')
-    } catch (error: any) {
-      console.error('로그인 실패:', error)
-      setErrorMessage(error?.message || '로그인 중 문제가 발생했습니다.')
-      setShowPasswordModal(true)
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('로그인 실패:', error)
+        setErrorMessage(error?.message || '로그인 중 문제가 발생했습니다.')
+        setShowPasswordModal(true)
+      }
     }
   }
 
@@ -94,7 +98,6 @@ export default function Login() {
               이메일
             </label>
             <Input
-              id="email"
               padding="1.2rem 1.6rem"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -109,7 +112,6 @@ export default function Login() {
               비밀번호
             </label>
             <Input
-              id="password"
               padding="1.2rem 1.6rem"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

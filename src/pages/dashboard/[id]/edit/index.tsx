@@ -22,3 +22,10 @@ export default function EditPage() {
     </>
   )
 }
+// EditPage.getLayout = function getLayout(page: React.ReactElement) {
+//   return (
+//     <Layout pageType="dashboard" dashboardId={1}>
+//       {page}
+//     </Layout>
+//   )
+// }
