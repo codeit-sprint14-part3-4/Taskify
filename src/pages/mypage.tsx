@@ -352,26 +352,6 @@ export default function MyPage() {
                 </div>
               </div>
             </section>
-
-            {/* 비밀번호 변경 섹션 */}
-            <section className={`${styles.card} ${styles.passwordCard}`}>
-              <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
-              <div className={styles.passwordForm}>
-                <label>현재 비밀번호</label>
-                <input type="password" placeholder="비밀번호 입력" />
-                <label>새 비밀번호</label>
-                <input type="password" placeholder="새 비밀번호 입력" />
-                <label>새 비밀번호 확인</label>
-                <input type="password" placeholder="새 비밀번호 입력" />
-                <CommonButton
-                  variant="primary"
-                  padding="1.2rem 1.2rem"
-                  className={styles.changeButton}
-                >
-                  변경
-                </CommonButton>
-              </div>
-            </section>
           </div>
         </div>
       </Layout>
