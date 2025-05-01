@@ -28,7 +28,7 @@ export default function MyDashboard() {
           className="text-lg-semibold"
           suffix={
             <Image
-              src="/assets/icon/add_box.svg"
+              src="/assets/icon/add-box.svg"
               alt="addbutton"
               width={20}
               height={20}

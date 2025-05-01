@@ -1,5 +1,5 @@
 import styles from './editMyDashboardAttribute.module.css'
-import Input from '@/components/common/input'
+import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { useState, useEffect } from 'react'
 import ColorPin from '@/components/domain/colorpin/ColorPin'

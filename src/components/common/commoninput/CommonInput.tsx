@@ -1,7 +1,5 @@
-'use client'
-
 import React from 'react'
-import styles from './input.module.css'
+import styles from './commonInput.module.css'
 import InputProps from '@/types/common/input'
 
 const CommonInput: React.FC<InputProps> = ({

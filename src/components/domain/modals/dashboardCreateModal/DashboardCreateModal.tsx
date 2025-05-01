@@ -1,5 +1,5 @@
 import styles from './dashboardCreateModal.module.css'
-import Input from '@/components/common/input'
+import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { useState } from 'react'
 import { useRouter } from 'next/router'

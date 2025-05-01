@@ -5,9 +5,9 @@ import Link from 'next/link'
 
 import { useFormSignup } from '@/hooks/useFormSignup'
 import { usersService } from '../api/services/usersServices'
-import Input from '@/components/common/input'
+import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import Modal from '@/components/domain/modals/Modal'
+import Modal from '@/components/domain/modals/basemodal/Modal'
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false)
@@ -159,7 +159,7 @@ export default function Signup() {
             >
               <Image
                 src={`/assets/icon/${
-                  showPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                  showPassword ? 'open-hide.svg' : 'hide-icon.svg'
                 }`}
                 alt="비밀번호 보이기/숨기기 아이콘"
                 fill
@@ -191,7 +191,7 @@ export default function Signup() {
             >
               <Image
                 src={`/assets/icon/${
-                  showConfirmPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                  showConfirmPassword ? 'open-hide.svg' : 'hide-icon.svg'
                 }`}
                 alt="비밀번호 보이기/숨기기 아이콘"
                 fill

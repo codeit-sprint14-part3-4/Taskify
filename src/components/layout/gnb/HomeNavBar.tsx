@@ -56,7 +56,7 @@ export default function HomeNavBar({
               }}
               prefix={
                 <Image
-                  src="/assets/icon/settings_logo.svg"
+                  src="/assets/icon/settings-logo.svg"
                   alt="addbutton"
                   width={20}
                   height={20}
@@ -79,7 +79,7 @@ export default function HomeNavBar({
               }}
               prefix={
                 <Image
-                  src="/assets/icon/add_box_gray.svg"
+                  src="/assets/icon/add-box-gray.svg"
                   alt="addbutton"
                   width={20}
                   height={20}

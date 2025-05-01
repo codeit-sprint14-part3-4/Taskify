@@ -1,4 +1,4 @@
-import CommonInput from '@/components/common/input'
+import CommonInput from '@/components/common/commoninput/CommonInput'
 import styles from './myinviteddashboard.module.css'
 import React, { useState } from 'react'
 import Image from 'next/image'

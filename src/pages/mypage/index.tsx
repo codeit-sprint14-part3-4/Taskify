@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import styles from '@/pages/mypage.module.css'
+import styles from '@/pages/mypage/mypage.module.css'
 
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Layout from '@/components/layout/layout'
-import Modal from '@/components/domain/modals/Modal'
+import Modal from '@/components/domain/modals/basemodal/Modal'
 
 import { usersService } from '@/api/services/usersServices'
 import { authService } from '@/api/services/authServices'
@@ -240,6 +240,8 @@ export default function MyPage() {
                       src={previewImage}
                       alt="프로필 미리보기"
                       className={styles.avatarImage}
+                      width={76}
+                      height={76}
                     />
                   ) : (
                     '+'

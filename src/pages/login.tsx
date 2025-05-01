@@ -4,11 +4,11 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import Input from '@/components/common/input'
+import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { authService } from '../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
-import Modal from '@/components/domain/modals/Modal'
+import Modal from '@/components/domain/modals/basemodal/Modal'
 import { useFormSignup } from '@/hooks/useFormSignup'
 
 export default function Login() {
@@ -124,7 +124,7 @@ export default function Login() {
             >
               <Image
                 src={`/assets/icon/${
-                  showPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                  showPassword ? 'open-hide.svg' : 'hide-icon.svg'
                 }`}
                 alt="비밀번호 보이기/숨기기 아이콘"
                 fill
