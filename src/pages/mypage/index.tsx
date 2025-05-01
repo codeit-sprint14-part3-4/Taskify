@@ -7,6 +7,7 @@ import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Layout from '@/components/layout/layout'
 import Modal from '@/components/domain/modals/basemodal/Modal'
 
+import { useAuthStore } from '@/stores/auth'
 import { usersService } from '@/api/services/usersServices'
 import { authService } from '@/api/services/authServices'
 
@@ -28,7 +29,7 @@ export default function MyPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
-
+  const { accessToken } = useAuthStore()
   useEffect(() => {
     async function fetchUserInfo() {
       try {
@@ -141,6 +142,7 @@ export default function MyPage() {
       if (profileImage) {
         const uploadResponse = await usersService.postUsersMeImage(profileImage)
         profileImageUrl = uploadResponse.profileImageUrl
+        useAuthStore.getState().setProfileImageUrl(profileImageUrl)
       }
 
       await usersService.putUsers({
@@ -207,7 +209,11 @@ export default function MyPage() {
 
   const isSaveButtonActive =
     nickname.trim().length >= 2 || profileImage !== null
-
+  useEffect(() => {
+    if (!accessToken) {
+      router.replace('/login') // 로그인 안된 경우 로그인 페이지로
+    }
+  }, [accessToken, router])
   return (
     <>
       <div className={styles.content}>

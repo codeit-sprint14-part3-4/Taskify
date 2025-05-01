@@ -9,8 +9,8 @@ import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 export default function MyDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { userId, userData, accessToken } = useAuthStore() // auth.ts에서 가져온 상태 전역관리
-  console.log('userId:', userId)
-  console.log('userData:', userData)
+  const [initialRender, setInitialRender] = useState(true)
+
   const handleCreateDashboardModal = () => {
     setIsModalOpen(true)
   }
@@ -18,12 +18,25 @@ export default function MyDashboard() {
   const handleCloseDashboardModal = () => {
     setIsModalOpen(false)
   }
+
   // 로그인 상태 확인
   useEffect(() => {
     if (!accessToken) {
       window.location.href = '/login'
     }
   }, [accessToken])
+
+  // 첫 번째 렌더링 이후에만 콘솔 로그 찍기
+  useEffect(() => {
+    if (initialRender) {
+      setInitialRender(false)
+      return
+    }
+
+    console.log('userId:', userId)
+    console.log('userData:', userData)
+  }, [userId, userData])
+
   return (
     <main className="p-16">
       {/* 새로운 대시보드 버튼 */}
@@ -75,6 +88,7 @@ export default function MyDashboard() {
     </main>
   )
 }
+
 MyDashboard.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout pageType="mydashboard">{page}</Layout>
 }

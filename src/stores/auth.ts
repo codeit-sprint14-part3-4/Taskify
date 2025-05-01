@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 type UserData = {
   nickname: string
   email: string
-  profileImageUrl?: string
+  profileImage?: string // 프로필 이미지는 선택 사항
 }
 
 type Member = {
@@ -17,12 +17,15 @@ type AuthState = {
   accessToken: string | null
   userId: number | null
   userData: UserData | null
-  members: Member[] // 멤버 목록
-  dashboardTitle: string | null // 데이터 제목
+  profileImageUrl: string | null
+  members: Member[]
+  dashboardTitle: string | null
+  userName: string | null
   setAuth: (token: string, userId: number) => void
   setUserData: (data: UserData) => void
-  setMembers: (members: Member[] | ((prev: Member[]) => Member[])) => void
-  setDashboardTitle: (title: string) => void // 데이터 제목 설정
+  setProfileImageUrl: (url: string) => void
+  setMembers: (members: Member[]) => void
+  setDashboardTitle: (title: string) => void
   clearAuth: () => void
 }
 
@@ -32,10 +35,21 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       userId: null,
       userData: null,
+      profileImageUrl: null, // 프로필 이미지 URL 상태 추가
+      userName: null,
       members: [],
       dashboardTitle: null,
       setAuth: (token, userId) => set({ accessToken: token, userId }),
-      setUserData: (data) => set({ userData: data }),
+      setUserData: (data) => {
+        set({
+          userData: data,
+          userName: data.nickname,
+          profileImageUrl: data.profileImageUrl || null, // 프로필 이미지 URL을 상태에 반영
+        })
+      },
+      // ...
+
+      setProfileImageUrl: (url) => set({ profileImageUrl: url }), // 프로필 이미지 URL 업데이트
       setMembers: (members) => set({ members }),
       setDashboardTitle: (title) => set({ dashboardTitle: title }),
       clearAuth: () =>
@@ -43,17 +57,14 @@ export const useAuthStore = create<AuthState>()(
           accessToken: null,
           userId: null,
           userData: null,
+          userName: null,
           members: [],
           dashboardTitle: null,
         }),
     }),
     {
       name: 'auth-storage',
-      storage:
-        typeof window !== 'undefined' &&
-        window.location.hostname === 'localhost'
-          ? createJSONStorage(() => localStorage) // 개발 환경에서는 localStorage 사용
-          : createJSONStorage(() => sessionStorage), // 배포 환경에서는 sessionStorage 사용
+      storage: createJSONStorage(() => localStorage),
     }
   )
 )
