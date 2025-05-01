@@ -1,15 +1,13 @@
-'use client'
-import styles from './signup.module.css'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { useFormSignup } from '@/hooks/useFormSignup'
-import { usersService } from '../../api/services/usersServices'
-import Input from '@/components/common/input'
+import { usersService } from '../api/services/usersServices'
+import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import Modal from '@/components/domain/modals/Modal'
+import Modal from '@/components/domain/modals/basemodal/Modal'
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false)
@@ -77,17 +75,25 @@ export default function Signup() {
   }
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.wrapper_size}>
+    <div className="flex items-center justify-center pt-[22.3rem] transition-all duration-300 ease-in-out">
+      <div className="w-[52rem] h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
         <Link href="/">
-          <div className={styles.flex_center_column}>
-            <div className={styles.wrapper_image}>
-              <Image src="/assets/icon/logo-icon.svg" alt="로고" fill />
+          <div className="flex items-center justify-center flex-col mb-[3rem]">
+            <div className="relative w-[20rem] h-[19rem]">
+              <Image
+                src="/assets/icon/logo-icon.svg"
+                alt="테스키파이 로고 클릭하면 홈페이지로 갑니다"
+                fill
+              />
             </div>
-            <div className={styles.wrapper_logo_name}>
-              <Image src="/assets/icon/logo-title.svg" alt="로고" fill />
+            <div className="relative w-[20rem] h-[5.5rem] mt-[3rem]">
+              <Image
+                src="/assets/icon/logo-title.svg"
+                alt="테스키파이 로고 클릭하면 홈페이지로 갑니다"
+                fill
+              />
             </div>
-            <div className={`${styles.logo_welcome} text-xl-medium`}>
+            <div className="text-[var(--black-333236)] text-xl-medium">
               첫 방문을 환영합니다!
             </div>
           </div>
@@ -100,11 +106,15 @@ export default function Signup() {
               handleSignup()
             }
           }}
-          className={`${styles.wrapper_middle} text-lg-medium`}
+          className="text-lg-medium flex items-center content-center flex-col text-[var(--black-333236)] gap-8 w-full transition-all duration-300 ease-in-out"
         >
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>이메일</div>
+          {/*이메일 input*/}
+          <div className="w-full">
+            <label htmlFor="email" className="block mb-[0.8rem]">
+              이메일
+            </label>
             <Input
+              id="email"
               padding="1.2rem 1.6rem"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -113,9 +123,13 @@ export default function Signup() {
             />
           </div>
 
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>닉네임</div>
+          {/*닉네임 input*/}
+          <div className="w-full">
+            <label htmlFor="nickname" className="block mb-[0.8rem]">
+              닉네임
+            </label>
             <Input
+              id="nickname"
               padding="1.2rem 1.6rem"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
@@ -124,23 +138,13 @@ export default function Signup() {
             />
           </div>
 
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>
+          {/*비밀번호 input*/}
+          <div className="w-full relative">
+            <label htmlFor="password" className="inline-block pb-[0.8rem]">
               비밀번호
-              <div
-                className={styles.hide_icon}
-                onClick={() => setShowPassword((prev) => !prev)}
-              >
-                <Image
-                  src={`/assets/icon/${
-                    showPassword ? 'open_hide.svg' : 'hide_icon.svg'
-                  }`}
-                  alt="비밀번호 보이기/숨기기 아이콘"
-                  fill
-                />
-              </div>
-            </div>
+            </label>
             <Input
+              id="password"
               padding="1.2rem 1.6rem"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -148,25 +152,31 @@ export default function Signup() {
               type={showPassword ? 'text' : 'password'}
               error={passwordError}
             />
+            <button
+              type="button"
+              className="absolute top-[5.5rem] right-[1.6rem] translate-y-[-50%] w-[2.4rem] h-[2.4rem] z-10 cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <Image
+                src={`/assets/icon/${
+                  showPassword ? 'open-hide.svg' : 'hide-icon.svg'
+                }`}
+                alt="비밀번호 보이기/숨기기 아이콘"
+                fill
+              />
+            </button>
           </div>
 
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>
+          {/*비밀번호 확인 input*/}
+          <div className="w-full relative">
+            <label
+              htmlFor="confirmPassword"
+              className="inline-block pb-[0.8rem]"
+            >
               비밀번호 확인
-              <div
-                className={styles.hide_icon}
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-              >
-                <Image
-                  src={`/assets/icon/${
-                    showConfirmPassword ? 'open_hide.svg' : 'hide_icon.svg'
-                  }`}
-                  alt="비밀번호 보이기/숨기기 아이콘"
-                  fill
-                />
-              </div>
-            </div>
+            </label>
             <Input
+              id="confirmPassword"
               padding="1.2rem 1.6rem"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -174,11 +184,24 @@ export default function Signup() {
               type={showConfirmPassword ? 'text' : 'password'}
               error={confirmPasswordError}
             />
+            <button
+              type="button"
+              className="absolute top-[5.5rem] right-[1.6rem] translate-y-[-50%] w-[2.4rem] h-[2.4rem] z-[10] cursor-pointer"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+            >
+              <Image
+                src={`/assets/icon/${
+                  showConfirmPassword ? 'open-hide.svg' : 'hide-icon.svg'
+                }`}
+                alt="비밀번호 보이기/숨기기 아이콘"
+                fill
+              />
+            </button>
           </div>
 
-          <div className={styles.terms_wrapper}>
+          <div className="flex items-center justify-start gap-2 w-full">
             <input
-              className={styles.custom_select}
+              className="w-[2rem] h-[2rem] border border-[0.1rem] border-[var(--gray-D9D9D9)] appearance-none rounded-[0.25rem] cursor-pointer relative checked:bg-[oklch(0.94_0.03_295.46)] checked:border-[var(--gray-D9D9D9)] checked:bg-[url('/assets/icon/check.svg')] checked:bg-no-repeat checked:bg-center checked:bg-[1.2rem_1.2rem]"
               type="checkbox"
               id="terms"
               checked={isTermsAccepted}
@@ -187,7 +210,7 @@ export default function Signup() {
             <label htmlFor="terms">이용약관에 동의합니다.</label>
           </div>
 
-          <div className={styles.wrapper_bottom}>
+          <div className="flex items-center content-center flex-col gap-8 pt-[0.8rem] w-full text-2xl font-medium">
             <CommonButton
               padding="1.2rem 0"
               className="w-full text-white bg-[var(--gray-9FA6B2)]"
@@ -209,11 +232,15 @@ export default function Signup() {
                 confirmLabel="확인"
               />
             )}
-            <div className={styles.wrapper_floor}>
-              <div>이미 회원이신가요?</div>
-              <Link href="/login">
-                <div className={styles.link}>로그인하기</div>
-              </Link>
+            <div className="flex items-center justify-center">
+              <span>이미 회원이신가요?</span>
+              <span className="ml-2">
+                <Link href="/login">
+                  <span className="text-[color:var(--violet-5534DhA)] underline cursor-pointer hover:text-[darkblue] visited:text-[color:var(--red-D6173A)]">
+                    로그인하기
+                  </span>
+                </Link>
+              </span>
             </div>
           </div>
         </form>

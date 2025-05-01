@@ -22,17 +22,22 @@ const postDashboards = async (
     throw new Error('사용자 인증 토큰이 없습니다.')
   }
 
-  const res = await fetch(`${BASE_URL}/dashboards`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(body),
-  })
+  try {
+    const res = await fetch(`${BASE_URL}/dashboards`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(body),
+    })
 
-  if (!res.ok) return handleError(res)
-  return res.json()
+    if (!res.ok) return handleError(res)
+    return res.json()
+  } catch (error) {
+    console.error('대시보드 생성 실패:', error)
+    throw new Error('대시보드 생성 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 // GET: 대시보드 목록 조회
@@ -55,14 +60,19 @@ const getDashboards = async (
         }`
       : `navigationMethod=${navigationMethod}&size=${size}&page=${page}`
 
-  const res = await fetch(`${BASE_URL}/dashboards?${query}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
+  try {
+    const res = await fetch(`${BASE_URL}/dashboards?${query}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
 
-  if (!res.ok) return handleError(res)
-  return res.json()
+    if (!res.ok) return handleError(res)
+    return res.json()
+  } catch (error) {
+    console.error('대시보드 목록 조회 실패:', error)
+    throw new Error('대시보드 목록 조회 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 // GET: 대시보드 상세 조회
@@ -73,14 +83,19 @@ const getDashboardsDetail = async (dashboardId: number): Promise<Dashboard> => {
     throw new Error('사용자 인증 토큰이 없습니다.')
   }
 
-  const res = await fetch(`${BASE_URL}/dashboards/${dashboardId}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
+  try {
+    const res = await fetch(`${BASE_URL}/dashboards/${dashboardId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
 
-  if (!res.ok) return handleError(res)
-  return res.json()
+    if (!res.ok) return handleError(res)
+    return res.json()
+  } catch (error) {
+    console.error('대시보드 상세 조회 실패:', error)
+    throw new Error('대시보드 상세 조회 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 // PUT: 대시보드 수정
@@ -94,17 +109,22 @@ const putDashboards = async (
     throw new Error('사용자 인증 토큰이 없습니다.')
   }
 
-  const res = await fetch(`${BASE_URL}/dashboards/${dashboardId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(body),
-  })
+  try {
+    const res = await fetch(`${BASE_URL}/dashboards/${dashboardId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(body),
+    })
 
-  if (!res.ok) return handleError(res)
-  return res.json()
+    if (!res.ok) return handleError(res)
+    return res.json()
+  } catch (error) {
+    console.error('대시보드 수정 실패:', error)
+    throw new Error('대시보드 수정 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 // DELETE: 대시보드 삭제
@@ -115,14 +135,19 @@ const deleteDashboards = async (dashboardId: number): Promise<void> => {
     throw new Error('사용자 인증 토큰이 없습니다.')
   }
 
-  const res = await fetch(`${BASE_URL}/dashboards/${dashboardId}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
+  try {
+    const res = await fetch(`${BASE_URL}/dashboards/${dashboardId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
 
-  if (!res.ok) return handleError(res)
+    if (!res.ok) return handleError(res)
+  } catch (error) {
+    console.error('대시보드 삭제 실패:', error)
+    throw new Error('대시보드 삭제 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 // POST: 대시보드 초대하기
@@ -136,17 +161,25 @@ const postDashboardsInvitations = async (
     throw new Error('사용자 인증 토큰이 없습니다.')
   }
 
-  const res = await fetch(`${BASE_URL}/dashboards/${dashboardId}/invitations`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(body),
-  })
+  try {
+    const res = await fetch(
+      `${BASE_URL}/dashboards/${dashboardId}/invitations`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(body),
+      }
+    )
 
-  if (!res.ok) return handleError(res)
-  return res.json()
+    if (!res.ok) return handleError(res)
+    return res.json()
+  } catch (error) {
+    console.error('대시보드 초대 실패:', error)
+    throw new Error('대시보드 초대 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 // GET: 대시보드 초대 불러오기
@@ -161,17 +194,22 @@ const getDashboardsInvitations = async (
     throw new Error('사용자 인증 토큰이 없습니다.')
   }
 
-  const res = await fetch(
-    `${BASE_URL}/dashboards/${dashboardId}/invitations?page=${page}&size=${size}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  )
+  try {
+    const res = await fetch(
+      `${BASE_URL}/dashboards/${dashboardId}/invitations?page=${page}&size=${size}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
 
-  if (!res.ok) return handleError(res)
-  return res.json()
+    if (!res.ok) return handleError(res)
+    return res.json()
+  } catch (error) {
+    console.error('대시보드 초대 목록 조회 실패:', error)
+    throw new Error('초대 목록 조회 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 // DELETE: 대시보드 초대 취소
@@ -185,17 +223,22 @@ const deleteDashboardsInvitations = async (
     throw new Error('사용자 인증 토큰이 없습니다.')
   }
 
-  const res = await fetch(
-    `${BASE_URL}/dashboards/${dashboardId}/invitations/${invitationId}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  )
+  try {
+    const res = await fetch(
+      `${BASE_URL}/dashboards/${dashboardId}/invitations/${invitationId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
 
-  if (!res.ok) return handleError(res)
+    if (!res.ok) return handleError(res)
+  } catch (error) {
+    console.error('대시보드 초대 취소 실패:', error)
+    throw new Error('초대 취소 중 네트워크 오류가 발생했습니다.')
+  }
 }
 
 export const dashboardsService = {

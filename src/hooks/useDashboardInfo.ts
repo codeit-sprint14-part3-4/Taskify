@@ -5,13 +5,15 @@ import { usersService } from '@/api/services/usersServices'
 
 export function useDashboardInfo(
   dashboardId: number,
-  pageType: 'mydashboard' | 'dashboard' | 'mypage'
+  pageType: 'mydashboard' | 'dashboard' | 'mypage',
+  userName: string
 ) {
   const [dashboardTitle, setDashboardTitle] = useState('')
   const [memberCount, setMemberCount] = useState(0)
   const [hasCrown, setHasCrown] = useState(false)
-  const [userName, setUserName] = useState('')
+  const [currentUserName, setCurrentUserName] = useState('')
   const [userEmail, setUserEmail] = useState('')
+
   useEffect(() => {
     const fetchDashboardDetails = async () => {
       try {
@@ -20,7 +22,7 @@ export function useDashboardInfo(
         )
         const { title, createdByMe } = dashboardData
 
-        setDashboardTitle(createdByMe ? `${title} 👑` : title) // 현재 대시보드페이지에서도 왕관 이미지를 가지고 오고 있는데 이건 대시보드 페이지 테스트 하고 어떤게 나은지 보고 둘 중 하나 지우겠습니다.
+        setDashboardTitle(createdByMe ? `${title} 👑` : title)
         setHasCrown(createdByMe)
       } catch (error) {
         console.error('대시보드 조회 실패:', error)
@@ -35,11 +37,11 @@ export function useDashboardInfo(
         console.error('멤버 조회 실패:', error)
       }
     }
+
     const fetchUser = async () => {
       try {
         const userData = await usersService.getUsers()
-        console.log(userData)
-        setUserName(userData.nickname)
+        setCurrentUserName(userData.nickname)
         setUserEmail(userData.email)
       } catch (error) {
         console.error('내 정보 조회 실패:', error)
@@ -52,7 +54,13 @@ export function useDashboardInfo(
     if (pageType === 'dashboard') {
       fetchMembers()
     }
-  }, [dashboardId, pageType])
+  }, [dashboardId, pageType, userName])
 
-  return { dashboardTitle, hasCrown, memberCount, userName, userEmail }
+  return {
+    dashboardTitle,
+    hasCrown,
+    memberCount,
+    userName: currentUserName,
+    userEmail,
+  }
 }

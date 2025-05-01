@@ -1,0 +1,22 @@
+.color_pin {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border 0.2s ease;
+}
+
+.color_pin:hover {
+  opacity: 0.8;
+}
+
+.check {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+}

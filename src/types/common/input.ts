@@ -13,4 +13,5 @@ export default interface InputProps {
   width?: string
   onBlur?: React.FocusEventHandler
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>
+  iconPosition?: 'left' | 'right'
 }

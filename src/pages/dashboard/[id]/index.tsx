@@ -45,7 +45,7 @@ export default function DashboardPage() {
             color="bg-white text-[#333236] text-2lg-bold"
             suffix={
               <Image
-                src="/assets/icon/add_box.svg"
+                src="/assets/icon/add-box.svg"
                 alt="추가 아이콘"
                 width={22}
                 height={22}

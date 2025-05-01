@@ -1,11 +1,12 @@
 import styles from './dashboardCreateModal.module.css'
-import Input from '@/components/common/input'
+import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { CreateDashboardBody } from '@/types/api/dashboards'
 import { dashboardsService } from '@/api/services/dashboardsServices'
-import { useAuthStore } from '@/stores/auth'
+import ColorPin from '@/components/domain/colorpin/ColorPin'
+import { useColorPicker } from '@/hooks/useColorPicker'
 
 interface DashboardModalProps {
   onClose: () => void
@@ -15,16 +16,7 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
   const [text, setText] = useState('')
   const router = useRouter()
 
-  const accessToken = useAuthStore((state) => state.accessToken) //이 부분 설명 필요
-  const COLORS = [
-    { id: 1, color: 'var(--green-7AC555)' },
-    { id: 2, color: 'var(--purple-760DDE)' },
-    { id: 3, color: 'var(--orange-FFA500)' },
-    { id: 4, color: 'var(--blue-76A5EA)' },
-    { id: 5, color: 'var(--pink-E876EA)' },
-  ] as const
-  type ColorType = (typeof COLORS)[number]
-  const [selectedColor, setSelectedColor] = useState<ColorType | null>(null)
+  const { selectedColor, handleColorSelect, COLORS } = useColorPicker()
 
   const handleCreateDashboard = async () => {
     const body: CreateDashboardBody = {
@@ -32,21 +24,20 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
       color: selectedColor?.color || '', //색상이 선택되지 않으면 빈 문자열
     }
 
-    if (!accessToken) {
-      alert('세션에 토큰이 없습니다.')
-      return
-    }
-
     try {
-      const newDashBoard = await dashboardsService.postDashboards(
-        body,
-        accessToken
-      )
+      const newDashBoard = await dashboardsService.postDashboards(body)
       onClose()
       router.push(`/dashboard/${newDashBoard.id}`)
-    } catch (error) {
-      console.error('대시보드 생성 중 오류 발생:', error)
-      alert('대시보드 생성에 실패했습니다. 다시 시도해주세요.')
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        /*인증되지 않은 요청*/
+        alert('로그인 후 사용해주세요.')
+      } else if (error.response?.status === 500) {
+        alert('서버 오류가 발생 했습니다')
+      } else {
+        console.error('대시보드 생성 중 오류 발생:', error)
+        alert('대시보드 생성에 실패했습니다. 다시 시도해주세요.')
+      }
     }
   }
 
@@ -68,21 +59,15 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
           padding="2.5rem 1.5rem" /*padding 사이즈를 시안에 있는 걸 넣으면 시안 이미지처럼 안나오는데..? */
           className={styles.input}
         />
-        <div className={styles.color_badge_container}>
+        <div className={styles.color_pin_container}>
           {COLORS.map((item) => (
-            <button
+            <ColorPin
               key={item.id}
-              onClick={() => setSelectedColor(item)}
-              className={`${styles.color_badge} ${
-                selectedColor?.id === item.id ? styles.selected : ''
-              }`}
-              style={{ backgroundColor: item.color }}
-            >
-              {' '}
-              {selectedColor?.id === item.id && (
-                <span className={styles.check}>✓</span>
-              )}
-            </button>
+              id={item.id}
+              color={item.color}
+              isSelected={selectedColor?.id === item.id}
+              onClick={() => handleColorSelect(item)}
+            ></ColorPin>
           ))}
         </div>
 

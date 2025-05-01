@@ -43,7 +43,7 @@ export default function Column({ columnInfo }: ColumnProps) {
         {/* onClick 이벤트 추가 요망 */}
         <button>
           <Image
-            src="/assets/icon/settings_logo.svg"
+            src="/assets/icon/settings-logo.svg"
             alt="설정 아이콘"
             width={24}
             height={24}
@@ -60,7 +60,7 @@ export default function Column({ columnInfo }: ColumnProps) {
           prefix={
             <div className={styles.addIcon}>
               <Image
-                src="/assets/icon/add_box.svg"
+                src="/assets/icon/add-box.svg"
                 alt="카드 추가 버튼"
                 width={22}
                 height={22}

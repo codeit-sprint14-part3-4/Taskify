@@ -1,16 +1,14 @@
-'use client'
-
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import styles from './login.module.css'
+
 import Image from 'next/image'
 import Link from 'next/link'
 
-import Input from '@/components/common/input'
+import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import { authService } from '../../api/services/authServices'
+import { authService } from '../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
-
+import Modal from '@/components/domain/modals/basemodal/Modal'
 import { useFormSignup } from '@/hooks/useFormSignup'
 import Modal from '@/components/domain/modals/Modal'
 
@@ -56,18 +54,26 @@ export default function Login() {
   }
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.wrapper_size}>
+    <div className="flex items-center justify-center pt-[22.3rem] ">
+      <div className="w-[52rem] h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
         <Link href="/" legacyBehavior>
           <a>
-            <div className={styles.flex_center_column}>
-              <div className={styles.wrapper_image}>
-                <Image src="/assets/icon/logo-icon.svg" alt="로고" fill />
+            <div className="flex items-center justify-center flex-col mb-[3rem]">
+              <div className="relative w-[20rem] h-[19rem]">
+                <Image
+                  src="/assets/icon/logo-icon.svg"
+                  alt="테스키파이 로고 클릭하면 홈페이지로 갑니다"
+                  fill
+                />
               </div>
-              <div className={styles.wrapper_logo_name}>
-                <Image src="/assets/icon/logo-title.svg" alt="로고" fill />
+              <div className="relative w-[20rem] h-[5.5rem] mt-[3rem]">
+                <Image
+                  src="/assets/icon/logo-title.svg"
+                  alt="테스키파이 로고 클릭하면 홈페이지로 갑니다"
+                  fill
+                />
               </div>
-              <div className={`${styles.logo_welcome} text-xl-medium`}>
+              <div className="text-[var(--black-333236)] text-xl-medium">
                 다시 오신 것을 환영합니다!
               </div>
             </div>
@@ -81,11 +87,15 @@ export default function Login() {
               handleLogin()
             }
           }}
-          className={`${styles.wrapper_middle} text-lg-medium`}
+          className="flex items-center justify-center flex-col text-[var(--black-333236)] gap-8 w-full transition-all duration-300 ease-in-out text-lg-medium"
         >
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>이메일</div>
+          {/*이메일 input*/}
+          <div className="w-full">
+            <label htmlFor="email" className="block mb-[0.8rem]">
+              이메일
+            </label>
             <Input
+              id="email"
               padding="1.2rem 1.6rem"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -94,23 +104,13 @@ export default function Login() {
             />
           </div>
 
-          <div className={styles.wrapper_width}>
-            <div className={styles.login_font}>
+          {/*비밀번호 input*/}
+          <div className="w-full relative">
+            <label htmlFor="password" className="inline-block pb-[0.8rem]">
               비밀번호
-              <div
-                className={styles.hide_icon}
-                onClick={() => setShowPassword((prev) => !prev)}
-              >
-                <Image
-                  src={`/assets/icon/${
-                    showPassword ? 'open_hide.svg' : 'hide_icon.svg'
-                  }`}
-                  alt="비밀번호 보이기/숨기기 아이콘"
-                  fill
-                />
-              </div>
-            </div>
+            </label>
             <Input
+              id="password"
               padding="1.2rem 1.6rem"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -118,9 +118,22 @@ export default function Login() {
               type={showPassword ? 'text' : 'password'}
               error={passwordError}
             />
+            <button
+              type="button"
+              className="absolute top-[5.5rem] right-[1.6rem] translate-y-[-50%] w-[2.4rem] h-[2.4rem] z-10 cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <Image
+                src={`/assets/icon/${
+                  showPassword ? 'open-hide.svg' : 'hide-icon.svg'
+                }`}
+                alt="비밀번호 보이기/숨기기 아이콘"
+                fill
+              />
+            </button>
           </div>
 
-          <div className={styles.wrapper_bottom}>
+          <div className="flex items-center justify-center flex-col gap-8 pt-[0.8rem] w-full">
             <CommonButton
               padding="1.2rem 0"
               className="w-full text-white bg-[var(--gray-9FA6B2)]"
@@ -141,11 +154,15 @@ export default function Login() {
               />
             )}
 
-            <div className={styles.wrapper_floor}>
-              <div>회원이 아니신가요?</div>
-              <Link href="/signup">
-                <div className={styles.link}>회원가입하기</div>
-              </Link>
+            <div className="flex items-center justify-center">
+              <span>회원이 아니신가요?</span>
+              <span className="ml-2">
+                <Link href="/signup">
+                  <span className="text-[color:var(--violet-5534DhA)] underline cursor-pointer hover:text-[darkblue] visited:text-[color:var(--red-D6173A)]">
+                    회원가입하기
+                  </span>
+                </Link>
+              </span>
             </div>
           </div>
         </form>

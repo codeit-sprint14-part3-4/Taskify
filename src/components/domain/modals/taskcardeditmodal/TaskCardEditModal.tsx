@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { ko } from 'date-fns/locale'
 
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import Input from '@/components/common/input'
+import Input from '@/components/common/commoninput/CommonInput'
 import Tag from '@/components/common/tag/Tag'
 import UserDropdown, { type User } from '@/components/dropdown/UserDropdown'
 import StatusDropdown, { Status } from '@/components/dropdown/StatusDropdown'

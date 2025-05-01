@@ -47,7 +47,7 @@
 | 이미지/아이콘 파일명 | 케밥케이스 | `logo-icon.png`, `profile-default.png` |
 | 함수명/변수명 | 카멜케이스 (camelCase) | `fetchUserData`, `userList` |
 | 환경변수 | 대문자+스네이크케이스 | `REACT_APP_API_URL` |
-
+| css 파일명 | 카멜케이스 (camelCase) | `dashboardList.module.css` |
 ---
 
 ### 🌿 브랜치 네이밍 컨벤션 (Branch Naming Convention)
@@ -59,7 +59,8 @@
 | 기능 개발 브랜치 | `feature/기능명` | `feature/dashboard-modal` |
 | 긴급 수정 브랜치 | `hotfix/이슈명` | `hotfix/login-error` |
 | 릴리즈 준비 브랜치 | `release/버전명` | `release/v1.0.0` |
-
+| 코드 스타일 수정 | `style/해당브랜치` | `style/login` |
+| 잡무나 유지보수 | `chore/라이브러리 업데이트` | `chore/update` |  
 ---
 
 ## 🛠️ 사용 기술 스택 (Tech Stack)

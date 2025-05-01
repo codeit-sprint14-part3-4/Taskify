@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from '@/components/domain/modals/modal.module.css'
-import baseStyle from '@/components/domain/modals/basemodal.module.css'
+import styles from '@/components/domain/modals/basemodal/modal.module.css'
+import baseStyle from '@/components/domain/modals/basemodal/baseModal.module.css'
 import ModalButton from './ModalButton'
 import { ModalProps } from '@/types/common/modal'
 
