@@ -38,9 +38,8 @@ export default function DashboardPage() {
   // 404 리다이렉트 구현 필요
   if (!dashboardId) return
 
-  //  dashboardId={1}> id로 받을 수 있게 나중에 바꿔주세요!(지금은 임시)
   return (
-    <Layout pageType="dashboard" dashboardId={1}>
+    <Layout pageType="dashboard" dashboardId={dashboardId}>
       {/* 컬럼 리스트 */}
       <div className="flex overflow-x-auto">
         {columns.map((column) => (

@@ -9,7 +9,6 @@ export interface CardProps {
 }
 
 export default function Card({ cardInfo }: CardProps) {
-  console.log(cardInfo.tags)
   return (
     <div className={styles.card}>
       {/* 이미지: 현재 props로 받은 imageUrl 사용,

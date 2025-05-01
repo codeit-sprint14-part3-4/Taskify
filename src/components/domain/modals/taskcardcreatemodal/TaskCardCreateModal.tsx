@@ -11,6 +11,7 @@ import UserDropdown from '@/components/dropdown/UserDropdown'
 import { cardsService } from '@/api/services/cardsServices'
 import { CreateCardBody } from '@/types/api/cards'
 import { columnsService } from '@/api/services/columnsServices'
+import { useDashboardMembers } from '@/stores/dashboardMembers'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -44,13 +45,20 @@ export default function TaskCardCreateModal({
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
   ])
-  const users = [
-    { id: 1, name: '김이영', badgeColor: '#EF4444' },
-    { id: 2, name: '박해일', badgeColor: '#34D399' },
-    { id: 3, name: '이원구', badgeColor: '#FBBF24' },
-    { id: 4, name: '이아이', badgeColor: '#22C55E' },
-    { id: 5, name: '이지사', badgeColor: '#5534DA' },
-  ]
+  const [isButtonDisable, setIsButtonDisable] = useState(true)
+  // const users = [
+  //   { id: 1, name: '김이영', badgeColor: '#EF4444' },
+  //   { id: 2, name: '박해일', badgeColor: '#34D399' },
+  //   { id: 3, name: '이원구', badgeColor: '#FBBF24' },
+  //   { id: 4, name: '이아이', badgeColor: '#22C55E' },
+  //   { id: 5, name: '이지사', badgeColor: '#5534DA' },
+  // ]
+  const dashboardMembers = useDashboardMembers((state) => state.members)
+  const users = dashboardMembers.map((user) => ({
+    id: user.id,
+    name: user.nickname,
+    badgeColor: user.badge,
+  }))
 
   // 변경된 부분: 처음엔 선택된 유저 없음
   const [selectedUser, setSelectedUser] = useState<
@@ -60,6 +68,26 @@ export default function TaskCardCreateModal({
   const inputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [imgFile, setImgFile] = useState<File | undefined>()
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
+    if (description.trim()) {
+      setIsButtonDisable(false)
+    } else {
+      setIsButtonDisable(true)
+    }
+  }
+
+  const handleChangeDescription = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setDescription(e.target.value)
+    if (title.trim()) {
+      setIsButtonDisable(false)
+    } else {
+      setIsButtonDisable(true)
+    }
+  }
 
   const handleSubmitForm = async () => {
     const bodyData: CreateCardBody = {
@@ -173,7 +201,7 @@ export default function TaskCardCreateModal({
             </label>
             <Input
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={handleChangeTitle}
               placeholder="제목을 입력해 주세요"
               height="5rem"
               padding="1.2rem 1.6rem"
@@ -189,7 +217,7 @@ export default function TaskCardCreateModal({
             <div className="w-full min-h-[12.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]">
               <textarea
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={handleChangeDescription}
                 placeholder="설명을 입력해 주세요"
                 className="w-full min-h-[12.6rem] px-[1.6rem] py-[1.5rem] border-none bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none"
                 wrap="soft"
@@ -295,7 +323,7 @@ export default function TaskCardCreateModal({
               onClick={handleSubmitForm}
               variant="primary"
               padding="1.4rem 11.4rem"
-              isActive={true}
+              isActive={!isButtonDisable}
               className="w-full h-[5.4rem] bg-[var(--violet-5534DhA)] text-[var(--white-FFFFFF)] text-lg-semibold"
             >
               생성

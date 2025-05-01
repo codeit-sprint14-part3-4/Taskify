@@ -6,7 +6,6 @@
   border-radius: 4px;
   white-space: nowrap;
   transition: background-color 0.2s ease, transform 0.1s ease;
-  cursor: pointer;
 }
 
 .tag-hover:hover {

@@ -32,7 +32,7 @@ export default function Tag({
   isDeletable = false,
   onDelete,
 }: ExtendedTagProps) {
-  // 💡 컴포넌트 생성 시 1회만 랜덤 색 고정
+  // 컴포넌트 생성 시 1회만 랜덤 색 고정
   const color = useMemo(() => getRandomTagColor(), [])
 
   return (
@@ -46,7 +46,7 @@ export default function Tag({
         <button
           type="button"
           onClick={onDelete}
-          className="ml-[0.2rem] flex items-center justify-center"
+          className="ml-[0.2rem] flex items-center justify-center cursor-pointer"
         >
           <Image
             src="/assets/image/close.svg"

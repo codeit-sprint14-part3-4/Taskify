@@ -8,7 +8,7 @@ export interface User {
 }
 
 interface UserDropdownProps {
-  users?: User[] 
+  users?: User[]
   selectedUser?: User
   onChange: (user: User) => void
   mode?: 'search' | 'select'
@@ -16,7 +16,7 @@ interface UserDropdownProps {
 }
 
 export default function UserDropdown({
-  users = [], 
+  users = [],
   selectedUser,
   onChange,
   mode = 'search',
