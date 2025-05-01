@@ -1,0 +1,33 @@
+.edit_invite_container {
+  background-color: var(--white-FFFFFF);
+  max-width: 62rem;
+  padding: 2.6rem 2.8rem;
+}
+
+.edit_invite_header_flex_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit_invite_email_header {
+  margin-top: 4rem;
+  color: var(--gray-9FA6B2);
+}
+
+.edit_invite_email {
+  color: var(--black-333236);
+}
+
+.invite_cancle_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.1rem solid var(--gray-EEEEEE);
+  padding: 1.6rem 0;
+}
+
+.edit_cancel_button {
+  color: var(--violet-5534DhA);
+  border-radius: 0.4rem;
+}
