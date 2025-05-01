@@ -11,7 +11,7 @@ export interface User {
 interface UserDropdownProps {
   users?: User[]
   selectedUser?: User
-  onChange: (user: User) => void
+  onChange: (user: User | undefined) => void // 수정됨
   mode?: 'search' | 'select'
   className?: string
 }
@@ -126,9 +126,15 @@ export default function UserDropdown({
               type="text"
               value={inputValue}
               onChange={(e) => {
-                setInputValue(e.target.value)
+                const newValue = e.target.value
+                setInputValue(newValue)
                 setIsOpen(true)
                 setFocusedIndex(0)
+
+                // 추가: 입력값이 사라지면 선택된 사용자 해제
+                if (newValue.trim() === '') {
+                  onChange(undefined)
+                }
               }}
               onFocus={() => setIsOpen(true)}
               onKeyDown={handleKeyDown}
