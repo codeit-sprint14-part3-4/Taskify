@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import Image from 'next/image'
+import styles from './userDropdown.module.css'
 
 export interface User {
   id: number
@@ -8,7 +9,7 @@ export interface User {
 }
 
 interface UserDropdownProps {
-  users?: User[] 
+  users?: User[]
   selectedUser?: User
   onChange: (user: User) => void
   mode?: 'search' | 'select'
@@ -16,7 +17,7 @@ interface UserDropdownProps {
 }
 
 export default function UserDropdown({
-  users = [], 
+  users = [],
   selectedUser,
   onChange,
   mode = 'search',
@@ -27,11 +28,16 @@ export default function UserDropdown({
   const [focusedIndex, setFocusedIndex] = useState(0)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
+  const matchedUser = useMemo(() => {
+    return users.find((user) => user.name === inputValue)
+  }, [users, inputValue])
+
   const filteredUsers = useMemo(() => {
-    const safeUsers = Array.isArray(users) ? users : []
     return mode === 'search'
-      ? safeUsers.filter((user) => user.name?.startsWith(inputValue))
-      : safeUsers
+      ? users.filter((user) =>
+          user.name?.toLowerCase().includes(inputValue.toLowerCase())
+        )
+      : users
   }, [users, inputValue, mode])
 
   const handleSelect = useCallback(
@@ -103,130 +109,112 @@ export default function UserDropdown({
   }
 
   return (
-    <div ref={dropdownRef} className="relative w-full">
-      <div className="relative flex items-center">
-        {inputValue && filteredUsers.length > 0 && selectedUser ? (
+    <div ref={dropdownRef} className={`${styles.container} ${className}`}>
+      <div className={styles.inputWrapper}>
+        {mode === 'search' && matchedUser ? (
           <div
-            style={{ backgroundColor: selectedUser.badgeColor }}
-            className="absolute left-[1.6rem] w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-[var(--white-FFFFFF)] text-[1.4rem] font-bold z-10"
+            style={{ backgroundColor: matchedUser.badgeColor }}
+            className={styles.badge}
           >
-            {getInitial(selectedUser.name)}
+            {getInitial(matchedUser.name)}
           </div>
-        ) : (
-          <div className="absolute left-[1.6rem] w-[2.6rem] h-[2.6rem]" />
-        )}
+        ) : null}
 
         {mode === 'search' ? (
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => {
-              setInputValue(e.target.value)
-              setIsOpen(true)
-              setFocusedIndex(0)
-            }}
-            onFocus={() => setIsOpen(true)}
-            onKeyDown={handleKeyDown}
-            placeholder="이름을 입력해 주세요"
-            className={`w-full h-[4.8rem] ${
-              selectedUser ? 'pl-[5.6rem]' : 'pl-[1.6rem]'
-            } pr-[4rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] text-lg-regular outline-none placeholder-[var(--gray-9FA6B2)] ${
-              inputValue === ''
-                ? 'text-[var(--gray-9FA6B2)]'
-                : 'text-[var(--black-333236)]'
-            } focus:border-[var(--violet-5534DhA)] focus:ring-0 ${className}`}
-          />
+          <>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => {
+                setInputValue(e.target.value)
+                setIsOpen(true)
+                setFocusedIndex(0)
+              }}
+              onFocus={() => setIsOpen(true)}
+              onKeyDown={handleKeyDown}
+              placeholder="이름을 입력해 주세요"
+              className={`${styles.input} ${
+                matchedUser ? styles.inputWithIcon : ''
+              } ${inputValue === '' ? styles.placeholder : styles.inputText}`}
+            />
+            <Image
+              src="/assets/image/arrow-down.svg"
+              alt="Arrow Down"
+              width={24}
+              height={24}
+              className={`${styles.arrow} ${isOpen ? styles.rotate : ''}`}
+            />
+          </>
         ) : (
           <button
             type="button"
             onClick={() => setIsOpen((prev) => !prev)}
             onKeyDown={handleKeyDown}
-            className={`w-full h-[4.8rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] text-left text-lg-regular outline-none ${
-              selectedUser?.name
-                ? 'text-[var(--black-333236)]'
-                : 'text-[var(--gray-9FA6B2)]'
-            } focus:border-[var(--violet-5534DhA)] focus:ring-0 bg-[var(--white-FFFFFF)] flex items-center justify-between ${className}`}
+            className={`${styles.selectButton} ${
+              selectedUser?.name ? styles.inputText : styles.placeholder
+            }`}
           >
-            <div className="flex items-center gap-[0.8rem]">
-              <div
-                style={{ backgroundColor: selectedUser?.badgeColor ?? '#ccc' }}
-                className="w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-[var(--white-FFFFFF)] text-[1.4rem] font-bold"
-              >
-                {selectedUser ? getInitial(selectedUser.name) : '?'}
-              </div>
-              <span className="truncate leading-none">
+            <div className={styles.userInfo}>
+              {selectedUser && (
+                <div
+                  style={{ backgroundColor: selectedUser.badgeColor }}
+                  className={styles.initialCircle}
+                >
+                  {getInitial(selectedUser.name)}
+                </div>
+              )}
+              <span className={styles.userName}>
                 {selectedUser?.name || '이름을 입력해 주세요'}
               </span>
             </div>
-
             <Image
               src="/assets/image/arrow-down.svg"
               alt="Arrow Down"
               width={20}
               height={20}
-              className={`transition-transform duration-300 ${
-                isOpen ? 'rotate-180' : ''
-              }`}
+              className={`${styles.arrow} ${isOpen ? styles.rotate : ''}`}
             />
           </button>
-        )}
-
-        {mode === 'search' && (
-          <Image
-            src="/assets/image/arrow-down.svg"
-            alt="Arrow Down"
-            width={24}
-            height={24}
-            className={`absolute right-[1.6rem] transition-transform duration-300 ${
-              isOpen ? 'rotate-180' : ''
-            }`}
-          />
         )}
       </div>
 
       {isOpen && (
-        <ul className="absolute z-20 mt-[0.8rem] w-full border border-[var(--gray-D9D9D9)] bg-[var(--white-FFFFFF)] rounded-[0.8rem] transition-all duration-300 origin-top max-h-[20rem] overflow-y-auto">
+        <ul className={styles.dropdown}>
           {filteredUsers.length > 0 ? (
-            filteredUsers.map((user, index) => {
-              if (!user || typeof user.id !== 'number' || !user.name)
-                return null
-              return (
-                <li
-                  key={`user-${user.id}`}
-                  onClick={() => handleSelect(user)}
-                  className={`flex items-center gap-[1.2rem] px-[1.6rem] cursor-pointer w-full h-[4.8rem] text-lg-regular transition-colors duration-200 ${
-                    index === focusedIndex
-                      ? 'bg-[var(--gray-EEEEEE)]'
-                      : user.id === selectedUser?.id
-                      ? 'bg-[var(--gray-FAFAFA)]'
-                      : 'hover:bg-[var(--gray-FAFAFA)]'
-                  }`}
+            filteredUsers.map((user, index) => (
+              <li
+                key={`user-${user.id}`}
+                onClick={() => handleSelect(user)}
+                className={`${styles.option} ${
+                  index === focusedIndex
+                    ? styles.optionFocused
+                    : selectedUser?.id === user.id
+                    ? styles.optionSelected
+                    : ''
+                }`}
+              >
+                {selectedUser?.id === user.id ? (
+                  <Image
+                    src="/assets/image/check.svg"
+                    alt="선택됨"
+                    width={22}
+                    height={22}
+                    className={styles.checkIcon}
+                  />
+                ) : (
+                  <div className={styles.checkSpacer} />
+                )}
+                <div
+                  style={{ backgroundColor: user.badgeColor }}
+                  className={styles.initialCircle}
                 >
-                  {user.id === selectedUser?.id ? (
-                    <Image
-                      src="/assets/image/check.svg"
-                      alt="선택됨"
-                      width={22}
-                      height={22}
-                      className="mr-[0.8rem]"
-                    />
-                  ) : (
-                    <div className="w-[2.2rem] h-[2.2rem] mr-[0.8rem]" />
-                  )}
-                  <div
-                    style={{ backgroundColor: user.badgeColor }}
-                    className="w-[2.6rem] h-[2.6rem] flex items-center justify-center rounded-full text-[var(--white-FFFFFF)] text-[1.4rem] font-bold"
-                  >
-                    {getInitial(user.name)}
-                  </div>
-                  <span className="truncate">{user.name}</span>
-                </li>
-              )
-            })
+                  {getInitial(user.name)}
+                </div>
+                <span className={styles.userName}>{user.name}</span>
+              </li>
+            ))
           ) : (
-            <div className="flex items-center justify-center w-full h-[4.8rem] text-lg-regular text-[var(--red-D6173A)] bg-[var(--gray-FAFAFA)] rounded-[0.8rem]">
-              😟 일치하는 사용자가 없습니다!!
-            </div>
+            <div className={styles.empty}>😟 일치하는 사용자가 없습니다!!</div>
           )}
         </ul>
       )}
