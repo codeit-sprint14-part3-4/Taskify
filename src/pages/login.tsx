@@ -59,10 +59,18 @@ export default function Login() {
           <a>
             <div className="flex items-center justify-center flex-col mb-[3rem]">
               <div className="relative w-[20rem] h-[19rem]">
-                <Image src="/assets/icon/logo-icon.svg" alt="로고" fill />
+                <Image
+                  src="/assets/icon/logo-icon.svg"
+                  alt="테스키파이 로고 클릭하면 홈페이지로 갑니다"
+                  fill
+                />
               </div>
               <div className="relative w-[20rem] h-[5.5rem] mt-[3rem]">
-                <Image src="/assets/icon/logo-title.svg" alt="로고" fill />
+                <Image
+                  src="/assets/icon/logo-title.svg"
+                  alt="테스키파이 로고 클릭하면 홈페이지로 갑니다"
+                  fill
+                />
               </div>
               <div className="text-[var(--black-333236)] text-xl-medium">
                 다시 오신 것을 환영합니다!
@@ -80,9 +88,13 @@ export default function Login() {
           }}
           className="flex items-center justify-center flex-col text-[var(--black-333236)] gap-8 w-full transition-all duration-300 ease-in-out text-lg-medium"
         >
+          {/*이메일 input*/}
           <div className="w-full">
-            <div className="pb-[0.8rem] relative">이메일</div>
+            <label htmlFor="email" className="block mb-[0.8rem]">
+              이메일
+            </label>
             <Input
+              id="email"
               padding="1.2rem 1.6rem"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -91,23 +103,13 @@ export default function Login() {
             />
           </div>
 
-          <div className="w-full">
-            <div className="pb-[0.8rem] relative">
+          {/*비밀번호 input*/}
+          <div className="w-full relative">
+            <label htmlFor="password" className="inline-block pb-[0.8rem]">
               비밀번호
-              <div
-                className="w-[2.4rem] h-[2.4rem] absolute cursor-pointer left-[48rem] top-[4.2rem] z-[1] transition-all duration-300 ease-in-out"
-                onClick={() => setShowPassword((prev) => !prev)}
-              >
-                <Image
-                  src={`/assets/icon/${
-                    showPassword ? 'open_hide.svg' : 'hide_icon.svg'
-                  }`}
-                  alt="비밀번호 보이기/숨기기 아이콘"
-                  fill
-                />
-              </div>
-            </div>
+            </label>
             <Input
+              id="password"
               padding="1.2rem 1.6rem"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -115,6 +117,19 @@ export default function Login() {
               type={showPassword ? 'text' : 'password'}
               error={passwordError}
             />
+            <button
+              type="button"
+              className="absolute top-[5.5rem] right-[1.6rem] translate-y-[-50%] w-[2.4rem] h-[2.4rem] z-10 cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <Image
+                src={`/assets/icon/${
+                  showPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                }`}
+                alt="비밀번호 보이기/숨기기 아이콘"
+                fill
+              />
+            </button>
           </div>
 
           <div className="flex items-center justify-center flex-col gap-8 pt-[0.8rem] w-full">

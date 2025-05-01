@@ -80,10 +80,18 @@ export default function Signup() {
         <Link href="/">
           <div className="flex items-center justify-center flex-col mb-[3rem]">
             <div className="relative w-[20rem] h-[19rem]">
-              <Image src="/assets/icon/logo-icon.svg" alt="로고" fill />
+              <Image
+                src="/assets/icon/logo-icon.svg"
+                alt="테스키파이 로고 클릭하면 홈페이지로 갑니다"
+                fill
+              />
             </div>
             <div className="relative w-[20rem] h-[5.5rem] mt-[3rem]">
-              <Image src="/assets/icon/logo-title.svg" alt="로고" fill />
+              <Image
+                src="/assets/icon/logo-title.svg"
+                alt="테스키파이 로고 클릭하면 홈페이지로 갑니다"
+                fill
+              />
             </div>
             <div className="text-[var(--black-333236)] text-xl-medium">
               첫 방문을 환영합니다!
@@ -100,9 +108,13 @@ export default function Signup() {
           }}
           className="text-lg-medium flex items-center content-center flex-col text-[var(--black-333236)] gap-8 w-full transition-all duration-300 ease-in-out"
         >
+          {/*이메일 input*/}
           <div className="w-full">
-            <div className="pb-[0.8rem] relative">이메일</div>
+            <label htmlFor="email" className="block mb-[0.8rem]">
+              이메일
+            </label>
             <Input
+              id="email"
               padding="1.2rem 1.6rem"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -111,9 +123,13 @@ export default function Signup() {
             />
           </div>
 
+          {/*닉네임 input*/}
           <div className="w-full">
-            <div className="pb-[0.8rem] relative">닉네임</div>
+            <label htmlFor="nickname" className="block mb-[0.8rem]">
+              닉네임
+            </label>
             <Input
+              id="nickname"
               padding="1.2rem 1.6rem"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
@@ -122,24 +138,13 @@ export default function Signup() {
             />
           </div>
 
-          <div className="w-full">
-            <div className="pb-[0.8rem] relative">
+          {/*비밀번호 input*/}
+          <div className="w-full relative">
+            <label htmlFor="password" className="inline-block pb-[0.8rem]">
               비밀번호
-              <button
-                type="button"
-                className="w-[2.4rem] h-[2.4rem] absolute cursor-pointer top-[42px] left-[480px] z-[1]"
-                onClick={() => setShowPassword((prev) => !prev)}
-              >
-                <Image
-                  src={`/assets/icon/${
-                    showPassword ? 'open_hide.svg' : 'hide_icon.svg'
-                  }`}
-                  alt="비밀번호 보이기/숨기기 아이콘"
-                  fill
-                />
-              </button>
-            </div>
+            </label>
             <Input
+              id="password"
               padding="1.2rem 1.6rem"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -147,26 +152,31 @@ export default function Signup() {
               type={showPassword ? 'text' : 'password'}
               error={passwordError}
             />
+            <button
+              type="button"
+              className="absolute top-[5.5rem] right-[1.6rem] translate-y-[-50%] w-[2.4rem] h-[2.4rem] z-10 cursor-pointer"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <Image
+                src={`/assets/icon/${
+                  showPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                }`}
+                alt="비밀번호 보이기/숨기기 아이콘"
+                fill
+              />
+            </button>
           </div>
 
-          <div className="w-full">
-            <div className="pb-[0.8rem] relative">
+          {/*비밀번호 확인 input*/}
+          <div className="w-full relative">
+            <label
+              htmlFor="confirmPassword"
+              className="inline-block pb-[0.8rem]"
+            >
               비밀번호 확인
-              <button
-                type="button"
-                className="w-[2.4rem] h-[2.4rem] absolute cursor-pointer top-[42px] left-[480px] z-[1]"
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-              >
-                <Image
-                  src={`/assets/icon/${
-                    showConfirmPassword ? 'open_hide.svg' : 'hide_icon.svg'
-                  }`}
-                  alt="비밀번호 보이기/숨기기 아이콘"
-                  fill
-                />
-              </button>
-            </div>
+            </label>
             <Input
+              id="confirmPassword"
               padding="1.2rem 1.6rem"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -174,6 +184,19 @@ export default function Signup() {
               type={showConfirmPassword ? 'text' : 'password'}
               error={confirmPasswordError}
             />
+            <button
+              type="button"
+              className="absolute top-[5.5rem] right-[1.6rem] translate-y-[-50%] w-[2.4rem] h-[2.4rem] z-[10] cursor-pointer"
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+            >
+              <Image
+                src={`/assets/icon/${
+                  showConfirmPassword ? 'open_hide.svg' : 'hide_icon.svg'
+                }`}
+                alt="비밀번호 보이기/숨기기 아이콘"
+                fill
+              />
+            </button>
           </div>
 
           <div className="flex items-center justify-start gap-2 w-full">
