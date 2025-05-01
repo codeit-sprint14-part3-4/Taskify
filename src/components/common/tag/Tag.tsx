@@ -36,7 +36,11 @@ export default function Tag({
   const color = useMemo(() => getRandomTagColor(), [])
 
   return (
-    <div className={`${styles.tag} ${styles[color]} text-md-regular relative`}>
+    <div
+      className={`${styles.tag} ${styles[color]} text-md-regular relative ${
+        isDeletable ? `${styles['tag-hover']} ${styles['tag-active']}` : ''
+      }`}
+    >
       {label}
       {isDeletable && (
         <button
