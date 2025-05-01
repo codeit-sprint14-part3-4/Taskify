@@ -18,16 +18,6 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
 
   const { selectedColor, handleColorSelect, COLORS } = useColorPicker()
 
-  // const COLORS = [
-  //   { id: 1, color: '#7AC555' },
-  //   { id: 2, color: '#760DDE' },
-  //   { id: 3, color: '#FFA500' },
-  //   { id: 4, color: '#76A5EA' },
-  //   { id: 5, color: '#E876EA' },
-  // ] as const
-  // type ColorType = (typeof COLORS)[number]
-  // const [selectedColor, setSelectedColor] = useState<ColorType | null>(null)
-
   const handleCreateDashboard = async () => {
     const body: CreateDashboardBody = {
       title: text,

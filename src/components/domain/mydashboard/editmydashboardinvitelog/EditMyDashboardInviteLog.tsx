@@ -34,6 +34,7 @@ export default function EditMyDashboardInviteLog() {
             padding="0.4rem 2.95rem"
             isActive={true}
             className={`${styles.edit_cancel_button} text-md-medium`}
+            /*이벤트 핸들러 추가하기*/
           >
             취소
           </CommonButton>
