@@ -1,5 +1,5 @@
 .input {
-  border: 0.1rem solid #d9d9d9;
+  border: 0.1rem solid var(--gray-D9D9D9);
   border-radius: 0.6rem;
   height: 4rem;
   outline: none;
@@ -7,15 +7,15 @@
 }
 
 .input:focus {
-  border-color: #5534da;
+  border-color: var(--violet-5534DhA);
 }
 
 .error {
-  border-color: #d6173a;
+  border-color: var(--red-D6173A);
 }
 
 .errorMessage {
-  color: #d6173a;
+  color: var(--red-D6173A);
   font-size: 1.2rem;
   margin-top: 0.4rem;
 }

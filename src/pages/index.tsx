@@ -23,16 +23,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   try {
     // fetch를 사용한 API 호출
-    const response = await fetch(
-      'https://sp-taskify-api.vercel.app/14-4/dashboards',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    const response = await fetch('${process.env.API_BASE_URL}/dashboards', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    })
 
     if (!response.ok) {
       throw new Error('대시보드 정보를 가져오는 데 실패했습니다.')
@@ -80,9 +77,9 @@ export default function Home() {
   return (
     <div className={`${styles.container} min-h-screen flex flex-col`}>
       <Gnb />
-      <div className={`${styles.maincontainer}`}>
+      <div className={styles.maincontainer}>
         <AnimatedSection delay={0.2}>
-          <section className={`${styles.homepagetop}`}>
+          <section className={styles.homepagetop}>
             <div className={`${styles.homepagelogo} inline-block text-center`}>
               <Image
                 src="/assets/image/desktop.svg"
@@ -106,7 +103,7 @@ export default function Home() {
                 variant="primary"
                 padding="1.4rem 10rem"
                 isActive={true}
-                className={`${styles.loginbutton}`}
+                className={styles.loginbutton}
               >
                 로그인 하기
               </Button>
@@ -132,7 +129,7 @@ export default function Home() {
         </AnimatedSection>
         <AnimatedSection delay={0.2}>
           <section className={`${styles.pointer2} flex flex-col `}>
-            <div className={`${styles.pointer2image}`}>
+            <div className={styles.pointer2image}>
               <Image
                 src="/assets/image/landing2.svg"
                 alt="landingpage image"
@@ -140,9 +137,9 @@ export default function Home() {
                 priority
               />
             </div>
-            <div className={`${styles.pointer2box}`}>
-              <span className={`${styles.pointer2text}`}>Point2</span>
-              <div className={`${styles.pointer2maintext}`}>
+            <div className={styles.pointer2box}>
+              <span className={styles.pointer2text}>Point2</span>
+              <div className={styles.pointer2maintext}>
                 <div>해야 할 일을</div>
                 <div>등록하세요</div>
               </div>
@@ -157,27 +154,27 @@ export default function Home() {
           </div>
         </AnimatedSection>
         <AnimatedSection delay={0.2}>
-          <section className={`${styles.cardListWrapper}`}>
+          <section className={styles.cardListWrapper}>
             <FeatureCard
               imageSrc="/assets/image/landing3.svg"
               title="대시보드 설정"
               description="대시보드 사진과 이름을 변경할 수 있어요."
-              width={300}
-              height={123.87}
+              imgwidth="30rem"
+              imgheight="12.4rem"
             />
             <FeatureCard
               imageSrc="/assets/image/landing4.svg"
               title="초대"
               description="새로운 팀원을 초대할 수 있어요."
-              width={300}
-              height={230.81}
+              imgwidth="30rem"
+              imgheight="23.1rem"
             />
             <FeatureCard
               imageSrc="/assets/image/landing5.svg"
               title="구성원"
               description="구성원을 초대하고 내보낼 수 있어요."
-              width={300}
-              height={195.48}
+              imgwidth="30rem"
+              imgheight="19.5rem"
             />
           </section>
         </AnimatedSection>

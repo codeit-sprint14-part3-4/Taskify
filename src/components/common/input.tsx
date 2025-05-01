@@ -19,10 +19,16 @@ const CommonInput: React.FC<InputProps> = ({
   width,
   onBlur,
   onKeyDown,
+  iconPosition = 'right',
 }) => {
   return (
     <div className="flex flex-col">
       <div className="relative">
+        {icon && iconPosition === 'left' && (
+          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            {icon}
+          </div>
+        )}
         <input
           type={type}
           value={value}
@@ -44,7 +50,7 @@ const CommonInput: React.FC<InputProps> = ({
             height: height,
           }}
         />
-        {icon && (
+        {icon && iconPosition === 'right' && (
           <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
             {icon}
           </div>
