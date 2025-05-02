@@ -3,30 +3,44 @@ import styles from './myinviteddashboard.module.css'
 import React, { useState } from 'react'
 import Image from 'next/image'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
+import { Invitation } from '@/types/api/invitations'
+import { invitationsService } from '@/api/services/invitationsServices'
 
-const data = [
-  { name: '프로덕트 디자인', inviter: '손동희' },
-  { name: '새로운 기획 문서', inviter: '유겨영' },
-  { name: '유닛 A', inviter: '장혁' },
-  { name: '유닛 B', inviter: '강나무' },
-  { name: '유닛 C', inviter: '김태현' },
-  { name: '유닛 D', inviter: '김태현' },
-]
+interface MyInvitedDashboardProps {
+  invitedList: Invitation[]
+}
 
-const MyInvitedDashboard = () => {
+const MyInvitedDashboard = ({ invitedList }: MyInvitedDashboardProps) => {
   const [searchTerm, setSearchTerm] = useState('')
-  const [filteredData, setFilteredData] = useState<typeof data>([]) // ✅ 타입 수정
+  const [filteredData, setFilteredData] = useState<Invitation[]>([]) // ✅ 타입 수정
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e.target.value
     setSearchTerm(keyword)
 
-    const results = data.filter((item) =>
-      item.name.toLowerCase().includes(keyword.toLowerCase())
+    const results = invitedList.filter((item) =>
+      item.dashboard.title.toLowerCase().includes(keyword.toLowerCase())
     )
 
     setFilteredData(results)
   }
+
+  const handleInviteAcceptButton = async (
+    invitationId: number,
+    isAccept: boolean
+  ) => {
+    try {
+      const bodyData = {
+        inviteAccepted: isAccept ? true : false,
+      }
+      await invitationsService.putInvitations(invitationId, bodyData)
+      console.log('응답 성공!!')
+      window.location.reload()
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.searchdiv}>
@@ -60,15 +74,16 @@ const MyInvitedDashboard = () => {
         </div>
 
         {/* 데이터 목록 */}
-        {(searchTerm ? filteredData : data).map((item, index) => (
+        {(searchTerm ? filteredData : invitedList).map((item, index) => (
           <div key={index} className={styles.invitationlist}>
-            <div>{item.name}</div>
-            <div>{item.inviter}</div>
+            <div>{item.dashboard.title}</div>
+            <div>{item.inviter.nickname}</div>
             <div className={styles.buttonsction}>
               <CommonButton
                 padding="0.7rem 2.9rem"
                 isActive={true}
                 className={styles.customButtonSize}
+                onClick={() => handleInviteAcceptButton(item.id, true)}
               >
                 수락
               </CommonButton>
@@ -76,6 +91,7 @@ const MyInvitedDashboard = () => {
                 padding="0.7rem 2.9rem"
                 variant="secondary"
                 isActive={true}
+                onClick={() => handleInviteAcceptButton(item.id, false)}
               >
                 거절
               </CommonButton>

@@ -1,10 +1,10 @@
-import { TagProps } from '../common/tag'
+// import { TagProps } from '../common/tag'
 
 export interface CardType {
   id: number
   title: string
   description: string
-  tags: TagProps[]
+  tags: string[]
   dueDate: string
   assignee: {
     profileImageUrl: string
@@ -16,6 +16,7 @@ export interface CardType {
   columnId: number
   createdAt: string
   updatedAt: string
+  dashboardId?: number
 }
 
 export interface GetCardsResponse {
@@ -25,14 +26,14 @@ export interface GetCardsResponse {
 }
 
 export interface CreateCardBody {
-  assigneeUserId: number
+  assigneeUserId?: number
   dashboardId: number
   columnId: number
   title: string
   description: string
-  dueDate: string
+  dueDate?: string | null
   tags: string[]
-  imageUrl: string | null
+  imageUrl?: string | null
 }
 
 export interface UpdateCardBody {

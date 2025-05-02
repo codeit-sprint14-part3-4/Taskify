@@ -7,8 +7,11 @@ import Input from '@/components/common/commoninput/CommonInput'
 import Tag from '@/components/common/tag/Tag'
 import type { TagColor } from '@/types/common/tag'
 import { useRef, useState } from 'react'
-import styles from '@/components/domain/modals/custom-datepicker.module.css'
 import UserDropdown from '@/components/dropdown/UserDropdown'
+import { cardsService } from '@/api/services/cardsServices'
+import { CreateCardBody } from '@/types/api/cards'
+import { columnsService } from '@/api/services/columnsServices'
+import { useDashboardMembers } from '@/stores/dashboardMembers'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -23,8 +26,17 @@ const TAG_COLORS: TagColor[] = [
   'tag-gray',
 ]
 
-export default function TaskCardCreateModal() {
-  const [selectValue, setSelectValue] = useState('')
+interface TaskCardCreateModalProps {
+  dashboardId: number
+  columnId: number
+  handleCardCreateModalClose: () => void
+}
+
+export default function TaskCardCreateModal({
+  dashboardId,
+  columnId,
+  handleCardCreateModalClose,
+}: TaskCardCreateModalProps) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -33,13 +45,13 @@ export default function TaskCardCreateModal() {
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
   ])
-  const users = [
-    { id: 1, name: '김이영', badgeColor: '#EF4444' },
-    { id: 2, name: '박해일', badgeColor: '#34D399' },
-    { id: 3, name: '이원구', badgeColor: '#FBBF24' },
-    { id: 4, name: '이아이', badgeColor: '#22C55E' },
-    { id: 5, name: '이지사', badgeColor: '#5534DA' },
-  ]
+  const [isButtonDisable, setIsButtonDisable] = useState(true)
+  const dashboardMembers = useDashboardMembers((state) => state.members)
+  const users = dashboardMembers.map((user) => ({
+    id: user.id,
+    name: user.nickname,
+    badgeColor: user.badge,
+  }))
 
   // 변경된 부분: 처음엔 선택된 유저 없음
   const [selectedUser, setSelectedUser] = useState<
@@ -48,6 +60,66 @@ export default function TaskCardCreateModal() {
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
+  const [imgFile, setImgFile] = useState<File | undefined>()
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
+    if (description.trim()) {
+      setIsButtonDisable(false)
+    } else {
+      setIsButtonDisable(true)
+    }
+  }
+
+  const handleChangeDescription = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setDescription(e.target.value)
+    if (title.trim()) {
+      setIsButtonDisable(false)
+    } else {
+      setIsButtonDisable(true)
+    }
+  }
+
+  const handleSubmitForm = async () => {
+    const bodyData: CreateCardBody = {
+      // assigneeUserId: 5603, // 나중에 유저 id로 넣어야 함
+      dashboardId: dashboardId,
+      columnId: columnId,
+      title: title,
+      description: description,
+      tags: tags.map((tag) => tag.label), // 태그 배열 요청 바디에 넣을 수 있는 형태로 변경
+    }
+
+    // 이미지가 있으면 이미지 먼저 생성 요청
+    if (imgFile) {
+      // 이미지가 있다면 columnService.postColumnsImage 메서드로 이미지 생성 요청부터.
+      const postImage = await columnsService.postColumnsImage(columnId, imgFile)
+      bodyData.imageUrl = postImage.imageUrl
+    }
+
+    // 날짜 데이터 파싱
+    if (selectedDate) {
+      const date = selectedDate // Date 타입
+      const parseDate = `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(
+        date.getHours()
+      ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+
+      bodyData.dueDate = parseDate
+    }
+
+    // 담당자를 선택했으면 추가하는 로직 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // ----------------------------
+    // ----------------------------
+
+    // 서버로 요청
+    await cardsService.postCards(bodyData)
+
+    window.location.reload()
+  }
 
   const handleImageClick = () => {
     inputRef.current?.click()
@@ -56,16 +128,13 @@ export default function TaskCardCreateModal() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      setImgFile(file)
       const reader = new FileReader()
       reader.onloadend = () => {
         setPreview(reader.result as string)
       }
       reader.readAsDataURL(file)
     }
-  }
-
-  const selectChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectValue(e.target.value)
   }
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -89,9 +158,17 @@ export default function TaskCardCreateModal() {
     }
   }
 
+  const handleRemoveTag = (index: number) => {
+    setTags((prevTags) => prevTags.filter((_, i) => i !== index))
+  }
+
   return (
-    <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.7)] flex justify-center items-center">
-      <div className="w-[58.4rem] bg-[var(--white-FFFFFF)] rounded-2xl">
+    <>
+      <div
+        className="fixed inset-0 z-40 bg-[rgba(0,0,0,0.7)]"
+        onClick={handleCardCreateModalClose}
+      ></div>
+      <div className="fixed top-1/2 left-1/2 z-50 w-[58.4rem] -translate-x-1/2 -translate-y-1/2 bg-[var(--white-FFFFFF)] rounded-2xl">
         <div className="p-[3.2rem]">
           <h2 className="pb-[3.2rem] text-2xl-bold text-[var(--black-000000)]">
             할 일 생성
@@ -117,7 +194,7 @@ export default function TaskCardCreateModal() {
             </label>
             <Input
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={handleChangeTitle}
               placeholder="제목을 입력해 주세요"
               height="5rem"
               padding="1.2rem 1.6rem"
@@ -133,7 +210,7 @@ export default function TaskCardCreateModal() {
             <div className="w-full min-h-[12.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]">
               <textarea
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={handleChangeDescription}
                 placeholder="설명을 입력해 주세요"
                 className="w-full min-h-[12.6rem] px-[1.6rem] py-[1.5rem] border-none bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none"
                 wrap="soft"
@@ -164,9 +241,6 @@ export default function TaskCardCreateModal() {
                 timeCaption="시간"
                 placeholderText="날짜를 입력해 주세요"
                 className="flex-1 bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
-                calendarClassName={styles.calendar} // 캘린더 박스 스타일
-                popperClassName={styles.popper} // 팝업(달력) 스타일
-                dayClassName={() => styles.day} // 하루하루 날짜 스타일
                 locale={ko}
               />
             </div>
@@ -176,8 +250,13 @@ export default function TaskCardCreateModal() {
               태그
             </label>
             <div className="flex flex-wrap w-full min-h-[5rem] px-[1.6rem] py-[1rem] border border-[var(--gray-D9D9D9)] rounded-lg gap-[1rem] focus-within:border-[var(--violet-5534DhA)]">
-              {tags.map((tag, idx) => (
-                <Tag key={idx} label={tag.label} color={tag.color} />
+              {tags.map((tag, index) => (
+                <Tag
+                  key={index}
+                  label={tag.label}
+                  isDeletable={true}
+                  onDelete={() => handleRemoveTag(index)}
+                />
               ))}
 
               <input
@@ -225,6 +304,7 @@ export default function TaskCardCreateModal() {
           </div>
           <div className="w-full flex justify-center items-center gap-[0.8rem]">
             <CommonButton
+              onClick={handleCardCreateModalClose}
               variant="secondary"
               padding="1.4rem 11.4rem"
               isActive={true}
@@ -233,9 +313,10 @@ export default function TaskCardCreateModal() {
               취소
             </CommonButton>
             <CommonButton
+              onClick={handleSubmitForm}
               variant="primary"
               padding="1.4rem 11.4rem"
-              isActive={true}
+              isActive={!isButtonDisable}
               className="w-full h-[5.4rem] bg-[var(--violet-5534DhA)] text-[var(--white-FFFFFF)] text-lg-semibold"
             >
               생성
@@ -243,6 +324,6 @@ export default function TaskCardCreateModal() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

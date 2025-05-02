@@ -4,101 +4,157 @@ import clsx from 'clsx'
 
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Badge from '@/components/common/badge/Badge'
-import { useDashboardInfo } from '@/hooks/useDashboardInfo'
+import { useDashboardMembers } from '@/stores/dashboardMembers'
+import { useAuthStore } from '@/stores/auth'
+
+interface HomeNavBarProps {
+  pageType: 'mydashboard' | 'dashboard' | 'mypage'
+  dashboardId: number
+  dashboardTitle: string
+  hasCrown: boolean
+  onInviteClick: () => void
+}
 
 export default function HomeNavBar({
   dashboardId,
   pageType,
-}: {
-  dashboardId: number
-  pageType: 'mydashboard' | 'dashboard' | 'mypage'
-}) {
-  const { dashboardTitle, hasCrown, userName } = useDashboardInfo(
-    dashboardId,
-    pageType
-  )
+  dashboardTitle,
+  hasCrown,
+  onInviteClick,
+}: HomeNavBarProps) {
+  const { userData } = useAuthStore()
+  const { members } = useDashboardMembers()
+  console.log(dashboardId)
+
+  // 제목 결정
+  const getTitle = () => {
+    switch (pageType) {
+      case 'mydashboard':
+        return '내 대시보드'
+      case 'dashboard':
+        return dashboardTitle || '대시보드 제목 없음'
+      case 'mypage':
+        return '계정관리'
+      default:
+        return ''
+    }
+  }
+
+  // 왕관 아이콘 표시 여부
+  const showCrown = pageType === 'mydashboard' && hasCrown
+
+  // 초대 및 관리 버튼 등 표시 여부
+  const showDashboardControls = pageType !== 'mydashboard'
+  console.log(members)
+  // 멤버 정보 텍스트
+  const memberInfo =
+    pageType === 'dashboard'
+      ? Array.isArray(members) && members.length > 0
+        ? `${members.length} 명`
+        : '멤버 없음'
+      : ''
 
   return (
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
+      {/* 왼쪽 영역: 제목 + 왕관 */}
       <div className={clsx(styles.flex_center_space_between, styles.nav_left)}>
         <div className={`${styles.dashboard_title} text-xl-bold`}>
-          {pageType === 'mydashboard' && '내 대시보드'}
-          {pageType === 'dashboard' && (dashboardTitle || '대시보드 제목 없음')}
-          {pageType === 'mypage' && '계정관리'}
+          {getTitle()}
         </div>
-        <div>
-          {pageType === 'mydashboard' && hasCrown && (
-            <Image
-              src="/assets/icon/crown.svg"
-              alt="왕관"
-              width={20}
-              height={16}
-            />
-          )}
-        </div>
+        {showCrown && (
+          <Image
+            src="/assets/icon/crown.svg"
+            alt="왕관"
+            width={20}
+            height={16}
+          />
+        )}
       </div>
-      <div className={styles.flex_center_space_between}>
-        <div
-          className={clsx(
-            styles.flex_center_space_between,
-            styles.nav_right_center_border
-          )}
-        >
-          <div className={styles.nav_right_center_border}>
-            <ButtonDashboard
-              paddingHeight="py-3"
-              paddingWidth="px-6.5"
-              gap="gap-2"
-              style={{
-                color: 'var(--gray-787486)',
-                objectFit: 'contain',
-                display: 'flex',
-              }}
-              prefix={
-                <Image
-                  src="/assets/icon/settings-logo.svg"
-                  alt="addbutton"
-                  width={20}
-                  height={20}
-                  className={styles.icon}
-                />
-              }
-            >
-              관리
-            </ButtonDashboard>
+
+      {/* 오른쪽 영역 */}
+      <div className={clsx(styles.flex_center_space_between)}>
+        {/* 설정 및 초대 버튼 등dd */}
+        {showDashboardControls && (
+          <div
+            className={clsx(
+              styles.flex_center_space_between,
+              styles.nav_right_center_border
+            )}
+          >
+            <div className={styles.nav_right_center_border_setting}>
+              <ButtonDashboard
+                paddingHeight="py-3"
+                paddingWidth="px-6.5"
+                gap="gap-2"
+                style={{
+                  color: 'var(--gray-787486)',
+                  objectFit: 'contain',
+                  display: 'flex',
+                }}
+                prefix={
+                  <Image
+                    src="/assets/icon/settings-logo.svg"
+                    alt="설정"
+                    width={20}
+                    height={20}
+                    className={styles.icon}
+                  />
+                }
+              >
+                관리
+              </ButtonDashboard>
+            </div>
+            <div className={styles.button_invitation}>
+              <ButtonDashboard
+                paddingHeight="py-3"
+                paddingWidth="px-6.5"
+                gap="gap-2"
+                style={{
+                  color: 'var(--gray-787486)',
+                  objectFit: 'contain',
+                  display: 'flex',
+                }}
+                prefix={
+                  <Image
+                    src="/assets/icon/add-box-gray.svg"
+                    alt="초대 아이콘"
+                    width={20}
+                    height={20}
+                    className={styles.icon}
+                  />
+                }
+                onClick={onInviteClick}
+              >
+                초대하기
+              </ButtonDashboard>
+            </div>
+            <div className={styles.name_mark}>{memberInfo}</div>
           </div>
-          <div className={styles.button_invitation}>
-            <ButtonDashboard
-              paddingHeight="py-3"
-              paddingWidth="px-6.5"
-              gap="gap-2"
-              style={{
-                color: 'var(--gray-787486)',
-                objectFit: 'contain',
-                display: 'flex',
-              }}
-              prefix={
-                <Image
-                  src="/assets/icon/add-box-gray.svg"
-                  alt="addbutton"
-                  width={20}
-                  height={20}
-                  className={styles.icon}
-                />
-              }
-            >
-              초대하기
-            </ButtonDashboard>
-          </div>
-          <div className={styles.name_mark}>
-            {pageType === 'dashboard' && <div>명</div>}
-          </div>
-        </div>
+        )}
+
+        {/* 프로필 이미지 + 이름 */}
         <div
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >
-          {userName && <Badge nickname={userName} />}
-          <div className={`${styles.name} text-lg-medium`}>{userName}</div>
+          <div className={styles.profile_image}>
+            {userData?.profileImage ? (
+              <Image
+                src={userData.profileImage}
+                alt="Profile Image"
+                width={40}
+                height={40}
+                style={{
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                }}
+              />
+            ) : (
+              <Badge nickname={userData ? userData.nickname : ''} />
+            )}
+          </div>
+          <div className={`${styles.name} text-lg-medium`}>
+            {userData?.nickname}
+          </div>
         </div>
       </div>
     </div>

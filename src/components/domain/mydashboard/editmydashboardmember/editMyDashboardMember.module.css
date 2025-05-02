@@ -4,10 +4,14 @@
   padding: 2.6rem 2.8rem;
 }
 
-.edit_member_header {
+.edit_member_flex_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.edit_member_flex_gap {
+  gap: 1.2rem;
 }
 
 .edit_member_name_header {

@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import Column from '@/components/domain/dashboard/Column' //
-import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
-import Layout from '@/components/layout/layout'
-import { columnsService } from '@/api/services/columnsServices'
-import { ColumnType } from '@/types/api/columns'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { columnsService } from '@/api/services/columnsServices'
+import Layout from '@/components/layout/layout'
+import ColumnWrapper from '@/components/domain/dashboard/ColumnWrapper'
+import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
+import TaskCardCreateModal from '@/components/domain/modals/taskcardcreatemodal/TaskCardCreateModal'
+import { ColumnType } from '@/types/api/columns'
 
 export default function DashboardPage() {
   const [columns, setColumns] = useState<ColumnType[]>([])
-
-  const { query } = useRouter()
+  const [isCardCreateModalOpen, setIsCardCreateModalOpen] = useState(false)
+  const [selectedColumnId, setSelectedColumnId] = useState<number>(-1)
+  const { query, push } = useRouter()
   const dashboardId = Number(query.id)
 
   const getColumns = async () => {
@@ -18,24 +20,36 @@ export default function DashboardPage() {
     setColumns(columnsData.data)
   }
 
+  const handleCardCreateModalOpen = (columnId: number) => {
+    setSelectedColumnId(columnId)
+    setIsCardCreateModalOpen(true)
+  }
+
+  const handleCardCreateModalClose = () => {
+    setIsCardCreateModalOpen(false)
+  }
+
   useEffect(() => {
     if (!query.id) return
-    getColumns()
-  }, [query.id])
+    if (isNaN(dashboardId)) {
+      push('/404')
+    } else {
+      getColumns()
+    }
+  }, [query.id, dashboardId, push])
 
-  // 404 리다이렉트 구현 필요
-  if (!dashboardId) return
+  if (!dashboardId || isNaN(dashboardId)) return null
 
-  //  dashboardId={1}> id로 받을 수 있게 나중에 바꿔주세요!(지금은 임시)
   return (
-    <Layout pageType="dashboard" dashboardId={1}>
-      {/* 컬럼 리스트 */}
+    <>
       <div className="flex overflow-x-auto">
         {columns.map((column) => (
-          <Column key={column.id} columnInfo={column} />
+          <ColumnWrapper
+            key={column.id}
+            columnInfo={column}
+            handleCardCreateModalOpen={handleCardCreateModalOpen}
+          />
         ))}
-
-        {/* 새로운 컬럼 추가하기 버튼 */}
         <div className="pt-[6.8rem] pl-[2.4rem]">
           <ButtonDashboard
             paddingHeight="pt-[2.4rem] pb-[2rem]"
@@ -56,6 +70,17 @@ export default function DashboardPage() {
           </ButtonDashboard>
         </div>
       </div>
-    </Layout>
+      {isCardCreateModalOpen && (
+        <TaskCardCreateModal
+          dashboardId={dashboardId}
+          columnId={selectedColumnId}
+          handleCardCreateModalClose={handleCardCreateModalClose}
+        />
+      )}
+    </>
   )
+}
+
+DashboardPage.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout pageType="dashboard">{page}</Layout>
 }

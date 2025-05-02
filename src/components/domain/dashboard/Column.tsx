@@ -10,9 +10,13 @@ import styles from './column.module.css'
 // 내부에서만 사용
 export interface ColumnProps {
   columnInfo: ColumnType
+  handleCardCreateModalOpen: (columnId: number) => void
 }
 
-export default function Column({ columnInfo }: ColumnProps) {
+export default function Column({
+  columnInfo,
+  handleCardCreateModalOpen,
+}: ColumnProps) {
   const [cards, setCards] = useState<CardType[]>()
 
   const getCards = async () => {
@@ -55,6 +59,7 @@ export default function Column({ columnInfo }: ColumnProps) {
       <div className={styles.addButtonWrapper}>
         <ButtonDashboard
           // onclickAdd 이벤트 추가 요망
+          onClick={() => handleCardCreateModalOpen(columnInfo.id)}
           color="bg-white"
           className={styles.addButton}
           prefix={

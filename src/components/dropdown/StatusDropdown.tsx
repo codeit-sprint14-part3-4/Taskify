@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
+import styles from './statusDropdown.module.css'
 
 export enum Status {
   TODO = 'To Do',
   ON_PROGRESS = 'On Progress',
   DONE = 'Done',
+  EXAMPLE = 'Example',
+  REVIEW = 'Review',
 }
 
 interface StatusDropdownProps {
@@ -12,31 +15,45 @@ interface StatusDropdownProps {
   onChange: (status: Status) => void
 }
 
-const statusOptions: Status[] = [Status.TODO, Status.ON_PROGRESS, Status.DONE]
+const statusOptions: Status[] = [
+  Status.TODO,
+  Status.ON_PROGRESS,
+  Status.DONE,
+  Status.EXAMPLE,
+  Status.REVIEW,
+]
 
 export default function StatusDropdown({
   value,
   onChange,
 }: StatusDropdownProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState(0)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const itemRefs = useRef<(HTMLLIElement | null)[]>([])
-  const setItemRef = useCallback((el: HTMLLIElement | null, index: number) => {
-    if (el) itemRefs.current[index] = el
+  const dropdownContainerRef = useRef<HTMLDivElement>(null)
+  const optionRefs = useRef<(HTMLLIElement | null)[]>([])
+
+  useEffect(() => {
+    optionRefs.current = new Array(statusOptions.length).fill(null)
   }, [])
 
-  const handleSelect = (status: Status) => {
+  const assignOptionRef = useCallback(
+    (element: HTMLLIElement | null, index: number) => {
+      if (element) optionRefs.current[index] = element
+    },
+    []
+  )
+
+  const handleStatusSelect = (status: Status) => {
     onChange(status)
-    setIsOpen(false)
+    setIsDropdownOpen(false)
   }
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (!isOpen) return
+      if (!isDropdownOpen) return
 
       if (event.key === 'Escape') {
-        setIsOpen(false)
+        setIsDropdownOpen(false)
         const activeElement = document.activeElement as HTMLElement
         activeElement?.blur()
       }
@@ -55,16 +72,16 @@ export default function StatusDropdown({
 
       if (event.key === 'Enter') {
         event.preventDefault()
-        handleSelect(statusOptions[focusedIndex])
+        handleStatusSelect(statusOptions[focusedIndex])
       }
     }
 
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        dropdownContainerRef.current &&
+        !dropdownContainerRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false)
+        setIsDropdownOpen(false)
       }
     }
 
@@ -75,67 +92,58 @@ export default function StatusDropdown({
       document.removeEventListener('keydown', handleKeyDown)
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isOpen, focusedIndex])
+  }, [isDropdownOpen, focusedIndex])
 
   useEffect(() => {
-    if (isOpen && itemRefs.current[focusedIndex]) {
-      itemRefs.current[focusedIndex]?.scrollIntoView({
+    if (isDropdownOpen && optionRefs.current[focusedIndex]) {
+      optionRefs.current[focusedIndex]?.scrollIntoView({
         block: 'nearest',
         behavior: 'smooth',
       })
     }
-  }, [focusedIndex, isOpen])
+  }, [focusedIndex, isDropdownOpen])
+
+  const isSelected = (status: Status) => value === status
 
   return (
-    <div
-      ref={dropdownRef}
-      className="relative w-full max-w-sm min-w-[20rem] md:w-[21.7rem]"
-    >
+    <div ref={dropdownContainerRef} className={styles.container}>
       <button
         type="button"
         onClick={() => {
-          setIsOpen((prev) => !prev)
+          setIsDropdownOpen((prev) => !prev)
           setFocusedIndex(statusOptions.findIndex((s) => s === value))
         }}
-        className={`w-full h-[4.8rem] flex justify-between items-center px-[1.6rem] rounded-[0.8rem] text-[1.4rem] font-medium bg-[var(--white-FFFFFF)] border ${
-          isOpen
-            ? 'border-[var(--violet-5534DhA)]'
-            : 'border-[var(--gray-D9D9D9)]'
-        } focus:outline-none transition-colors duration-200`}
+        className={`${styles.triggerButton} ${
+          isDropdownOpen ? styles.open : styles.closed
+        }`}
       >
-        <div className="flex items-center gap-[1.2rem]">
-          <div className="inline-flex items-center gap-[0.8rem] px-[1.2rem] py-[0.8rem] bg-[rgba(85,52,218,0.08)] rounded-full">
-            <span className="w-[0.8rem] h-[0.8rem] rounded-full bg-[#5534DA]" />
-            <span className="text-[#5534DA]">{value}</span>
-          </div>
+        <div className={styles.selectedStatus}>
+          <span className={styles.statusDot} />
+          <span className={styles.statusText}>{value}</span>
         </div>
         <Image
           src="/assets/image/arrow-down.svg"
           alt="Arrow Down"
           width={24}
           height={24}
-          className={`transition-transform duration-300 ${
-            isOpen ? 'rotate-180' : ''
+          className={`${styles.arrowIcon} ${
+            isDropdownOpen ? styles.rotate : ''
           }`}
         />
       </button>
 
-      {isOpen && (
-        <ul className="absolute z-10 mt-[0.8rem] w-full border border-[#D9D9D9] bg-[var(--white-FFFFFF)] rounded-[0.8rem] transition-all duration-300 origin-top max-h-[24rem] overflow-y-auto">
+      {isDropdownOpen && (
+        <ul className={styles.dropdown}>
           {statusOptions.map((status, index) => (
             <li
               key={status}
-              ref={(el) => setItemRef(el, index)}
-              onClick={() => handleSelect(status)}
-              className={`flex items-center gap-[1.2rem] px-[1.6rem] cursor-pointer w-full h-[4.8rem] text-[1.4rem] font-medium transition-colors duration-200 ${
-                index === focusedIndex
-                  ? 'bg-gray-200'
-                  : value === status
-                  ? 'bg-gray-100'
-                  : 'hover:bg-gray-100'
-              }`}
+              ref={(el) => assignOptionRef(el, index)}
+              onClick={() => handleStatusSelect(status)}
+              className={`${styles.option} ${
+                index === focusedIndex ? styles.focused : ''
+              } ${isSelected(status) ? styles.selected : ''}`}
             >
-              {value === status ? (
+              {isSelected(status) ? (
                 <Image
                   src="/assets/image/check.svg"
                   alt="선택됨"
@@ -143,11 +151,11 @@ export default function StatusDropdown({
                   height={22}
                 />
               ) : (
-                <div className="w-[2.2rem] h-[2.2rem]" />
+                <div className={styles.emptyBox} />
               )}
-              <div className="inline-flex items-center gap-[0.8rem] px-[1.2rem] py-[0.8rem] bg-[rgba(85,52,218,0.08)] rounded-full">
-                <span className="w-[0.8rem] h-[0.8rem] rounded-full bg-[#5534DA]" />
-                <span className="text-[#5534DA]">{status}</span>
+              <div className={styles.selectedStatus}>
+                <span className={styles.statusDot} />
+                <span className={styles.statusText}>{status}</span>
               </div>
             </li>
           ))}

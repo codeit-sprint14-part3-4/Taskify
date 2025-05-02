@@ -36,7 +36,7 @@ export default function Card({ cardInfo }: CardProps) {
         추후 모달에서 태그 추가/삭제 및 색상 재지정 연동 예정*/}
         <div className={styles.tagList}>
           {cardInfo.tags.map((tag, index) => (
-            <Tag key={index} label={tag.label} color={tag.color} />
+            <Tag key={index} label={tag} />
           ))}
         </div>
 

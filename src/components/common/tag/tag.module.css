@@ -6,14 +6,13 @@
   border-radius: 4px;
   white-space: nowrap;
   transition: background-color 0.2s ease, transform 0.1s ease;
-  cursor: pointer;
 }
 
-.tag:hover {
+.tag-hover:hover {
   filter: brightness(1);
 }
 
-.tag:active {
+.tag-active:active {
   transform: scale(0.95);
   filter: brightness(0.9);
 }
