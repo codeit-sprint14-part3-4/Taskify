@@ -1,28 +1,24 @@
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
-import { dashboardsService } from '@/api/services/dashboardsServices'
+import { useAuthStore } from '@/stores/auth'
 import { membersService } from '@/api/services/membersServices'
+import { dashboardsService } from '@/api/services/dashboardsServices'
+import { columnsService } from '@/api/services/columnsServices'
+import Layout from '@/components/layout/layout'
 import Column from '@/components/domain/dashboard/Column'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
-import Layout from '@/components/layout/layout'
-import { columnsService } from '@/api/services/columnsServices'
-import { ColumnType } from '@/types/api/columns'
-import { useRouter } from 'next/router'
 import TaskCardCreateModal from '@/components/domain/modals/taskcardcreatemodal/TaskCardCreateModal'
-import { useAuthStore } from '@/stores/auth'
+import { ColumnType } from '@/types/api/columns'
 
 export default function DashboardPage() {
+  const { setDashboardTitle, setMembers } = useAuthStore()
   const [columns, setColumns] = useState<ColumnType[]>([])
   const [isCardCreateModalOpen, setIsCardCreateModalOpen] = useState(false)
   const [selectedColumnId, setSelectedColumnId] = useState<number>(-1)
-
-  const { query } = useRouter()
-  const { push } = useRouter()
+  const { query, push } = useRouter()
   const dashboardId = Number(query.id)
-
-  const { setDashboardTitle, setMembers } = useAuthStore()
 
   const getDashboardTitle = async () => {
     try {
@@ -72,7 +68,7 @@ export default function DashboardPage() {
   if (!dashboardId || isNaN(dashboardId)) return null
 
   return (
-    <Layout pageType="dashboard" dashboardId={dashboardId}>
+    <>
       {/* 컬럼 리스트 */}
       <div className="flex overflow-x-auto">
         {columns.map((column) => (
@@ -111,7 +107,7 @@ export default function DashboardPage() {
           handleCardCreateModalClose={handleCardCreateModalClose}
         />
       )}
-    </Layout>
+    </>
   )
 }
 
