@@ -38,3 +38,21 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 )
+
+//  {
+//    previewImage || profileImageUrl ? (
+//      <div className="relative w-full h-full">
+//        <Image
+//          src={previewImage || profileImageUrl || '/path/to/default-image.png'}
+//          alt="프로필 미리보기"
+//          width={182}
+//          height={182}
+//          className="object-cover w-full h-full rounded-[1.6rem]"
+//        />
+//      </div>
+//    ) : (
+//      <span>
+//        +<span className="sr-only">프로필 이미지 업로드</span>
+//      </span>
+//    )
+//  }
