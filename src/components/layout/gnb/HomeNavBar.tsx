@@ -75,7 +75,7 @@ export default function HomeNavBar({
 
       {/* 오른쪽 영역 */}
       <div className={clsx(styles.flex_center_space_between)}>
-        {/* 설정 및 초대 버튼 등 */}
+        {/* 설정 및 초대 버튼 등dd */}
         {showDashboardControls && (
           <div
             className={clsx(
