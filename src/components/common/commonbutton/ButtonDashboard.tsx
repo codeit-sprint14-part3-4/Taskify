@@ -45,11 +45,11 @@ export default function ButtonDashboard({
     <div>
       <button
         onClick={onClick}
-        className={clsx(styles.buttonWrapper)}
+        className={clsx(styles.buttonWrapper, buttonClass, innerClass)}
         style={style}
         {...rest}
       >
-        <div className={clsx(innerClass, buttonClass)}>
+        <div className={styles.buttonContent}>
           {prefix && <span className={styles.icon}>{prefix}</span>}
           {children && <span>{children}</span>}
           {suffix && <span className={styles.icon}>{suffix}</span>}
