@@ -6,50 +6,41 @@ import Sidebar from './sidebar/Sidebar'
 import { useAuthStore } from '@/stores/auth'
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import FormModal from '@/components/domain/modals/basemodal/FormModal'
-import { useDashboardInfo } from '@/hooks/useDashboardInfo'
+import { membersService } from '@/api/services/membersServices'
+import { useDashboardMembers } from '@/stores/dashboardMembers'
 
 interface LayoutProps {
   children: React.ReactNode
   pageType: 'mydashboard' | 'dashboard' | 'mypage'
 }
 
+const getRandomColor = () => {
+  const colors = [
+    '#FFC85A',
+    '#FDD446',
+    '#9DD7ED',
+    '#C4B1A2',
+    '#F4D7DA',
+    '#A3C4A2',
+    '#FF787A',
+    '#F4BEFF',
+    '#BEC3FF',
+    '#BF57B5',
+  ]
+  const randomIndex = Math.floor(Math.random() * colors.length)
+  return colors[randomIndex]
+}
+
 export default function Layout({ children, pageType }: LayoutProps) {
-  const { accessToken, userName, profileImageUrl } = useAuthStore()
   const router = useRouter()
-
-  // 안전한 대시보드 ID 추출
-  const getSafeDashboardId = (): number => {
-    if (!router.isReady || pageType === 'mypage') return 0
-    const id = router.query.id
-    if (typeof id === 'string' && !isNaN(Number(id))) {
-      return Number(id)
-    }
-    return 0
-  }
-
-  const dashboardId = getSafeDashboardId()
-
-  // 대시보드 정보 훅 사용
-  const {
-    dashboardTitle,
-    hasCrown,
-    userName: currentUserName,
-    memberCount,
-    members,
-  } = useDashboardInfo(dashboardId, pageType, userName ?? '')
-
+  const { accessToken } = useAuthStore()
+  const { setMembers } = useDashboardMembers()
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
+  const [hasCrown, setHasCrown] = useState(false)
+  const [dashboardTitle, setDashboardTitle] = useState('대시보드 제목 없음')
   const [membersEmail, setMembersEmail] = useState('')
   const [error, setError] = useState('')
-
-  // 로그인 상태 확인 및 리다이렉트 처리
-  useEffect(() => {
-    const token = accessToken || useAuthStore.getState().accessToken
-    if (!token) {
-      router.push('/login')
-      return
-    }
-  }, [accessToken, router])
+  const dashboardId = Number(router.query.id)
 
   // 초대 처리 함수
   const handleInvite = async () => {
@@ -74,6 +65,50 @@ export default function Layout({ children, pageType }: LayoutProps) {
     }
   }
 
+  const getDashboardMembers = async (dashboardId: number) => {
+    try {
+      const res = await membersService.getMembers(1, 20, dashboardId)
+      setMembers(
+        res.members.map((member) => ({ ...member, badge: getRandomColor() }))
+      )
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const getDashboardDetails = async (dashboardId: number) => {
+    // 대시보드 페이지일 때만 호출
+    if (pageType !== 'mypage') {
+      try {
+        const dashboardData = await dashboardsService.getDashboardsDetail(
+          dashboardId
+        )
+        const { title, createdByMe } = dashboardData
+
+        setDashboardTitle(createdByMe ? `${title} 👑` : title)
+        setHasCrown(createdByMe)
+      } catch (error) {
+        console.error('대시보드 조회 실패:', error)
+      }
+    }
+  }
+
+  // 로그인 상태 확인 및 리다이렉트 처리
+  useEffect(() => {
+    const token = accessToken || useAuthStore.getState().accessToken
+    if (!token) {
+      router.push('/login')
+      return
+    }
+  }, [accessToken, router])
+
+  useEffect(() => {
+    if (dashboardId) {
+      getDashboardMembers(dashboardId)
+      getDashboardDetails(dashboardId)
+    }
+  }, [dashboardId])
+
   if (!accessToken) {
     return (
       <div className="w-full h-screen flex items-center justify-center text-md-medium text-gray-500">
@@ -94,10 +129,6 @@ export default function Layout({ children, pageType }: LayoutProps) {
             dashboardId={dashboardId}
             dashboardTitle={dashboardTitle}
             hasCrown={hasCrown}
-            userName={currentUserName}
-            memberCount={memberCount}
-            members={members}
-            profileImage={profileImageUrl}
             onInviteClick={() => setInviteModalOpen(true)}
           />
         </header>

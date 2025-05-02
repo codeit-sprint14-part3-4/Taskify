@@ -2,9 +2,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-import { useAuthStore } from '@/stores/auth'
-import { membersService } from '@/api/services/membersServices'
-import { dashboardsService } from '@/api/services/dashboardsServices'
 import { columnsService } from '@/api/services/columnsServices'
 import Layout from '@/components/layout/layout'
 import Column from '@/components/domain/dashboard/Column'
@@ -13,30 +10,11 @@ import TaskCardCreateModal from '@/components/domain/modals/taskcardcreatemodal/
 import { ColumnType } from '@/types/api/columns'
 
 export default function DashboardPage() {
-  const { setDashboardTitle, setMembers } = useAuthStore()
   const [columns, setColumns] = useState<ColumnType[]>([])
   const [isCardCreateModalOpen, setIsCardCreateModalOpen] = useState(false)
   const [selectedColumnId, setSelectedColumnId] = useState<number>(-1)
   const { query, push } = useRouter()
   const dashboardId = Number(query.id)
-
-  const getDashboardTitle = async () => {
-    try {
-      const data = await dashboardsService.getDashboardsDetail(dashboardId)
-      setDashboardTitle(data.title)
-    } catch (error) {
-      console.error('대시보드 정보 불러오기 실패:', error)
-    }
-  }
-  const getDashboardMembers = async () => {
-    try {
-      const data = await membersService.getMembers(1, 20, dashboardId)
-
-      setMembers(data.members)
-    } catch (error) {
-      console.error('대시보드 정보 불러오기 실패:', error)
-    }
-  }
 
   const getColumns = async () => {
     const columnsData = await columnsService.getColumns(dashboardId)
@@ -59,8 +37,6 @@ export default function DashboardPage() {
       push('/404')
     } else {
       getColumns()
-      getDashboardMembers()
-      getDashboardTitle()
     }
   }, [query.id, dashboardId, push])
 
