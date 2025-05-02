@@ -1,10 +1,11 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import styles from '@/pages/mypage/mypage.module.css'
 
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import Modal from '@/components/domain/modals/basemodal/Modal'
 import Layout from '@/components/layout/layout'
+import Modal from '@/components/domain/modals/basemodal/Modal'
 
 import { useAuthStore } from '@/stores/auth'
 import { usersService } from '@/api/services/usersServices'
@@ -80,6 +81,7 @@ export default function MyPage() {
   ) => {
     const value = e.target.value
     setCurrentPassword(value)
+
     if (value.length > 0 && value.length < 8) {
       setCurrentPasswordError('현재 비밀번호는 최소 8자 이상이어야 합니다.')
     } else {
@@ -136,6 +138,7 @@ export default function MyPage() {
 
     try {
       let profileImageUrl: string | undefined
+
       if (profileImage) {
         const uploadResponse = await usersService.postUsersMeImage(profileImage)
         profileImageUrl = uploadResponse.profileImageUrl
@@ -147,7 +150,7 @@ export default function MyPage() {
         profileImageUrl,
       })
 
-      openModal('😊 프로필 수정이 완료되었습니다!')
+      openModal('😊 프로필이 성공적으로 수정되었습니다!')
     } catch (error) {
       console.error('프로필 저장 에러:', error)
       openModal('프로필 저장 중 오류가 발생했습니다.')
@@ -179,6 +182,7 @@ export default function MyPage() {
     }
 
     try {
+      // 이거 잠시만요. 틀린거 맞아요.
       await authService.putAuth({
         password: currentPassword,
         newPassword,
@@ -212,7 +216,6 @@ export default function MyPage() {
     }
   }, [accessToken, router])
   return (
-
     <>
       <div className={styles.content}>
         <div className={styles.backWrapper}>
@@ -349,30 +352,26 @@ export default function MyPage() {
                     isPasswordValid
                       ? styles.activeButton
                       : styles.inactiveButton
-
                   }`}
                   onClick={handleChangePassword}
                 >
                   변경
                 </CommonButton>
-
               </div>
             </div>
           </section>
         </div>
       </div>
 
-
-        {isModalOpen && (
-          <Modal
-            message={modalMessage}
-            onConfirm={closeModal}
-            size="large"
-            confirmLabel="확인"
-          />
-        )}
-      </div>
-    </Layout>
+      {isModalOpen && (
+        <Modal
+          message={modalMessage}
+          onConfirm={closeModal}
+          size="large"
+          confirmLabel="확인"
+        />
+      )}
+    </>
   )
 }
 MyPage.getLayout = function getLayout(page: React.ReactElement) {

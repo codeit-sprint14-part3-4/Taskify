@@ -48,7 +48,7 @@ const Badge = ({ nickname, profileImage }: BadgeProps) => {
         />
       ) : (
         <div className={styles.badge} style={{ backgroundColor: bgColor }}>
-          {getFirstLetter(nickname)} {/* 첫 글자를 표시 */}
+          {getFirstLetter(nickname)}
         </div>
       )}
     </div>
