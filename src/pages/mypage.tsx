@@ -3,62 +3,73 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import Modal from '@/components/domain/modals/basemodal/Modal'
 import Layout from '@/components/layout/layout'
+import Modal from '@/components/domain/modals/basemodal/Modal'
 
+import { useAuthStore } from '@/stores/auth'
 import { usersService } from '@/api/services/usersServices'
 import { authService } from '@/api/services/authServices'
 
 export default function MyPage() {
   const router = useRouter()
+
   const [email, setEmail] = useState('')
   const [nickname, setNickname] = useState('')
   const [profileImage, setProfileImage] = useState<File | null>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
+
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
+
   const [currentPasswordError, setCurrentPasswordError] = useState('')
   const [newPasswordError, setNewPasswordError] = useState('')
   const [confirmPasswordError, setConfirmPasswordError] = useState('')
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
+  const { accessToken } = useAuthStore()
 
-  const [profileImageUrl, setProfileImageUrl] = useState<string>('')
-
+  // 사용자 정보를 가져오는 useEffect
   useEffect(() => {
     async function fetchUserInfo() {
       try {
         const user = await usersService.getUsers()
         setNickname(user.nickname || '')
         setEmail(user.email || '')
-        setProfileImageUrl(user.profileImageUrl || '')
+
+        if (user.profileImageUrl) {
+          setPreviewImage(user.profileImageUrl)
+        }
       } catch (error) {
         console.error('사용자 정보 가져오기 실패', error)
       }
     }
+
     fetchUserInfo()
   }, [])
-
+  // openModal
   const openModal = (message: string) => {
     setModalMessage(message)
     setIsModalOpen(true)
-
-    setTimeout(closeModal, 1500)
   }
-
+  // closeModal
   const closeModal = () => {
     setIsModalOpen(false)
     setModalMessage('')
   }
-
+  // 닉네임 포커스 이벤트
+  const handleNicknameFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.select()
+  }
+  // 닉네임 변경 이벤트
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value
     if (input.length <= 10) {
       setNickname(input)
     }
   }
-
+  // 프로필 이미지 변경 이벤트
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -70,25 +81,26 @@ export default function MyPage() {
       reader.readAsDataURL(file)
     }
   }
-
+  // 비밀번호 유효성 검사
   const handleCurrentPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value = e.target.value
     setCurrentPassword(value)
+
     if (value.length > 0 && value.length < 8) {
       setCurrentPasswordError('현재 비밀번호는 최소 8자 이상이어야 합니다.')
     } else {
       setCurrentPasswordError('')
     }
   }
-
+  // 새 비밀번호 유효성 검사
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setNewPassword(value)
     validatePasswords(value, confirmNewPassword)
   }
-
+  // 새 비밀번호 확인 유효성 검사
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -96,7 +108,7 @@ export default function MyPage() {
     setConfirmNewPassword(value)
     validatePasswords(newPassword, value)
   }
-
+  // 비밀번호 유효성 검사 함수
   const validatePasswords = (newPass: string, confirmPass: string) => {
     const hasUpperCase = /[A-Z]/.test(newPass)
     const hasLowerCase = /[a-z]/.test(newPass)
@@ -104,7 +116,10 @@ export default function MyPage() {
 
     if (newPass.length > 0 && newPass.length < 8) {
       setNewPasswordError('비밀번호는 최소 8자 이상이어야 합니다.')
-    } else if (!(hasUpperCase || hasLowerCase || hasSpecialChar)) {
+    } else if (
+      newPass.length > 0 &&
+      !(hasUpperCase || hasLowerCase || hasSpecialChar)
+    ) {
       setNewPasswordError(
         '비밀번호에는 대문자, 소문자 또는 특수문자 중 하나 이상이 포함되어야 합니다.'
       )
@@ -114,38 +129,46 @@ export default function MyPage() {
 
     if (confirmPass.length > 0 && confirmPass.length < 8) {
       setConfirmPasswordError('비밀번호는 최소 8자 이상이어야 합니다.')
-    } else if (newPass !== confirmPass) {
+    } else if (newPass && confirmPass && newPass !== confirmPass) {
       setConfirmPasswordError('비밀번호가 일치하지 않습니다.')
     } else {
       setConfirmPasswordError('')
     }
   }
-
+  // 프로필 저장 이벤트
   const handleSaveProfile = async () => {
     if (nickname.trim().length < 2 && !profileImage) {
       openModal('닉네임을 2자 이상 입력하거나 프로필 이미지를 수정해야 합니다.')
       return
     }
+
     try {
-      let newProfileImageUrl: string = profileImageUrl || ''
+      let profileImageUrl: string | undefined
 
       if (profileImage) {
         const uploadResponse = await usersService.postUsersMeImage(profileImage)
-        newProfileImageUrl = uploadResponse.profileImageUrl
+        profileImageUrl = uploadResponse.profileImageUrl
       }
 
-      await usersService.putUsers({
+      const updatedUser = await usersService.putUsers({
         nickname: nickname || '',
-        profileImageUrl: newProfileImageUrl,
+        profileImageUrl,
       })
-      setProfileImageUrl(newProfileImageUrl)
-      openModal('😊 프로필 수정이 완료되었습니다!')
+
+      // 상태 업데이트
+      useAuthStore.getState().setUserData({
+        nickname: updatedUser.nickname,
+        email: updatedUser.email,
+        profileImageUrl: updatedUser.profileImageUrl,
+      })
+
+      openModal('😊 프로필이 성공적으로 수정되었습니다!')
     } catch (error) {
       console.error('프로필 저장 에러:', error)
       openModal('프로필 저장 중 오류가 발생했습니다.')
     }
   }
-
+  // 비밀번호 변경 이벤트
   const handleChangePassword = async () => {
     const hasUpperCase = /[A-Z]/.test(newPassword)
     const hasLowerCase = /[a-z]/.test(newPassword)
@@ -169,6 +192,7 @@ export default function MyPage() {
       openModal('비밀번호가 일치하지 않습니다.')
       return
     }
+
     try {
       await authService.putAuth({
         password: currentPassword,
@@ -182,20 +206,32 @@ export default function MyPage() {
       setNewPasswordError('')
       setConfirmPasswordError('')
     } catch (error) {
-      openModal('현재 비밀번호가 일치하지 않습니다.')
+      if (error instanceof Error) {
+        openModal(error.message || '비밀번호 변경 중 오류가 발생했습니다.')
+      } else {
+        openModal('알 수 없는 오류가 발생했습니다.') // 예상치 못한 오류 대응
+      }
     }
   }
-
+  // 비밀번호 유효성 검사
   const isPasswordValid =
     currentPassword.length >= 8 &&
     newPassword.length >= 8 &&
     confirmNewPassword.length >= 8 &&
-    newPassword === confirmNewPassword
+    newPassword === confirmNewPassword &&
+    (/[A-Z]/.test(newPassword) ||
+      /[a-z]/.test(newPassword) ||
+      /[!@#$%^&*(),.?":{}|<>]/.test(newPassword))
+
   const isSaveButtonActive =
     nickname.trim().length >= 2 || profileImage !== null
-
+  useEffect(() => {
+    if (!accessToken) {
+      router.replace('/login') // 로그인 안된 경우 로그인 페이지로
+    }
+  }, [accessToken, router])
   return (
-    <Layout pageType="mypage">
+    <>
       <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh]">
         <div className="flex flex-nowrap px-0 items-start justify-start w-full">
           <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem]">
@@ -228,24 +264,16 @@ export default function MyPage() {
                     aria-label="프로필 이미지 업로드"
                     className="w-[18.2rem] h-[18.2rem] flex items-center justify-center bg-[var(--gray-EEEEEE)] text-[3.2rem] text-[var(--violet-5534DhA)] border border-[var(--gray-D9D9D9)] rounded-[1.6rem] cursor-pointer transition-colors hover:bg-[var(--gray-FAFAFA)] hover:border-[var(--violet-5534DhA)] relative"
                   >
-                    {previewImage || profileImageUrl ? (
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={
-                            previewImage ||
-                            profileImageUrl ||
-                            '/path/to/default-image.png'
-                          }
-                          alt="프로필 미리보기"
-                          width={182}
-                          height={182}
-                          className="object-cover w-full h-full rounded-[1.6rem]"
-                        />
-                      </div>
+                    {previewImage ? (
+                      <Image
+                        src={previewImage}
+                        alt="프로필 미리보기"
+                        className="object-cover w-full h-full rounded-[1.6rem]"
+                        width={76}
+                        height={76}
+                      />
                     ) : (
-                      <span>
-                        +<span className="sr-only">프로필 이미지 업로드</span>
-                      </span>
+                      '+'
                     )}
 
                     {/* 파일 업로드 input */}
@@ -286,6 +314,7 @@ export default function MyPage() {
                       type="text"
                       value={nickname}
                       onChange={handleNicknameChange}
+                      onFocus={handleNicknameFocus}
                       className="h-[5rem] mb-[2.4rem] p-[1.5rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] focus:border-[var(--violet-5534DhA)] focus:outline-none"
                     />
 
@@ -426,6 +455,9 @@ export default function MyPage() {
           />
         )}
       </div>
-    </Layout>
+    </>
   )
+}
+MyPage.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout pageType="mypage">{page}</Layout>
 }
