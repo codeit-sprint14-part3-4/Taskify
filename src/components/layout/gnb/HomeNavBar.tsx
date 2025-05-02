@@ -10,9 +10,9 @@ interface HomeNavBarProps {
   dashboardId: number
   dashboardTitle: string
   hasCrown: boolean
-  userName: string // userName을 추가
+  userName: string
   memberCount: number
-  members: { email: string; name: string }[] // members 추가
+  members: { email: string; name: string }[]
   onInviteClick: () => void
   profileImage?: string
 }
@@ -28,15 +28,42 @@ export default function HomeNavBar({
   onInviteClick,
   profileImage,
 }: HomeNavBarProps) {
+  // 제목 결정
+  const getTitle = () => {
+    switch (pageType) {
+      case 'mydashboard':
+        return '내 대시보드'
+      case 'dashboard':
+        return dashboardTitle || '대시보드 제목 없음'
+      case 'mypage':
+        return '계정관리'
+      default:
+        return ''
+    }
+  }
+
+  // 왕관 아이콘 표시 여부
+  const showCrown = pageType === 'mydashboard' && hasCrown
+
+  // 초대 및 관리 버튼 등 표시 여부
+  const showDashboardControls = pageType !== 'mydashboard'
+
+  // 멤버 정보 텍스트
+  const memberInfo =
+    pageType === 'dashboard'
+      ? Array.isArray(members) && members.length > 0
+        ? `${members.length} 명`
+        : '멤버 없음'
+      : ''
+
   return (
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
+      {/* 왼쪽 영역: 제목 + 왕관 */}
       <div className={clsx(styles.flex_center_space_between, styles.nav_left)}>
         <div className={`${styles.dashboard_title} text-xl-bold`}>
-          {pageType === 'mydashboard' && '내 대시보드'}
-          {pageType === 'dashboard' && (dashboardTitle || '대시보드 제목 없음')}
-          {pageType === 'mypage' && '계정관리'}
+          {getTitle()}
         </div>
-        {pageType === 'mydashboard' && hasCrown && (
+        {showCrown && (
           <Image
             src="/assets/icon/crown.svg"
             alt="왕관"
@@ -46,8 +73,10 @@ export default function HomeNavBar({
         )}
       </div>
 
+      {/* 오른쪽 영역 */}
       <div className={clsx(styles.flex_center_space_between)}>
-        {pageType !== 'mydashboard' && (
+        {/* 설정 및 초대 버튼 등 */}
+        {showDashboardControls && (
           <div
             className={clsx(
               styles.flex_center_space_between,
@@ -96,22 +125,16 @@ export default function HomeNavBar({
                     className={styles.icon}
                   />
                 }
-                onClick={onInviteClick} // 상위 컴포넌트로부터 전달받은 클릭 핸들러
+                onClick={onInviteClick}
               >
                 초대하기
               </ButtonDashboard>
             </div>
-            <div className={styles.name_mark}>
-              {pageType === 'dashboard' && (
-                <div>
-                  {Array.isArray(members) && members.length > 0
-                    ? `${members.length} 명`
-                    : '멤버 없음'}
-                </div>
-              )}
-            </div>
+            <div className={styles.name_mark}>{memberInfo}</div>
           </div>
         )}
+
+        {/* 프로필 이미지 + 이름 */}
         <div
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >
@@ -120,11 +143,11 @@ export default function HomeNavBar({
               <Image
                 src={profileImage}
                 alt="Profile Image"
-                width={40} // 고정된 너비
-                height={40} // 고정된 높이
+                width={40}
+                height={40}
                 style={{
-                  objectFit: 'cover', // 이미지를 부모 div에 맞게 잘라서 꽉 채운다
-                  objectPosition: 'center', // 이미지를 중앙으로 위치시킨다
+                  objectFit: 'cover',
+                  objectPosition: 'center',
                 }}
               />
             ) : (

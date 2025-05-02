@@ -44,7 +44,7 @@ export const useAuthStore = create<AuthState>()(
         set({
           userData: data,
           userName: data.nickname,
-          profileImageUrl: data.profileImageUrl || null, // 프로필 이미지 URL을 상태에 반영
+          profileImageUrl: data.profileImage || null, // 프로필 이미지 URL을 상태에 반영
         })
       },
       // ...

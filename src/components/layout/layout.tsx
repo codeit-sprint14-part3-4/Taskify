@@ -13,24 +13,23 @@ interface LayoutProps {
   pageType: 'mydashboard' | 'dashboard' | 'mypage'
 }
 
-const parseDashboardId = (
-  value: string | string[] | undefined
-): number | null => {
-  if (typeof value === 'string' && !isNaN(Number(value))) {
-    return Number(value)
-  }
-  return null
-}
-
 export default function Layout({ children, pageType }: LayoutProps) {
-  const { accessToken, userName, profileImageUrl } = useAuthStore() // 한 번만 선언
+  const { accessToken, userName, profileImageUrl } = useAuthStore()
   const router = useRouter()
 
-  // pageType이 mypage일 경우, 대시보드 ID는 null로 설정
-  const rawDashboardId =
-    pageType === 'mypage' ? null : parseDashboardId(router.query.id)
-  const dashboardId = rawDashboardId ?? 0
+  // 안전한 대시보드 ID 추출
+  const getSafeDashboardId = (): number => {
+    if (!router.isReady || pageType === 'mypage') return 0
+    const id = router.query.id
+    if (typeof id === 'string' && !isNaN(Number(id))) {
+      return Number(id)
+    }
+    return 0
+  }
 
+  const dashboardId = getSafeDashboardId()
+
+  // 대시보드 정보 훅 사용
   const {
     dashboardTitle,
     hasCrown,
@@ -48,8 +47,9 @@ export default function Layout({ children, pageType }: LayoutProps) {
     const token = accessToken || useAuthStore.getState().accessToken
     if (!token) {
       router.push('/login')
+      return
     }
-  }, [accessToken, router]) // accessToken이 바뀔 때마다 리다이렉트 확인
+  }, [accessToken, router])
 
   // 초대 처리 함수
   const handleInvite = async () => {
@@ -74,7 +74,13 @@ export default function Layout({ children, pageType }: LayoutProps) {
     }
   }
 
-  if (!accessToken) return null // accessToken이 없으면 아무것도 렌더링하지 않음
+  if (!accessToken) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center text-md-medium text-gray-500">
+        로그인 상태를 확인하는 중입니다...
+      </div>
+    )
+  }
 
   return (
     <div className="flex h-screen">
@@ -91,7 +97,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
             userName={currentUserName}
             memberCount={memberCount}
             members={members}
-            profileImage={profileImageUrl} // 상태에서 가져온 프로필 이미지 URL을 전달
+            profileImage={profileImageUrl}
             onInviteClick={() => setInviteModalOpen(true)}
           />
         </header>
