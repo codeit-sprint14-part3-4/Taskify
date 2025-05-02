@@ -41,10 +41,9 @@ export default function Login() {
       const response = await authService.postAuth(body)
 
       const accessToken = response.accessToken
-      const userId = response.user.id
       const userData = response.user
 
-      setAuth(accessToken, userId)
+      setAuth(accessToken)
       setUserData(userData)
       router.push('/mydashboard')
     } catch (error) {

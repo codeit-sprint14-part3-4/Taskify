@@ -4,17 +4,15 @@ import clsx from 'clsx'
 
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Badge from '@/components/common/badge/Badge'
+import { useDashboardMembers } from '@/stores/dashboardMembers'
+import { useAuthStore } from '@/stores/auth'
 
 interface HomeNavBarProps {
   pageType: 'mydashboard' | 'dashboard' | 'mypage'
   dashboardId: number
   dashboardTitle: string
   hasCrown: boolean
-  userName: string
-  memberCount: number
-  members: { email: string; name: string }[]
   onInviteClick: () => void
-  profileImage?: string
 }
 
 export default function HomeNavBar({
@@ -22,12 +20,12 @@ export default function HomeNavBar({
   pageType,
   dashboardTitle,
   hasCrown,
-  userName,
-  memberCount,
-  members,
   onInviteClick,
-  profileImage,
 }: HomeNavBarProps) {
+  const { userData } = useAuthStore()
+  const { members } = useDashboardMembers()
+  console.log(dashboardId)
+
   // 제목 결정
   const getTitle = () => {
     switch (pageType) {
@@ -47,7 +45,7 @@ export default function HomeNavBar({
 
   // 초대 및 관리 버튼 등 표시 여부
   const showDashboardControls = pageType !== 'mydashboard'
-
+  console.log(members)
   // 멤버 정보 텍스트
   const memberInfo =
     pageType === 'dashboard'
@@ -139,9 +137,9 @@ export default function HomeNavBar({
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >
           <div className={styles.profile_image}>
-            {profileImage ? (
+            {userData?.profileImage ? (
               <Image
-                src={profileImage}
+                src={userData.profileImage}
                 alt="Profile Image"
                 width={40}
                 height={40}
@@ -151,10 +149,12 @@ export default function HomeNavBar({
                 }}
               />
             ) : (
-              <Badge nickname={userName} />
+              <Badge nickname={userData ? userData.nickname : ''} />
             )}
           </div>
-          <div className={`${styles.name} text-lg-medium`}>{userName}</div>
+          <div className={`${styles.name} text-lg-medium`}>
+            {userData?.nickname}
+          </div>
         </div>
       </div>
     </div>

@@ -46,13 +46,6 @@ export default function TaskCardCreateModal({
     ...TAG_COLORS,
   ])
   const [isButtonDisable, setIsButtonDisable] = useState(true)
-  // const users = [
-  //   { id: 1, name: '김이영', badgeColor: '#EF4444' },
-  //   { id: 2, name: '박해일', badgeColor: '#34D399' },
-  //   { id: 3, name: '이원구', badgeColor: '#FBBF24' },
-  //   { id: 4, name: '이아이', badgeColor: '#22C55E' },
-  //   { id: 5, name: '이지사', badgeColor: '#5534DA' },
-  // ]
   const dashboardMembers = useDashboardMembers((state) => state.members)
   const users = dashboardMembers.map((user) => ({
     id: user.id,
