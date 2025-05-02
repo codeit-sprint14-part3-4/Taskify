@@ -9,7 +9,6 @@ import Input from '@/components/common/commoninput/CommonInput'
 import Tag from '@/components/common/tag/Tag'
 import UserDropdown, { type User } from '@/components/dropdown/UserDropdown'
 import StatusDropdown, { Status } from '@/components/dropdown/StatusDropdown'
-import styles from '@/components/domain/modals/custom-datepicker.module.css'
 import type { TagColor } from '@/types/common/tag'
 
 const TAG_COLORS: TagColor[] = [
@@ -191,9 +190,6 @@ export default function TaskCardEditModal({
                 timeCaption="시간"
                 placeholderText="날짜를 입력해 주세요"
                 className="flex-1 bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
-                calendarClassName={styles.calendar}
-                popperClassName={styles.popper}
-                dayClassName={() => styles.day}
                 locale={ko}
               />
             </div>

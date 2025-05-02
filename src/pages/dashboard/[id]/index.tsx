@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import Column from '@/components/domain/dashboard/Column' //
+import { useRouter } from 'next/router'
+
+import { dashboardsService } from '@/api/services/dashboardsServices'
+import { membersService } from '@/api/services/membersServices'
+import Column from '@/components/domain/dashboard/Column'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Layout from '@/components/layout/layout'
 import { columnsService } from '@/api/services/columnsServices'
 import { ColumnType } from '@/types/api/columns'
 import { useRouter } from 'next/router'
 import TaskCardCreateModal from '@/components/domain/modals/taskcardcreatemodal/TaskCardCreateModal'
+import { useAuthStore } from '@/stores/auth'
 
 export default function DashboardPage() {
   const [columns, setColumns] = useState<ColumnType[]>([])
@@ -14,7 +19,28 @@ export default function DashboardPage() {
   const [selectedColumnId, setSelectedColumnId] = useState<number>(-1)
 
   const { query } = useRouter()
+  const { push } = useRouter()
   const dashboardId = Number(query.id)
+
+  const { setDashboardTitle, setMembers } = useAuthStore()
+
+  const getDashboardTitle = async () => {
+    try {
+      const data = await dashboardsService.getDashboardsDetail(dashboardId)
+      setDashboardTitle(data.title)
+    } catch (error) {
+      console.error('대시보드 정보 불러오기 실패:', error)
+    }
+  }
+  const getDashboardMembers = async () => {
+    try {
+      const data = await membersService.getMembers(1, 20, dashboardId)
+
+      setMembers(data.members)
+    } catch (error) {
+      console.error('대시보드 정보 불러오기 실패:', error)
+    }
+  }
 
   const getColumns = async () => {
     const columnsData = await columnsService.getColumns(dashboardId)
@@ -32,11 +58,18 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!query.id) return
-    getColumns()
-  }, [query.id])
+    if (isNaN(dashboardId)) {
+      // 대시보드 ID가 유효하지 않으면 404 페이지로 리다이렉트
+      push('/404')
+    } else {
+      getColumns()
+      getDashboardMembers()
+      getDashboardTitle()
+    }
+  }, [query.id, dashboardId, push])
 
   // 404 리다이렉트 구현 필요
-  if (!dashboardId) return
+  if (!dashboardId || isNaN(dashboardId)) return null
 
   return (
     <Layout pageType="dashboard" dashboardId={dashboardId}>
@@ -80,4 +113,8 @@ export default function DashboardPage() {
       )}
     </Layout>
   )
+}
+
+DashboardPage.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout pageType="dashboard">{page}</Layout>
 }

@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import styles from '@/pages/mypage/mypage.module.css'
 
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import Layout from '@/components/layout/layout'
 import Modal from '@/components/domain/modals/basemodal/Modal'
+import Layout from '@/components/layout/layout'
 
+import { useAuthStore } from '@/stores/auth'
 import { usersService } from '@/api/services/usersServices'
 import { authService } from '@/api/services/authServices'
 
@@ -28,7 +28,7 @@ export default function MyPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
-
+  const { accessToken } = useAuthStore()
   useEffect(() => {
     async function fetchUserInfo() {
       try {
@@ -80,7 +80,6 @@ export default function MyPage() {
   ) => {
     const value = e.target.value
     setCurrentPassword(value)
-
     if (value.length > 0 && value.length < 8) {
       setCurrentPasswordError('현재 비밀번호는 최소 8자 이상이어야 합니다.')
     } else {
@@ -137,10 +136,10 @@ export default function MyPage() {
 
     try {
       let profileImageUrl: string | undefined
-
       if (profileImage) {
         const uploadResponse = await usersService.postUsersMeImage(profileImage)
         profileImageUrl = uploadResponse.profileImageUrl
+        useAuthStore.getState().setProfileImageUrl(profileImageUrl)
       }
 
       await usersService.putUsers({
@@ -148,7 +147,7 @@ export default function MyPage() {
         profileImageUrl,
       })
 
-      openModal('😊 프로필이 성공적으로 수정되었습니다!')
+      openModal('😊 프로필 수정이 완료되었습니다!')
     } catch (error) {
       console.error('프로필 저장 에러:', error)
       openModal('프로필 저장 중 오류가 발생했습니다.')
@@ -207,158 +206,163 @@ export default function MyPage() {
 
   const isSaveButtonActive =
     nickname.trim().length >= 2 || profileImage !== null
-
+  useEffect(() => {
+    if (!accessToken) {
+      router.replace('/login') // 로그인 안된 경우 로그인 페이지로
+    }
+  }, [accessToken, router])
   return (
+
     <>
-      <Layout pageType="mypage">
-        <div className={styles.content}>
-          <div className={styles.backWrapper}>
-            <button
-              className={styles.backButton}
-              onClick={() => router.back()}
-              type="button"
-            >
-              <Image
-                src="/assets/image/arrow-left.svg"
-                alt="뒤로가기"
-                width={16}
-                height={16}
-                className={styles.backIcon}
-              />
-              <span className={styles.backText}>돌아가기</span>
-            </button>
-          </div>
-
-          <div className={styles.cardGroup}>
-            {/* 프로필 카드 */}
-            <section className={`${styles.card} ${styles.profileCard}`}>
-              <h2 className={styles.sectionTitle}>프로필</h2>
-              <div className={styles.profileWrapper}>
-                <label htmlFor="avatarUpload" className={styles.avatar}>
-                  {previewImage ? (
-                    <Image
-                      src={previewImage}
-                      alt="프로필 미리보기"
-                      className={styles.avatarImage}
-                      width={76}
-                      height={76}
-                    />
-                  ) : (
-                    '+'
-                  )}
-                  <input
-                    id="avatarUpload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleAvatarChange}
-                    className="hidden"
-                  />
-                </label>
-
-                <div className={styles.profileForm}>
-                  <label htmlFor="email">이메일</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Codeit@naver.com"
-                    value={email}
-                    disabled
-                  />
-
-                  <label htmlFor="nickname">닉네임</label>
-                  <input
-                    id="nickname"
-                    name="nickname"
-                    type="text"
-                    placeholder="닉네임 입력 (최소 2자 이상, 최대 10자)"
-                    value={nickname}
-                    onChange={handleNicknameChange}
-                    onFocus={handleNicknameFocus}
-                  />
-
-                  <CommonButton
-                    variant="primary"
-                    isActive={isSaveButtonActive}
-                    className={`${styles.saveButton} ${
-                      isSaveButtonActive
-                        ? styles.activeButton
-                        : styles.inactiveButton
-                    }`}
-                    onClick={isSaveButtonActive ? handleSaveProfile : undefined}
-                  >
-                    저장
-                  </CommonButton>
-                </div>
-              </div>
-            </section>
-            {/* 비밀번호 변경 카드 */}
-            <section className={`${styles.card} ${styles.passwordCard}`}>
-              <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
-              <div className={styles.passwordForm}>
-                <label htmlFor="currentPassword">현재 비밀번호</label>
-                <input
-                  id="currentPassword"
-                  name="currentPassword"
-                  type="password"
-                  placeholder="현재 비밀번호 입력 (8자 이상)"
-                  value={currentPassword}
-                  onChange={handleCurrentPasswordChange}
-                  className={currentPasswordError ? styles.inputError : ''}
-                />
-                {currentPasswordError && (
-                  <p className={styles.errorMessage}>{currentPasswordError}</p>
-                )}
-
-                <label htmlFor="newPassword">새 비밀번호</label>
-                <input
-                  id="newPassword"
-                  name="newPassword"
-                  type="password"
-                  placeholder="새 비밀번호 입력 (8자 이상)"
-                  value={newPassword}
-                  onChange={handleNewPasswordChange}
-                  className={newPasswordError ? styles.inputError : ''}
-                />
-                {newPasswordError && (
-                  <p className={styles.errorMessage}>{newPasswordError}</p>
-                )}
-
-                <label htmlFor="confirmNewPassword">새 비밀번호 확인</label>
-                <input
-                  id="confirmNewPassword"
-                  name="confirmNewPassword"
-                  type="password"
-                  placeholder="새 비밀번호 다시 입력"
-                  value={confirmNewPassword}
-                  onChange={handleConfirmPasswordChange}
-                  className={confirmPasswordError ? styles.inputError : ''}
-                />
-                {confirmPasswordError && (
-                  <p className={styles.errorMessage}>{confirmPasswordError}</p>
-                )}
-
-                <div>
-                  <CommonButton
-                    variant="primary"
-                    isActive={isPasswordValid}
-                    className={`${styles.changeButton} ${
-                      isPasswordValid
-                        ? styles.activeButton
-                        : styles.inactiveButton
-                    }`}
-                    onClick={handleChangePassword}
-                  >
-                    변경
-                  </CommonButton>
-                </div>
-              </div>
-            </section>
-          </div>
+      <div className={styles.content}>
+        <div className={styles.backWrapper}>
+          <button
+            className={styles.backButton}
+            onClick={() => router.back()}
+            type="button"
+          >
+            <Image
+              src="/assets/image/arrow-left.svg"
+              alt="뒤로가기"
+              width={16}
+              height={16}
+              className={styles.backIcon}
+            />
+            <span className={styles.backText}>돌아가기</span>
+          </button>
         </div>
-      </Layout>
 
-      <div>
+        <div className={styles.cardGroup}>
+          {/* 프로필 카드 */}
+          <section className={`${styles.card} ${styles.profileCard}`}>
+            <h2 className={styles.sectionTitle}>프로필</h2>
+            <div className={styles.profileWrapper}>
+              <label htmlFor="avatarUpload" className={styles.avatar}>
+                {previewImage ? (
+                  <Image
+                    src={previewImage}
+                    alt="프로필 미리보기"
+                    className={styles.avatarImage}
+                    width={76}
+                    height={76}
+                  />
+                ) : (
+                  '+'
+                )}
+                <input
+                  id="avatarUpload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                  className="hidden"
+                />
+              </label>
+
+              <div className={styles.profileForm}>
+                <label htmlFor="email">이메일</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Codeit@naver.com"
+                  value={email}
+                  disabled
+                />
+
+                <label htmlFor="nickname">닉네임</label>
+                <input
+                  id="nickname"
+                  name="nickname"
+                  type="text"
+                  placeholder="닉네임 입력 (최소 2자 이상, 최대 10자)"
+                  value={nickname}
+                  onChange={handleNicknameChange}
+                  onFocus={handleNicknameFocus}
+                />
+
+                <CommonButton
+                  variant="primary"
+                  isActive={isSaveButtonActive}
+                  className={`${styles.saveButton} ${
+                    isSaveButtonActive
+                      ? styles.activeButton
+                      : styles.inactiveButton
+                  }`}
+                  onClick={isSaveButtonActive ? handleSaveProfile : undefined}
+                >
+                  저장
+                </CommonButton>
+              </div>
+            </div>
+          </section>
+          {/* 비밀번호 변경 카드 */}
+          <section className={`${styles.card} ${styles.passwordCard}`}>
+            <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
+            <div className={styles.passwordForm}>
+              <label htmlFor="currentPassword">현재 비밀번호</label>
+              <input
+                id="currentPassword"
+                name="currentPassword"
+                type="password"
+                placeholder="현재 비밀번호 입력 (8자 이상)"
+                value={currentPassword}
+                onChange={handleCurrentPasswordChange}
+                className={currentPasswordError ? styles.inputError : ''}
+              />
+              {currentPasswordError && (
+                <p className={styles.errorMessage}>{currentPasswordError}</p>
+              )}
+
+              <label htmlFor="newPassword">새 비밀번호</label>
+              <input
+                id="newPassword"
+                name="newPassword"
+                type="password"
+                placeholder="새 비밀번호 입력 (8자 이상)"
+                value={newPassword}
+                onChange={handleNewPasswordChange}
+                className={newPasswordError ? styles.inputError : ''}
+              />
+              {newPasswordError && (
+                <p className={styles.errorMessage}>{newPasswordError}</p>
+              )}
+
+              <label htmlFor="confirmNewPassword">새 비밀번호 확인</label>
+              <input
+                id="confirmNewPassword"
+                name="confirmNewPassword"
+                type="password"
+                placeholder="새 비밀번호 다시 입력"
+                value={confirmNewPassword}
+                onChange={handleConfirmPasswordChange}
+                className={confirmPasswordError ? styles.inputError : ''}
+              />
+              {confirmPasswordError && (
+                <p className={styles.errorMessage}>{confirmPasswordError}</p>
+              )}
+
+              <div>
+                <CommonButton
+                  variant="primary"
+                  isActive={isPasswordValid}
+                  className={`${styles.changeButton} ${
+                    isPasswordValid
+                      ? styles.activeButton
+                      : styles.inactiveButton
+
+                  }`}
+                  onClick={handleChangePassword}
+                >
+                  변경
+                </CommonButton>
+
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+
         {isModalOpen && (
           <Modal
             message={modalMessage}
@@ -368,6 +372,9 @@ export default function MyPage() {
           />
         )}
       </div>
-    </>
+    </Layout>
   )
+}
+MyPage.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout pageType="mypage">{page}</Layout>
 }

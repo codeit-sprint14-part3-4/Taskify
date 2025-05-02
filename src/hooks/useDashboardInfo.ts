@@ -16,25 +16,35 @@ export function useDashboardInfo(
 
   useEffect(() => {
     const fetchDashboardDetails = async () => {
-      try {
-        const dashboardData = await dashboardsService.getDashboardsDetail(
-          dashboardId
-        )
-        const { title, createdByMe } = dashboardData
+      // 대시보드 페이지일 때만 호출
+      if (pageType !== 'mypage') {
+        try {
+          const dashboardData = await dashboardsService.getDashboardsDetail(
+            dashboardId
+          )
+          const { title, createdByMe } = dashboardData
 
-        setDashboardTitle(createdByMe ? `${title} 👑` : title)
-        setHasCrown(createdByMe)
-      } catch (error) {
-        console.error('대시보드 조회 실패:', error)
+          setDashboardTitle(createdByMe ? `${title} 👑` : title)
+          setHasCrown(createdByMe)
+        } catch (error) {
+          console.error('대시보드 조회 실패:', error)
+        }
       }
     }
 
     const fetchMembers = async () => {
-      try {
-        const membersData = await membersService.getMembers(dashboardId, 1, 100)
-        setMemberCount(membersData.totalCount)
-      } catch (error) {
-        console.error('멤버 조회 실패:', error)
+      // 대시보드 페이지일 때만 호출
+      if (pageType === 'dashboard') {
+        try {
+          const membersData = await membersService.getMembers(
+            dashboardId,
+            1,
+            100
+          )
+          setMemberCount(membersData.totalCount)
+        } catch (error) {
+          console.error('멤버 조회 실패:', error)
+        }
       }
     }
 
@@ -48,9 +58,9 @@ export function useDashboardInfo(
       }
     }
 
-    fetchDashboardDetails()
+    // 호출 순서 및 조건 분기
     fetchUser()
-
+    fetchDashboardDetails()
     if (pageType === 'dashboard') {
       fetchMembers()
     }

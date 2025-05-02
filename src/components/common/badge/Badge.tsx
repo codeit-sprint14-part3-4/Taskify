@@ -3,6 +3,7 @@ import styles from './Badge.module.css'
 
 interface BadgeProps {
   nickname: string
+  profileImage?: string
 }
 
 const getRandomColor = () => {
@@ -22,23 +23,34 @@ const getRandomColor = () => {
   return colors[randomIndex]
 }
 
-const Badge = ({ nickname }: BadgeProps) => {
+const Badge = ({ nickname, profileImage }: BadgeProps) => {
   const [bgColor, setBgColor] = useState<string>('')
 
+  // 랜덤 배경색 설정
   useEffect(() => {
-    setBgColor(getRandomColor())
-  }, [])
+    if (!profileImage) {
+      setBgColor(getRandomColor()) // 프로필 이미지가 없을 때만 랜덤 배경 색상
+    }
+  }, [profileImage])
 
+  // 닉네임 첫 글자 반환
   const getFirstLetter = (nickname: string) => {
-    const firstLetter = nickname?.charAt(0)?.toUpperCase() || ''
-    return firstLetter
+    return nickname?.charAt(0)?.toUpperCase() || ''
   }
 
   return (
     <div className={styles.badgeWrapper}>
-      <div className={styles.badge} style={{ backgroundColor: bgColor }}>
-        {getFirstLetter(nickname)}
-      </div>
+      {profileImage ? (
+        <img
+          src={profileImage}
+          alt={`${nickname}'s profile`}
+          className={styles.profileImage}
+        />
+      ) : (
+        <div className={styles.badge} style={{ backgroundColor: bgColor }}>
+          {getFirstLetter(nickname)} {/* 첫 글자를 표시 */}
+        </div>
+      )}
     </div>
   )
 }
