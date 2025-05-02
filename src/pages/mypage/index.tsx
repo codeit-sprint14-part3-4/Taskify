@@ -30,16 +30,22 @@ export default function MyPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
   const { accessToken } = useAuthStore()
+
   useEffect(() => {
     async function fetchUserInfo() {
       try {
         const user = await usersService.getUsers()
         setNickname(user.nickname || '')
         setEmail(user.email || '')
+
+        if (user.profileImageUrl) {
+          setPreviewImage(user.profileImageUrl)
+        }
       } catch (error) {
         console.error('사용자 정보 가져오기 실패', error)
       }
     }
+
     fetchUserInfo()
   }, [])
 
@@ -142,12 +148,18 @@ export default function MyPage() {
       if (profileImage) {
         const uploadResponse = await usersService.postUsersMeImage(profileImage)
         profileImageUrl = uploadResponse.profileImageUrl
-        useAuthStore.getState().setProfileImageUrl(profileImageUrl)
       }
 
-      await usersService.putUsers({
+      const updatedUser = await usersService.putUsers({
         nickname: nickname || '',
         profileImageUrl,
+      })
+
+      // 상태 업데이트
+      useAuthStore.getState().setUserData({
+        nickname: updatedUser.nickname,
+        email: updatedUser.email,
+        profileImage: updatedUser.profileImageUrl,
       })
 
       openModal('😊 프로필이 성공적으로 수정되었습니다!')
@@ -194,8 +206,8 @@ export default function MyPage() {
       setCurrentPasswordError('')
       setNewPasswordError('')
       setConfirmPasswordError('')
-    } catch (error) {
-      openModal('비밀번호 변경 중 오류가 발생했습니다.')
+    } catch (error: any) {
+      openModal(error.message || '비밀번호 변경 중 오류가 발생했습니다.')
     }
   }
 

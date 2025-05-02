@@ -20,6 +20,7 @@ export default function Signup() {
   const [showingToast, setShowingToast] = useState(false)
 
   const router = useRouter()
+
   const {
     email,
     setEmail,
@@ -38,27 +39,52 @@ export default function Signup() {
     isFormSignupValid,
   } = useFormSignup()
 
+  // 회원가입 요청 함수
   const handleSignup = async () => {
     if (!isTermsAccepted) {
       alert('이용약관에 동의해주세요.')
       return
     }
 
+    // 유효성 검사
+    if (
+      !email ||
+      !nickname ||
+      !password ||
+      password !== confirmPassword ||
+      emailError ||
+      nameError ||
+      passwordError ||
+      confirmPasswordError
+    ) {
+      showToast('입력된 정보에 오류가 있습니다.', 'info')
+      return
+    }
+
     try {
       const body = { email, nickname, password }
+      // 서버에 회원가입 요청
       await usersService.postUsers(body)
 
+      // 성공 메시지
       showToast('가입이 완료되었습니다.', 'success')
+
+      // 가입 완료 후 모달 표시
       setShowPasswordModal(true)
       setErrorMessage('가입이 완료되었습니다.')
+
+      // 회원가입 후 자동 로그인 처리 (옵션)
+      // router.push('/login')
     } catch (error: any) {
+      // 서버에서 오는 에러 처리
       console.error('회원가입 실패:', error)
-      showToast('회원가입 중 문제가 발생했습니다.', 'info')
+      showToast(error?.message || '회원가입 중 문제가 발생했습니다.', 'info')
       setShowPasswordModal(true)
-      setErrorMessage(error.message || '회원가입 중 문제가 발생했습니다.')
+      setErrorMessage(error?.message || '회원가입 중 문제가 발생했습니다.')
     }
   }
 
+  // 토스트 메시지 관리 함수
   const showToast = (
     msg: string,
     type: 'create' | 'delete' | 'success' | 'info'
@@ -67,13 +93,13 @@ export default function Signup() {
     setToastType(type)
     setShowingToast(true)
 
+    // 3초 후에 토스트 메시지 숨기기
     setTimeout(() => {
       setShowingToast(false)
       setToastMessage('')
       setToastType('success')
     }, 3000)
   }
-
   return (
     <div className="flex items-center justify-center pt-[22.3rem] transition-all duration-300 ease-in-out">
       <div className="w-[52rem] h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
@@ -114,7 +140,6 @@ export default function Signup() {
               이메일
             </label>
             <Input
-              id="email"
               padding="1.2rem 1.6rem"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -129,7 +154,6 @@ export default function Signup() {
               닉네임
             </label>
             <Input
-              id="nickname"
               padding="1.2rem 1.6rem"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
@@ -144,7 +168,6 @@ export default function Signup() {
               비밀번호
             </label>
             <Input
-              id="password"
               padding="1.2rem 1.6rem"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -176,7 +199,6 @@ export default function Signup() {
               비밀번호 확인
             </label>
             <Input
-              id="confirmPassword"
               padding="1.2rem 1.6rem"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}

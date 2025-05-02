@@ -37,22 +37,25 @@ export default function Login() {
     }
 
     try {
-      const body = { email, password }
+      const body = {
+        email,
+        password,
+      }
+
       const response = await authService.postAuth(body)
 
-      const accessToken = response.accessToken
-      const userId = response.user.id
-      const userData = response.user
+      // 로그인 성공 후 store에 accessToken과 userData 저장
+      const { accessToken, user } = response
 
-      setAuth(accessToken, userId)
-      setUserData(userData)
+      setAuth(accessToken) // accessToken 저장
+      setUserData(user) // userData 저장
+
+      // 대시보드 페이지로 이동
       router.push('/mydashboard')
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('로그인 실패:', error)
-        setErrorMessage(error?.message || '로그인 중 문제가 발생했습니다.')
-        setShowPasswordModal(true)
-      }
+    } catch (error: any) {
+      console.error('로그인 실패:', error)
+      setErrorMessage(error?.message || '로그인 중 문제가 발생했습니다.')
+      setShowPasswordModal(true)
     }
   }
 
