@@ -32,6 +32,10 @@ export default function StatusDropdown({
   const dropdownContainerRef = useRef<HTMLDivElement>(null)
   const optionRefs = useRef<(HTMLLIElement | null)[]>([])
 
+  useEffect(() => {
+    optionRefs.current = new Array(statusOptions.length).fill(null)
+  }, [])
+
   const assignOptionRef = useCallback(
     (element: HTMLLIElement | null, index: number) => {
       if (element) optionRefs.current[index] = element
@@ -99,6 +103,8 @@ export default function StatusDropdown({
     }
   }, [focusedIndex, isDropdownOpen])
 
+  const isSelected = (status: Status) => value === status
+
   return (
     <div ref={dropdownContainerRef} className={styles.container}>
       <button
@@ -135,9 +141,9 @@ export default function StatusDropdown({
               onClick={() => handleStatusSelect(status)}
               className={`${styles.option} ${
                 index === focusedIndex ? styles.focused : ''
-              } ${value === status ? styles.selected : ''}`}
+              } ${isSelected(status) ? styles.selected : ''}`}
             >
-              {value === status ? (
+              {isSelected(status) ? (
                 <Image
                   src="/assets/image/check.svg"
                   alt="선택됨"

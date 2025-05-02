@@ -11,7 +11,7 @@ export interface User {
 interface UserDropdownProps {
   users?: User[]
   selectedUser?: User
-  onChange: (user: User | undefined) => void // 수정됨
+  onChange: (user: User | undefined) => void
   mode?: 'search' | 'select'
   className?: string
 }
@@ -91,20 +91,29 @@ export default function UserDropdown({
   }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (!isOpen) return
+    if (!isOpen || filteredUsers.length === 0) return
+
     if (e.key === 'ArrowDown') {
       e.preventDefault()
-      setFocusedIndex((prev) => (prev + 1) % filteredUsers.length)
+      if (filteredUsers.length > 0) {
+        setFocusedIndex((prev) => (prev + 1) % filteredUsers.length)
+      }
     }
+
     if (e.key === 'ArrowUp') {
       e.preventDefault()
-      setFocusedIndex(
-        (prev) => (prev - 1 + filteredUsers.length) % filteredUsers.length
-      )
+      if (filteredUsers.length > 0) {
+        setFocusedIndex(
+          (prev) => (prev - 1 + filteredUsers.length) % filteredUsers.length
+        )
+      }
     }
+
     if (e.key === 'Enter' && filteredUsers.length > 0) {
       e.preventDefault()
-      handleSelect(filteredUsers[focusedIndex])
+
+      const selectedUser = filteredUsers[focusedIndex]
+      handleSelect(selectedUser)
     }
   }
 
@@ -131,7 +140,6 @@ export default function UserDropdown({
                 setIsOpen(true)
                 setFocusedIndex(0)
 
-                // 추가: 입력값이 사라지면 선택된 사용자 해제
                 if (newValue.trim() === '') {
                   onChange(undefined)
                 }
@@ -187,40 +195,41 @@ export default function UserDropdown({
       {isOpen && (
         <ul className={styles.dropdown}>
           {filteredUsers.length > 0 ? (
-            filteredUsers.map((user, index) => (
-              <li
-                key={`user-${user.id}`}
-                onClick={() => handleSelect(user)}
-                className={`${styles.option} ${
-                  index === focusedIndex
-                    ? styles.optionFocused
-                    : selectedUser?.id === user.id
-                    ? styles.optionSelected
-                    : ''
-                }`}
-              >
-                {selectedUser?.id === user.id ? (
-                  <Image
-                    src="/assets/image/check.svg"
-                    alt="선택됨"
-                    width={22}
-                    height={22}
-                    className={styles.checkIcon}
-                  />
-                ) : (
-                  <div className={styles.checkSpacer} />
-                )}
-                <div
-                  style={{ backgroundColor: user.badgeColor }}
-                  className={styles.initialCircle}
+            filteredUsers.map((user, index) => {
+              const isFocused = index === focusedIndex
+              const isSelected = selectedUser?.id === user.id
+
+              return (
+                <li
+                  key={`user-${user.id}`}
+                  onClick={() => handleSelect(user)}
+                  className={`${styles.option} ${
+                    isFocused ? styles.optionFocused : ''
+                  } ${isSelected ? styles.optionSelected : ''}`}
                 >
-                  {getInitial(user.name)}
-                </div>
-                <span className={styles.userName}>{user.name}</span>
-              </li>
-            ))
+                  {isSelected ? (
+                    <Image
+                      src="/assets/image/check.svg"
+                      alt="선택됨"
+                      width={22}
+                      height={22}
+                      className={styles.checkIcon}
+                    />
+                  ) : (
+                    <div className={styles.checkSpacer} />
+                  )}
+                  <div
+                    style={{ backgroundColor: user.badgeColor }}
+                    className={styles.initialCircle}
+                  >
+                    {getInitial(user.name)}
+                  </div>
+                  <span className={styles.userName}>{user.name}</span>
+                </li>
+              )
+            })
           ) : (
-            <div className={styles.empty}>😟 일치하는 사용자가 없습니다!!</div>
+            <li className={styles.empty}>😟 일치하는 사용자가 없습니다!!</li>
           )}
         </ul>
       )}

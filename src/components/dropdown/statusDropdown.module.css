@@ -61,7 +61,7 @@
 }
 
 .dropdown::-webkit-scrollbar-thumb {
-  background-color: var(--color-violet-400);
+  background-color: var(--color-violet-300);
   border-radius: 4px;
 }
 
