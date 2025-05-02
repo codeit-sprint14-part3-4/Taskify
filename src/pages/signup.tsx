@@ -17,7 +17,7 @@ export default function Signup() {
   const [errorMessage, setErrorMessage] = useState('')
 
   const router = useRouter()
-
+  // useFormSignup 훅을 사용하여 회원가입 폼의 상태와 유효성 검사 관리
   const {
     email,
     setEmail,
@@ -59,13 +59,13 @@ export default function Signup() {
 
     try {
       const body = { email, nickname, password }
-      await usersService.postUsers(body)
+      await usersService.postUsers(body) // 회원가입 API 호출
 
       setShowPasswordModal(true)
       setErrorMessage('가입이 완료되었습니다.')
     } catch (error) {
       let message = '회원가입 중 문제가 발생했습니다.'
-
+      // error가 Error 객체인지 확인
       if (error instanceof Error) {
         message = error.message || message
       } else if (typeof error === 'string') {
@@ -80,8 +80,6 @@ export default function Signup() {
       setErrorMessage(message)
     }
   }
-
-  // 토스트 메시지 관리 함수
 
   return (
     <div className="flex items-center justify-center pt-[22.3rem] transition-all duration-300 ease-in-out">

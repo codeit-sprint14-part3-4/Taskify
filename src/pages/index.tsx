@@ -14,10 +14,11 @@ import Footerbar from '@/components/layout/footerbar/Footerbar'
 import AnimatedSection from '@/components/common/animatedSection/AnimatedSection'
 
 export default function Home() {
-  const { accessToken } = useAuthStore()
+  const { accessToken } = useAuthStore() // 로그인 상태 확인
   const [firstDashboardId, setFirstDashboardId] = useState<number | null>(null)
   const router = useRouter()
 
+  //  대시보드 목록을 가져와서 첫 번째 대시보드 ID를 설정
   useEffect(() => {
     const fetchDashboards = async () => {
       try {
@@ -35,6 +36,7 @@ export default function Home() {
     }
   }, [accessToken])
 
+  // 대시보드가 존재하는 경우 첫 번째 대시보드로 리다이렉트
   useEffect(() => {
     if (firstDashboardId !== null) {
       router.push(`/dashboard/${firstDashboardId}`)

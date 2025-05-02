@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -16,7 +15,7 @@ export default function Login() {
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const router = useRouter()
-
+  // useFormSignup 훅을 사용하여 로그인 폼의 상태와 유효성 검사 관리
   const {
     email,
     setEmail,
