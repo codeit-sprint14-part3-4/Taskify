@@ -51,13 +51,12 @@ const putAuth = async (reqBody: ChangePasswordBody): Promise<void> => {
     })
 
     if (!res.ok) {
-      return handleError(res)
+      const errorData = await res.json()
+      throw new Error(errorData.message || '비밀번호 변경 요청에 실패했습니다.')
     }
-
-    // 204 No Content → 응답 없음, 그냥 종료
   } catch (error) {
     console.error('비밀번호 변경 요청 실패:', error)
-    throw new Error('비밀번호 변경 중 네트워크 오류가 발생했습니다.')
+    throw error
   }
 }
 

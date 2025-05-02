@@ -6,8 +6,9 @@
   transition: all 0.3s ease;
 }
 .buttonWrapper {
-  border: 0.12rem solid var(--gray-D9D9D9);
+  border: 0.1rem solid var(--gray-D9D9D9);
   border-radius: 0.8rem;
+
   background-color: var(--white-FFFFFF);
   cursor: pointer;
 }
@@ -16,7 +17,12 @@
   height: max-content;
   display: flex;
   align-items: center;
-  border: 0.1rem solid var(--gray-D9D9D9);
+}
+.buttonContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 .textOnly {
   color: #333236;

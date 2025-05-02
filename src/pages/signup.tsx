@@ -15,11 +15,9 @@ export default function Signup() {
 
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const [toastMessage, setToastMessage] = useState('')
-  const [toastType, setToastType] = useState('success')
-  const [showingToast, setShowingToast] = useState(false)
 
   const router = useRouter()
+  // useFormSignup 훅을 사용하여 회원가입 폼의 상태와 유효성 검사 관리
   const {
     email,
     setEmail,
@@ -38,40 +36,49 @@ export default function Signup() {
     isFormSignupValid,
   } = useFormSignup()
 
+  // 회원가입 요청 함수
   const handleSignup = async () => {
     if (!isTermsAccepted) {
       alert('이용약관에 동의해주세요.')
       return
     }
 
+    // 유효성 검사
+    if (
+      !email ||
+      !nickname ||
+      !password ||
+      password !== confirmPassword ||
+      emailError ||
+      nameError ||
+      passwordError ||
+      confirmPasswordError
+    ) {
+      return
+    }
+
     try {
       const body = { email, nickname, password }
-      await usersService.postUsers(body)
+      await usersService.postUsers(body) // 회원가입 API 호출
 
-      showToast('가입이 완료되었습니다.', 'success')
       setShowPasswordModal(true)
       setErrorMessage('가입이 완료되었습니다.')
-    } catch (error: any) {
+    } catch (error) {
+      let message = '회원가입 중 문제가 발생했습니다.'
+      // error가 Error 객체인지 확인
+      if (error instanceof Error) {
+        message = error.message || message
+      } else if (typeof error === 'string') {
+        message = error
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as { message: string }).message)
+      }
+
       console.error('회원가입 실패:', error)
-      showToast('회원가입 중 문제가 발생했습니다.', 'info')
+
       setShowPasswordModal(true)
-      setErrorMessage(error.message || '회원가입 중 문제가 발생했습니다.')
+      setErrorMessage(message)
     }
-  }
-
-  const showToast = (
-    msg: string,
-    type: 'create' | 'delete' | 'success' | 'info'
-  ) => {
-    setToastMessage(msg)
-    setToastType(type)
-    setShowingToast(true)
-
-    setTimeout(() => {
-      setShowingToast(false)
-      setToastMessage('')
-      setToastType('success')
-    }, 3000)
   }
 
   return (
@@ -114,7 +121,6 @@ export default function Signup() {
               이메일
             </label>
             <Input
-              id="email"
               padding="1.2rem 1.6rem"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -129,7 +135,6 @@ export default function Signup() {
               닉네임
             </label>
             <Input
-              id="nickname"
               padding="1.2rem 1.6rem"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
@@ -144,7 +149,6 @@ export default function Signup() {
               비밀번호
             </label>
             <Input
-              id="password"
               padding="1.2rem 1.6rem"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -176,7 +180,6 @@ export default function Signup() {
               비밀번호 확인
             </label>
             <Input
-              id="confirmPassword"
               padding="1.2rem 1.6rem"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}

@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 type UserData = {
   nickname: string
   email: string
-  profileImage?: string // 프로필 이미지는 선택 사항
+  profileImageUrl?: string
 }
 
 type AuthState = {

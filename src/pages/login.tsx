@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -16,7 +15,7 @@ export default function Login() {
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const router = useRouter()
-
+  // useFormSignup 훅을 사용하여 로그인 폼의 상태와 유효성 검사 관리
   const {
     email,
     setEmail,
@@ -37,21 +36,26 @@ export default function Login() {
     }
 
     try {
-      const body = { email, password }
+      const body = {
+        email,
+        password,
+      }
+
       const response = await authService.postAuth(body)
 
-      const accessToken = response.accessToken
-      const userData = response.user
+      // 로그인 성공 후 store에 accessToken과 userData 저장
+      const { accessToken, user } = response
 
-      setAuth(accessToken)
-      setUserData(userData)
+      setAuth(accessToken) // accessToken 저장
+      setUserData(user) // userData 저장
+
+      // 대시보드 페이지로 이동
       router.push('/mydashboard')
     } catch (error) {
-      if (error instanceof Error) {
-        console.error('로그인 실패:', error)
-        setErrorMessage(error?.message || '로그인 중 문제가 발생했습니다.')
-        setShowPasswordModal(true)
-      }
+      const err = error as Error
+      console.error('로그인 실패:', error)
+      setErrorMessage(err?.message || '로그인 중 문제가 발생했습니다.')
+      setShowPasswordModal(true)
     }
   }
 
