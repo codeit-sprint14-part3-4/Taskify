@@ -6,10 +6,10 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import { dashboardsService } from '@/api/services/dashboardsServices'
+import Layout from '@/components/layout/layout'
 export default function EditPage() {
   const router = useRouter()
-  const { query } = useRouter()
-  const dashboardId = Number(query.id)
+  const dashboardId = Number(router.query.id)
 
   const handleDashboardDelete = async () => {
     try {
@@ -58,10 +58,10 @@ export default function EditPage() {
     </>
   )
 }
-// EditPage.getLayout = function getLayout(page: React.ReactElement) {
-//   return (
-//     <Layout pageType="dashboard" dashboardId={1}>
-//       {page}
-//     </Layout>
-//   )
-// }
+EditPage.getLayout = function getLayout(page: React.ReactElement) {
+  return (
+    <Layout pageType="dashboard" dashboardId={1}>
+      {page}
+    </Layout>
+  )
+}
