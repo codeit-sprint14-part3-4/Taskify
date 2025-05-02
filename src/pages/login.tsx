@@ -10,6 +10,7 @@ import { authService } from '../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
 import Modal from '@/components/domain/modals/basemodal/Modal'
 import { useFormSignup } from '@/hooks/useFormSignup'
+import Modal from '@/components/domain/modals/Modal'
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
