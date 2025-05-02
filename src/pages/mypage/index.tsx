@@ -31,6 +31,7 @@ export default function MyPage() {
   const [modalMessage, setModalMessage] = useState('')
   const { accessToken } = useAuthStore()
 
+  // 사용자 정보를 가져오는 useEffect
   useEffect(() => {
     async function fetchUserInfo() {
       try {
@@ -48,28 +49,28 @@ export default function MyPage() {
 
     fetchUserInfo()
   }, [])
-
+  // openModal
   const openModal = (message: string) => {
     setModalMessage(message)
     setIsModalOpen(true)
   }
-
+  // closeModal
   const closeModal = () => {
     setIsModalOpen(false)
     setModalMessage('')
   }
-
+  // 닉네임 포커스 이벤트
   const handleNicknameFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.target.select()
   }
-
+  // 닉네임 변경 이벤트
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value
     if (input.length <= 10) {
       setNickname(input)
     }
   }
-
+  // 프로필 이미지 변경 이벤트
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -81,7 +82,7 @@ export default function MyPage() {
       reader.readAsDataURL(file)
     }
   }
-
+  // 비밀번호 유효성 검사
   const handleCurrentPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -94,13 +95,13 @@ export default function MyPage() {
       setCurrentPasswordError('')
     }
   }
-
+  // 새 비밀번호 유효성 검사
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setNewPassword(value)
     validatePasswords(value, confirmNewPassword)
   }
-
+  // 새 비밀번호 확인 유효성 검사
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -108,7 +109,7 @@ export default function MyPage() {
     setConfirmNewPassword(value)
     validatePasswords(newPassword, value)
   }
-
+  // 비밀번호 유효성 검사 함수
   const validatePasswords = (newPass: string, confirmPass: string) => {
     const hasUpperCase = /[A-Z]/.test(newPass)
     const hasLowerCase = /[a-z]/.test(newPass)
@@ -135,7 +136,7 @@ export default function MyPage() {
       setConfirmPasswordError('')
     }
   }
-
+  // 프로필 저장 이벤트
   const handleSaveProfile = async () => {
     if (nickname.trim().length < 2 && !profileImage) {
       openModal('닉네임을 2자 이상 입력하거나 프로필 이미지를 수정해야 합니다.')
@@ -159,7 +160,7 @@ export default function MyPage() {
       useAuthStore.getState().setUserData({
         nickname: updatedUser.nickname,
         email: updatedUser.email,
-        profileImage: updatedUser.profileImageUrl,
+        profileImageUrl: updatedUser.profileImageUrl,
       })
 
       openModal('😊 프로필이 성공적으로 수정되었습니다!')
@@ -168,7 +169,7 @@ export default function MyPage() {
       openModal('프로필 저장 중 오류가 발생했습니다.')
     }
   }
-
+  // 비밀번호 변경 이벤트
   const handleChangePassword = async () => {
     const hasUpperCase = /[A-Z]/.test(newPassword)
     const hasLowerCase = /[a-z]/.test(newPassword)
@@ -213,7 +214,7 @@ export default function MyPage() {
       }
     }
   }
-
+  // 비밀번호 유효성 검사
   const isPasswordValid =
     currentPassword.length >= 8 &&
     newPassword.length >= 8 &&
