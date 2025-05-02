@@ -121,13 +121,6 @@ export default function TaskCardEditModal({
                 selectedUser={selectedUser}
                 onChange={setSelectedUser}
                 mode="select"
-                className={`h-[4.8rem] px-[1.6rem] py-[1.1rem] border border-[var(--gray-D9D9D9)] rounded-md text-lg-regular outline-none
-                  ${
-                    selectedUser.name === ''
-                      ? 'text-[var(--gray-9FA6B2)]'
-                      : 'text-[var(--black-333236)]'
-                  }
-                  focus:border-[var(--violet-5534DhA)] focus:ring-0 focus:outline-none`}
               />
             </div>
           </div>
