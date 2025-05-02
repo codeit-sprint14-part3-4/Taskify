@@ -12,7 +12,7 @@ export type TagColor =
 
 export interface TagProps {
   label: string
-  color: TagColor
+  // color: TagColor
   isDeletable?: boolean
   onDelete?: () => void
 }

@@ -9,10 +9,15 @@ import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Layout from '@/components/layout/layout'
 import { columnsService } from '@/api/services/columnsServices'
 import { ColumnType } from '@/types/api/columns'
+import { useRouter } from 'next/router'
+import TaskCardCreateModal from '@/components/domain/modals/taskcardcreatemodal/TaskCardCreateModal'
 import { useAuthStore } from '@/stores/auth'
 
 export default function DashboardPage() {
   const [columns, setColumns] = useState<ColumnType[]>([])
+  const [isCardCreateModalOpen, setIsCardCreateModalOpen] = useState(false)
+  const [selectedColumnId, setSelectedColumnId] = useState<number>(-1)
+
   const { query } = useRouter()
   const { push } = useRouter()
   const dashboardId = Number(query.id)
@@ -42,6 +47,15 @@ export default function DashboardPage() {
     setColumns(columnsData.data)
   }
 
+  const handleCardCreateModalOpen = (columnId: number) => {
+    setSelectedColumnId(columnId)
+    setIsCardCreateModalOpen(true)
+  }
+
+  const handleCardCreateModalClose = () => {
+    setIsCardCreateModalOpen(false)
+  }
+
   useEffect(() => {
     if (!query.id) return
     if (isNaN(dashboardId)) {
@@ -57,13 +71,16 @@ export default function DashboardPage() {
   // 404 리다이렉트 구현 필요
   if (!dashboardId || isNaN(dashboardId)) return null
 
-  //  dashboardId={1}> id로 받을 수 있게 나중에 바꿔주세요!(지금은 임시)
   return (
-    <>
+    <Layout pageType="dashboard" dashboardId={dashboardId}>
       {/* 컬럼 리스트 */}
       <div className="flex overflow-x-auto">
         {columns.map((column) => (
-          <Column key={column.id} columnInfo={column} />
+          <Column
+            key={column.id}
+            columnInfo={column}
+            handleCardCreateModalOpen={handleCardCreateModalOpen}
+          />
         ))}
 
         {/* 새로운 컬럼 추가하기 버튼 */}
@@ -87,7 +104,14 @@ export default function DashboardPage() {
           </ButtonDashboard>
         </div>
       </div>
-    </>
+      {isCardCreateModalOpen && (
+        <TaskCardCreateModal
+          dashboardId={dashboardId}
+          columnId={selectedColumnId}
+          handleCardCreateModalClose={handleCardCreateModalClose}
+        />
+      )}
+    </Layout>
   )
 }
 
