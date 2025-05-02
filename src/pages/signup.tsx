@@ -15,9 +15,6 @@ export default function Signup() {
 
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const [toastMessage, setToastMessage] = useState('')
-  const [toastType, setToastType] = useState('success')
-  const [showingToast, setShowingToast] = useState(false)
 
   const router = useRouter()
 
@@ -57,49 +54,35 @@ export default function Signup() {
       passwordError ||
       confirmPasswordError
     ) {
-      showToast('입력된 정보에 오류가 있습니다.', 'info')
       return
     }
 
     try {
       const body = { email, nickname, password }
-      // 서버에 회원가입 요청
       await usersService.postUsers(body)
 
-      // 성공 메시지
-      showToast('가입이 완료되었습니다.', 'success')
-
-      // 가입 완료 후 모달 표시
       setShowPasswordModal(true)
       setErrorMessage('가입이 완료되었습니다.')
+    } catch (error) {
+      let message = '회원가입 중 문제가 발생했습니다.'
 
-      // 회원가입 후 자동 로그인 처리 (옵션)
-      // router.push('/login')
-    } catch (error: any) {
-      // 서버에서 오는 에러 처리
+      if (error instanceof Error) {
+        message = error.message || message
+      } else if (typeof error === 'string') {
+        message = error
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        message = String((error as { message: string }).message)
+      }
+
       console.error('회원가입 실패:', error)
-      showToast(error?.message || '회원가입 중 문제가 발생했습니다.', 'info')
+
       setShowPasswordModal(true)
-      setErrorMessage(error?.message || '회원가입 중 문제가 발생했습니다.')
+      setErrorMessage(message)
     }
   }
 
   // 토스트 메시지 관리 함수
-  const showToast = (
-    msg: string,
-    type: 'create' | 'delete' | 'success' | 'info'
-  ) => {
-    setToastMessage(msg)
-    setToastType(type)
-    setShowingToast(true)
 
-    // 3초 후에 토스트 메시지 숨기기
-    setTimeout(() => {
-      setShowingToast(false)
-      setToastMessage('')
-      setToastType('success')
-    }, 3000)
-  }
   return (
     <div className="flex items-center justify-center pt-[22.3rem] transition-all duration-300 ease-in-out">
       <div className="w-[52rem] h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">

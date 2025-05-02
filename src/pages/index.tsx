@@ -1,79 +1,57 @@
 import React from 'react'
-import Gnb from '@/components/layout/gnb/Gnb'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import styles from './index.module.css'
+
+import { useAuthStore } from '@/stores/auth'
+import { dashboardsService } from '@/api/services/dashboardsServices'
+import Gnb from '@/components/layout/gnb/Gnb'
 import Button from '@/components/common/commonbutton/CommonButton'
 import FeatureCard from '@/components/featurecard/FeatureCard'
 import Footerbar from '@/components/layout/footerbar/Footerbar'
-import Link from 'next/link'
-import { GetServerSideProps } from 'next'
 import AnimatedSection from '@/components/common/animatedSection/AnimatedSection'
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context
+export default function Home() {
+  const { accessToken } = useAuthStore()
+  const [firstDashboardId, setFirstDashboardId] = useState<number | null>(null)
+  const router = useRouter()
 
-  // 쿠키에서 accessToken 추출
-  const accessToken = req.cookies.accessToken
-
-  if (!accessToken) {
-    return {
-      props: {},
-    }
-  }
-
-  try {
-    // fetch를 사용한 API 호출
-    const response = await fetch('${process.env.API_BASE_URL}/dashboards', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error('대시보드 정보를 가져오는 데 실패했습니다.')
-    }
-
-    const dashboards = await response.json()
-    //const dashboards = (await response.json()).data//
-
-    if (!dashboards || dashboards.length === 0) {
-      return {
-        redirect: {
-          destination: '/mydashboard',
-          permanent: false,
-        },
+  useEffect(() => {
+    const fetchDashboards = async () => {
+      try {
+        const res = await dashboardsService.getDashboards('pagination', 1, 1)
+        if (res.dashboards.length > 0) {
+          setFirstDashboardId(res.dashboards[0].id)
+        }
+      } catch (error) {
+        console.error('대시보드 불러오기 실패:', error)
       }
     }
 
-    // createdAt 기준으로 정렬
-    dashboards.sort(
-      (a: any, b: any) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    if (accessToken) {
+      fetchDashboards()
+    }
+  }, [accessToken])
+
+  useEffect(() => {
+    if (firstDashboardId !== null) {
+      router.push(`/dashboard/${firstDashboardId}`)
+    }
+  }, [firstDashboardId, router])
+
+  // 로그인 안 되어 있는 경우 랜딩 페이지 렌더링
+  if (accessToken && firstDashboardId === null) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-lg font-medium text-gray-700">
+          대시보드로 이동 중입니다...
+        </p>
+      </div>
     )
-
-    const firstDashboardId = dashboards[0].id
-
-    return {
-      redirect: {
-        destination: `/dashboard/${firstDashboardId}`,
-        permanent: false,
-      },
-    }
-  } catch (err) {
-    console.error('Fetch Error:', err)
-
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    }
   }
-}
 
-export default function Home() {
   return (
     <div className={`${styles.container} min-h-screen flex flex-col`}>
       <Gnb />

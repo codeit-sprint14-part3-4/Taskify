@@ -52,9 +52,10 @@ export default function Login() {
 
       // 대시보드 페이지로 이동
       router.push('/mydashboard')
-    } catch (error: any) {
+    } catch (error) {
+      const err = error as Error
       console.error('로그인 실패:', error)
-      setErrorMessage(error?.message || '로그인 중 문제가 발생했습니다.')
+      setErrorMessage(err?.message || '로그인 중 문제가 발생했습니다.')
       setShowPasswordModal(true)
     }
   }

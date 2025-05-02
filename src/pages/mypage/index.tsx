@@ -194,7 +194,6 @@ export default function MyPage() {
     }
 
     try {
-      // 이거 잠시만요. 틀린거 맞아요.
       await authService.putAuth({
         password: currentPassword,
         newPassword,
@@ -206,8 +205,12 @@ export default function MyPage() {
       setCurrentPasswordError('')
       setNewPasswordError('')
       setConfirmPasswordError('')
-    } catch (error: any) {
-      openModal(error.message || '비밀번호 변경 중 오류가 발생했습니다.')
+    } catch (error) {
+      if (error instanceof Error) {
+        openModal(error.message || '비밀번호 변경 중 오류가 발생했습니다.')
+      } else {
+        openModal('알 수 없는 오류가 발생했습니다.') // 예상치 못한 오류 대응
+      }
     }
   }
 
