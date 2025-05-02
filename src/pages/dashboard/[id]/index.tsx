@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
 import { columnsService } from '@/api/services/columnsServices'
 import Layout from '@/components/layout/layout'
-import Column from '@/components/domain/dashboard/Column'
+import ColumnWrapper from '@/components/domain/dashboard/ColumnWrapper'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import TaskCardCreateModal from '@/components/domain/modals/taskcardcreatemodal/TaskCardCreateModal'
 import { ColumnType } from '@/types/api/columns'
@@ -33,29 +32,24 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!query.id) return
     if (isNaN(dashboardId)) {
-      // 대시보드 ID가 유효하지 않으면 404 페이지로 리다이렉트
       push('/404')
     } else {
       getColumns()
     }
   }, [query.id, dashboardId, push])
 
-  // 404 리다이렉트 구현 필요
   if (!dashboardId || isNaN(dashboardId)) return null
 
   return (
     <>
-      {/* 컬럼 리스트 */}
       <div className="flex overflow-x-auto">
         {columns.map((column) => (
-          <Column
+          <ColumnWrapper
             key={column.id}
             columnInfo={column}
             handleCardCreateModalOpen={handleCardCreateModalOpen}
           />
         ))}
-
-        {/* 새로운 컬럼 추가하기 버튼 */}
         <div className="pt-[6.8rem] pl-[2.4rem]">
           <ButtonDashboard
             paddingHeight="pt-[2.4rem] pb-[2rem]"
