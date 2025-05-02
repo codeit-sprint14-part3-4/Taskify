@@ -4,11 +4,12 @@
   justify-content: center;
   width: 3.8rem;
   height: 3.8rem;
-  border-radius: 50%; /* 원형 모양 */
-  color: #ffffff; /* 글자 색 */
-  font-size: 1.6rem; /* 글자 크기 */
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 1.6rem;
   font-weight: bold;
-  border: 0.2rem solid white; /* 흰색 테두리 */
+  border: 0.2rem solid white;
+  background-color: transparent;
 }
 
 .badgeWrapper {
@@ -21,4 +22,19 @@
   height: 4rem;
   border-radius: 50%;
   border: 0.2rem solid white;
+  position: relative;
+}
+
+.profileImage {
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 0.2rem solid white;
+}
+
+.badgeWithText {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
