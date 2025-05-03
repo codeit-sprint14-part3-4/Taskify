@@ -4,14 +4,45 @@ import Image from 'next/image'
 import ArrowLeft from '../../../../../public/assets/icon/arrow-left-gray.svg'
 import ArrowRight from '../../../../../public/assets/icon/arrow-right-gray.svg'
 import Badge from '@/components/common/badge/Badge'
+import { useState, useEffect } from 'react'
+import { membersService } from '@/api/services/membersServices'
+import { Member } from '@/types/api/menmbers'
+import { Dashboard } from '@/types/api/dashboards'
+import { useRouter } from 'next/router'
 
 export default function EditMyDashboardMember() {
-  const members = [
-    { id: 1, name: '정만철' },
-    { id: 2, name: '김태순' },
-    { id: 3, name: '최주협' },
-    { id: 4, name: '윤지현' },
-  ]
+  const router = useRouter()
+  const id = Number(router.query.id)
+  const [memberList, setMemberList] = useState<Member[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const memberData = await membersService.getMembers(1, 20, id)
+        console.log('멤버 호출 성공!: ', memberData)
+        setMemberList(memberData.members)
+        setLoading(false)
+      } catch (error) {
+        console.error('멤버 데이터를 가져오는 중 오류 발생: ', error)
+        setLoading(false)
+      }
+    }
+    fetchMembers()
+  }, [id])
+
+  const handleMemberDelete = async (memberId: number) => {
+    try {
+      await membersService.deleteMembers(memberId)
+      console.log('삭제 완료', memberId)
+      setMemberList((prevMembers) =>
+        prevMembers.filter((member) => member.id !== memberId)
+      )
+    } catch (error) {
+      console.error('삭제를 실패했습니다.', error)
+    }
+  }
+
   return (
     <>
       <div className={styles.edit_member_container}>
@@ -43,14 +74,14 @@ export default function EditMyDashboardMember() {
           이름
         </div>
 
-        {members.map((member) => (
+        {memberList.map((member) => (
           <div key={member.id} className={styles.member_delete_container}>
             <div
               className={`${styles.edit_member_flex_container} ${styles.edit_member_flex_gap}`}
             >
-              <Badge nickname={member.name || '닉네임없음'} />
+              <Badge nickname={member.nickname || '닉네임없음'} />
               <div className={`${styles.edit_member_name} text-lg-regular`}>
-                {member.name}
+                {member.nickname}
               </div>
             </div>
 
@@ -59,7 +90,7 @@ export default function EditMyDashboardMember() {
               padding="0.4rem 2.95rem"
               isActive={true}
               className={`${styles.edit_delete_button} text-md-medium`}
-              // 이벤트 핸들러 추가하기
+              onClick={() => handleMemberDelete(member.id)}
             >
               삭제
             </CommonButton>
