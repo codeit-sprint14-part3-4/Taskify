@@ -42,7 +42,7 @@ export default function EditMyDashboardInviteLog() {
       }
     }
     fetchInviteEmail()
-  }, [])
+  }, [id])
 
   const handleConfirm = async () => {
     if (!inputValue) {
