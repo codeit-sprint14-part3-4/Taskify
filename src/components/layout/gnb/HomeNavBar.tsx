@@ -82,31 +82,33 @@ export default function HomeNavBar({
               styles.nav_right_center_border
             )}
           >
-            <div className={styles.nav_right_center_border_setting}>
-              <Link href={`/dashboard/${dashboardId}/edit`}>
-                <ButtonDashboard
-                  paddingHeight="py-3"
-                  paddingWidth="px-6.5"
-                  gap="gap-2"
-                  style={{
-                    color: 'var(--gray-787486)',
-                    objectFit: 'contain',
-                    display: 'flex',
-                  }}
-                  prefix={
-                    <Image
-                      src="/assets/icon/settings-logo.svg"
-                      alt="설정"
-                      width={20}
-                      height={20}
-                      className={styles.icon}
-                    />
-                  }
-                >
-                  관리
-                </ButtonDashboard>
-              </Link>
-            </div>
+            {hasCrown && (
+              <div className={styles.nav_right_center_border_setting}>
+                <Link href={`/dashboard/${dashboardId}/edit`}>
+                  <ButtonDashboard
+                    paddingHeight="py-3"
+                    paddingWidth="px-6.5"
+                    gap="gap-2"
+                    style={{
+                      color: 'var(--gray-787486)',
+                      objectFit: 'contain',
+                      display: 'flex',
+                    }}
+                    prefix={
+                      <Image
+                        src="/assets/icon/settings-logo.svg"
+                        alt="설정"
+                        width={20}
+                        height={20}
+                        className={styles.icon}
+                      />
+                    }
+                  >
+                    관리
+                  </ButtonDashboard>
+                </Link>
+              </div>
+            )}
             <div className={styles.button_invitation}>
               <ButtonDashboard
                 paddingHeight="py-3"
