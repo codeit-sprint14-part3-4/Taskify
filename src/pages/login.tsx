@@ -7,7 +7,7 @@ import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { authService } from '../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
-import Modal from '@/components/domain/modals/basemodal/Modal'
+import Modal from '@/components/domain/modals/basemodal/ConfirmActionModal'
 import { useFormSignup } from '@/hooks/useFormSignup'
 
 export default function Login() {
