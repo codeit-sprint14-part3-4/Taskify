@@ -30,6 +30,8 @@ export default function MyPage() {
   const [modalMessage, setModalMessage] = useState('')
   const { accessToken } = useAuthStore()
 
+  const [isLoading, setIsLoading] = useState(true)
+
   // 사용자 정보를 가져오는 useEffect
   useEffect(() => {
     async function fetchUserInfo() {
@@ -43,11 +45,14 @@ export default function MyPage() {
         }
       } catch (error) {
         console.error('사용자 정보 가져오기 실패', error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
     fetchUserInfo()
   }, [])
+
   // openModal
   const openModal = (message: string) => {
     setModalMessage(message)
@@ -230,7 +235,33 @@ export default function MyPage() {
       router.replace('/login') // 로그인 안된 경우 로그인 페이지로
     }
   }, [accessToken, router])
-  return (
+
+  return isLoading ? (
+    <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh]">
+      <div className="flex flex-nowrap px-0 items-start justify-start w-full">
+        <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem]">
+          <div className="mt-[1rem] mb-[2rem]">
+            <div className="bg-gray-200 h-[2rem] w-[10rem] rounded-md mb-[1rem]"></div>
+            <div className="bg-gray-200 h-[5rem] w-[18rem] rounded-md mb-[1rem]"></div>
+          </div>
+
+          <div className="flex flex-col gap-[2.4rem]">
+            <section className="w-[66.9rem] h-[36.6rem] bg-[var(--white-FFFFFF)] rounded-[1.6rem] p-[3.2rem]">
+              <div className="bg-gray-200 h-[5rem] rounded-md mb-[1rem]"></div>
+              <div className="bg-gray-200 w-[18.2rem] h-[18.2rem] rounded-md mb-[1rem]"></div>
+              <div className="bg-gray-200 h-[5rem] rounded-md"></div>
+            </section>
+
+            <section className="w-[66.9rem] h-[46.6rem] bg-[var(--white-FFFFFF)] rounded-[1.6rem] p-[3.2rem]">
+              <div className="bg-gray-200 h-[5rem] rounded-md mb-[1rem]"></div>
+              <div className="bg-gray-200 h-[5rem] rounded-md mb-[1rem]"></div>
+              <div className="bg-gray-200 h-[5rem] rounded-md mb-[1rem]"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
     <>
       <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh]">
         <div className="flex flex-nowrap px-0 items-start justify-start w-full">
@@ -262,15 +293,16 @@ export default function MyPage() {
                   <label
                     htmlFor="avatarUpload"
                     aria-label="프로필 이미지 업로드"
-                    className="w-[18.2rem] h-[18.2rem] flex items-center justify-center bg-[var(--gray-EEEEEE)] text-[3.2rem] text-[var(--violet-5534DhA)] border border-[var(--gray-D9D9D9)] rounded-[1.6rem] cursor-pointer transition-colors hover:bg-[var(--gray-FAFAFA)] hover:border-[var(--violet-5534DhA)] relative"
+                    className="w-[18.2rem] h-[18.2rem] flex items-center justify-center bg-[var(--gray-EEEEEE)] text-[3.2rem] text-[var(--violet-5534DhA)] border border-[var(--gray-D9D9D9)] rounded-[1.6rem] cursor-pointer transition-colors hover:bg-[var(--gray-FAFAFA)] hover:border-[var(--violet-5534DhA)] "
                   >
                     {previewImage ? (
                       <Image
                         src={previewImage}
                         alt="프로필 미리보기"
                         className="object-cover w-full h-full rounded-[1.6rem]"
-                        width={76}
-                        height={76}
+                        width={292}
+                        height={292}
+                        quality={100}
                       />
                     ) : (
                       '+'
@@ -321,11 +353,11 @@ export default function MyPage() {
                     <CommonButton
                       variant="primary"
                       isActive={isSaveButtonActive}
-                      className={`w-full py-[1.5rem] rounded-[0.8rem] text-[var(--white-FFFFFF)] text-lg-semibold ${
+                      className={`w-full py-[1.5rem] rounded-[0.8rem] text-[var(--white-FFFFFF)] text-lg-semibold $(
                         isSaveButtonActive
                           ? 'bg-[var(--violet-5534DhA)] cursor-pointer'
                           : 'bg-[var(--gray-D9D9D9)] cursor-not-allowed'
-                      }`}
+                      )`}
                       onClick={
                         isSaveButtonActive ? handleSaveProfile : undefined
                       }
@@ -338,10 +370,10 @@ export default function MyPage() {
 
               {/* 비밀번호 변경 카드 */}
               <section className="w-[66.9rem] h-[46.6rem] bg-[var(--white-FFFFFF)] rounded-[1.6rem] p-[3.2rem] flex flex-col">
-                <h2 className="text-2xl-bold mb-[1rem]">비밀번호 변경</h2>
+                <h2 className="text-2xl-bold mb-[0.8rem]">비밀번호 변경</h2>
                 <div className="flex flex-col">
                   {/* 현재 비밀번호 */}
-                  <div className="flex flex-col mb-[1.6rem]">
+                  <div className="flex flex-col mb-[0.6rem]">
                     <label
                       htmlFor="currentPassword"
                       className="text-lg-regular text-[var(--black-4B4B4B)]"
@@ -370,7 +402,7 @@ export default function MyPage() {
                   </div>
 
                   {/* 새 비밀번호 */}
-                  <div className="flex flex-col mb-[1.6rem]">
+                  <div className="flex flex-col mb-[0.6rem]">
                     <label
                       htmlFor="newPassword"
                       className="text-lg-regular text-[var(--black-4B4B4B)]"
@@ -399,7 +431,7 @@ export default function MyPage() {
                   </div>
 
                   {/* 새 비밀번호 확인 */}
-                  <div className="flex flex-col mb-[1.6rem]">
+                  <div className="flex flex-col mb-[0.6rem]">
                     <label
                       htmlFor="confirmNewPassword"
                       className="text-lg-regular text-[var(--black-4B4B4B)]"
@@ -458,6 +490,7 @@ export default function MyPage() {
     </>
   )
 }
+
 MyPage.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout pageType="mypage">{page}</Layout>
 }
