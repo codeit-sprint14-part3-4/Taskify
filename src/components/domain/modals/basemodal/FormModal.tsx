@@ -10,13 +10,15 @@ export default function FormModal({
   inputLabel,
   inputValue,
   onChange,
-  onConfirm,
-  onCancel,
+  onCancel, // 취소
+  onDelete, // 삭제
+  onEdit, // 변경
+  onCreate, // 생성
   errorMessage,
   size = 'small',
-  confirmLabel = '확인',
   cancelLabel = '취소',
-  showCloseButton = false,
+  showCloseButton = false, // 닫기 이미지 표시
+  mode,
 }: FormModalProps) {
   const isLarge = size === 'large'
   const closeIconSize = isLarge ? 36 : 24
@@ -49,7 +51,6 @@ export default function FormModal({
         <form
           onSubmit={(e) => {
             e.preventDefault()
-            onConfirm()
           }}
         >
           {/* 인풋 라벨 */}
@@ -74,22 +75,46 @@ export default function FormModal({
           )}
 
           {/* 버튼 그룹 */}
-          <div className={baseStyle.buttonGroup}>
-            {onCancel && (
-              <ModalButton
-                type="button"
-                onClick={onCancel}
-                label={cancelLabel}
-                isCancel={true}
-                size={size}
-              />
+          <div className={baseStyle.buttonGroup} style={{ display: 'flex' }}>
+            {/* 삭제 모드일 때만 삭제와 변경 버튼을 표시 */}
+            {mode === 'delete' && onDelete && onEdit && (
+              <>
+                <ModalButton
+                  type="button"
+                  onClick={onDelete}
+                  label="삭제"
+                  isCancel={true}
+                  size={size}
+                />
+                <ModalButton
+                  type="button"
+                  onClick={onEdit}
+                  label="변경"
+                  isCancel={false}
+                  size={size}
+                />
+              </>
             )}
-            <ModalButton
-              type="submit"
-              onClick={onConfirm}
-              label={confirmLabel}
-              size={size}
-            />
+
+            {/* 기본 모드에서는 취소와 생성 버튼만 표시 */}
+            {mode === 'default' && (
+              <>
+                <ModalButton
+                  type="button"
+                  onClick={onCancel}
+                  label={cancelLabel}
+                  isCancel={true}
+                  size={size}
+                />
+                <ModalButton
+                  type="button"
+                  onClick={onCreate} // 생성은 onCreate 함수 실행
+                  label="생성"
+                  isCancel={false}
+                  size={size}
+                />
+              </>
+            )}
           </div>
         </form>
       </div>
