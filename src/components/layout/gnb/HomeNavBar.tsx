@@ -142,9 +142,9 @@ export default function HomeNavBar({
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >
           <div className={styles.profile_image}>
-            {userData?.profileImage ? (
+            {userData?.profileImageUrl ? (
               <Image
-                src={userData.profileImage}
+                src={userData.profileImageUrl}
                 alt="Profile Image"
                 width={40}
                 height={40}
