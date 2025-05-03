@@ -40,7 +40,7 @@ export default function Sidebar({
 
   useEffect(() => {
     getDashboardList()
-  }, [page])
+  }, [page, currentDashboardId])
 
   return (
     <div className={styles.sidebar}>
