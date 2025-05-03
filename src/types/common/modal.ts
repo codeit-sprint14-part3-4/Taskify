@@ -6,7 +6,6 @@ export type ModalProps = {
   onCancel?: () => void
   onDelete?: () => void
   size?: ModalSize
-  type?: string
   confirmLabel?: string
   cancelLabel?: string
   deleteLabel?: string
