@@ -116,16 +116,23 @@ export default function TaskCardModal({
         <div className={styles.modaltop}>
           <h1 className={`text-2xl-bold ${styles.cardTitle}`}>{card.title}</h1>
           <div className={styles.topRightButtons}>
-            <button onClick={() => setIsDropdownOpen((prev) => !prev)}>
+            <button
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
+              className={styles.buttonbox}
+            >
               <div className={styles.kebabbutton}>
                 <Image src="/assets/icon/kebab.svg" alt="메뉴" fill />
               </div>
             </button>
             {isDropdownOpen && (
               <div className={styles.dropdownMenu}>
-                <button onClick={() => onEdit(card)}>수정하기</button>
                 <button
-                  className="text-red-500"
+                  onClick={() => onEdit(card)}
+                  className={styles.editbutton}
+                >
+                  수정하기
+                </button>
+                <button
                   onClick={() => {
                     if (confirm('정말 삭제하시겠습니까?')) onDelete(card.id)
                   }}
@@ -134,7 +141,7 @@ export default function TaskCardModal({
                 </button>
               </div>
             )}
-            <button onClick={onClose}>
+            <button onClick={onClose} className={styles.buttonbox}>
               <div className={styles.closebutton}>
                 <Image src="/assets/icon/close.svg" alt="닫기" fill />
               </div>

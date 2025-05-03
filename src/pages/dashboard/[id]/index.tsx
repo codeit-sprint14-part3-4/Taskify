@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { columnsService } from '@/api/services/columnsServices'
 import Layout from '@/components/layout/layout'
-import ColumnWrapper from '@/components/domain/dashboard/ColumnWrapper'
+import Column from '@/components/domain/dashboard/Column'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import TaskCardCreateModal from '@/components/domain/modals/taskcardcreatemodal/TaskCardCreateModal'
 import { ColumnType } from '@/types/api/columns'
@@ -28,6 +28,9 @@ export default function DashboardPage() {
   const handleCardCreateModalClose = () => {
     setIsCardCreateModalOpen(false)
   }
+  const handleColumnFixModalOpen = (columnId: number) => {
+    console.log('컬럼 수정 모달 열기:', columnId)
+  }
 
   useEffect(() => {
     if (!query.id) return
@@ -44,10 +47,11 @@ export default function DashboardPage() {
     <>
       <div className="flex overflow-x-auto">
         {columns.map((column) => (
-          <ColumnWrapper
+          <Column
             key={column.id}
             columnInfo={column}
             handleCardCreateModalOpen={handleCardCreateModalOpen}
+            handleColumnFixModalOpen={handleColumnFixModalOpen}
           />
         ))}
         <div className="pt-[6.8rem] pl-[2.4rem]">
