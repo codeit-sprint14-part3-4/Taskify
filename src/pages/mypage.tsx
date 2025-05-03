@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Layout from '@/components/layout/layout'
-import Modal from '@/components/domain/modals/basemodal/Modal'
+import Modal from '@/components/domain/modals/basemodal/ConfirmActionModal'
 
 import { useAuthStore } from '@/stores/auth'
 import { usersService } from '@/api/services/usersServices'
