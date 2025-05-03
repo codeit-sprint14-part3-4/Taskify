@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Tag from '@/components/common/tag/Tag' // 개별 카드
 import { CardType } from '@/types/api/cards'
 import styles from './card.module.css'
+import Badge from '@/components/common/badge/Badge'
 
 // 내부에서만 사용
 export interface CardProps {
@@ -9,6 +10,7 @@ export interface CardProps {
 }
 
 export default function Card({ cardInfo }: CardProps) {
+  console.log(cardInfo)
   return (
     <div className={styles.card}>
       {/* 이미지: 현재 props로 받은 imageUrl 사용,
@@ -58,13 +60,18 @@ export default function Card({ cardInfo }: CardProps) {
             {/* 추후 assignee.profileImageUrl로 프로필 이미지 표시 예정
               현재는 nickname 텍스트만 출력 중 */}
             {/* assignee에 프로필 이미지가 추가 안된 상태여서 에러가 나는 상황 */}
-            {/* <Image
-              src={cardInfo.assignee.profileImageUrl}
-              alt="프로필 이미지"
-              width={24}
-              height={24}
-              className="w-6 h-6 rounded-full object-cover"
-            /> */}
+            {cardInfo.assignee &&
+              (cardInfo.assignee.profileImageUrl ? (
+                <Image
+                  src={cardInfo.assignee.profileImageUrl}
+                  alt="프로필 이미지"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+              ) : (
+                <Badge nickname={cardInfo.assignee.nickname} />
+              ))}
           </div>
         </div>
       </div>
