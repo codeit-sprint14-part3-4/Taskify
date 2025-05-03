@@ -38,3 +38,4 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 )
+// 헉 이거 로컬만 있어요. 배포할 때는 세션으로 하는 조건문 없어졌어요.

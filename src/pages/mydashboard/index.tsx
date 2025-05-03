@@ -7,9 +7,10 @@ import DashboardList from '@/components/domain/mydashboard/dashboardlist/Dashboa
 import MyInvitedDashboard from '@/components/domain/mydashboard/dashboardinvitedlist/MyInvitedDashboard'
 import { invitationsService } from '@/api/services/invitationsServices'
 import { Invitation } from '@/types/api/invitations'
+import MyDropDown from '@/components/dropdown/MyDropDown'
 
 export default function MyDashboardPage() {
-  const [invitedList, setInvitedList] = useState([])
+  const [invitedList, setInvitedList] = useState<Invitation[]>([])
   const [loadingInvited, setLoadingInvited] = useState(true)
 
   const fetchInvitedlist = async () => {
@@ -30,13 +31,16 @@ export default function MyDashboardPage() {
   return (
     <div className={styles.wrapper}>
       <DashboardList />
+      {/* 드롭다운 컴포넌트 나중에 삭제하세요 일단 테스트입니다 홈네브바에 해야 함!!! */}
+      <MyDropDown />
       {loadingInvited ? (
         <div className="text-center text-gray-500 mt-8">
           초대 목록 로딩 중...
         </div>
       ) : invitedList.length === 0 ? (
         <div className={styles.invite_section}>
-          <div className="flex flex-col items-center gap-[2.4rem] text-[#8c8c8c]">
+          <div className="text-2xl-bold ">초대받은 대시보드</div>
+          <div className="flex flex-col items-center gap-[2.4rem] text-[#8c8c8c] pt-16">
             <Image
               src="/assets/icon/email.svg"
               alt="email"

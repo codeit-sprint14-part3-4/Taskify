@@ -1,6 +1,7 @@
 import styles from './dashboardList.module.css'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
 import { dashboardsService } from '@/api/services/dashboardsServices'
@@ -21,9 +22,11 @@ export default function DashboardList() {
   const [dashboards, setDashboards] = useState<Dashboard[]>([])
   const [totalPages, setTotalPages] = useState(0)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
   const dashboardsPerPage = 5
 
+  // 대시보드 목록을 가져오는 함수
   const fetchDashboards = async (pageNumber: number) => {
     try {
       const data = await dashboardsService.getDashboards(
@@ -32,16 +35,13 @@ export default function DashboardList() {
         dashboardsPerPage
       )
       setDashboards(data.dashboards)
+      console.log('대시보드 목록:', data.dashboards)
       setTotalPages(Math.ceil(data.totalCount / dashboardsPerPage))
     } catch (err) {
       setError('대시보드를 불러오는 데 실패했습니다.')
       console.error(err)
     }
   }
-
-  useEffect(() => {
-    fetchDashboards(page)
-  }, [page])
 
   const handleNext = () => {
     if (page < totalPages) setPage((prev) => prev + 1)
@@ -50,9 +50,16 @@ export default function DashboardList() {
   const handlePrev = () => {
     if (page > 1) setPage((prev) => prev - 1)
   }
-
+  const handleDashboardClick = (id: number) => {
+    router.push(`/dashboard/${id}`)
+  }
+  // 대시보드 생성 모달 열기 / 닫기
   const handleCreateDashboardModal = () => setIsModalOpen(true)
   const handleCloseDashboardModal = () => setIsModalOpen(false)
+
+  useEffect(() => {
+    fetchDashboards(page)
+  }, [page])
 
   return (
     <div className={styles.wrapper}>
@@ -78,6 +85,7 @@ export default function DashboardList() {
 
         {dashboards.map((dashboard) => (
           <DashBoardListButton
+            onClick={() => handleDashboardClick(dashboard.id)}
             key={dashboard.id}
             colorPin={
               <ColorPin

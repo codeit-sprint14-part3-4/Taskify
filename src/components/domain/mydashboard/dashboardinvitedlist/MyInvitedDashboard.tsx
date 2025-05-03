@@ -13,14 +13,20 @@ const MyInvitedDashboard = () => {
   const [isLoading, setIsLoading] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
 
+  // 초대 목록을 가져오는 함수
   const fetchInvitations = useCallback(
     async (cursorId?: number) => {
       if (isLoading || !hasMore) return
       setIsLoading(true)
 
+      // 9999를 한 이유는 초대 목록 검색을 위해서입니다.
       try {
-        const response = await invitationsService.getInvitations(10, cursorId)
+        const response = await invitationsService.getInvitations(
+          99999,
+          cursorId
+        )
         const newData = response.invitations
+        console.log('초대 목록:', newData)
         setInvitedList((prev) => [...prev, ...newData])
         setHasMore(newData.length === 10)
       } catch (error) {
@@ -31,11 +37,12 @@ const MyInvitedDashboard = () => {
     },
     [isLoading, hasMore]
   )
-
+  // 처음 렌더링 시 초대 목록을 가져오는 useEffect
   useEffect(() => {
     fetchInvitations()
   }, [])
 
+  // 스크롤 시 마지막 아이템을 감지하는 IntersectionObserver
   const lastItemRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (isLoading) return
@@ -55,16 +62,20 @@ const MyInvitedDashboard = () => {
     [invitedList, hasMore, isLoading]
   )
 
+  // 검색어에 따라 초대 목록을 필터링
   const filteredData = searchTerm
-    ? invitedList.filter((item) =>
-        item.dashboard.title.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+    ? invitedList
+        .filter((item) =>
+          item.dashboard.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .reverse()
     : invitedList
 
+  // 검색어 입력 핸들러
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
-
+  //  초대 수락/거절 버튼 핸들러
   const handleInviteAcceptButton = async (
     invitationId: number,
     isAccept: boolean
