@@ -1,85 +1,94 @@
-import styles from './dashboardlist.module.css'
+import styles from './dashboardList.module.css'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
+
+import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
+import { dashboardsService } from '@/api/services/dashboardsServices'
 import DashBoardListButton from './DashboardListButton'
+import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
+import ColorPin from '../../colorpin/ColorPin'
 
 interface Dashboard {
   id: number
   title: string
-  color: string
-  createdAt: string
-  updatedAt: string
   createdByMe: boolean
-  userId: number
+  color: string
 }
 
-export default function MyDashboard() {
+export default function DashboardList() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [page, setPage] = useState(1)
-  const [dashboards, setDashboards] = useState<Dashboard[]>([]) // Assuming you're fetching this data from API or similar
+  const [dashboards, setDashboards] = useState<Dashboard[]>([])
+  const [totalPages, setTotalPages] = useState(0)
+  const [error, setError] = useState<string | null>(null)
+
   const dashboardsPerPage = 5
-  const totalPages = Math.ceil(dashboards.length / dashboardsPerPage)
 
-  const fetchDashboards = async () => {
-    // Simulate an API call to get dashboards
-    // You can replace this with an actual API call or use your actual data.
-    const fetchedDashboards: Dashboard[] = await fetchData()
-    setDashboards(fetchedDashboards)
+  const fetchDashboards = async (pageNumber: number) => {
+    try {
+      const data = await dashboardsService.getDashboards(
+        'pagination',
+        pageNumber,
+        dashboardsPerPage
+      )
+      setDashboards(data.dashboards)
+      setTotalPages(Math.ceil(data.totalCount / dashboardsPerPage))
+    } catch (err) {
+      setError('대시보드를 불러오는 데 실패했습니다.')
+      console.error(err)
+    }
   }
 
-  const fetchData = async (): Promise<Dashboard[]> => {
-    // Example data fetching logic
-    return [
-      {
-        id: 1,
-        title: 'Dashboard 1',
-        color: 'blue',
-        createdAt: '2022-01-01',
-        updatedAt: '2022-01-01',
-        createdByMe: true,
-        userId: 1,
-      },
-      {
-        id: 2,
-        title: 'Dashboard 2',
-        color: 'red',
-        createdAt: '2022-01-01',
-        updatedAt: '2022-01-01',
-        createdByMe: false,
-        userId: 2,
-      },
-      // Add more dummy data as needed
-    ]
-  }
-
-  // Fetch data on component mount
   useEffect(() => {
-    fetchDashboards()
-  }, [])
-
-  const handleCreateDashboardModal = () => {
-    setIsModalOpen(true)
-  }
+    fetchDashboards(page)
+  }, [page])
 
   const handleNext = () => {
-    if (page < totalPages) setPage((prevPage) => prevPage + 1)
+    if (page < totalPages) setPage((prev) => prev + 1)
   }
 
   const handlePrev = () => {
-    if (page > 1) setPage((prevPage) => prevPage - 1)
+    if (page > 1) setPage((prev) => prev - 1)
   }
 
-  const currentDashboards = dashboards.slice(
-    (page - 1) * dashboardsPerPage,
-    page * dashboardsPerPage
-  )
+  const handleCreateDashboardModal = () => setIsModalOpen(true)
+  const handleCloseDashboardModal = () => setIsModalOpen(false)
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.invite_section}>
-        {currentDashboards.map((dashboard) => (
+      <div className={styles.main_container}>
+        <ButtonDashboard
+          onClick={handleCreateDashboardModal}
+          gap="gap-2"
+          className="text-lg-semibold py-[2.1rem] px-[9.5rem]"
+          suffix={
+            <Image
+              src="/assets/icon/add-box.svg"
+              alt="addbutton"
+              width={22}
+              height={22}
+              className="object-contain flex"
+            />
+          }
+        >
+          새로운 대시보드
+        </ButtonDashboard>
+
+        {error && <div className="text-red-500 mt-4">{error}</div>}
+
+        {dashboards.map((dashboard) => (
           <DashBoardListButton
             key={dashboard.id}
+            colorPin={
+              <ColorPin
+                id={dashboard.id}
+                color={dashboard.color}
+                isSelected={false}
+                onClick={() => {}}
+                width="0.8rem"
+                height="0.8rem"
+              />
+            }
             suffix={
               dashboard.createdByMe && (
                 <Image
@@ -95,44 +104,49 @@ export default function MyDashboard() {
             {dashboard.title}
           </DashBoardListButton>
         ))}
-        <div className={`${styles.page_wrapper} text-md-regular`}>
-          <div className={styles.botton_gap}>
-            <span>
-              {page} 페이지 중 {totalPages}
-            </span>
-          </div>
-          <button
-            onClick={handlePrev}
-            disabled={page === 1}
-            className={styles.page_button_left}
-          >
-            <div className={styles.crown_center}>
-              <Image
-                src="/assets/icon/arrow-left.svg"
-                alt="왼쪽 페이지 버튼"
-                width={6}
-                height={16}
-                className="object-contain"
-              />
-            </div>
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={page === totalPages}
-            className={styles.page_button_right}
-          >
-            <div className={styles.crown_center}>
-              <Image
-                src="/assets/icon/arrow-right.svg"
-                alt="오른쪽 페이지 버튼"
-                width={6}
-                height={16}
-                className="object-contain"
-              />
-            </div>
-          </button>
-        </div>
       </div>
+
+      <div className={`${styles.page_wrapper} text-md-regular`}>
+        <div className={styles.botton_gap}>
+          <span>
+            {page} 페이지 중 {totalPages}
+          </span>
+        </div>
+        <button
+          onClick={handlePrev}
+          disabled={page === 1}
+          className={styles.page_button_left}
+        >
+          <div className={styles.crown_center}>
+            <Image
+              src="/assets/icon/arrow-left-gray.svg"
+              alt="왼쪽페이지버튼"
+              width={6}
+              height={16}
+              className="object-contain flex"
+            />
+          </div>
+        </button>
+        <button
+          onClick={handleNext}
+          disabled={page === totalPages}
+          className={styles.page_button_right}
+        >
+          <div className={styles.crown_center}>
+            <Image
+              src="/assets/icon/arrow-right-gray.svg"
+              alt="오른쪽페이지버튼"
+              width={6}
+              height={16}
+              className="object-contain flex"
+            />
+          </div>
+        </button>
+      </div>
+
+      {isModalOpen && (
+        <DashboardCreateModal onClose={handleCloseDashboardModal} />
+      )}
     </div>
   )
 }

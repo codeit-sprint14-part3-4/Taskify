@@ -7,16 +7,22 @@ interface DashboardList
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'prefix'> {
   children?: ReactNode
   suffix?: ReactNode
+  colorPin?: ReactNode
 }
 
-const DashboardList = ({ children, suffix, onClick }: DashboardList) => {
+const DashboardList = ({
+  children,
+  suffix,
+  onClick,
+  colorPin,
+}: DashboardList) => {
   return (
     <button onClick={onClick} className={styles.wrapper}>
       <div className={styles.main_wrapper}>
         <div className={styles.main_left}>
-          <div className={styles.main_color}>컬러</div>
+          <div className={styles.main_color}>{colorPin}</div>
           <div className={styles.main_left}>
-            {children && <span>{children}</span>}
+            {children && <span className={styles.crown_title}>{children}</span>}
             <div className={styles.crown}>
               {suffix && <div className={styles.icon}>{suffix}</div>}
             </div>

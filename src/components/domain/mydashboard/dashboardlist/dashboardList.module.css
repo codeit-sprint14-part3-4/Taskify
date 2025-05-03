@@ -1,20 +1,15 @@
 .wrapper {
   width: 102.2rem;
-  height: 20.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  height: fit-content;
 }
-.invite_section {
-  width: 102.2rem;
-  height: 15.2rem;
+.main_container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: nowrap;
   flex-wrap: wrap;
   gap: 1.2rem;
 }
+
 .page_button_left {
   width: 4rem;
   height: 4rem;
@@ -42,6 +37,7 @@
   justify-content: end;
   align-items: center;
   width: 100%;
+  padding-top: 1.2rem;
 }
 .botton_gap {
   display: flex;
