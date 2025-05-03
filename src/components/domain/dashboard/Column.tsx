@@ -11,11 +11,13 @@ import styles from './column.module.css'
 export interface ColumnProps {
   columnInfo: ColumnType
   handleCardCreateModalOpen: (columnId: number) => void
+  handleColumnFixModalOpen: (columnId: number) => void
 }
 
 export default function Column({
   columnInfo,
   handleCardCreateModalOpen,
+  handleColumnFixModalOpen,
 }: ColumnProps) {
   const [cards, setCards] = useState<CardType[]>()
 
@@ -45,7 +47,7 @@ export default function Column({
         </div>
 
         {/* onClick 이벤트 추가 요망 */}
-        <button>
+        <button onClick={() => handleColumnFixModalOpen(columnInfo.id)}>
           <Image
             src="/assets/icon/settings-logo.svg"
             alt="설정 아이콘"

@@ -1,101 +1,80 @@
 import React from 'react'
-import Gnb from '@/components/layout/gnb/Gnb'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import styles from './index.module.css'
+
+import { useAuthStore } from '@/stores/auth'
+import { dashboardsService } from '@/api/services/dashboardsServices'
+import Gnb from '@/components/layout/gnb/Gnb'
 import Button from '@/components/common/commonbutton/CommonButton'
 import FeatureCard from '@/components/featurecard/FeatureCard'
 import Footerbar from '@/components/layout/footerbar/Footerbar'
-import Link from 'next/link'
-import { GetServerSideProps } from 'next'
 import AnimatedSection from '@/components/common/animatedSection/AnimatedSection'
-import type { Dashboard } from '@/types/api/dashboards'
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context
-  const accessToken = req.cookies.accessToken
+export default function Home() {
+  const { accessToken } = useAuthStore() // 로그인 상태 확인
+  const [firstDashboardId, setFirstDashboardId] = useState<number | null>(null)
+  const router = useRouter()
 
-  if (!accessToken) {
-    return {
-      props: {},
-    }
-  }
-
-  try {
-    const response = await fetch(`${process.env.API_BASE_URL}/dashboards`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error('대시보드 정보를 가져오는 데 실패했습니다.')
-    }
-
-    const dashboards: Dashboard[] = await response.json()
-
-    if (!dashboards || dashboards.length === 0) {
-      return {
-        redirect: {
-          destination: '/mydashboard',
-          permanent: false,
-        },
+  //  대시보드 목록을 가져와서 첫 번째 대시보드 ID를 설정
+  useEffect(() => {
+    const fetchDashboards = async () => {
+      try {
+        const res = await dashboardsService.getDashboards('pagination', 1, 1)
+        if (res.dashboards.length > 0) {
+          setFirstDashboardId(res.dashboards[0].id)
+        }
+      } catch (error) {
+        console.error('대시보드 불러오기 실패:', error)
       }
     }
 
-    dashboards.sort(
-      (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    if (accessToken) {
+      fetchDashboards()
+    }
+  }, [accessToken])
+
+  // 대시보드가 존재하는 경우 첫 번째 대시보드로 리다이렉트
+  useEffect(() => {
+    if (firstDashboardId !== null) {
+      router.push(`/dashboard/${firstDashboardId}`)
+    }
+  }, [firstDashboardId, router])
+
+  // 로그인 안 되어 있는 경우 랜딩 페이지 렌더링
+  if (accessToken && firstDashboardId === null) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-lg font-medium text-gray-700">
+          대시보드로 이동 중입니다...
+        </p>
+      </div>
     )
-
-    const firstDashboardId = dashboards[0].id
-
-    return {
-      redirect: {
-        destination: `/dashboard/${firstDashboardId}`,
-        permanent: false,
-      },
-    }
-  } catch (err) {
-    console.error('Fetch Error:', err)
-
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    }
   }
-}
 
-export default function Home() {
   return (
-    <div className={`bg-[var(--black-000000)] min-h-screen flex flex-col`}>
+    <div className={`${styles.container} min-h-screen flex flex-col`}>
       <Gnb />
-      <div className={`px-[18%]`}>
+      <div className={styles.maincontainer}>
         <AnimatedSection delay={0.2}>
-          <section
-            className={`flex flex-col items-center justify-center text-center`}
-          >
-            <div
-              className={`relative mt-[9.4rem] mb-[4.8rem] w-[77.2rem] h-[42.2rem] inline-block text-center`}
-            >
+          <section className={styles.homepagetop}>
+            <div className={`${styles.homepagelogo} inline-block text-center`}>
               <Image
                 src="/assets/image/desktop.svg"
                 alt="Taskify Logo"
                 fill
                 priority
+                className={styles.image}
               />
             </div>
 
             <h1
-              className={`text-[7.6rem] leading-[10rem] font-bold text-white`}
+              className={`font-bold text-white ${styles.homepagemaintext} ${styles.line}`}
             >
               새로운 일정 관리
-              <span
-                className={`text-[#5534da] ml-[2.8rem] text-[9rem] font-montserrat font-bold leading-[6.5rem]`}
-              >
+              <span className={` ${styles.homepagespan} ${styles.line}`}>
                 Taskify
               </span>
             </h1>
@@ -104,7 +83,7 @@ export default function Home() {
                 variant="primary"
                 padding="1.4rem 10rem"
                 isActive={true}
-                className={`mt-[11.1rem]`}
+                className={styles.loginbutton}
               >
                 로그인 하기
               </Button>
@@ -112,12 +91,8 @@ export default function Home() {
           </section>
         </AnimatedSection>
         <AnimatedSection delay={0.2}>
-          <section
-            className={`bg-[var(--black-171717)] w-[120rem] h-[60rem] rounded-[0.8rem] flex relative mt-[17.8rem] pt-[12.5rem] pl-[5.4rem] flex-col`}
-          >
-            <div
-              className={`absolute right-0 bottom-0 w-[59.4rem] h-[49.7rem]`}
-            >
+          <section className={`${styles.pointer1}  flex-col`}>
+            <div className={`${styles.pointer1image}`}>
               <Image
                 src="/assets/image/landing1.svg"
                 alt="landingpage image"
@@ -125,26 +100,16 @@ export default function Home() {
                 priority
               />
             </div>
-            <span
-              className={`text-[var(--gray-9FA6B2)] text-[2.2rem] text-left font-medium font-pretendard`}
-            >
-              Point1
-            </span>
-            <div
-              className={`mt-[10rem] text-[4.8rem] font-pretendard text-[var(--white-FFFFFF)] leading-[6.4rem] font-bold`}
-            >
+            <span className={`${styles.pointer1text}`}>Point1</span>
+            <div className={`${styles.pointer1maintext}`}>
               <div>일의 우선 순위를</div>
               <div>관리하세요</div>
             </div>
           </section>
         </AnimatedSection>
         <AnimatedSection delay={0.2}>
-          <section
-            className={`bg-[var(--black-171717)] w-[120rem] h-[60rem] rounded-[0.8rem] font-medium flex relative mt-[17.8rem] pt-[12.5rem] pl-[5.4rem] flex-col `}
-          >
-            <div
-              className={`absolute left-[10.8rem] bottom-0 w-[43.6rem] h-[50.2rem] `}
-            >
+          <section className={`${styles.pointer2} flex flex-col `}>
+            <div className={styles.pointer2image}>
               <Image
                 src="/assets/image/landing2.svg"
                 alt="landingpage image"
@@ -152,15 +117,9 @@ export default function Home() {
                 priority
               />
             </div>
-            <div className={`ml-[64.4rem]`}>
-              <span
-                className={`text-[var(--gray-9FA6B2)] text-[2.2rem] text-left font-medium font-pretendard`}
-              >
-                Point2
-              </span>
-              <div
-                className={`text-[4.8rem] mt-[10rem] text-white leading-[6.4rem] font-bold font-pretendard`}
-              >
+            <div className={styles.pointer2box}>
+              <span className={styles.pointer2text}>Point2</span>
+              <div className={styles.pointer2maintext}>
                 <div>해야 할 일을</div>
                 <div>등록하세요</div>
               </div>
@@ -169,15 +128,13 @@ export default function Home() {
         </AnimatedSection>
         <AnimatedSection delay={0.2}>
           <div className="flex justify-center w-full">
-            <span
-              className={`mt-[9rem] mb-[3.6rem] text-[2.8rem] text-white font-bold mr-auto`}
-            >
+            <span className={`${styles.linkcardlabel} mr-auto`}>
               생산성을 높이는 다양한 설정⚡
             </span>
           </div>
         </AnimatedSection>
         <AnimatedSection delay={0.2}>
-          <section className={`flex flex-row gap-[3.3rem]`}>
+          <section className={styles.cardListWrapper}>
             <FeatureCard
               imageSrc="/assets/image/landing3.svg"
               title="대시보드 설정"
@@ -202,7 +159,7 @@ export default function Home() {
           </section>
         </AnimatedSection>
       </div>
-      <div className={`mt-[16rem]`}>
+      <div className={styles.footerline}>
         <Footerbar />
       </div>
     </div>
