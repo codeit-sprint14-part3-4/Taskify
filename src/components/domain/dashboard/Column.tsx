@@ -12,16 +12,14 @@ export interface ColumnProps {
   columnInfo: ColumnType
   dashboardId: number
   handleCardCreateModalOpen: (columnId: number) => void
-  handleColumnEditModal: (state: boolean) => void
-  handleColumnOptionClick: (columnInfo: ColumnType) => void
+
 }
 
 export default function Column({
   columnInfo,
   dashboardId,
   handleCardCreateModalOpen,
-  handleColumnEditModal,
-  handleColumnOptionClick,
+
 }: ColumnProps) {
   const [cards, setCards] = useState<CardType[]>()
   const getCards = async () => {
@@ -66,25 +64,15 @@ export default function Column({
           </button>
         </div>
 
-        {/* + 버튼 */}
-        <div className={styles.addButtonWrapper}>
-          <ButtonDashboard
-            // onclickAdd 이벤트 추가 요망
-            onClick={() => handleCardCreateModalOpen(columnInfo.id)}
-            color="bg-white"
-            className={styles.addButton}
-            prefix={
-              <div className={styles.addIcon}>
-                <Image
-                  src="/assets/icon/add-box.svg"
-                  alt="카드 추가 버튼"
-                  width={22}
-                  height={22}
-                  unoptimized
-                  style={{ width: '22px', height: '22px', display: 'block' }}
-                />
-              </div>
-            }
+
+        {/* onClick 이벤트 추가 요망 */}
+        <button>
+          <Image
+            src="/assets/icon/settings-logo.svg"
+            alt="설정 아이콘"
+            width={24}
+            height={24}
+
           />
         </div>
 
@@ -100,6 +88,20 @@ export default function Column({
           />
         )}
       </div>
-    </>
+
+
+      {/* 카드 리스트 */}
+      {cards && (
+        <CardTable
+          cards={cards}
+          dashboardId={dashboardId}
+          columnInfo={{
+            columnId: columnInfo.id,
+            columnTitle: columnInfo.title,
+          }}
+        />
+      )}
+    </div>
+
   )
 }

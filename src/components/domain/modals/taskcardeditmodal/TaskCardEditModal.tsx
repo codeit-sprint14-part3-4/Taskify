@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -7,9 +7,13 @@ import { ko } from 'date-fns/locale'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Input from '@/components/common/commoninput/CommonInput'
 import Tag from '@/components/common/tag/Tag'
-import UserDropdown, { type User } from '@/components/dropdown/UserDropdown'
-import StatusDropdown, { Status } from '@/components/dropdown/StatusDropdown'
+import UserDropdown from '@/components/dropdown/UserDropdown'
+import StatusDropdown from '@/components/dropdown/StatusDropdown'
 import type { TagColor } from '@/types/common/tag'
+import { CardType } from '@/types/api/cards'
+import { ColumnType } from '@/types/api/columns'
+import { columnsService } from '@/api/services/columnsServices'
+import { useDashboardMembers } from '@/stores/dashboardMembers'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -24,47 +28,61 @@ const TAG_COLORS: TagColor[] = [
   'tag-gray',
 ]
 
-const users: User[] = [
-  { id: 1, name: '김코딩', badgeColor: '#5534DA' },
-  { id: 2, name: '박해커', badgeColor: '#34D399' },
-  { id: 3, name: '이원', badgeColor: '#FBBF24' },
-  { id: 4, name: '이아이', badgeColor: '#34D399' },
-  { id: 5, name: '이렇케', badgeColor: '#5534DA' },
-]
+function getRandomTagColor(): TagColor {
+  const randomIndex = Math.floor(Math.random() * TAG_COLORS.length)
+  return TAG_COLORS[randomIndex]
+}
 
 interface TaskCardEditModalProps {
-  cardInfo: {
-    status: string
-    assignee: string
-    title: string
-    description: string
-    dueDate: string
-    tags: { label: string; color: TagColor }[]
-    imageUrl: string
-  }
-  users: User[]
+  cardInfo: CardType
+  dashboardId: number
+  columnInfo: { columnId: number; columnTitle: string }
+  handleCardEditModal: (status: boolean) => void
 }
 
 export default function TaskCardEditModal({
   cardInfo,
+  dashboardId,
+  columnInfo,
+  handleCardEditModal,
 }: TaskCardEditModalProps) {
-  const defaultUser =
-    users.find((u) => u.name === cardInfo.assignee) || users[0]
-  const defaultStatus =
-    Object.values(Status).find((s) => s === cardInfo.status) || Status.TODO
-
-  const [statusValue, setStatusValue] = useState<Status>(defaultStatus)
-  const [selectedUser, setSelectedUser] = useState<User>(defaultUser)
+  const [statusValue, setStatusValue] = useState<string>(columnInfo.columnTitle)
   const [title, setTitle] = useState(cardInfo.title)
+  // const [selectedUser, setSelectedUser] = useState<User>()
+  const [assignee, setAssignee] = useState(-1)
+  console.log(assignee)
   const [description, setDescription] = useState(cardInfo.description)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [inputValue, setInputValue] = useState('')
-  const [tags, setTags] = useState(cardInfo.tags)
+  const [columns, setColumns] = useState<ColumnType[]>([])
+  const [tags, setTags] = useState<{ label: string; color: TagColor }[]>(
+    cardInfo.tags.map((tag) => ({ label: tag, color: getRandomTagColor() }))
+  )
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
   ])
   const [preview, setPreview] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const dashboardMembers = useDashboardMembers((state) => state.members)
+  const users = dashboardMembers.map((user) => ({
+    id: user.userId,
+    name: user.nickname,
+    badgeColor: user.badge,
+    profileImageUrl: user.profileImageUrl,
+  }))
+  const currentUser = cardInfo.assignee
+    ? users.filter((user) => user.id === cardInfo.assignee.id)[0]
+    : undefined
+
+  // 변경된 부분: 처음엔 선택된 유저 없음
+  const [selectedUser, setSelectedUser] = useState<
+    (typeof users)[0] | undefined
+  >(currentUser)
+
+  const handleStatusSelect = (value: string) => {
+    setStatusValue(value)
+  }
 
   const handleImageClick = () => inputRef.current?.click()
 
@@ -92,6 +110,15 @@ export default function TaskCardEditModal({
     setTags((prevTags) => prevTags.filter((_, i) => i !== index))
   }
 
+  const getColumns = async () => {
+    const columnsData = await columnsService.getColumns(dashboardId)
+    setColumns(columnsData.data)
+  }
+
+  useEffect(() => {
+    getColumns()
+  }, [dashboardId])
+
   return (
     <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.7)] flex justify-center items-center">
       <div className="w-[58.4rem] bg-[var(--white-FFFFFF)] rounded-2xl overflow-auto">
@@ -107,7 +134,13 @@ export default function TaskCardEditModal({
               <label className="text-2lg-medium text-[var(--black-333236)]">
                 상태
               </label>
-              <StatusDropdown value={statusValue} onChange={setStatusValue} />
+              {columns && columns.length ? (
+                <StatusDropdown
+                  statusList={columns.map((column) => column.title)}
+                  value={statusValue}
+                  onChange={handleStatusSelect}
+                />
+              ) : null}
             </div>
 
             {/* 담당자 */}
@@ -121,6 +154,7 @@ export default function TaskCardEditModal({
                 selectedUser={selectedUser}
                 onChange={setSelectedUser}
                 mode="select"
+                setAssignee={setAssignee}
               />
             </div>
           </div>
@@ -198,7 +232,6 @@ export default function TaskCardEditModal({
                 <Tag
                   key={idx}
                   label={tag.label}
-                  color={tag.color}
                   isDeletable
                   onDelete={() => handleRemoveTag(idx)}
                 />
@@ -250,6 +283,7 @@ export default function TaskCardEditModal({
           {/* 버튼 */}
           <div className="w-full flex justify-center items-center gap-[0.8rem]">
             <CommonButton
+              onClick={() => handleCardEditModal(false)}
               variant="secondary"
               padding="1.4rem 11.4rem"
               isActive={true}

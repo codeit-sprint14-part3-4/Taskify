@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 type UserData = {
+  id: number
   nickname: string
   email: string
   profileImageUrl?: string
