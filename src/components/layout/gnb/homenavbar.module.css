@@ -41,6 +41,7 @@
   padding-left: 1.3rem;
   cursor: pointer;
 }
+
 .invited_members_wrapper {
   display: flex;
   align-items: center;
@@ -64,6 +65,7 @@
   border: 0.2rem solid #fff;
   margin-left: -0.6rem;
 }
+
 /*태블릿*/
 @media (max-width: 1023px) {
   .flex_center_space_between {
