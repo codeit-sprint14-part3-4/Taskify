@@ -3,6 +3,7 @@
   height: 65rem;
   background-color: var(--white-FFFFFF);
   border-radius: 0.8rem;
+  margin-top: 4rem;
 }
 
 .searchdiv {
@@ -28,6 +29,8 @@
   line-height: 2.6rem;
   font-weight: 400;
   font-family: 'Pretendard';
+  overflow-y: auto;
+  height: 46rem;
 }
 
 .invitationtop {
