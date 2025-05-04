@@ -156,8 +156,8 @@ export default function UserDropdown({
             }`}
           >
             <div className={styles.userInfo}>
-              {selectedUser &&
-                (selectedUser.profileImageUrl ? (
+              {selectedUser ? (
+                selectedUser.profileImageUrl ? (
                   <>
                     <Image
                       src={selectedUser.profileImageUrl}
@@ -173,10 +173,12 @@ export default function UserDropdown({
                     <Badge nickname={selectedUser.name} />
                     <span className={styles.userName}>{selectedUser.name}</span>
                   </>
-                ))}
-              <span className={styles.userName}>
-                {selectedUser?.name || '이름을 입력해 주세요'}
-              </span>
+                )
+              ) : (
+                <span className={styles.userName}>
+                  {'이름을 입력해 주세요'}
+                </span>
+              )}
             </div>
             <Image
               src="/assets/image/arrow-down.svg"

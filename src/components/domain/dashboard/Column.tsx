@@ -10,11 +10,13 @@ import styles from './column.module.css'
 // 내부에서만 사용
 export interface ColumnProps {
   columnInfo: ColumnType
+  dashboardId: number
   handleCardCreateModalOpen: (columnId: number) => void
 }
 
 export default function Column({
   columnInfo,
+  dashboardId,
   handleCardCreateModalOpen,
 }: ColumnProps) {
   const [cards, setCards] = useState<CardType[]>()
@@ -78,7 +80,16 @@ export default function Column({
       </div>
 
       {/* 카드 리스트 */}
-      {cards && <CardTable cards={cards} />}
+      {cards && (
+        <CardTable
+          cards={cards}
+          dashboardId={dashboardId}
+          columnInfo={{
+            columnId: columnInfo.id,
+            columnTitle: columnInfo.title,
+          }}
+        />
+      )}
     </div>
   )
 }
