@@ -262,15 +262,15 @@ export default function MyPage() {
                   <label
                     htmlFor="avatarUpload"
                     aria-label="프로필 이미지 업로드"
-                    className="w-[18.2rem] h-[18.2rem] flex items-center justify-center bg-[var(--gray-EEEEEE)] text-[3.2rem] text-[var(--violet-5534DhA)] border border-[var(--gray-D9D9D9)] rounded-[1.6rem] cursor-pointer transition-colors hover:bg-[var(--gray-FAFAFA)] hover:border-[var(--violet-5534DhA)] relative"
+                    className="w-[18.2rem] h-[18.2rem] flex items-center justify-center bg-[var(--gray-EEEEEE)] text-[3.2rem] text-[var(--violet-5534DhA)] border border-[var(--gray-D9D9D9)] rounded-[1.6rem] cursor-pointer transition-colors hover:bg-[var(--gray-FAFAFA)] hover:border-[var(--violet-5534DhA)]"
                   >
                     {previewImage ? (
                       <Image
                         src={previewImage}
                         alt="프로필 미리보기"
                         className="object-cover w-full h-full rounded-[1.6rem]"
-                        width={76}
-                        height={76}
+                        width={296}
+                        height={296}
                       />
                     ) : (
                       '+'
