@@ -29,7 +29,7 @@ export default function MyDashboardPage() {
   }, [])
 
   return (
-    <div className={styles.wrapper}>
+    <div className="p-[4rem]">
       <DashboardList />
       {/* 드롭다운 컴포넌트 나중에 삭제하세요 일단 테스트입니다 홈네브바에 해야 함!!! */}
       <MyDropDown />
@@ -38,7 +38,7 @@ export default function MyDashboardPage() {
           초대 목록 로딩 중...
         </div>
       ) : invitedList.length === 0 ? (
-        <div className={styles.invite_section}>
+        <div className="bg-white p-[2.4rem_4rem_12rem_4rem] rounded-[1.6rem] shadow-[0_0_6px_rgba(0,_0,_0,_0.05)] max-w-[96rem] mt-[7.4rem]">
           <div className="text-2xl-bold ">초대받은 대시보드</div>
           <div className="flex flex-col items-center gap-[2.4rem] text-[#8c8c8c] pt-16">
             <Image
