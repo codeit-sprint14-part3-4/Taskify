@@ -3,11 +3,8 @@ export interface FormModalProps {
   inputLabel: string
   inputValue: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onConfirm: () => void
   onCancel: () => void
-  onDelete: () => void
-  onEdit: () => void
-  onCreate: () => void
-  mode?: string
   errorMessage?: string
   size?: 'small' | 'large'
   confirmLabel?: string

@@ -32,9 +32,11 @@ export default function Sidebar({
   const getDashboardList = async () => {
     setIsLoading(true)
     try {
+      setIsLoading(true)
       const res = await dashboardsService.getDashboards('pagination', page)
       setDashboardList(res.dashboards)
       setTotalCount(res.totalCount)
+      setIsLoading(false)
     } catch (err) {
       console.error(err)
     } finally {
@@ -114,34 +116,36 @@ export default function Sidebar({
           </button>
         </li>
         <ul className="h-[580px]">
-          {dashboardList.map((dashboard) => (
-            <li key={dashboard.id}>
-              <Link
-                className={`flex items-center gap-[16px] mb-[8px] px-[12px] py-[12px] rounded-[4px] ${
-                  currentDashboardId === dashboard.id ? 'bg-[#F1EFFD]' : ''
-                }`}
-                href={`/dashboard/${dashboard.id}`}
-              >
-                <div
-                  className="w-[8px] h-[8px] rounded-full"
-                  style={{ backgroundColor: dashboard.color }}
-                ></div>
-                <div className="flex items-center gap-[6px]">
-                  <div className="text-2lg-medium text-[#787486]">
-                    {dashboard.title}
+          {dashboardList &&
+            dashboardList.length &&
+            dashboardList.map((dashboard) => (
+              <li key={dashboard.id}>
+                <Link
+                  className={`flex items-center gap-[16px] mb-[8px] px-[12px] py-[12px] rounded-[4px] ${
+                    currentDashboardId === dashboard.id ? 'bg-[#F1EFFD]' : ''
+                  }`}
+                  href={`/dashboard/${dashboard.id}`}
+                >
+                  <div
+                    className="w-[8px] h-[8px] rounded-full"
+                    style={{ backgroundColor: dashboard.color }}
+                  ></div>
+                  <div className="flex items-center gap-[6px]">
+                    <div className="text-2lg-medium text-[#787486]">
+                      {dashboard.title}
+                    </div>
+                    {dashboard.createdByMe && (
+                      <Image
+                        src="/assets/icon/crown.svg"
+                        alt="왕관"
+                        width={20}
+                        height={16}
+                      />
+                    )}
                   </div>
-                  {dashboard.createdByMe && (
-                    <Image
-                      src="/assets/icon/crown.svg"
-                      alt="왕관"
-                      width={20}
-                      height={16}
-                    />
-                  )}
-                </div>
-              </Link>
-            </li>
-          ))}
+                </Link>
+              </li>
+            ))}
         </ul>
       </ul>
 
@@ -170,7 +174,7 @@ export default function Sidebar({
             src="/assets/icon/arrow-right-gray.svg"
             width={16}
             height={16}
-            alt="오른른쪽 화살표"
+            alt="오른쪽 화살표"
           />
         </button>
       </article>

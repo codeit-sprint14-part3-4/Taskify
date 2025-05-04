@@ -82,33 +82,31 @@ export default function HomeNavBar({
               styles.nav_right_center_border
             )}
           >
-            {hasCrown && (
-              <div className={styles.nav_right_center_border_setting}>
-                <Link href={`/dashboard/${dashboardId}/edit`}>
-                  <ButtonDashboard
-                    paddingHeight="py-3"
-                    paddingWidth="px-6.5"
-                    gap="gap-2"
-                    style={{
-                      color: 'var(--gray-787486)',
-                      objectFit: 'contain',
-                      display: 'flex',
-                    }}
-                    prefix={
-                      <Image
-                        src="/assets/icon/settings-logo.svg"
-                        alt="설정"
-                        width={20}
-                        height={20}
-                        className={styles.icon}
-                      />
-                    }
-                  >
-                    관리
-                  </ButtonDashboard>
-                </Link>
-              </div>
-            )}
+            <div className={styles.nav_right_center_border_setting}>
+              <Link href={`/dashboard/${dashboardId}/edit`}>
+                <ButtonDashboard
+                  paddingHeight="py-3"
+                  paddingWidth="px-6.5"
+                  gap="gap-2"
+                  style={{
+                    color: 'var(--gray-787486)',
+                    objectFit: 'contain',
+                    display: 'flex',
+                  }}
+                  prefix={
+                    <Image
+                      src="/assets/icon/settings-logo.svg"
+                      alt="설정"
+                      width={20}
+                      height={20}
+                      className={styles.icon}
+                    />
+                  }
+                >
+                  관리
+                </ButtonDashboard>
+              </Link>
+            </div>
             <div className={styles.button_invitation}>
               <ButtonDashboard
                 paddingHeight="py-3"
@@ -142,9 +140,9 @@ export default function HomeNavBar({
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
         >
           <div className={styles.profile_image}>
-            {userData?.profileImageUrl ? (
+            {userData?.profileImage ? (
               <Image
-                src={userData.profileImageUrl}
+                src={userData.profileImage}
                 alt="Profile Image"
                 width={40}
                 height={40}

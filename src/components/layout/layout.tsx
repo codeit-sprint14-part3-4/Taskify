@@ -120,7 +120,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
   return (
     <div className="flex h-screen">
       <div className="w-[300px] shrink-0">
-        <Sidebar currentDashboardId={dashboardId} />
+        <Sidebar />
       </div>
       <div className="flex flex-col flex-1">
         <header className="h-[70px] shrink-0 border-b border-[var(--gray-D9D9D9)] bg-white">
