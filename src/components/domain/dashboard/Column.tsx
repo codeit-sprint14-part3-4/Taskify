@@ -7,21 +7,17 @@ import { ColumnType } from '@/types/api/columns'
 import { CardType } from '@/types/api/cards'
 import styles from './column.module.css'
 
+// 내부에서만 사용
 export interface ColumnProps {
   columnInfo: ColumnType
   dashboardId: number
   handleCardCreateModalOpen: (columnId: number) => void
-  // 아래 props가 실제로 존재하지 않는다면 제거하거나 대체 로직 필요
-  handleColumnEditModal?: (open: boolean) => void
-  handleColumnOptionClick?: (column: ColumnType) => void
 }
 
 export default function Column({
   columnInfo,
   dashboardId,
   handleCardCreateModalOpen,
-  handleColumnEditModal,
-  handleColumnOptionClick,
 }: ColumnProps) {
   const [cards, setCards] = useState<CardType[]>()
 
@@ -36,6 +32,7 @@ export default function Column({
 
   return (
     <div className={styles.column}>
+      {/* 상단: 컬럼 제목 + 카드 개수 + 설정 버튼sd */}
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
           <div className={styles.dotTitle}>
@@ -43,16 +40,14 @@ export default function Column({
             <span className="text-lg-medium">{columnInfo.title}</span>
           </div>
 
-          <span className={styles.cardCount}>{cards && cards.length}</span>
+          <span className={styles.cardCount}>
+            {/* && 연산자 사용 이유 : getCards는 비동기로 동작, cards가 확정적으로 동작하지 않음. cards가 있을 때만 cards.length가 동작할 수 있게 */}
+            {cards && cards.length}
+          </span>
         </div>
 
-        {/* 설정 버튼 */}
-        <button
-          onClick={() => {
-            handleColumnEditModal?.(true)
-            handleColumnOptionClick?.(columnInfo)
-          }}
-        >
+        {/* onClick 이벤트 추가 요망 */}
+        <button>
           <Image
             src="/assets/icon/settings-logo.svg"
             alt="설정 아이콘"
@@ -60,6 +55,28 @@ export default function Column({
             height={24}
           />
         </button>
+      </div>
+
+      {/* + 버튼 */}
+      <div className={styles.addButtonWrapper}>
+        <ButtonDashboard
+          // onclickAdd 이벤트 추가 요망
+          onClick={() => handleCardCreateModalOpen(columnInfo.id)}
+          color="bg-white"
+          className={styles.addButton}
+          prefix={
+            <div className={styles.addIcon}>
+              <Image
+                src="/assets/icon/add-box.svg"
+                alt="카드 추가 버튼"
+                width={22}
+                height={22}
+                unoptimized
+                style={{ width: '22px', height: '22px', display: 'block' }}
+              />
+            </div>
+          }
+        />
       </div>
 
       {/* 카드 리스트 */}
