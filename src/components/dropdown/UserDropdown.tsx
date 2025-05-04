@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import styles from './userDropdown.module.css'
 import Badge from '../common/badge/Badge'
@@ -32,17 +32,14 @@ export default function UserDropdown({
   const [focusedIndex, setFocusedIndex] = useState(0)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const matchedUser = useMemo(() => {
-    return users.find((user) => user.name === inputValue)
-  }, [users, inputValue])
+  const matchedUser = users.find((user) => user.name === inputValue)
 
-  const filteredUsers = useMemo(() => {
-    return mode === 'search'
+  const filteredUsers =
+    mode === 'search'
       ? users.filter((user) =>
           user.name?.toLowerCase().includes(inputValue.toLowerCase())
         )
       : users
-  }, [users, inputValue, mode])
 
   const handleSelect = useCallback(
     (user: User) => {
@@ -96,12 +93,11 @@ export default function UserDropdown({
 
     if (e.key === 'Enter' && filteredUsers.length > 0) {
       e.preventDefault()
-
       const selectedUser = filteredUsers[focusedIndex]
       handleSelect(selectedUser)
     }
   }
-  console.log(selectedUser)
+
   return (
     <div ref={dropdownRef} className={`${styles.container} ${className}`}>
       <div className={styles.inputWrapper}>
@@ -131,7 +127,6 @@ export default function UserDropdown({
                 setInputValue(newValue)
                 setIsOpen(true)
                 setFocusedIndex(0)
-
                 if (newValue.trim() === '') {
                   onChange(undefined)
                 }
@@ -220,13 +215,6 @@ export default function UserDropdown({
                   ) : (
                     <div className={styles.checkSpacer} />
                   )}
-                  {/* <div
-                    style={{ backgroundColor: user.badgeColor }}
-                    className={styles.initialCircle}
-                  >
-                    {getInitial(user.name)}
-                  </div> */}
-
                   {user.profileImageUrl ? (
                     <>
                       <Image

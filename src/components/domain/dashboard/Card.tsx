@@ -10,7 +10,6 @@ export interface CardProps {
 }
 
 export default function Card({ cardInfo }: CardProps) {
-  console.log(cardInfo)
   return (
     <div className={styles.card}>
       {/* 이미지: 현재 props로 받은 imageUrl 사용,
@@ -67,7 +66,7 @@ export default function Card({ cardInfo }: CardProps) {
                   alt="프로필 이미지"
                   width={24}
                   height={24}
-                  className="w-6 h-6 rounded-full object-cover"
+                  className="w-[2.4rem] h-[2.4rem] rounded-full object-cover"
                 />
               ) : (
                 <Badge nickname={cardInfo.assignee.nickname} />

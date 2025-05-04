@@ -85,9 +85,8 @@ export default function TaskCardCreateModal({
   }
 
   const handleSubmitForm = async () => {
-    console.log(assignee)
     const bodyData: CreateCardBody = {
-      assigneeUserId: assignee, // 나중에 유저 id로 넣어야 함
+      assigneeUserId: assignee,
       dashboardId: dashboardId,
       columnId: columnId,
       title: title,
@@ -113,10 +112,6 @@ export default function TaskCardCreateModal({
 
       bodyData.dueDate = parseDate
     }
-
-    // 담당자를 선택했으면 추가하는 로직 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // ----------------------------
-    // ----------------------------
 
     // 서버로 요청
     await cardsService.postCards(bodyData)
