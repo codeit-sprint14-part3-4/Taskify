@@ -6,6 +6,7 @@ import { commentsService } from '@/api/services/commentsServices'
 import { cardsService } from '@/api/services/cardsServices'
 import type { Comment } from '@/types/api/comments'
 import type { CardType } from '@/types/api/cards'
+import AnimatedModalContainer from '@/components/common/animatedmodalcontainer/AnimatedModalContainer' // 추가
 import styles from './TaskCardModal.module.css'
 
 interface Props {
@@ -39,13 +40,20 @@ export default function TaskCardModal({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [editedContent, setEditedContent] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchCardDetail = async () => {
     try {
+      setIsLoading(true)
       const data = await cardsService.getCardsDetail(cardId)
+
+      await new Promise((res) => setTimeout(res, 200))
+
       setCard(data)
     } catch (err) {
       console.error('카드 상세 조회 실패:', err)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -108,157 +116,161 @@ export default function TaskCardModal({
     }
   }, [card])
 
-  if (!card) return <div>카드 정보를 불러오는 중입니다...</div>
-
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modalContainer}>
-        <div className={styles.modaltop}>
-          <h1 className={`text-2xl-bold ${styles.cardTitle}`}>{card.title}</h1>
-          <div className={styles.topRightButtons}>
-            <button
-              onClick={() => setIsDropdownOpen((prev) => !prev)}
-              className={styles.buttonbox}
-            >
-              <div className={styles.kebabbutton}>
-                <Image src="/assets/icon/kebab.svg" alt="메뉴" fill />
-              </div>
-            </button>
-            {isDropdownOpen && (
-              <div className={styles.dropdownMenu}>
+    <AnimatedModalContainer isLoading={isLoading}>
+      {card && (
+        <div className={styles.overlay}>
+          <div className={styles.modalContainer}>
+            <div className={styles.modaltop}>
+              <h1 className={`text-2xl-bold ${styles.cardTitle}`}>
+                {card.title}
+              </h1>
+              <div className={styles.topRightButtons}>
                 <button
-                  onClick={() => onEdit(card)}
-                  className={styles.editbutton}
+                  onClick={() => setIsDropdownOpen((prev) => !prev)}
+                  className={styles.buttonbox}
                 >
-                  수정하기
+                  <div className={styles.kebabbutton}>
+                    <Image src="/assets/icon/kebab.svg" alt="메뉴" fill />
+                  </div>
                 </button>
-                <button
-                  onClick={() => {
-                    if (confirm('정말 삭제하시겠습니까?')) onDelete(card.id)
-                  }}
-                >
-                  삭제하기
+                {isDropdownOpen && (
+                  <div className={styles.dropdownMenu}>
+                    <button
+                      onClick={() => onEdit(card)}
+                      className={styles.editbutton}
+                    >
+                      수정하기
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (confirm('정말 삭제하시겠습니까?')) onDelete(card.id)
+                      }}
+                    >
+                      삭제하기
+                    </button>
+                  </div>
+                )}
+                <button onClick={onClose} className={styles.buttonbox}>
+                  <div className={styles.closebutton}>
+                    <Image src="/assets/icon/close.svg" alt="닫기" fill />
+                  </div>
                 </button>
               </div>
-            )}
-            <button onClick={onClose} className={styles.buttonbox}>
-              <div className={styles.closebutton}>
-                <Image src="/assets/icon/close.svg" alt="닫기" fill />
-              </div>
-            </button>
-          </div>
-        </div>
+            </div>
 
-        <section className={styles.assigneebox}>
-          <div>
-            <span className={styles.assigneespans}>담당자</span>
-            <div className="flex items-center gap-[0.8rem] mt-[0.4rem]">
-              {card.assignee ? (
-                <>
-                  <Badge nickname={card.assignee.nickname} />
-                  <span>{card.assignee.nickname}</span>
-                </>
-              ) : (
-                <span className="text-gray-400">담당자 없음</span>
+            <section className={styles.assigneebox}>
+              <div>
+                <span className={styles.assigneespans}>담당자</span>
+                <div className="flex items-center gap-[0.8rem] mt-[0.4rem]">
+                  {card.assignee ? (
+                    <>
+                      <Badge nickname={card.assignee.nickname} />
+                      <span>{card.assignee.nickname}</span>
+                    </>
+                  ) : (
+                    <span className="text-gray-400">담당자 없음</span>
+                  )}
+                </div>
+              </div>
+              <div>
+                <span className={styles.assigneespans}>마감일</span>
+                <div>{formatDate(card.dueDate)}</div>
+              </div>
+            </section>
+
+            <div className={styles.sectionInfo}>
+              <div className={styles.statusTagRow}>
+                <div className={styles.cardStatus}>TODO</div>
+                <div className={styles.tagList}>
+                  {card.tags.map((tag, index) => (
+                    <Tag key={index} label={tag} />
+                  ))}
+                </div>
+              </div>
+              <p className={styles.cardDescription}>{card.description}</p>
+
+              {card.imageUrl && (
+                <div className={styles.imageWrapper}>
+                  <Image src={card.imageUrl} alt="카드 이미지" fill />
+                </div>
               )}
             </div>
-          </div>
-          <div>
-            <span className={styles.assigneespans}>마감일</span>
-            <div>{formatDate(card.dueDate)}</div>
-          </div>
-        </section>
 
-        <div className={styles.sectionInfo}>
-          <div className={styles.statusTagRow}>
-            <div className={styles.cardStatus}>TODO</div>
-            <div className={styles.tagList}>
-              {card.tags.map((tag, index) => (
-                <Tag key={index} label={tag} />
-              ))}
-            </div>
-          </div>
-          <p className={styles.cardDescription}>{card.description}</p>
-
-          {card.imageUrl && (
-            <div className={styles.imageWrapper}>
-              <Image src={card.imageUrl} alt="카드 이미지" fill />
-            </div>
-          )}
-        </div>
-
-        <div className={styles.commentSection}>
-          <label className={styles.commentlabel}>댓글</label>
-          <div className={styles.commentInputArea}>
-            <textarea
-              value={inputComment}
-              onChange={(e) => setInputComment(e.target.value)}
-              placeholder="댓글을 입력하세요"
-              className={`${styles.textareainput} resize-none`}
-            />
-            <div className={styles.commentinputbutton}>
-              <button
-                onClick={handleAddComment}
-                disabled={!inputComment.trim()}
-                className={styles.commentbutton}
-              >
-                입력
-              </button>
-            </div>
-          </div>
-
-          <div className={styles.commentList}>
-            {comments.map((comment) => (
-              <div key={comment.id} className={styles.commentCard}>
-                <div className={styles.commentMeta}>
-                  {formatDate(comment.createdAt)}
+            <div className={styles.commentSection}>
+              <label className={styles.commentlabel}>댓글</label>
+              <div className={styles.commentInputArea}>
+                <textarea
+                  value={inputComment}
+                  onChange={(e) => setInputComment(e.target.value)}
+                  placeholder="댓글을 입력하세요"
+                  className={`${styles.textareainput} resize-none`}
+                />
+                <div className={styles.commentinputbutton}>
+                  <button
+                    onClick={handleAddComment}
+                    disabled={!inputComment.trim()}
+                    className={styles.commentbutton}
+                  >
+                    입력
+                  </button>
                 </div>
-                {editingCommentId === comment.id ? (
-                  <div className={styles.editArea}>
-                    <textarea
-                      value={editedContent}
-                      onChange={(e) => setEditedContent(e.target.value)}
-                      className={styles.textareainput}
-                    />
-                    <div className={styles.commentinputbutton}>
-                      <button
-                        onClick={() => handleEditComment(comment.id)}
-                        className={styles.commentbutton}
-                      >
-                        저장
-                      </button>
-                      <button
-                        onClick={() => setEditingCommentId(null)}
-                        className={styles.commentbutton}
-                      >
-                        취소
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className={styles.commentContent}>
-                      {comment.content}
-                    </div>
-                    {comment.author.id === currentUserId && (
-                      <div className={styles.commentButtons}>
-                        <button
-                          onClick={() => {
-                            setEditingCommentId(comment.id)
-                            setEditedContent(comment.content)
-                          }}
-                        >
-                          수정
-                        </button>
-                      </div>
-                    )}
-                  </>
-                )}
               </div>
-            ))}
+
+              <div className={styles.commentList}>
+                {comments.map((comment) => (
+                  <div key={comment.id} className={styles.commentCard}>
+                    <div className={styles.commentMeta}>
+                      {formatDate(comment.createdAt)}
+                    </div>
+                    {editingCommentId === comment.id ? (
+                      <div className={styles.editArea}>
+                        <textarea
+                          value={editedContent}
+                          onChange={(e) => setEditedContent(e.target.value)}
+                          className={styles.textareainput}
+                        />
+                        <div className={styles.commentinputbutton}>
+                          <button
+                            onClick={() => handleEditComment(comment.id)}
+                            className={styles.commentbutton}
+                          >
+                            저장
+                          </button>
+                          <button
+                            onClick={() => setEditingCommentId(null)}
+                            className={styles.commentbutton}
+                          >
+                            취소
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className={styles.commentContent}>
+                          {comment.content}
+                        </div>
+                        {comment.author.id === currentUserId && (
+                          <div className={styles.commentButtons}>
+                            <button
+                              onClick={() => {
+                                setEditingCommentId(comment.id)
+                                setEditedContent(comment.content)
+                              }}
+                            >
+                              수정
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </AnimatedModalContainer>
   )
 }
