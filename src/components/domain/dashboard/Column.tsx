@@ -7,21 +7,24 @@ import { ColumnType } from '@/types/api/columns'
 import { CardType } from '@/types/api/cards'
 import styles from './column.module.css'
 
-// 내부에서만 사용
 export interface ColumnProps {
   columnInfo: ColumnType
   dashboardId: number
   handleCardCreateModalOpen: (columnId: number) => void
-
+  // 아래 props가 실제로 존재하지 않는다면 제거하거나 대체 로직 필요
+  handleColumnEditModal?: (open: boolean) => void
+  handleColumnOptionClick?: (column: ColumnType) => void
 }
 
 export default function Column({
   columnInfo,
   dashboardId,
   handleCardCreateModalOpen,
-
+  handleColumnEditModal,
+  handleColumnOptionClick,
 }: ColumnProps) {
   const [cards, setCards] = useState<CardType[]>()
+
   const getCards = async () => {
     const cardsData = await cardsService.getCards(10, columnInfo.id)
     setCards(cardsData.cards)
@@ -32,63 +35,32 @@ export default function Column({
   }, [])
 
   return (
-    <>
-      <div className={styles.column}>
-        {/* 상단: 컬럼 제목 + 카드 개수 + 설정 버튼 */}
-        <div className={styles.header}>
-          <div className={styles.titleWrapper}>
-            <div className={styles.dotTitle}>
-              <div className={styles.dot} />
-              <span className="text-lg-medium">{columnInfo.title}</span>
-            </div>
-
-            <span className={styles.cardCount}>
-              {/* && 연산자 사용 이유 : getCards는 비동기로 동작, cards가 확정적으로 동작하지 않음. cards가 있을 때만 cards.length가 동작할 수 있게 */}
-              {cards && cards.length}
-            </span>
+    <div className={styles.column}>
+      <div className={styles.header}>
+        <div className={styles.titleWrapper}>
+          <div className={styles.dotTitle}>
+            <div className={styles.dot} />
+            <span className="text-lg-medium">{columnInfo.title}</span>
           </div>
 
-          {/* onClick 이벤트 추가 요망 */}
-          <button
-            onClick={() => {
-              handleColumnEditModal(true)
-              handleColumnOptionClick(columnInfo)
-            }}
-          >
-            <Image
-              src="/assets/icon/settings-logo.svg"
-              alt="설정 아이콘"
-              width={24}
-              height={24}
-            />
-          </button>
+          <span className={styles.cardCount}>{cards && cards.length}</span>
         </div>
 
-
-        {/* onClick 이벤트 추가 요망 */}
-        <button>
+        {/* 설정 버튼 */}
+        <button
+          onClick={() => {
+            handleColumnEditModal?.(true)
+            handleColumnOptionClick?.(columnInfo)
+          }}
+        >
           <Image
             src="/assets/icon/settings-logo.svg"
             alt="설정 아이콘"
             width={24}
             height={24}
-
           />
-        </div>
-
-        {/* 카드 리스트 */}
-        {cards && (
-          <CardTable
-            cards={cards}
-            dashboardId={dashboardId}
-            columnInfo={{
-              columnId: columnInfo.id,
-              columnTitle: columnInfo.title,
-            }}
-          />
-        )}
+        </button>
       </div>
-
 
       {/* 카드 리스트 */}
       {cards && (
@@ -102,6 +74,5 @@ export default function Column({
         />
       )}
     </div>
-
   )
 }
