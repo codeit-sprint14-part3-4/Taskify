@@ -35,11 +35,11 @@ export default function DashboardList() {
         dashboardsPerPage
       )
       setDashboards(data.dashboards)
-      console.log('대시보드 목록:', data.dashboards)
+
       setTotalPages(Math.ceil(data.totalCount / dashboardsPerPage))
     } catch (err) {
-      setError('대시보드를 불러오는 데 실패했습니다.')
-      console.error(err)
+      const error = err as Error
+      setError(error.message || '대시보드를 불러오는 데 실패했습니다.')
     }
   }
 
@@ -83,10 +83,10 @@ export default function DashboardList() {
 
         {error && <div className="text-red-500 mt-4">{error}</div>}
 
-        {dashboards.map((dashboard) => (
+        {dashboards.map((dashboard, index) => (
           <DashBoardListButton
             onClick={() => handleDashboardClick(dashboard.id)}
-            key={dashboard.id}
+            key={`${dashboard.id}-${dashboard.title}-${index}`}
             colorPin={
               <ColorPin
                 id={dashboard.id}
@@ -117,7 +117,7 @@ export default function DashboardList() {
       <div className={`${styles.page_wrapper} text-md-regular`}>
         <div className={styles.botton_gap}>
           <span>
-            {page} 페이지 중 {totalPages}
+            {page} / {totalPages}
           </span>
         </div>
         <button

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import styles from './myInvitedDashboard.module.css'
 import Image from 'next/image'
+
 import CommonInput from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { Invitation } from '@/types/api/invitations'
@@ -15,19 +16,22 @@ const MyInvitedDashboard = () => {
 
   // 초대 목록을 가져오는 함수
   const fetchInvitations = useCallback(
-    async (cursorId?: number) => {
+    async (cursorId?: number, title?: string, isNewSearch: boolean = false) => {
       if (isLoading || !hasMore) return
       setIsLoading(true)
-
-      // 9999를 한 이유는 초대 목록 검색을 위해서입니다.
+      // '' 인 경우 undefined로 처리하여 검색어를 없애고, 검색어가 있는 경우 title을 사용합니다.
       try {
+        const search = title?.trim() === '' ? undefined : title
         const response = await invitationsService.getInvitations(
-          99999,
-          cursorId
+          10,
+          cursorId,
+          search
         )
         const newData = response.invitations
-        console.log('초대 목록:', newData)
-        setInvitedList((prev) => [...prev, ...newData])
+
+        setInvitedList((prev) =>
+          isNewSearch ? newData : [...prev, ...newData]
+        )
         setHasMore(newData.length === 10)
       } catch (error) {
         console.error('초대 목록 조회 실패:', error)
@@ -37,10 +41,18 @@ const MyInvitedDashboard = () => {
     },
     [isLoading, hasMore]
   )
-  // 처음 렌더링 시 초대 목록을 가져오는 useEffect
+
+  // 검색하는 동안 초대 목록을 초기화하고 검색어에 따라 초대 목록을 가져오는  useEffect
   useEffect(() => {
-    fetchInvitations()
-  }, [])
+    const delayDebounce = setTimeout(() => {
+      // ← 이 안에서 상태 초기화
+      setInvitedList([])
+      setHasMore(true)
+      fetchInvitations(undefined, searchTerm, true)
+    }, 500)
+
+    return () => clearTimeout(delayDebounce)
+  }, [searchTerm])
 
   // 스크롤 시 마지막 아이템을 감지하는 IntersectionObserver
   const lastItemRef = useCallback(
@@ -52,24 +64,15 @@ const MyInvitedDashboard = () => {
         if (entries[0].isIntersecting && hasMore) {
           const lastItem = invitedList[invitedList.length - 1]
           if (lastItem) {
-            fetchInvitations(lastItem.id)
+            fetchInvitations(lastItem.id, searchTerm)
           }
         }
       })
 
       if (node) observerRef.current.observe(node)
     },
-    [invitedList, hasMore, isLoading]
+    [invitedList, hasMore, isLoading, searchTerm, fetchInvitations]
   )
-
-  // 검색어에 따라 초대 목록을 필터링
-  const filteredData = searchTerm
-    ? invitedList
-        .filter((item) =>
-          item.dashboard.title.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        .reverse()
-    : invitedList
 
   // 검색어 입력 핸들러
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,13 +126,13 @@ const MyInvitedDashboard = () => {
         </div>
 
         {/* 리스트 */}
-        {filteredData.map((item, index) => {
-          const isLastItem = index === filteredData.length - 1
+        {invitedList.map((item, index) => {
+          const isLastItem = index === invitedList.length - 1
           return (
             <div
               key={item.id}
               className={styles.invitationlist}
-              ref={isLastItem && !searchTerm ? lastItemRef : null}
+              ref={isLastItem ? lastItemRef : null}
             >
               <div>{item.dashboard.title}</div>
               <div>{item.inviter.nickname}</div>
@@ -154,8 +157,7 @@ const MyInvitedDashboard = () => {
             </div>
           )
         })}
-        <div style={{ height: '20px' }} />
-        {isLoading && <p className="text-center mt-4">불러오는 중...</p>}
+        <div />
       </div>
     </div>
   )

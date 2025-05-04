@@ -21,8 +21,9 @@ const DashboardList = ({
       <div className={styles.main_wrapper}>
         <div className={styles.main_left}>
           <div className={styles.main_color}>{colorPin}</div>
-          <div className={styles.main_left}>
-            {children && <span className={styles.crown_title}>{children}</span>}
+          <div className={styles.main_flex}>
+            <span className={styles.crown_title}>{children}</span>
+
             <div className={styles.crown}>
               {suffix && <div className={styles.icon}>{suffix}</div>}
             </div>
