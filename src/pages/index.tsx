@@ -36,23 +36,23 @@ export default function Home() {
     }
   }, [accessToken])
 
-  // // 대시보드가 존재하는 경우 첫 번째 대시보드로 리다이렉트
-  // useEffect(() => {
-  //   if (firstDashboardId !== null) {
-  //     router.push(`/dashboard/${firstDashboardId}`)
-  //   }
-  // }, [firstDashboardId, router])
+  // 대시보드가 존재하는 경우 첫 번째 대시보드로 리다이렉트
+  useEffect(() => {
+    if (firstDashboardId !== null) {
+      router.push(`/dashboard/${firstDashboardId}`)
+    }
+  }, [firstDashboardId, router])
 
-  // // 로그인 안 되어 있는 경우 랜딩 페이지 렌더링
-  // if (accessToken && firstDashboardId === null) {
-  //   return (
-  //     <div className="flex justify-center items-center min-h-screen">
-  //       <p className="text-lg font-medium text-gray-700">
-  //         대시보드로 이동 중입니다...
-  //       </p>
-  //     </div>
-  //   )
-  // }
+  // 로그인 안 되어 있는 경우 랜딩 페이지 렌더링
+  if (accessToken && firstDashboardId === null) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-lg font-medium text-gray-700">
+          대시보드로 이동 중입니다...
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className={`bg-[var(--black-000000)] min-h-screen flex flex-col`}>
