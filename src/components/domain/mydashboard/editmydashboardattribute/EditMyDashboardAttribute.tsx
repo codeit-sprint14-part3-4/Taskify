@@ -5,11 +5,12 @@ import { useState, useEffect } from 'react'
 import ColorPin from '@/components/domain/colorpin/ColorPin'
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import { useColorPicker } from '@/hooks/useColorPicker'
+import { Dashboard } from '@/types/api/dashboards'
 import { useRouter } from 'next/router'
 
 export default function EditMyDashboardAttribute() {
-  const { query } = useRouter()
-  const dashboardId = Number(query.id)
+  const router = useRouter()
+  const id = Number(router.query.id)
   const [editText, setEditText] = useState('')
   const [newTitle, setNewTitle] = useState('')
   const { selectedColor, handleColorSelect, COLORS } = useColorPicker()
@@ -17,9 +18,7 @@ export default function EditMyDashboardAttribute() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const dashboardData = await dashboardsService.getDashboardsDetail(
-          dashboardId
-        )
+        const dashboardData = await dashboardsService.getDashboardsDetail(id)
         setEditText(dashboardData.title)
         setNewTitle(dashboardData.title)
         const selectedColorObject = COLORS.find(
@@ -33,7 +32,7 @@ export default function EditMyDashboardAttribute() {
       }
     }
     fetchDashboardData()
-  }, [dashboardId])
+  }, [id])
 
   const handleEditDashboardAttribute = async () => {
     if (!editText) {
@@ -45,7 +44,7 @@ export default function EditMyDashboardAttribute() {
         title: editText,
         color: String(selectedColor?.color),
       }
-      await dashboardsService.putDashboards(dashboardId, body)
+      await dashboardsService.putDashboards(id, body)
       alert('대시보드 수정이 완료되었습니다.')
       window.location.reload()
     } catch (error) {
