@@ -86,7 +86,7 @@ const MyInvitedDashboard = () => {
       await invitationsService.putInvitations(invitationId, {
         inviteAccepted: isAccept,
       })
-      window.location.reload()
+      setInvitedList((prev) => prev.filter((item) => item.id !== invitationId))
     } catch (err) {
       console.error(err)
     }
@@ -156,7 +156,6 @@ const MyInvitedDashboard = () => {
             </div>
           )
         })}
-        <div />
       </div>
     </div>
   )
