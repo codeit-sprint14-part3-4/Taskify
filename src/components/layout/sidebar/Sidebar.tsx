@@ -85,7 +85,6 @@ export default function Sidebar({
 
   return (
     <div className={styles.sidebar}>
-      {/* 기존 코드 그대로 유지 */}
       <Link href="/mydashboard" className={styles.logo}>
         <Image
           src="/assets/icon/logo-icon.svg"
