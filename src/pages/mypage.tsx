@@ -241,21 +241,62 @@ export default function MyPage() {
       <div className="flex flex-nowrap px-0 items-start justify-start w-full">
         <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem]">
           <div className="mt-[1rem] mb-[2rem]">
-            <div className="bg-gray-200 h-[2rem] w-[10rem] rounded-md mb-[1rem]"></div>
-            <div className="bg-gray-200 h-[5rem] w-[18rem] rounded-md mb-[1rem]"></div>
+            <button type="button" className="flex items-center gap-[0.6rem]">
+              <div className="w-[1.6rem] h-[1.6rem] bg-[var(--gray-D9D9D9)] rounded-full animate-pulse"></div>
+              <div className="w-[6rem] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem]"></div>
+            </button>
           </div>
 
           <div className="flex flex-col gap-[2.4rem]">
+            {/* 스켈레톤 프로필 카드 */}
             <section className="w-[66.9rem] h-[36.6rem] bg-[var(--white-FFFFFF)] rounded-[1.6rem] p-[3.2rem]">
-              <div className="bg-gray-200 h-[5rem] rounded-md mb-[1rem]"></div>
-              <div className="bg-gray-200 w-[18.2rem] h-[18.2rem] rounded-md mb-[1rem]"></div>
-              <div className="bg-gray-200 h-[5rem] rounded-md"></div>
+              <div className="w-[8rem] h-[2rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mb-[1.6rem]"></div>
+              <div className="flex gap-[3.2rem] max-[767px]:flex-col max-[767px]:gap-[5rem]">
+                <div>
+                  <div className="w-[18.2rem] h-[18.2rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[1.6rem]"></div>
+                </div>
+                <div className="flex-1 flex flex-col">
+                  <div className="w-[8rem] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mb-[0.4rem]"></div>
+                  <div className="h-[5rem] mb-[1.6rem] p-[1.5rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] bg-transparent text-[var(--gray-9FA6B2)] animate-pulse"></div>
+
+                  <div className="w-[8rem] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mb-[0.4rem]"></div>
+                  <div className="h-[5rem] mb-[2.4rem] p-[1.5rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] animate-pulse"></div>
+
+                  <div className="w-full py-[1.5rem] rounded-[0.8rem] text-[var(--white-FFFFFF)] text-lg-semibold bg-[var(--gray-D9D9D9)] cursor-not-allowed animate-pulse h-[5rem]"></div>
+                </div>
+              </div>
             </section>
 
-            <section className="w-[66.9rem] h-[46.6rem] bg-[var(--white-FFFFFF)] rounded-[1.6rem] p-[3.2rem]">
-              <div className="bg-gray-200 h-[5rem] rounded-md mb-[1rem]"></div>
-              <div className="bg-gray-200 h-[5rem] rounded-md mb-[1rem]"></div>
-              <div className="bg-gray-200 h-[5rem] rounded-md mb-[1rem]"></div>
+            {/* 스켈레톤 비밀번호 변경 카드 */}
+            <section className="w-[66.9rem] h-[46.6rem] bg-[var(--white-FFFFFF)] rounded-[1.6rem] p-[3.2rem] flex flex-col">
+              <div className="w-[8rem] h-[2rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mb-[0.8rem]"></div>
+              <div className="flex flex-col">
+                <div className="flex flex-col mb-[0.6rem]">
+                  <div className="w-[8rem] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mb-[0.4rem]"></div>
+                  <div className="w-full h-[5rem] p-[1.5rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] bg-[var(--gray-EEEEEE)] animate-pulse"></div>
+                  <div className="min-h-[1rem]">
+                    <div className="w-[80%] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mt-[0.8rem]"></div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col mb-[0.6rem]">
+                  <div className="w-[8rem] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mb-[0.4rem]"></div>
+                  <div className="w-full h-[5rem] p-[1.5rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] bg-[var(--gray-EEEEEE)] animate-pulse"></div>
+                  <div className="min-h-[1rem]">
+                    <div className="w-[80%] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mt-[0.8rem]"></div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col mb-[0.6rem]">
+                  <div className="w-[8rem] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mb-[0.4rem]"></div>
+                  <div className="w-full h-[5rem] p-[1.5rem] border border-[var(--gray-D9D9D9)] rounded-[0.8rem] bg-[var(--gray-EEEEEE)] animate-pulse"></div>
+                  <div className="min-h-[1rem]">
+                    <div className="w-[80%] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mt-[0.8rem]"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full py-[1.5rem] rounded-[0.8rem] mt-[0.8rem] text-[var(--white-FFFFFF)] text-lg-semibold bg-[var(--gray-D9D9D9)] animate-pulse h-[5rem]"></div>
             </section>
           </div>
         </div>
