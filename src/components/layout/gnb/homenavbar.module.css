@@ -43,8 +43,7 @@
   padding-left: 1.3rem;
   cursor: pointer;
 }
-.icon {
-}
+
 /*태블릿*/
 @media (max-width: 1023px) {
   .flex_center_space_between {

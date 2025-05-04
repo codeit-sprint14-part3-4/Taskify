@@ -340,7 +340,7 @@ export default function MyPage() {
                       <Image
                         src={previewImage}
                         alt="프로필 미리보기"
-                        className="object-cover w-full h-full rounded-[1.6rem]"
+                        className="object-fit w-full h-full rounded-[1.6rem]"
                         width={292}
                         height={292}
                         quality={100}
