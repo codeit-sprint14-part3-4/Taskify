@@ -36,23 +36,23 @@ export default function Home() {
     }
   }, [accessToken])
 
-  // 대시보드가 존재하는 경우 첫 번째 대시보드로 리다이렉트
-  useEffect(() => {
-    if (firstDashboardId !== null) {
-      router.push(`/dashboard/${firstDashboardId}`)
-    }
-  }, [firstDashboardId, router])
+  // // 대시보드가 존재하는 경우 첫 번째 대시보드로 리다이렉트
+  // useEffect(() => {
+  //   if (firstDashboardId !== null) {
+  //     router.push(`/dashboard/${firstDashboardId}`)
+  //   }
+  // }, [firstDashboardId, router])
 
-  // 로그인 안 되어 있는 경우 랜딩 페이지 렌더링
-  if (accessToken && firstDashboardId === null) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-lg font-medium text-gray-700">
-          대시보드로 이동 중입니다...
-        </p>
-      </div>
-    )
-  }
+  // // 로그인 안 되어 있는 경우 랜딩 페이지 렌더링
+  // if (accessToken && firstDashboardId === null) {
+  //   return (
+  //     <div className="flex justify-center items-center min-h-screen">
+  //       <p className="text-lg font-medium text-gray-700">
+  //         대시보드로 이동 중입니다...
+  //       </p>
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className={`bg-[var(--black-000000)] min-h-screen flex flex-col`}>
@@ -94,10 +94,10 @@ export default function Home() {
         </AnimatedSection>
         <AnimatedSection delay={0.2}>
           <section
-            className={`bg-[var(--black-171717)] 2xl:w-[120rem] 2xl:h-[60rem] md:w-[66.4rem] md:h-[97.2rem] w-[34.3rem] h-[68.6rem] rounded-[0.8rem] flex justify-self-center mt-[17.8rem] md:pt-[12.5rem] pt-[6rem] md:pl-[5.4rem] relative  flex-col`}
+            className={`bg-[var(--black-171717)] xl:w-[120rem] xl:h-[60rem] md:w-[66.4rem] md:h-[97.2rem] w-[34.3rem] h-[68.6rem] rounded-[0.8rem] flex justify-self-center mt-[17.8rem] md:pt-[12.5rem] pt-[6rem] md:pl-[5.4rem] relative  flex-col`}
           >
             <div
-              className={`absolute right-0 bottom-0 2xl:w-[59.4rem] 2xl:h-[49.7rem] md:w-[51.9rem] md:h-[43.5rem] 2xl:h-[43.5rem] w-[29.6rem] h-[24.8rem]`}
+              className={`absolute right-0 bottom-0 xl:w-[59.4rem] xl:h-[49.7rem] md:w-[51.9rem] md:h-[43.5rem]  w-[29.6rem] h-[24.8rem]`}
             >
               <Image
                 src="/assets/image/landing1.svg"
@@ -121,10 +121,10 @@ export default function Home() {
         </AnimatedSection>
         <AnimatedSection delay={0.2}>
           <section
-            className={`md:text-left text-center bg-[var(--black-171717)] 2xl:w-[120rem] 2xl:h-[60rem] md:w-[66.4rem] md:h-[97.2rem] w-[34.3rem] h-[68.6rem] rounded-[0.8rem] flex justify-self-center mt-[17.8rem] md:pt-[12.5rem] pt-[6rem] md:pl-[5.4rem] relative  flex-col`}
+            className={`md:text-left text-center bg-[var(--black-171717)] xl:w-[120rem] xl:h-[60rem] md:w-[66.4rem] md:h-[97.2rem] w-[34.3rem] h-[68.6rem] rounded-[0.8rem] flex justify-self-center mt-[17.8rem] xl:pt-0 md:pt-[12.5rem] pt-[6rem] md:pl-[5.4rem] relative  flex-col`}
           >
             <div
-              className={`absolute 2xl:left-[10.8rem] md:left-[15.2rem] left-[6.3rem] bottom-0 2xl:w-[43.6rem] 2xl:h-[50.2rem] md:w-[36rem] md:h-[41.5rem] w-[21.7rem] h-[25rem]`}
+              className={`absolute xl:left-[10.8rem] md:left-[15.2rem] left-[6.3rem] bottom-0 xl:w-[43.6rem] xl:h-[50.2rem] md:w-[36rem] md:h-[41.5rem] w-[21.7rem] h-[25rem]`}
             >
               <Image
                 src="/assets/image/landing2.svg"
@@ -133,7 +133,7 @@ export default function Home() {
                 priority
               />
             </div>
-            <div className={`2xl:ml-[64.4rem] 2xl:mt-[12.3rem] `}>
+            <div className={`xl:ml-[64.4rem] xl:mt-[12.3rem] `}>
               <span
                 className={`text-[var(--gray-9FA6B2)] md:text-[2.2rem] text-[1.8rem]  font-medium  font-[Pretendard]`}
               >
@@ -149,10 +149,10 @@ export default function Home() {
           </section>
         </AnimatedSection>
         <AnimatedSection delay={0.2}>
-          <div className="flex flex-col w-full text-center min-h-screen 2xl:text-left ">
-            <div className=" w-fit mx-auto mt-[9rem] mb-[3.6rem] 2xl:w-[120rem] item-center justify-center ">
+          <div className="flex flex-col w-full min-h-screen  ">
+            <div className=" w-fit mx-auto mt-[9rem] mb-[3.6rem] xl:w-[120rem] item-center justify-center ">
               <span
-                className={`text-left md:text-[2.8rem] text-[2.2rem] font-bold text-[var(--white-FFFFFF)] `}
+                className={`md:text-[2.8rem] text-[2.2rem] font-bold text-[var(--white-FFFFFF)] `}
               >
                 생산성을 높이는 다양한 설정⚡
               </span>
