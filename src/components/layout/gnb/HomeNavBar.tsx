@@ -25,9 +25,7 @@ export default function HomeNavBar({
 }: HomeNavBarProps) {
   const { userData } = useAuthStore()
   const { members } = useDashboardMembers()
-  console.log(dashboardId)
 
-  // 제목 결정
   const getTitle = () => {
     switch (pageType) {
       case 'mydashboard':
@@ -40,20 +38,11 @@ export default function HomeNavBar({
         return ''
     }
   }
-
-  // 왕관 아이콘 표시 여부
+  const filteredMembers = Array.isArray(members)
+    ? members.filter((member) => member.email !== userData?.email)
+    : []
   const showCrown = pageType === 'mydashboard' && hasCrown
-
-  // 초대 및 관리 버튼 등 표시 여부
   const showDashboardControls = pageType !== 'mydashboard'
-  console.log(members)
-  // 멤버 정보 텍스트
-  const memberInfo =
-    pageType === 'dashboard'
-      ? Array.isArray(members) && members.length > 0
-        ? `${members.length} 명`
-        : '멤버 없음'
-      : ''
 
   return (
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
@@ -74,7 +63,6 @@ export default function HomeNavBar({
 
       {/* 오른쪽 영역 */}
       <div className={clsx(styles.flex_center_space_between)}>
-        {/* 설정 및 초대 버튼 등dd */}
         {showDashboardControls && (
           <div
             className={clsx(
@@ -123,8 +111,8 @@ export default function HomeNavBar({
                   <Image
                     src="/assets/icon/add-box-gray.svg"
                     alt="초대 아이콘"
-                    width={20}
-                    height={20}
+                    width={38}
+                    height={38}
                     className={styles.icon}
                   />
                 }
@@ -133,7 +121,36 @@ export default function HomeNavBar({
                 초대하기
               </ButtonDashboard>
             </div>
-            <div className={styles.name_mark}>{memberInfo}</div>
+
+            {/* 초대 멤버 프로필 */}
+            <div className={styles.invited_members_wrapper}>
+              {filteredMembers.slice(0, 4).map((member) => (
+                <div key={member.email} className={styles.invited_profile}>
+                  {member.profileImageUrl ? (
+                    <Image
+                      src={member.profileImageUrl}
+                      alt={member.nickname}
+                      width={296}
+                      height={296}
+                      style={{
+                        width: '4rem',
+                        height: '4rem',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        borderRadius: '50%',
+                        display: 'block',
+                      }}
+                    />
+                  ) : (
+                    <Badge nickname={member.nickname} />
+                  )}
+                </div>
+              ))}
+
+              {Array.isArray(members) && members.length > 4 && (
+                <div className={styles.extra_count}>+{members.length - 4}</div>
+              )}
+            </div>
           </div>
         )}
 
@@ -146,18 +163,25 @@ export default function HomeNavBar({
               <Image
                 src={userData.profileImageUrl}
                 alt="Profile Image"
-                width={40}
-                height={40}
+                width={296}
+                height={296}
                 style={{
+                  width: '4rem',
+                  height: '4rem',
                   objectFit: 'cover',
                   objectPosition: 'center',
+                  borderRadius: '50%',
+                  display: 'block',
                 }}
               />
             ) : (
               <Badge nickname={userData ? userData.nickname : ''} />
             )}
           </div>
-          <div className={`${styles.name} text-lg-medium`}>
+          <div
+            className={`${styles.name} text-lg-medium`}
+            style={{ marginLeft: '1.2rem' }}
+          >
             {userData?.nickname}
           </div>
         </div>

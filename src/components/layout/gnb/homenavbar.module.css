@@ -34,14 +34,36 @@
   width: max-content;
 }
 .profile_image {
-  width: 4rem;
-  height: 4rem;
   border-radius: 50%;
   overflow: hidden;
 }
-.name {
+.me {
   padding-left: 1.3rem;
   cursor: pointer;
+}
+
+.invited_members_wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.invited_profile:not(:first-child) {
+  margin-left: -1rem;
+}
+
+.extra_count {
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+  background-color: var(--gray-e4e4e7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--gray-787486);
+  border: 0.2rem solid #fff;
+  margin-left: -0.6rem;
 }
 
 /*태블릿*/
