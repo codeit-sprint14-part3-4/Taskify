@@ -19,12 +19,12 @@ const AnimatedModalContainer = ({
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className={`bg-white rounded-xl shadow-lg p-6 ${className}`}
+        className={`${styles.motiondiv} ${className}`}
       >
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center max-w-[73rem] max-h-[90vh]">
-            <div className="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin" />
-            <p className="mt-4 text-gray-500">로딩 중입니다...</p>
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner} />
+            <p className={styles.loadingtext}>로딩 중입니다...</p>
           </div>
         ) : (
           children
