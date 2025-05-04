@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import styles from './userDropdown.module.css'
+import Badge from '../common/badge/Badge'
 
 export interface User {
   id: number
   name: string
   badgeColor: string
+  profileImageUrl: string
 }
 
 interface UserDropdownProps {
@@ -14,6 +16,7 @@ interface UserDropdownProps {
   onChange: (user: User | undefined) => void
   mode?: 'search' | 'select'
   className?: string
+  setAssignee: React.Dispatch<number>
 }
 
 export default function UserDropdown({
@@ -22,23 +25,21 @@ export default function UserDropdown({
   onChange,
   mode = 'search',
   className = '',
+  setAssignee,
 }: UserDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [focusedIndex, setFocusedIndex] = useState(0)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const matchedUser = useMemo(() => {
-    return users.find((user) => user.name === inputValue)
-  }, [users, inputValue])
+  const matchedUser = users.find((user) => user.name === inputValue)
 
-  const filteredUsers = useMemo(() => {
-    return mode === 'search'
+  const filteredUsers =
+    mode === 'search'
       ? users.filter((user) =>
           user.name?.toLowerCase().includes(inputValue.toLowerCase())
         )
       : users
-  }, [users, inputValue, mode])
 
   const handleSelect = useCallback(
     (user: User) => {
@@ -47,29 +48,10 @@ export default function UserDropdown({
       setInputValue(user.name)
       setIsOpen(false)
       setFocusedIndex(0)
+      setAssignee(user.id)
     },
     [onChange]
   )
-
-  const getInitial = useCallback((name?: string) => {
-    if (!name || typeof name !== 'string') return 'U'
-    const firstChar = name.trim().charAt(0)
-    const isEnglish = /^[A-Za-z]$/.test(firstChar)
-    const hangulToRoman: Record<string, string> = {
-      하: 'H',
-      배: 'B',
-      김: 'K',
-      이: 'L',
-      박: 'P',
-      최: 'C',
-      정: 'J',
-      강: 'K',
-      조: 'J',
-      윤: 'Y',
-      장: 'J',
-    }
-    return isEnglish ? firstChar.toUpperCase() : hangulToRoman[firstChar] || 'U'
-  }, [])
 
   useEffect(() => {
     if (mode === 'search' && selectedUser) {
@@ -111,7 +93,6 @@ export default function UserDropdown({
 
     if (e.key === 'Enter' && filteredUsers.length > 0) {
       e.preventDefault()
-
       const selectedUser = filteredUsers[focusedIndex]
       handleSelect(selectedUser)
     }
@@ -121,12 +102,19 @@ export default function UserDropdown({
     <div ref={dropdownRef} className={`${styles.container} ${className}`}>
       <div className={styles.inputWrapper}>
         {mode === 'search' && matchedUser ? (
-          <div
-            style={{ backgroundColor: matchedUser.badgeColor }}
-            className={styles.badge}
-          >
-            {getInitial(matchedUser.name)}
-          </div>
+          matchedUser.profileImageUrl ? (
+            <Image
+              src={matchedUser.profileImageUrl}
+              alt="프로필 이미지"
+              width={24}
+              height={24}
+              className="absolute left-[1.6rem] w-[2.6rem] h-[2.6rem] rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-[2.6rem] h-[2.6rem] absolute top-[0.4rem] left-[1.3rem]">
+              <Badge nickname={matchedUser.name} />
+            </div>
+          )
         ) : null}
 
         {mode === 'search' ? (
@@ -139,7 +127,6 @@ export default function UserDropdown({
                 setInputValue(newValue)
                 setIsOpen(true)
                 setFocusedIndex(0)
-
                 if (newValue.trim() === '') {
                   onChange(undefined)
                 }
@@ -169,17 +156,29 @@ export default function UserDropdown({
             }`}
           >
             <div className={styles.userInfo}>
-              {selectedUser && (
-                <div
-                  style={{ backgroundColor: selectedUser.badgeColor }}
-                  className={styles.initialCircle}
-                >
-                  {getInitial(selectedUser.name)}
-                </div>
+              {selectedUser ? (
+                selectedUser.profileImageUrl ? (
+                  <>
+                    <Image
+                      src={selectedUser.profileImageUrl}
+                      alt="프로필 이미지"
+                      width={24}
+                      height={24}
+                      className="w-[2.6rem] h-[2.6rem] rounded-full object-cover"
+                    />
+                    <span className={styles.userName}>{selectedUser.name}</span>
+                  </>
+                ) : (
+                  <>
+                    <Badge nickname={selectedUser.name} />
+                    <span className={styles.userName}>{selectedUser.name}</span>
+                  </>
+                )
+              ) : (
+                <span className={styles.userName}>
+                  {'이름을 입력해 주세요'}
+                </span>
               )}
-              <span className={styles.userName}>
-                {selectedUser?.name || '이름을 입력해 주세요'}
-              </span>
             </div>
             <Image
               src="/assets/image/arrow-down.svg"
@@ -218,13 +217,23 @@ export default function UserDropdown({
                   ) : (
                     <div className={styles.checkSpacer} />
                   )}
-                  <div
-                    style={{ backgroundColor: user.badgeColor }}
-                    className={styles.initialCircle}
-                  >
-                    {getInitial(user.name)}
-                  </div>
-                  <span className={styles.userName}>{user.name}</span>
+                  {user.profileImageUrl ? (
+                    <>
+                      <Image
+                        src={user.profileImageUrl}
+                        alt="프로필 이미지"
+                        width={24}
+                        height={24}
+                        className="w-[2.6rem] h-[2.6rem] rounded-full object-cover"
+                      />
+                      <span className={styles.userName}>{user.name}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Badge nickname={user.name} />
+                      <span className={styles.userName}>{user.name}</span>
+                    </>
+                  )}
                 </li>
               )
             })

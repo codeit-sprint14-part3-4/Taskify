@@ -51,6 +51,7 @@ export default function DashboardPage() {
           <Column
             key={column.id}
             columnInfo={column}
+            dashboardId={dashboardId}
             handleCardCreateModalOpen={handleCardCreateModalOpen}
           />
         ))}

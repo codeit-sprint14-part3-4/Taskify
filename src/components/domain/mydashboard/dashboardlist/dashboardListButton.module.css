@@ -19,6 +19,11 @@
   align-items: center;
   justify-content: space-between;
 }
+.main_flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .main_color {
   padding-right: 1.6rem;
 }
@@ -35,6 +40,13 @@
 
   font-size: 1.4rem;
 }
+.crown_title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
 .crown {
   padding-left: 0.8rem;
   width: 2rem;
