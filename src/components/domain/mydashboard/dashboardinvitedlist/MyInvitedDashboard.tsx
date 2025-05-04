@@ -42,10 +42,9 @@ const MyInvitedDashboard = () => {
     [isLoading, hasMore]
   )
 
-  // 검색하는 동안 초대 목록을 초기화하고 검색어에 따라 초대 목록을 가져오는  useEffect
+  // 검색하는 동안 초대 목록을 초기화하고 검색어에 따라 초대 목록을 가져오는  useEffect입나더
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      // ← 이 안에서 상태 초기화
       setInvitedList([])
       setHasMore(true)
       fetchInvitations(undefined, searchTerm, true)
