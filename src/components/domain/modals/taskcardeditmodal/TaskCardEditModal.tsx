@@ -252,6 +252,8 @@ export default function TaskCardEditModal({
                   setTitle(e.target.value)
                   if (e.target.value != cardInfo.title) setIsDisable(false)
                   else setIsDisable(true)
+
+                  if (!e.target.value) setIsDisable(true)
                 }}
                 placeholder="제목을 입력해 주세요"
                 height="5rem"
@@ -275,6 +277,8 @@ export default function TaskCardEditModal({
                     if (e.target.value != cardInfo.description)
                       setIsDisable(false)
                     else setIsDisable(true)
+
+                    if (!e.target.value) setIsDisable(true)
                   }}
                   placeholder="설명을 입력해 주세요"
                   className="w-full px-[1.6rem] pt-[1.5rem] pb-[8.5rem] bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none rounded-lg"
