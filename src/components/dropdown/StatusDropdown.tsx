@@ -2,28 +2,14 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import styles from './statusDropdown.module.css'
 
-export enum Status {
-  TODO = 'To Do',
-  ON_PROGRESS = 'On Progress',
-  DONE = 'Done',
-  EXAMPLE = 'Example',
-  REVIEW = 'Review',
-}
-
 interface StatusDropdownProps {
-  value: Status
-  onChange: (status: Status) => void
+  statusList: string[]
+  value: string
+  onChange: (status: string) => void
 }
-
-const statusOptions: Status[] = [
-  Status.TODO,
-  Status.ON_PROGRESS,
-  Status.DONE,
-  Status.EXAMPLE,
-  Status.REVIEW,
-]
 
 export default function StatusDropdown({
+  statusList,
   value,
   onChange,
 }: StatusDropdownProps) {
@@ -33,7 +19,7 @@ export default function StatusDropdown({
   const optionRefs = useRef<(HTMLLIElement | null)[]>([])
 
   useEffect(() => {
-    optionRefs.current = new Array(statusOptions.length).fill(null)
+    optionRefs.current = new Array(statusList.length).fill(null)
   }, [])
 
   const assignOptionRef = useCallback(
@@ -43,7 +29,7 @@ export default function StatusDropdown({
     []
   )
 
-  const handleStatusSelect = (status: Status) => {
+  const handleStatusSelect = (status: string) => {
     onChange(status)
     setIsDropdownOpen(false)
   }
@@ -60,19 +46,19 @@ export default function StatusDropdown({
 
       if (event.key === 'ArrowDown') {
         event.preventDefault()
-        setFocusedIndex((prev) => (prev + 1) % statusOptions.length)
+        setFocusedIndex((prev) => (prev + 1) % statusList.length)
       }
 
       if (event.key === 'ArrowUp') {
         event.preventDefault()
         setFocusedIndex(
-          (prev) => (prev - 1 + statusOptions.length) % statusOptions.length
+          (prev) => (prev - 1 + statusList.length) % statusList.length
         )
       }
 
       if (event.key === 'Enter') {
         event.preventDefault()
-        handleStatusSelect(statusOptions[focusedIndex])
+        handleStatusSelect(statusList[focusedIndex])
       }
     }
 
@@ -103,7 +89,7 @@ export default function StatusDropdown({
     }
   }, [focusedIndex, isDropdownOpen])
 
-  const isSelected = (status: Status) => value === status
+  const isSelected = (status: string) => value === status
 
   return (
     <div ref={dropdownContainerRef} className={styles.container}>
@@ -111,7 +97,7 @@ export default function StatusDropdown({
         type="button"
         onClick={() => {
           setIsDropdownOpen((prev) => !prev)
-          setFocusedIndex(statusOptions.findIndex((s) => s === value))
+          setFocusedIndex(statusList.findIndex((s) => s === value))
         }}
         className={`${styles.triggerButton} ${
           isDropdownOpen ? styles.open : styles.closed
@@ -134,7 +120,7 @@ export default function StatusDropdown({
 
       {isDropdownOpen && (
         <ul className={styles.dropdown}>
-          {statusOptions.map((status, index) => (
+          {statusList.map((status, index) => (
             <li
               key={status}
               ref={(el) => assignOptionRef(el, index)}

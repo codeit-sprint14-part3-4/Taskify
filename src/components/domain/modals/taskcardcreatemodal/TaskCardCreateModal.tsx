@@ -39,8 +39,9 @@ export default function TaskCardCreateModal({
 }: TaskCardCreateModalProps) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [assignee, setAssignee] = useState(-1)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [inputValue, setInputValue] = useState('')
+  const [tagsInput, setTagsInput] = useState('')
   const [tags, setTags] = useState<{ label: string; color: TagColor }[]>([])
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
@@ -48,9 +49,10 @@ export default function TaskCardCreateModal({
   const [isButtonDisable, setIsButtonDisable] = useState(true)
   const dashboardMembers = useDashboardMembers((state) => state.members)
   const users = dashboardMembers.map((user) => ({
-    id: user.id,
+    id: user.userId,
     name: user.nickname,
     badgeColor: user.badge,
+    profileImageUrl: user.profileImageUrl,
   }))
 
   // 변경된 부분: 처음엔 선택된 유저 없음
@@ -84,7 +86,7 @@ export default function TaskCardCreateModal({
 
   const handleSubmitForm = async () => {
     const bodyData: CreateCardBody = {
-      // assigneeUserId: 5603, // 나중에 유저 id로 넣어야 함
+      assigneeUserId: assignee,
       dashboardId: dashboardId,
       columnId: columnId,
       title: title,
@@ -111,10 +113,6 @@ export default function TaskCardCreateModal({
       bodyData.dueDate = parseDate
     }
 
-    // 담당자를 선택했으면 추가하는 로직 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // ----------------------------
-    // ----------------------------
-
     // 서버로 요청
     await cardsService.postCards(bodyData)
 
@@ -138,11 +136,11 @@ export default function TaskCardCreateModal({
   }
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && inputValue.trim() !== '') {
+    if (e.key === 'Enter' && tagsInput.trim() !== '') {
       const randomIndex = Math.floor(Math.random() * availableColors.length)
       const selectedColor = availableColors[randomIndex]
 
-      setTags([...tags, { label: inputValue.trim(), color: selectedColor }])
+      setTags([...tags, { label: tagsInput.trim(), color: selectedColor }])
 
       const newAvailableColors = availableColors.filter(
         (color) => color !== selectedColor
@@ -154,7 +152,7 @@ export default function TaskCardCreateModal({
         setAvailableColors(newAvailableColors)
       }
 
-      setInputValue('')
+      setTagsInput('')
     }
   }
 
@@ -183,6 +181,7 @@ export default function TaskCardCreateModal({
               selectedUser={selectedUser}
               onChange={setSelectedUser}
               mode="search"
+              setAssignee={setAssignee}
             />
           </div>
           <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
@@ -261,8 +260,8 @@ export default function TaskCardCreateModal({
 
               <input
                 type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                value={tagsInput}
+                onChange={(e) => setTagsInput(e.target.value)}
                 onKeyDown={handleTagKeyDown}
                 placeholder={tags.length === 0 ? '입력 후 Enter' : ''}
                 className="flex-1 min-w-[10rem] bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"

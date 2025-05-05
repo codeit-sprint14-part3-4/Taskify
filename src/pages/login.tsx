@@ -7,7 +7,7 @@ import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { authService } from '../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
-import Modal from '@/components/domain/modals/basemodal/Modal'
+import Modal from '@/components/domain/modals/basemodal/ConfirmActionModal'
 import { useFormSignup } from '@/hooks/useFormSignup'
 
 export default function Login() {
@@ -60,8 +60,8 @@ export default function Login() {
   }
 
   return (
-    <div className="flex items-center justify-center pt-[22.3rem] ">
-      <div className="w-[52rem] h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
+    <div className="flex items-center justify-center pt-[8.8rem] sm:pt-[22.3rem]">
+      <div className="w-[90%] max-w-[34rem] sm:max-w-[50rem] h-auto sm:h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
         <Link href="/" legacyBehavior>
           <a>
             <div className="flex items-center justify-center flex-col mb-[3rem]">

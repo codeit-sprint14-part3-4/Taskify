@@ -9,8 +9,7 @@ import { dashboardsService } from '@/api/services/dashboardsServices'
 import Layout from '@/components/layout/layout'
 export default function EditPage() {
   const router = useRouter()
-  const { query } = useRouter()
-  const dashboardId = Number(query.id)
+  const dashboardId = Number(router.query.id)
 
   const handleDashboardDelete = async () => {
     try {

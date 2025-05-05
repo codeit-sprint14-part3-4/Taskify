@@ -10,14 +10,14 @@ import styles from './column.module.css'
 // 내부에서만 사용
 export interface ColumnProps {
   columnInfo: ColumnType
+  dashboardId: number
   handleCardCreateModalOpen: (columnId: number) => void
-  handleColumnFixModalOpen: (columnId: number) => void
 }
 
 export default function Column({
   columnInfo,
+  dashboardId,
   handleCardCreateModalOpen,
-  handleColumnFixModalOpen,
 }: ColumnProps) {
   const [cards, setCards] = useState<CardType[]>()
 
@@ -32,7 +32,7 @@ export default function Column({
 
   return (
     <div className={styles.column}>
-      {/* 상단: 컬럼 제목 + 카드 개수 + 설정 버튼 */}
+      {/* 상단: 컬럼 제목 + 카드 개수 + 설정 버튼sd */}
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
           <div className={styles.dotTitle}>
@@ -47,7 +47,7 @@ export default function Column({
         </div>
 
         {/* onClick 이벤트 추가 요망 */}
-        <button onClick={() => handleColumnFixModalOpen(columnInfo.id)}>
+        <button>
           <Image
             src="/assets/icon/settings-logo.svg"
             alt="설정 아이콘"
@@ -80,7 +80,16 @@ export default function Column({
       </div>
 
       {/* 카드 리스트 */}
-      {cards && <CardTable cards={cards} />}
+      {cards && (
+        <CardTable
+          cards={cards}
+          dashboardId={dashboardId}
+          columnInfo={{
+            columnId: columnInfo.id,
+            columnTitle: columnInfo.title,
+          }}
+        />
+      )}
     </div>
   )
 }
