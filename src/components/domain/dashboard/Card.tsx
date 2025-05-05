@@ -8,12 +8,13 @@ import TaskCardModal from '../modals/taskcardmodal/TaskCardModal'
 import TaskCardEditModal from '../modals/taskcardeditmodal/TaskCardEditModal'
 import { CardType } from '@/types/api/cards'
 import styles from './card.module.css'
+import { ColumnType } from '@/types/api/columns'
 
 // 내부에서만 사용
 export interface CardProps {
   cardInfo: CardType
   dashboardId: number
-  columnInfo: { columnId: number; columnTitle: string }
+  columnInfo: ColumnType
   setRefreshTrigger: React.Dispatch<SetStateAction<number>>
 }
 
@@ -132,6 +133,7 @@ export default function Card({
           dashboardId={dashboardId}
           columnInfo={columnInfo}
           handleCardEditModal={handleCardEditModal}
+          setRefreshTrigger={setRefreshTrigger}
         />
       )}
     </>

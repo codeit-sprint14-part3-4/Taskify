@@ -98,10 +98,7 @@ export default function Column({
           <CardTable
             cards={cards}
             dashboardId={dashboardId}
-            columnInfo={{
-              columnId: columnInfo.id,
-              columnTitle: columnInfo.title,
-            }}
+            columnInfo={columnInfo}
             setRefreshTrigger={setRefreshTrigger}
           />
         )}

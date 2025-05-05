@@ -1,15 +1,17 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
+import { useEffect, useRef, useState, useCallback } from 'react'
+
 import styles from './statusDropdown.module.css'
+import { ColumnType } from '@/types/api/columns'
 
 interface StatusDropdownProps {
-  statusList: string[]
-  value: string
-  onChange: (status: string) => void
+  columnList: ColumnType[]
+  value: ColumnType
+  onChange: (column: ColumnType) => void
 }
 
 export default function StatusDropdown({
-  statusList,
+  columnList,
   value,
   onChange,
 }: StatusDropdownProps) {
@@ -19,7 +21,7 @@ export default function StatusDropdown({
   const optionRefs = useRef<(HTMLLIElement | null)[]>([])
 
   useEffect(() => {
-    optionRefs.current = new Array(statusList.length).fill(null)
+    optionRefs.current = new Array(columnList.length).fill(null)
   }, [])
 
   const assignOptionRef = useCallback(
@@ -29,8 +31,8 @@ export default function StatusDropdown({
     []
   )
 
-  const handleStatusSelect = (status: string) => {
-    onChange(status)
+  const handleStatusSelect = (column: ColumnType) => {
+    onChange(column)
     setIsDropdownOpen(false)
   }
 
@@ -46,19 +48,19 @@ export default function StatusDropdown({
 
       if (event.key === 'ArrowDown') {
         event.preventDefault()
-        setFocusedIndex((prev) => (prev + 1) % statusList.length)
+        setFocusedIndex((prev) => (prev + 1) % columnList.length)
       }
 
       if (event.key === 'ArrowUp') {
         event.preventDefault()
         setFocusedIndex(
-          (prev) => (prev - 1 + statusList.length) % statusList.length
+          (prev) => (prev - 1 + columnList.length) % columnList.length
         )
       }
 
       if (event.key === 'Enter') {
         event.preventDefault()
-        handleStatusSelect(statusList[focusedIndex])
+        handleStatusSelect(columnList[focusedIndex])
       }
     }
 
@@ -89,7 +91,7 @@ export default function StatusDropdown({
     }
   }, [focusedIndex, isDropdownOpen])
 
-  const isSelected = (status: string) => value === status
+  const isSelected = (column: ColumnType) => value.id === column.id
 
   return (
     <div ref={dropdownContainerRef} className={styles.container}>
@@ -97,7 +99,7 @@ export default function StatusDropdown({
         type="button"
         onClick={() => {
           setIsDropdownOpen((prev) => !prev)
-          setFocusedIndex(statusList.findIndex((s) => s === value))
+          setFocusedIndex(columnList.findIndex((s) => s.id === value.id))
         }}
         className={`${styles.triggerButton} ${
           isDropdownOpen ? styles.open : styles.closed
@@ -105,7 +107,7 @@ export default function StatusDropdown({
       >
         <div className={styles.selectedStatus}>
           <span className={styles.statusDot} />
-          <span className={styles.statusText}>{value}</span>
+          <span className={styles.statusText}>{value.title}</span>
         </div>
         <Image
           src="/assets/image/arrow-down.svg"
@@ -120,16 +122,16 @@ export default function StatusDropdown({
 
       {isDropdownOpen && (
         <ul className={styles.dropdown}>
-          {statusList.map((status, index) => (
+          {columnList.map((column, index) => (
             <li
-              key={status}
+              key={column.id}
               ref={(el) => assignOptionRef(el, index)}
-              onClick={() => handleStatusSelect(status)}
+              onClick={() => handleStatusSelect(column)}
               className={`${styles.option} ${
                 index === focusedIndex ? styles.focused : ''
-              } ${isSelected(status) ? styles.selected : ''}`}
+              } ${isSelected(column) ? styles.selected : ''}`}
             >
-              {isSelected(status) ? (
+              {isSelected(column) ? (
                 <Image
                   src="/assets/image/check.svg"
                   alt="선택됨"
@@ -141,7 +143,7 @@ export default function StatusDropdown({
               )}
               <div className={styles.selectedStatus}>
                 <span className={styles.statusDot} />
-                <span className={styles.statusText}>{status}</span>
+                <span className={styles.statusText}>{column.title}</span>
               </div>
             </li>
           ))}

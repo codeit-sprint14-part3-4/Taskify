@@ -37,11 +37,11 @@ export interface CreateCardBody {
 }
 
 export interface UpdateCardBody {
-  assigneeUserId: number
+  assigneeUserId?: number
   columnId: number
   title: string
   description: string
-  dueDate: string
+  dueDate?: string
   tags: string[]
-  imageUrl: string
+  imageUrl?: string
 }

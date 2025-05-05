@@ -1,12 +1,13 @@
 // 카드 리스트들
 import Card from '@/components/domain/dashboard/Card'
 import { CardType } from '@/types/api/cards'
+import { ColumnType } from '@/types/api/columns'
 import { SetStateAction } from 'react'
 
 interface CardTableProps {
   cards: CardType[]
   dashboardId: number
-  columnInfo: { columnId: number; columnTitle: string }
+  columnInfo: ColumnType
   setRefreshTrigger: React.Dispatch<SetStateAction<number>>
 }
 

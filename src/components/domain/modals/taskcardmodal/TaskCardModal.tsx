@@ -8,6 +8,7 @@ import { CardType } from '@/types/api/cards'
 import { useAuthStore } from '@/stores/auth'
 import AnimatedModalContainer from '@/components/common/animatedmodalcontainer/AnimatedModalContainer'
 import Badge from '@/components/common/badge/Badge'
+import { ColumnType } from '@/types/api/columns'
 
 export const formatDate = (isoDate: string): string => {
   const date = new Date(isoDate)
@@ -22,7 +23,7 @@ export const formatDate = (isoDate: string): string => {
 interface Props {
   card: CardType
   dashboardId: number
-  columnInfo: { columnId: number; columnTitle: string }
+  columnInfo: ColumnType
   onClose: () => void
   onEdit: (card: CardType) => void
   onDelete: (cardId: number) => void
@@ -75,7 +76,7 @@ export default function TaskCardModal({
       const newComment = await commentsService.postComments({
         cardId: Number(card.id),
         content: inputComment,
-        columnId: columnInfo.columnId,
+        columnId: columnInfo.id,
         dashboardId: dashboardId,
       })
       setComments((prev) => [newComment, ...prev])
@@ -235,7 +236,7 @@ export default function TaskCardModal({
             <div className={styles.statusTagRow}>
               <div className="rounded-full bg-[#F1EFFD] px-[1rem] py-[0.4rem] flex justify-centeri items-center text-[#5534DA] text-xs-regular">
                 <div className="w-[0.6rem] h-[0.6rem] bg-[#5534DA] mr-[0.6rem] rounded-full"></div>
-                <div>{columnInfo.columnTitle}</div>
+                <div>{columnInfo.title}</div>
               </div>
               <div className="w-[0.1rem] h-[2rem] bg-[#D9D9D9] mx-[2rem]"></div>
               <div className={styles.tagList}>
@@ -253,7 +254,13 @@ export default function TaskCardModal({
 
             {card.imageUrl && (
               <div className={styles.imageWrapper}>
-                <Image src={card.imageUrl} alt="카드 이미지" fill priority />
+                <Image
+                  className="rounded-[0.6rem] object-cover"
+                  src={card.imageUrl}
+                  alt="카드 이미지"
+                  fill
+                  priority
+                />
               </div>
             )}
           </div>
