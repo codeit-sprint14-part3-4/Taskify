@@ -45,3 +45,20 @@
 .crown_center {
   display: flex;
 }
+
+@media (max-width: 1279px) {
+  .wrapper {
+    width: 50.4rem;
+    font-family: 'Pretendard';
+  }
+
+  .main_container {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .wrapper {
+    width: 26rem;
+  }
+}

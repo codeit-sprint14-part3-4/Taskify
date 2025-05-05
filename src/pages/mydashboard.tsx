@@ -31,27 +31,26 @@ export default function MyDashboardPage() {
   return (
     <div className="p-[4rem]">
       <DashboardList />
-      {/* 드롭다운 컴포넌트 나중에 삭제하세요 일단 테스트입니다 홈네브바에 해야 함!!! */}
-      <MyDropDown />
+      {/* 드롭다운 컴포넌트 나중에 삭제하세요 일단 테스트입니다 홈네브바에 해야 함!!!
+      <MyDropDown /> */}
       {loadingInvited ? (
         <div className="text-center text-gray-500 mt-8">
           초대 목록 로딩 중...
         </div>
       ) : invitedList.length === 0 ? (
-        <div className="bg-white p-[2.4rem_4rem_12rem_4rem] rounded-[1.6rem] shadow-[0_0_6px_rgba(0,_0,_0,_0.05)] max-w-[96rem] mt-[7.4rem]">
-          <div className="text-2xl-bold ">초대받은 대시보드</div>
-          <div className="flex flex-col items-center gap-[2.4rem] text-[#8c8c8c] pt-16">
-            <Image
-              src="/assets/icon/email.svg"
-              alt="email"
-              width={100}
-              height={100}
-            />
-            <div className="text-[1.8rem]">아직 초대받은 대시보드가 없어요</div>
+        <div className="justify-center items-center bg-white rounded-[1.6rem] shadow-[0_0_6px_rgba(0,_0,_0,_0.05)]   xl:w-[96rem] xl:mt-[7.4rem]   md:p-[2.4rem_4rem]  md:w-[50.4rem] md:h-[39rem]   p-[2.4rem_2rem] w-[26rem] h-[32.7rem]  ">
+          <div className="md:text-2xl-bold text-md-bold">초대받은 대시보드</div>
+          <div className=" flex flex-col items-center gap-[2.4rem] text-[#8c8c8c] pt-16 md:mt-0 mt-[6.4rem]">
+            <div className="relative  md:w-[10rem] md:h-[10rem] w-[6rem] h-[6rem]  ">
+              <Image src="/assets/icon/email.svg" alt="email" fill />
+            </div>
+            <div className="md:text-2lg-regular text-xs-regular">
+              아직 초대받은 대시보드가 없어요
+            </div>
           </div>
         </div>
       ) : (
-        <MyInvitedDashboard invitedList={invitedList} />
+        <MyInvitedDashboard />
       )}
     </div>
   )

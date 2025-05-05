@@ -67,7 +67,7 @@ export default function DashboardList() {
         <ButtonDashboard
           onClick={handleCreateDashboardModal}
           gap="gap-2"
-          className="text-lg-semibold py-[2.1rem] px-[9.5rem]"
+          className="text-lg-semibold xl:py-[2.1rem] xl:px-[9.5rem] md:py-[2rem] md:px-[5.3rem] px-[7.5rem] py-[1.5rem] "
           suffix={
             <Image
               src="/assets/icon/add-box.svg"

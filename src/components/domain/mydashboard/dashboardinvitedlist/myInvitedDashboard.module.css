@@ -4,10 +4,11 @@
   background-color: var(--white-FFFFFF);
   border-radius: 0.8rem;
   margin-top: 4rem;
+  font-family: 'Pretendard';
 }
 
 .searchdiv {
-  padding: 3.2rem 2.8rem 2.4rem 2.8rem;
+  padding: 3.2rem 2.8rem 0 2.8rem;
 }
 
 .inviteddashboardh1 {
@@ -41,7 +42,7 @@
 
 .invitationlist {
   display: grid;
-  grid-template-columns: 28rem 22rem 28rem;
+  grid-template-columns: 28rem 23.5rem 28rem;
   align-items: center;
   justify-items: start;
   padding-bottom: 2rem;
@@ -56,4 +57,89 @@
   display: flex;
   gap: 1rem;
   font-size: 1.4rem;
+}
+
+.hideOnMobile {
+  display: block;
+}
+
+.invitationMobileRow {
+  display: grid;
+  grid-template-columns: 6rem auto;
+  row-gap: 1.2rem;
+  column-gap: 2rem;
+  padding: 1.4rem 1.6rem;
+  border-bottom: 0.1rem solid var(--gray-EEEEEE);
+}
+
+.Mobilelabel {
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2.4rem;
+  color: var(--gray-9FA6B2);
+  font-family: 'Pretendard';
+}
+
+.Mobilevalue {
+  font-size: 1.4rem;
+}
+
+@media (max-width: 1279px) {
+  .wrapper {
+    width: 50.4rem;
+    height: 59.2rem;
+    margin-top: 4.8rem;
+  }
+
+  .inviteddashboardh1 {
+    margin-bottom: 1.7rem;
+  }
+
+  .searchdiv {
+    padding: 1.8rem 2.8rem 0 2.8rem;
+  }
+
+  .invitationtop {
+    grid-template-columns: 15.8rem 15.4rem 16.4rem;
+  }
+
+  .invitationbox {
+    padding-left: 2.8rem;
+    height: 44.3rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .invitationlist {
+    grid-template-columns: 15.8rem 11rem 16.4rem;
+    padding-bottom: 2.2rem;
+    margin: 1.7rem 0 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .wrapper {
+    width: 26rem;
+    height: 77rem;
+    margin-top: 2.4rem;
+  }
+
+  .hideOnMobile {
+    display: none;
+  }
+
+  .invitationtop {
+    grid-template-columns: 1fr; /* 단일 열 */
+    grid-template-rows: repeat(3, auto); /* 세로로 3줄 */
+    gap: 0.3rem; /* 줄 간격 옵션 */
+  }
+
+  .inputbox {
+    margin-bottom: 1.3rem;
+  }
+
+  .inviteddashboardh1 {
+    font-size: 2rem;
+    line-height: 3.2rem;
+    margin-bottom: 1.6rem;
+  }
 }

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import styles from './myInvitedDashboard.module.css'
 import Image from 'next/image'
-
 import CommonInput from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { Invitation } from '@/types/api/invitations'
 import { invitationsService } from '@/api/services/invitationsServices'
+import useIsMobile from '@/hooks/useIsMobile'
 
 const MyInvitedDashboard = () => {
   const [invitedList, setInvitedList] = useState<Invitation[]>([])
@@ -13,6 +13,7 @@ const MyInvitedDashboard = () => {
   const [hasMore, setHasMore] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
+  const isMobile = useIsMobile()
 
   // 초대 목록을 가져오는 함수
   const fetchInvitations = useCallback(
@@ -116,36 +117,26 @@ const MyInvitedDashboard = () => {
           />
         </div>
       </div>
-      <div className={styles.invitationbox}>
-        {/* 헤더 */}
-        <div className={styles.invitationtop}>
-          <div>이름</div>
-          <div>초대자</div>
-          <div>수락 여부</div>
-        </div>
-
-        {/* 리스트 */}
-        {invitedList.map((item, index) => {
-          const isLastItem = index === invitedList.length - 1
-          return (
-            <div
-              key={item.id}
-              className={styles.invitationlist}
-              ref={isLastItem ? lastItemRef : null}
-            >
-              <div>{item.dashboard.title}</div>
-              <div>{item.inviter.nickname}</div>
+      {isMobile ? (
+        // ✅ 모바일용 구조
+        invitedList.map((item, index) => (
+          <div key={item.id} className={styles.invitationMobileRow}>
+            <div className={styles.Mobilelabel}>이름</div>
+            <div className={styles.Mobilevalue}>{item.dashboard.title}</div>
+            <div className={styles.Mobilelabel}>초대자</div>
+            <div className={styles.Mobilevalue}>{item.inviter.nickname}</div>
+            <div className={styles.hideOnMobile}>수락 여부</div>
+            <div className={styles.Mobilevalue}>
               <div className={styles.buttonsction}>
                 <CommonButton
-                  padding="0.7rem 2.9rem"
+                  padding="0.7rem 3.7rem"
                   isActive={true}
-                  className={styles.customButtonSize}
                   onClick={() => handleInviteAcceptButton(item.id, true)}
                 >
                   수락
                 </CommonButton>
                 <CommonButton
-                  padding="0.7rem 2.9rem"
+                  padding="0.7rem 3.7rem"
                   variant="secondary"
                   isActive={true}
                   onClick={() => handleInviteAcceptButton(item.id, false)}
@@ -154,9 +145,51 @@ const MyInvitedDashboard = () => {
                 </CommonButton>
               </div>
             </div>
-          )
-        })}
-      </div>
+          </div>
+        ))
+      ) : (
+        // ✅ 기존 PC/태블릿용 구조
+        <div className={styles.invitationbox}>
+          {/* 헤더 */}
+          <div className={styles.invitationtop}>
+            <div>이름</div>
+            <div>초대자</div>
+            <div>수락 여부</div>
+          </div>
+
+          {/* 리스트 */}
+          {invitedList.map((item, index) => {
+            const isLastItem = index === invitedList.length - 1
+            return (
+              <div
+                key={item.id}
+                className={styles.invitationlist}
+                ref={isLastItem ? lastItemRef : null}
+              >
+                <div>{item.dashboard.title}</div>
+                <div>{item.inviter.nickname}</div>
+                <div className={styles.buttonsction}>
+                  <CommonButton
+                    padding=" 0.6rem 2.2rem"
+                    isActive={true}
+                    onClick={() => handleInviteAcceptButton(item.id, true)}
+                  >
+                    수락
+                  </CommonButton>
+                  <CommonButton
+                    padding=" 0.6rem 2.2rem"
+                    variant="secondary"
+                    isActive={true}
+                    onClick={() => handleInviteAcceptButton(item.id, false)}
+                  >
+                    거절
+                  </CommonButton>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
