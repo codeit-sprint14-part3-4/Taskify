@@ -115,7 +115,6 @@ export default function FormModal({
                 />
               </>
             )}
-            <ModalButton type="submit" label={confirmLabel} size={size} />
           </div>
         </form>
       </div>

@@ -21,7 +21,7 @@ export default function EditMyDashboardMember() {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const memberData = await membersService.getMembers(currentPage, 10, id)
+        const memberData = await membersService.getMembers(currentPage, 5, id)
         setMemberList(memberData.members)
         setTotalCount(memberData.totalCount)
         setLoading(false)
@@ -69,7 +69,7 @@ export default function EditMyDashboardMember() {
           <div className={`text-2xl-bold`}>구성원</div>
           <Pagination
             current={currentPage}
-            total={Math.ceil(totalCount / 10)}
+            total={Math.ceil(totalCount / 5)}
             onPageChange={setCurrentPage}
           />
         </div>

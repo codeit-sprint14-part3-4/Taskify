@@ -36,7 +36,7 @@ export default function EditMyDashboardInviteLog() {
     const fetchInviteEmail = async () => {
       try {
         const inviteEmailData =
-          await dashboardsService.getDashboardsInvitations(id, currentPage, 10)
+          await dashboardsService.getDashboardsInvitations(id, currentPage, 5)
         setinvitationList(inviteEmailData.invitations)
         setTotalCount(inviteEmailData.totalCount)
         setLoading(false)
@@ -111,7 +111,7 @@ export default function EditMyDashboardInviteLog() {
           >
             <Pagination
               current={currentPage}
-              total={Math.ceil(totalCount / 10)}
+              total={Math.ceil(totalCount / 5)}
               onPageChange={setCurrentPage}
             />
             <CommonButton
@@ -139,11 +139,14 @@ export default function EditMyDashboardInviteLog() {
             inputLabel="이메일"
             inputValue={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onConfirm={handleConfirm}
+            onCreate={handleConfirm}
             onCancel={handleCancel}
+            onDelete={handleCancel}
+            onEdit={handleCancel}
             errorMessage={error}
             confirmLabel="생성"
             cancelLabel="취소"
+            mode="default"
           />
         )}
 
