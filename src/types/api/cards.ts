@@ -16,6 +16,7 @@ export interface CardType {
   columnId: number
   createdAt: string
   updatedAt: string
+  dashboardId?: number
 }
 
 export interface GetCardsResponse {
