@@ -11,6 +11,7 @@ import styles from './column.module.css'
 export interface ColumnProps {
   columnInfo: ColumnType
   dashboardId: number
+  refreshTrigger: number
   handleCardCreateModalOpen: (columnId: number) => void
   handleColumnEditModal: (state: boolean) => void
   handleColumnOptionClick: (columnInfo: ColumnType) => void
@@ -19,6 +20,7 @@ export interface ColumnProps {
 export default function Column({
   columnInfo,
   dashboardId,
+  refreshTrigger,
   handleCardCreateModalOpen,
   handleColumnEditModal,
   handleColumnOptionClick,
@@ -31,7 +33,7 @@ export default function Column({
 
   useEffect(() => {
     getCards()
-  }, [])
+  }, [refreshTrigger])
 
   return (
     <>

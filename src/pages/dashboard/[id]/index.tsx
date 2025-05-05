@@ -19,6 +19,7 @@ export default function DashboardPage() {
   const [triggeredColumn, setTriggeredColumn] = useState<ColumnType | null>(
     null
   )
+  const [refreshTrigger, setRefreshTrigger] = useState<number>(0)
 
   const [isCardCreateModalOpen, setIsCardCreateModalOpen] = useState(false)
   const [isColumnCreateModal, setIsColumnCreateModal] = useState(false)
@@ -137,6 +138,7 @@ export default function DashboardPage() {
             key={column.id}
             columnInfo={column}
             dashboardId={dashboardId}
+            refreshTrigger={refreshTrigger}
             handleCardCreateModalOpen={handleCardCreateModalOpen}
             handleColumnEditModal={handleColumnEditModal}
             handleColumnOptionClick={handleColumnOptionClick}
@@ -173,6 +175,7 @@ export default function DashboardPage() {
           dashboardId={dashboardId}
           columnId={selectedColumnId}
           handleCardCreateModalClose={handleCardCreateModalClose}
+          setRefreshTrigger={setRefreshTrigger}
         />
       )}
       {isColumnCreateModal && (

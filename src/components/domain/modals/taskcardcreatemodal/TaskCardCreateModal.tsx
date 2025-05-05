@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Input from '@/components/common/commoninput/CommonInput'
 import Tag from '@/components/common/tag/Tag'
 import type { TagColor } from '@/types/common/tag'
-import { useRef, useState } from 'react'
+import { SetStateAction, useRef, useState } from 'react'
 import UserDropdown from '@/components/dropdown/UserDropdown'
 import { cardsService } from '@/api/services/cardsServices'
 import { CreateCardBody } from '@/types/api/cards'
@@ -30,12 +30,14 @@ interface TaskCardCreateModalProps {
   dashboardId: number
   columnId: number
   handleCardCreateModalClose: () => void
+  setRefreshTrigger: React.Dispatch<SetStateAction<number>>
 }
 
 export default function TaskCardCreateModal({
   dashboardId,
   columnId,
   handleCardCreateModalClose,
+  setRefreshTrigger,
 }: TaskCardCreateModalProps) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -86,12 +88,16 @@ export default function TaskCardCreateModal({
 
   const handleSubmitForm = async () => {
     const bodyData: CreateCardBody = {
-      assigneeUserId: assignee,
       dashboardId: dashboardId,
       columnId: columnId,
       title: title,
       description: description,
       tags: tags.map((tag) => tag.label), // 태그 배열 요청 바디에 넣을 수 있는 형태로 변경
+    }
+
+    // 담당자가 있으면 담당자 추가
+    if (assignee != -1) {
+      bodyData.assigneeUserId = assignee
     }
 
     // 이미지가 있으면 이미지 먼저 생성 요청
@@ -116,7 +122,9 @@ export default function TaskCardCreateModal({
     // 서버로 요청
     await cardsService.postCards(bodyData)
 
-    window.location.reload()
+    setRefreshTrigger((prev) => prev + 1)
+
+    handleCardCreateModalClose()
   }
 
   const handleImageClick = () => {
