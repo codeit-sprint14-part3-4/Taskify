@@ -16,6 +16,8 @@ export default function Signup() {
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
+  const [isLoading, setIsLoading] = useState(false) // 로딩 상태 관리
+
   const router = useRouter()
   // useFormSignup 훅을 사용하여 회원가입 폼의 상태와 유효성 검사 관리
   const {
@@ -56,7 +58,7 @@ export default function Signup() {
     ) {
       return
     }
-
+    setIsLoading(true)
     try {
       const body = { email, nickname, password }
       await usersService.postUsers(body) // 회원가입 API 호출
@@ -78,6 +80,8 @@ export default function Signup() {
 
       setShowPasswordModal(true)
       setErrorMessage(message)
+    } finally {
+      setIsLoading(false) // 로딩 종료
     }
   }
 
@@ -216,10 +220,21 @@ export default function Signup() {
           <div className="flex items-center content-center flex-col gap-8 pt-[0.8rem] w-full text-2xl font-medium">
             <CommonButton
               padding="1.2rem 0"
-              className="w-full text-white bg-[var(--gray-9FA6B2)]"
+              className={`w-full text-white ${
+                isFormSignupValid
+                  ? 'bg-[var(--violet-5534DhA)]'
+                  : 'bg-[var(--gray-9FA6B2)]'
+              } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
               isActive={!!isFormSignupValid}
             >
-              가입하기
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>회원가입 중...</span>
+                </div>
+              ) : (
+                '가입하기'
+              )}
             </CommonButton>
             {showPasswordModal && (
               <Modal
