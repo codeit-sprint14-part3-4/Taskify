@@ -14,6 +14,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false) // 로딩 상태 관리
   const router = useRouter()
   // useFormSignup 훅을 사용하여 로그인 폼의 상태와 유효성 검사 관리
   const {
@@ -34,7 +35,7 @@ export default function Login() {
       alert('입력된 정보에 오류가 있습니다.')
       return
     }
-
+    setIsLoading(true)
     try {
       const body = {
         email,
@@ -56,12 +57,14 @@ export default function Login() {
       console.error('로그인 실패:', error)
       setErrorMessage(err?.message || '로그인 중 문제가 발생했습니다.')
       setShowPasswordModal(true)
+    } finally {
+      setIsLoading(false) // 로딩 종료
     }
   }
 
   return (
-    <div className="flex items-center justify-center pt-[22.3rem] ">
-      <div className="w-[52rem] h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
+    <div className="flex items-center justify-center pt-[8.8rem] sm:pt-[22.3rem]">
+      <div className="w-[90%] max-w-[34rem] sm:max-w-[50rem] h-auto sm:h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
         <Link href="/" legacyBehavior>
           <a>
             <div className="flex items-center justify-center flex-col mb-[3rem]">
@@ -140,10 +143,21 @@ export default function Login() {
           <div className="flex items-center justify-center flex-col gap-8 pt-[0.8rem] w-full">
             <CommonButton
               padding="1.2rem 0"
-              className="w-full text-white bg-[var(--gray-9FA6B2)]"
+              className={`w-full text-white ${
+                isFormLoginValid
+                  ? 'bg-[var(--violet-5534DhA)]'
+                  : 'bg-[var(--gray-9FA6B2)]'
+              } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
               isActive={!!isFormLoginValid}
             >
-              로그인
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>로그인 중...</span>
+                </div>
+              ) : (
+                '로그인'
+              )}
             </CommonButton>
 
             {showPasswordModal && (
