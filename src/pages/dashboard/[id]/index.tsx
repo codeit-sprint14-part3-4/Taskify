@@ -139,6 +139,7 @@ export default function DashboardPage() {
             columnInfo={column}
             dashboardId={dashboardId}
             refreshTrigger={refreshTrigger}
+            setRefreshTrigger={setRefreshTrigger}
             handleCardCreateModalOpen={handleCardCreateModalOpen}
             handleColumnEditModal={handleColumnEditModal}
             handleColumnOptionClick={handleColumnOptionClick}
