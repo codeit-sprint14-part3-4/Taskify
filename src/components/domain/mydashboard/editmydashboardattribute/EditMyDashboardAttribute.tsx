@@ -6,6 +6,7 @@ import ColorPin from '@/components/domain/colorpin/ColorPin'
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import { useColorPicker } from '@/hooks/useColorPicker'
 import { useRouter } from 'next/router'
+import SkeletonAttribute from '@/components/skeleton/SkeletonAttribute'
 import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardAttribute() {
@@ -62,27 +63,7 @@ export default function EditMyDashboardAttribute() {
   }
 
   if (loading) {
-    return (
-      <div className={styles.edit_container}>
-        <div className={`${styles.dashboard_edit_title_margin} text-2xl-bold`}>
-          <div className={styles.skeleton_title}></div>
-        </div>
-
-        <div className={`${styles.dashboard_edit_name_margin} text-2lg-medium`}>
-          <div className={styles.skeleton_label}></div>
-        </div>
-
-        <div className={styles.skeleton_input}></div>
-
-        <div className={styles.edit_color_pin_container}>
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className={styles.skeleton_color}></div>
-          ))}
-        </div>
-
-        <div className={styles.skeleton_button}></div>
-      </div>
-    )
+    return <SkeletonAttribute />
   }
 
   return (

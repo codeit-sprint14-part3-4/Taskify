@@ -5,8 +5,9 @@ import { useState, useEffect } from 'react'
 import { membersService } from '@/api/services/membersServices'
 import { Member } from '@/types/api/menmbers'
 import { useRouter } from 'next/router'
-import Toast from '@/components/toast/Toast'
 import Pagination from '@/components/common/commonbutton/Pagination'
+import SkeletonMember from '@/components/skeleton/SkeletonMember'
+import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardMember() {
   const router = useRouter()
@@ -49,27 +50,7 @@ export default function EditMyDashboardMember() {
   }
 
   if (loading) {
-    return (
-      <div className={styles.edit_member_container}>
-        <div className={styles.edit_member_flex_container}>
-          <div className={`text-2xl-bold`}>구성원</div>
-        </div>
-        <div className={`${styles.edit_member_name_header} text-lg-regular`}>
-          이름
-        </div>
-
-        {/* 스켈레톤 5개 예시 */}
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className={styles.skeleton_item}>
-            <div className={styles.edit_member_flex_container}>
-              <div className={styles.skeleton_badge}></div>
-              <div className={styles.skeleton_name}></div>
-            </div>
-            <div className={styles.skeleton_button}></div>
-          </div>
-        ))}
-      </div>
-    )
+    return <SkeletonMember />
   }
   return (
     <>
