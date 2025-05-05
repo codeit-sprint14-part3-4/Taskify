@@ -2,6 +2,7 @@ import Image from 'next/image'
 import styles from './pagination.module.css'
 import ArrowLeft from '../../../../public/assets/icon/arrow-left-gray.svg'
 import ArrowRight from '../../../../public/assets/icon/arrow-right-gray.svg'
+import { PaginationProps } from '@/types/common/pagination'
 
 export default function Pagination({
   current,

@@ -132,10 +132,7 @@ export default function EditMyDashboardInviteLog() {
             onChange={(e) => setInputValue(e.target.value)}
             onCreate={handleConfirm}
             onCancel={handleCancel}
-            onDelete={handleCancel}
-            onEdit={handleCancel}
             errorMessage={error}
-            confirmLabel="생성"
             cancelLabel="취소"
             mode="default"
           />
