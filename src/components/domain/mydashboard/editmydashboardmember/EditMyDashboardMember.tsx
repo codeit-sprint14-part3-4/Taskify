@@ -5,8 +5,9 @@ import { useState, useEffect } from 'react'
 import { membersService } from '@/api/services/membersServices'
 import { Member } from '@/types/api/menmbers'
 import { useRouter } from 'next/router'
-import Toast from '@/components/toast/Toast'
 import Pagination from '@/components/common/commonbutton/Pagination'
+import SkeletonMember from '@/components/skeleton/SkeletonMember'
+import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardMember() {
   const router = useRouter()
@@ -49,19 +50,8 @@ export default function EditMyDashboardMember() {
   }
 
   if (loading) {
-    return (
-      <div className={styles.edit_member_container}>
-        <section className={styles.dots_container}>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-        </section>
-      </div>
-    )
+    return <SkeletonMember />
   }
-
   return (
     <>
       <div className={styles.edit_member_container}>

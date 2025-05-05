@@ -67,7 +67,7 @@ export default function EditPage() {
 
         <div className="ml-5">
           <ButtonDashboard
-            className={`${styles.button_hover} text-2lg-medium text-[var(--black-333236)]`}
+            className={`${styles.button_hover} text-2lg-medium text-[var(--black-333236)] mb-[2.0rem]`}
             /* 테일 윈드 처리 필요 */
             paddingHeight="py-[1.8rem]"
             paddingWidth="px-[9.5rem]"

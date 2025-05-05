@@ -16,5 +16,5 @@
 
 .image_container {
   padding: 1.1rem 1.3rem;
-  border: 1px solid var(--gray-D9D9D9);
+  border: 1px solid rgb(81, 81, 81);
 }

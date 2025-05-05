@@ -6,6 +6,7 @@ import ColorPin from '@/components/domain/colorpin/ColorPin'
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import { useColorPicker } from '@/hooks/useColorPicker'
 import { useRouter } from 'next/router'
+import SkeletonAttribute from '@/components/skeleton/SkeletonAttribute'
 import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardAttribute() {
@@ -62,17 +63,7 @@ export default function EditMyDashboardAttribute() {
   }
 
   if (loading) {
-    return (
-      <div className={styles.edit_container}>
-        <section className={styles.dots_container}>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-        </section>
-      </div>
-    )
+    return <SkeletonAttribute />
   }
 
   return (
@@ -108,7 +99,7 @@ export default function EditMyDashboardAttribute() {
         variant="primary"
         padding="1.4rem 26.8rem"
         isActive={isCreatable}
-        className={`${styles.button_hover}`}
+        className={isCreatable ? styles.button_hover : ''}
       >
         변경
       </CommonButton>

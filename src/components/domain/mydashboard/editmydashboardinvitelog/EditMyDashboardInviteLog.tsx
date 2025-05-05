@@ -8,6 +8,7 @@ import { Invitation } from '@/types/api/dashboards'
 import FormModal from '../../modals/basemodal/FormModal'
 import { useRouter } from 'next/router'
 import Pagination from '@/components/common/commonbutton/Pagination'
+import SkeletonInviteLog from '@/components/skeleton/SkeletonInviteLog'
 import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardInviteLog() {
@@ -88,17 +89,7 @@ export default function EditMyDashboardInviteLog() {
   }
 
   if (loading) {
-    return (
-      <div className={styles.edit_invite_container}>
-        <section className={styles.dots_container}>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-        </section>
-      </div>
-    )
+    return <SkeletonInviteLog />
   }
 
   return (
