@@ -15,6 +15,7 @@ export default function Sidebar({
   const [dashboardList, setDashboardList] = useState<Dashboard[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
+  const [isLoading, setIsLoading] = useState(true)
 
   const handleOpenModal = () => setIsModalOpen(true)
   const handleCloseModal = () => setIsModalOpen(false)
@@ -29,12 +30,17 @@ export default function Sidebar({
   }
 
   const getDashboardList = async () => {
+    setIsLoading(true)
     try {
+      setIsLoading(true)
       const res = await dashboardsService.getDashboards('pagination', page)
       setDashboardList(res.dashboards)
       setTotalCount(res.totalCount)
+      setIsLoading(false)
     } catch (err) {
       console.error(err)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -42,10 +48,44 @@ export default function Sidebar({
     getDashboardList()
   }, [page, currentDashboardId])
 
+  if (isLoading) {
+    return (
+      <div className={styles.sidebar}>
+        {/* 로고 영역 */}
+        <div className="flex flex-col items-center mb-[2rem]">
+          <div className="w-[3rem] h-[3rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-full mb-[0.4rem]"></div>
+          <div className="w-[8rem] h-[1.5rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem]"></div>
+        </div>
+
+        {/* 제목 영역 */}
+        <div className="flex justify-between items-center px-[1rem] mb-[1rem]">
+          <div className="w-[10rem] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem]"></div>
+          <div className="w-[2rem] h-[2rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-full"></div>
+        </div>
+
+        {/* 리스트 영역 */}
+        <ul className="px-[1rem]">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <li
+              key={i}
+              className="w-full h-[3rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mb-[0.5rem]"
+            />
+          ))}
+        </ul>
+
+        {/* 페이지네이션 영역 */}
+        <article className="w-full flex justify-between items-center mt-[32px] px-[1rem]">
+          <div className="w-[40px] h-[40px] bg-[var(--gray-D9D9D9)] animate-pulse rounded-full" />
+          <div className="w-[3rem] h-[1.5rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem]" />
+          <div className="w-[40px] h-[40px] bg-[var(--gray-D9D9D9)] animate-pulse rounded-full" />
+        </article>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.sidebar}>
-      {/* 로고 영역 */}
-      <Link href="/" className={styles.logo}>
+      <Link href="/mydashboard" className={styles.logo}>
         <Image
           src="/assets/icon/logo-icon.svg"
           alt="Taskify Icon"
@@ -62,7 +102,6 @@ export default function Sidebar({
         />
       </Link>
 
-      {/* 메뉴 영역 */}
       <ul className={styles.menu}>
         <li className={styles.menuItem}>
           <span className={styles.link}>Dash Boards</span>
@@ -108,6 +147,7 @@ export default function Sidebar({
             ))}
         </ul>
       </ul>
+
       <article className="w-full flex justify-between items-center mt-[32px]">
         <button
           className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-l-[6px] flex justify-center items-center cursor-pointer"
@@ -133,7 +173,7 @@ export default function Sidebar({
             src="/assets/icon/arrow-right-gray.svg"
             width={16}
             height={16}
-            alt="오른른쪽 화살표"
+            alt="오른쪽 화살표"
           />
         </button>
       </article>

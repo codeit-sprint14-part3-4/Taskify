@@ -82,8 +82,8 @@ export default function Signup() {
   }
 
   return (
-    <div className="flex items-center justify-center pt-[22.3rem] transition-all duration-300 ease-in-out">
-      <div className="w-[52rem] h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
+    <div className="flex items-center justify-center  pt-[8.8rem] sm:pt-[22.3rem] transition-all duration-300 ease-in-out">
+      <div className="w-[90%] max-w-[34rem] sm:max-w-[50rem] h-auto sm:h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
         <Link href="/">
           <div className="flex items-center justify-center flex-col mb-[3rem]">
             <div className="relative w-[20rem] h-[19rem]">
