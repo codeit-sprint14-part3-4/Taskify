@@ -36,10 +36,12 @@
 .profile_image {
   border-radius: 50%;
   overflow: hidden;
+  position: relative;
 }
-.me {
-  padding-left: 1.3rem;
-  cursor: pointer;
+.dropdown {
+  position: absolute;
+  top: 6rem;
+  right: 4rem;
 }
 
 .invited_members_wrapper {

@@ -8,7 +8,7 @@ import { dashboardsService } from '@/api/services/dashboardsServices'
 import FormModal from '@/components/domain/modals/basemodal/FormModal'
 import { membersService } from '@/api/services/membersServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
-
+import { Invitation } from '@/types/api/invitations'
 interface LayoutProps {
   children: React.ReactNode
   pageType: 'mydashboard' | 'dashboard' | 'mypage'
@@ -41,7 +41,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
   const [membersEmail, setMembersEmail] = useState('')
   const [error, setError] = useState('')
   const dashboardId = Number(router.query.id)
-
+  const [invitedList, setInvitedList] = useState<Invitation[]>([])
   // 초대 처리 함수
   const handleInvite = async () => {
     if (!membersEmail) {
@@ -50,9 +50,25 @@ export default function Layout({ children, pageType }: LayoutProps) {
     }
 
     try {
+      // 기존 초대 목록에서 해당 이메일이 있는지 확인
+      const existingInvite = invitedList.find(
+        (invite) => invite.invitee.email === membersEmail
+      )
+
+      // 초대가 존재하고, 수락되지 않은 상태라면, 먼저 삭제 후 재초대
+      if (existingInvite && existingInvite.inviteAccepted === false) {
+        await dashboardsService.deleteDashboardsInvitations(
+          dashboardId,
+          existingInvite.id
+        )
+      }
+
+      // 새 초대 보내기
       await dashboardsService.postDashboardsInvitations(dashboardId, {
         email: membersEmail,
       })
+
+      // 초대 모달 닫기 및 입력값 초기화
       setInviteModalOpen(false)
       setMembersEmail('')
       setError('')

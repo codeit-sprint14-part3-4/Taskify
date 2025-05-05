@@ -34,17 +34,19 @@ const DropdownMenu = ({ onClose }: { onClose?: () => void }) => {
   ]
 
   return (
-    <div className={styles.dropdownMenu} role="menu" aria-label="사용자 메뉴">
-      <div className={styles.menuHeader}>
-        {menuItems.map(({ label, onClick }) => (
-          <button
-            key={label}
-            onClick={onClick}
-            className={clsx`${styles.menuItem} text-md-regular`}
-          >
-            {label}
-          </button>
-        ))}
+    <div>
+      <div className={styles.dropdownMenu} role="menu" aria-label="사용자 메뉴">
+        <div className={styles.menuHeader}>
+          {menuItems.map(({ label, onClick }) => (
+            <button
+              key={label}
+              onClick={onClick}
+              className={clsx`${styles.menuItem} text-md-regular`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )

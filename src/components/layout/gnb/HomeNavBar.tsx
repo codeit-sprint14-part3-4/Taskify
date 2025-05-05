@@ -206,9 +206,13 @@ export default function HomeNavBar({
           >
             {userData?.nickname}
           </div>
-          {showDropdown && (
-            <MyDroopdown onClose={() => setShowDropdown(false)} />
-          )}
+          <div>
+            {showDropdown && (
+              <div className={styles.dropdown}>
+                <MyDroopdown onClose={() => setShowDropdown(false)} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

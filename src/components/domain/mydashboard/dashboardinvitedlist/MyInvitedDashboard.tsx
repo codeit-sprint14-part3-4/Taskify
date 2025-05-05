@@ -4,11 +4,13 @@ import Image from 'next/image'
 
 import CommonInput from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import { Invitation } from '@/types/api/invitations'
+
 import { invitationsService } from '@/api/services/invitationsServices'
+import { useDashboardInvitations } from '@/stores/dashboardList'
 
 const MyInvitedDashboard = () => {
-  const [invitedList, setInvitedList] = useState<Invitation[]>([])
+  const { invitations, setInvitations, removeInvitation } =
+    useDashboardInvitations()
   const [searchTerm, setSearchTerm] = useState('')
   const [hasMore, setHasMore] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
@@ -19,7 +21,6 @@ const MyInvitedDashboard = () => {
     async (cursorId?: number, title?: string, isNewSearch: boolean = false) => {
       if (isLoading || !hasMore) return
       setIsLoading(true)
-      // '' 인 경우 undefined로 처리하여 검색어를 없애고, 검색어가 있는 경우 title을 사용합니다.
       try {
         const search = title?.trim() === '' ? undefined : title
         const response = await invitationsService.getInvitations(
@@ -29,9 +30,7 @@ const MyInvitedDashboard = () => {
         )
         const newData = response.invitations
 
-        setInvitedList((prev) =>
-          isNewSearch ? newData : [...prev, ...newData]
-        )
+        setInvitations(isNewSearch ? newData : [...invitations, ...newData])
         setHasMore(newData.length === 10)
       } catch (error) {
         console.error('초대 목록 조회 실패:', error)
@@ -39,21 +38,18 @@ const MyInvitedDashboard = () => {
         setIsLoading(false)
       }
     },
-    [isLoading, hasMore]
+    [invitations, isLoading, hasMore, setInvitations]
   )
 
-  // 검색하는 동안 초대 목록을 초기화하고 검색어에 따라 초대 목록을 가져오는  useEffect입나더
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      setInvitedList([])
       setHasMore(true)
       fetchInvitations(undefined, searchTerm, true)
     }, 500)
 
     return () => clearTimeout(delayDebounce)
-  }, [searchTerm])
+  }, [searchTerm, fetchInvitations])
 
-  // 스크롤 시 마지막 아이템을 감지하는 IntersectionObserver
   const lastItemRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (isLoading) return
@@ -61,7 +57,7 @@ const MyInvitedDashboard = () => {
 
       observerRef.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          const lastItem = invitedList[invitedList.length - 1]
+          const lastItem = invitations[invitations.length - 1]
           if (lastItem) {
             fetchInvitations(lastItem.id, searchTerm)
           }
@@ -70,14 +66,13 @@ const MyInvitedDashboard = () => {
 
       if (node) observerRef.current.observe(node)
     },
-    [invitedList, hasMore, isLoading, searchTerm, fetchInvitations]
+    [invitations, hasMore, isLoading, searchTerm, fetchInvitations]
   )
 
-  // 검색어 입력 핸들러
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
-  //  초대 수락/거절 버튼 핸들러
+
   const handleInviteAcceptButton = async (
     invitationId: number,
     isAccept: boolean
@@ -86,9 +81,9 @@ const MyInvitedDashboard = () => {
       await invitationsService.putInvitations(invitationId, {
         inviteAccepted: isAccept,
       })
-      setInvitedList((prev) => prev.filter((item) => item.id !== invitationId))
+      removeInvitation(invitationId) // 상태에서 초대 제거
     } catch (err) {
-      console.error(err)
+      console.error('초대 처리 실패:', err)
     }
   }
 
@@ -125,8 +120,8 @@ const MyInvitedDashboard = () => {
         </div>
 
         {/* 리스트 */}
-        {invitedList.map((item, index) => {
-          const isLastItem = index === invitedList.length - 1
+        {invitations.map((item, index) => {
+          const isLastItem = index === invitations.length - 1
           return (
             <div
               key={item.id}

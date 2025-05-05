@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from './gnb.module.css'
+import clsx from 'clsx'
 
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import Badge from '@/components/common/badge/Badge' // Badge 컴포넌트를 임포트
@@ -44,7 +45,7 @@ const Gnb = () => {
           <Image src={text_taskify} alt="Text" className={styles.logotext} />
         </Link>
 
-        <ul className={styles.login}>
+        <ul className={clsx(styles.login, 'text-lg-regular')}>
           {isLoggedIn ? (
             <>
               <li>
