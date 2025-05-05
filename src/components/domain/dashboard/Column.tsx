@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import Image from 'next/image'
 import CardTable from '@/components/domain/dashboard/CardTable'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
@@ -11,6 +11,8 @@ import styles from './column.module.css'
 export interface ColumnProps {
   columnInfo: ColumnType
   dashboardId: number
+  refreshTrigger: number
+  setRefreshTrigger: React.Dispatch<SetStateAction<number>>
   handleCardCreateModalOpen: (columnId: number) => void
   handleColumnEditModal: (state: boolean) => void
   handleColumnOptionClick: (columnInfo: ColumnType) => void
@@ -19,6 +21,8 @@ export interface ColumnProps {
 export default function Column({
   columnInfo,
   dashboardId,
+  refreshTrigger,
+  setRefreshTrigger,
   handleCardCreateModalOpen,
   handleColumnEditModal,
   handleColumnOptionClick,
@@ -31,7 +35,7 @@ export default function Column({
 
   useEffect(() => {
     getCards()
-  }, [])
+  }, [refreshTrigger])
 
   return (
     <>
@@ -98,6 +102,7 @@ export default function Column({
               columnId: columnInfo.id,
               columnTitle: columnInfo.title,
             }}
+            setRefreshTrigger={setRefreshTrigger}
           />
         )}
       </div>

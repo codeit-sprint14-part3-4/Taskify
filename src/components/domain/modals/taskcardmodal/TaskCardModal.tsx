@@ -245,7 +245,9 @@ export default function TaskCardModal({
               </div>
             </div>
 
-            <p className={`p-[1rem] w-[45rem] mt-[1.6rem] text-md-regular`}>
+            <p
+              className={`p-[1rem] w-[45rem] mt-[1.6rem] text-md-regular break-all`}
+            >
               {card.description}
             </p>
 
@@ -263,14 +265,18 @@ export default function TaskCardModal({
                 <textarea
                   value={inputComment}
                   onChange={(e) => setInputComment(e.target.value)}
-                  placeholder="댓글을 입력하세요"
-                  className={`${styles.textareainput} resize-none`}
+                  placeholder="댓글을 작성하기"
+                  className={`${styles.textareainput} text-md-regular resize-none`}
                 />
                 <div className={styles.commentinputbutton}>
                   <button
+                    className={`w-[8.3rem] h-[3.2rem] border border-[#D9D9D9] rounded-[0.4rem] ${
+                      inputComment
+                        ? 'text-[#5534DA] cursor-pointer'
+                        : 'text-[#D9D9D9]'
+                    } text-xs-medium`}
                     onClick={addComment}
                     disabled={!inputComment.trim()}
-                    className={styles.commentbutton}
                   >
                     입력
                   </button>
@@ -278,35 +284,61 @@ export default function TaskCardModal({
               </div>
             </div>
 
-            <div ref={commentContainerRef} className={styles.commentList}>
+            <div
+              ref={commentContainerRef}
+              className="flex flex-col gap-[2.4rem] mt-[2.4rem]"
+            >
               {comments.map((comment) => (
-                <div key={comment.id} className={styles.commentCard}>
-                  <div className={styles.commentMeta}>
-                    {formatDate(comment.createdAt)}
+                <div key={comment.id} className="flex w-[45rem] gap-[1rem]">
+                  <div className="w-[3.4rem] h-[3.4rem]">
+                    {comment.author.profileImageUrl ? (
+                      <Image
+                        className="w-[3.4rem] h-[3.4rem] object-cover"
+                        src={comment.author.profileImageUrl}
+                        width={50}
+                        height={50}
+                        alt="프로필 이미지"
+                      />
+                    ) : (
+                      <Badge nickname={comment.author.nickname} />
+                    )}
                   </div>
-                  <div className={styles.commentContent}>{comment.content}</div>
-                  {comment.author.id === userData.id && (
-                    <div className={styles.commentButtons}>
-                      <button
-                        onClick={() => {
-                          const newContent = prompt(
-                            '댓글 수정',
-                            comment.content
-                          )
-                          if (newContent !== null)
-                            editComment(comment.id, newContent)
-                        }}
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => deleteComment(comment.id)}
-                        className="text-red-500"
-                      >
-                        삭제
-                      </button>
+                  <div className="w-[39rem]">
+                    <div className="flex items-center gap-[0.8rem]">
+                      <div className="text-[#333236] text-lg-semibold">
+                        {comment.author.nickname}
+                      </div>
+                      <div className="text-[#9FA6B2] text-xs-regular">
+                        {formatDate(comment.createdAt)}
+                      </div>
                     </div>
-                  )}
+                    <div className="text-[#333236] break-all">
+                      {comment.content}
+                    </div>
+                    {comment.author.id === userData.id && (
+                      <div className="flex items-center gap-[1.2rem] mt-[1rem] text-[#9FA6B2] text-xs-regular">
+                        <button
+                          className="border-b border-[#9FA6B2] cursor-pointer"
+                          onClick={() => {
+                            const newContent = prompt(
+                              '댓글 수정',
+                              comment.content
+                            )
+                            if (newContent !== null)
+                              editComment(comment.id, newContent)
+                          }}
+                        >
+                          수정
+                        </button>
+                        <button
+                          className="border-b border-[#9FA6B2] cursor-pointer"
+                          onClick={() => deleteComment(comment.id)}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
               <div ref={observerTargetRef} style={{ height: '0.1rem' }} />

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useState } from 'react'
+import { SetStateAction, useState } from 'react'
 
 import { cardsService } from '@/api/services/cardsServices'
 import Tag from '@/components/common/tag/Tag' // 개별 카드
@@ -14,9 +14,15 @@ export interface CardProps {
   cardInfo: CardType
   dashboardId: number
   columnInfo: { columnId: number; columnTitle: string }
+  setRefreshTrigger: React.Dispatch<SetStateAction<number>>
 }
 
-export default function Card({ cardInfo, dashboardId, columnInfo }: CardProps) {
+export default function Card({
+  cardInfo,
+  dashboardId,
+  columnInfo,
+  setRefreshTrigger,
+}: CardProps) {
   const [isCardDetailModal, setIsCardDetailModal] = useState(false)
   const [isCardEditModal, setIsCardEditModal] = useState(false)
 
@@ -32,6 +38,8 @@ export default function Card({ cardInfo, dashboardId, columnInfo }: CardProps) {
 
   const deleteCard = async (cardId: number) => {
     await cardsService.deleteCards(cardId)
+    setRefreshTrigger((prev) => prev + 1)
+    setIsCardDetailModal(false)
   }
 
   return (

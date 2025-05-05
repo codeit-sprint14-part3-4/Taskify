@@ -50,7 +50,6 @@ export default function TaskCardEditModal({
   const [title, setTitle] = useState(cardInfo.title)
   // const [selectedUser, setSelectedUser] = useState<User>()
   const [assignee, setAssignee] = useState(-1)
-  console.log(assignee)
   const [description, setDescription] = useState(cardInfo.description)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [inputValue, setInputValue] = useState('')
