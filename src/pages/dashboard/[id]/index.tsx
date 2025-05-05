@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
+import styles from '@/pages/dashboard/[id]/dashboard.module.css'
 import { columnsService } from '@/api/services/columnsServices'
 import Layout from '@/components/layout/layout'
 import Column from '@/components/domain/dashboard/Column'
@@ -131,7 +131,7 @@ export default function DashboardPage() {
   return (
     <>
       {/* 컬럼 리스트 */}
-      <div className="flex overflow-x-auto">
+      <div className={styles.container}>
         {columns.map((column) => (
           <Column
             key={column.id}
@@ -144,12 +144,13 @@ export default function DashboardPage() {
         ))}
 
         {/* 새로운 컬럼 추가하기 버튼 */}
-        <div className="pt-[6.8rem] pl-[2.4rem]">
+
+        <div className={styles.addColumnWrapper}>
           <ButtonDashboard
             paddingHeight="pt-[2.4rem] pb-[2rem]"
             paddingWidth="px-[8.6rem]"
             gap="gap-[1.2rem]"
-            className="box-border w-full rounded-[8px] border border-[var(--gray-D9D9D9)]"
+            className={styles.addColumnButton}
             color="bg-white text-[#333236] text-2lg-bold"
             onClick={() => {
               handleColumnCreateModal(true)
