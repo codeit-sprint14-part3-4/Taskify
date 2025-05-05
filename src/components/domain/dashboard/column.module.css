@@ -50,6 +50,14 @@
   justify-content: center;
 }
 
+.settingsButton {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.settingsButton:hover {
+  opacity: 0.7;
+}
+
 .addButtonWrapper {
   padding-left: 2rem;
   padding-right: 2rem;
