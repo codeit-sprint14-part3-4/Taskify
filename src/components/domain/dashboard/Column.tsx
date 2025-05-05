@@ -43,19 +43,17 @@ export default function Column({
               <div className={styles.dot} />
               <span className="text-lg-medium">{columnInfo.title}</span>
             </div>
-
             <span className={styles.cardCount}>
               {/* && 연산자 사용 이유 : getCards는 비동기로 동작, cards가 확정적으로 동작하지 않음. cards가 있을 때만 cards.length가 동작할 수 있게 */}
               {cards && cards.length}
             </span>
           </div>
-
-          {/* onClick 이벤트 추가 요망 */}
           <button
             onClick={() => {
               handleColumnEditModal(true)
               handleColumnOptionClick(columnInfo)
             }}
+            className={styles.settingsButton}
           >
             <Image
               src="/assets/icon/settings-logo.svg"
@@ -69,7 +67,6 @@ export default function Column({
         {/* + 버튼 */}
         <div className={styles.addButtonWrapper}>
           <ButtonDashboard
-            // onclickAdd 이벤트 추가 요망
             onClick={() => handleCardCreateModalOpen(columnInfo.id)}
             color="bg-white"
             className={styles.addButton}
@@ -81,7 +78,11 @@ export default function Column({
                   width={22}
                   height={22}
                   unoptimized
-                  style={{ width: '22px', height: '22px', display: 'block' }}
+                  style={{
+                    width: '2.2rem',
+                    height: '2.2rem',
+                    display: 'block',
+                  }}
                 />
               </div>
             }
