@@ -90,13 +90,30 @@ export default function EditMyDashboardInviteLog() {
   if (loading) {
     return (
       <div className={styles.edit_invite_container}>
-        <section className={styles.dots_container}>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-        </section>
+        <div className={styles.edit_invite_header_flex_container}>
+          <div className="text-2xl-bold">초대 내역</div>
+          <div
+            className={`${styles.edit_invite_header_flex_container} gap-[1.6rem]`}
+          >
+            <div
+              className={`${styles.skeleton_button} w-[12rem] h-[3.6rem] rounded-md`}
+            />
+          </div>
+        </div>
+        <div className={`${styles.edit_invite_email_header} text-lg-regular`}>
+          이메일
+        </div>
+
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className={styles.invite_cancle_container}>
+            <div
+              className={`${styles.skeleton_email} w-[20rem] h-[2rem] rounded-md`}
+            />
+            <div
+              className={`${styles.skeleton_button} w-[8rem] h-[3rem] rounded-md`}
+            />
+          </div>
+        ))}
       </div>
     )
   }

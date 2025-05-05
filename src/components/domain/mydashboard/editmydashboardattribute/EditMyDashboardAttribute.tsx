@@ -64,13 +64,23 @@ export default function EditMyDashboardAttribute() {
   if (loading) {
     return (
       <div className={styles.edit_container}>
-        <section className={styles.dots_container}>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-          <div className={styles.dot}></div>
-        </section>
+        <div className={`${styles.dashboard_edit_title_margin} text-2xl-bold`}>
+          <div className={styles.skeleton_title}></div>
+        </div>
+
+        <div className={`${styles.dashboard_edit_name_margin} text-2lg-medium`}>
+          <div className={styles.skeleton_label}></div>
+        </div>
+
+        <div className={styles.skeleton_input}></div>
+
+        <div className={styles.edit_color_pin_container}>
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className={styles.skeleton_color}></div>
+          ))}
+        </div>
+
+        <div className={styles.skeleton_button}></div>
       </div>
     )
   }
@@ -108,7 +118,7 @@ export default function EditMyDashboardAttribute() {
         variant="primary"
         padding="1.4rem 26.8rem"
         isActive={isCreatable}
-        className={`${styles.button_hover}`}
+        className={isCreatable ? styles.button_hover : ''}
       >
         변경
       </CommonButton>
