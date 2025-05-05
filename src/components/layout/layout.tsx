@@ -144,14 +144,13 @@ export default function Layout({ children, pageType }: LayoutProps) {
           inputLabel="이메일"
           inputValue={membersEmail}
           onChange={(e) => setMembersEmail(e.target.value)}
-          onConfirm={handleInvite}
+          onCreate={handleInvite}
           onCancel={() => {
             setInviteModalOpen(false)
             setMembersEmail('')
             setError('')
           }}
           errorMessage={error}
-          confirmLabel="초대하기"
           cancelLabel="취소"
           showCloseButton
         />

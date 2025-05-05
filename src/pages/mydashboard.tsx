@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import styles from './mydashboard.module.css'
 
 import Layout from '@/components/layout/layout'
 import DashboardList from '@/components/domain/mydashboard/dashboardlist/DashboardList'
 import MyInvitedDashboard from '@/components/domain/mydashboard/dashboardinvitedlist/MyInvitedDashboard'
 import { invitationsService } from '@/api/services/invitationsServices'
 import { Invitation } from '@/types/api/invitations'
-import MyDropDown from '@/components/dropdown/MyDropDown'
 
 export default function MyDashboardPage() {
   const [invitedList, setInvitedList] = useState<Invitation[]>([])
@@ -31,8 +29,7 @@ export default function MyDashboardPage() {
   return (
     <div className="p-[4rem]">
       <DashboardList />
-      {/* 드롭다운 컴포넌트 나중에 삭제하세요 일단 테스트입니다 홈네브바에 해야 함!!! */}
-      <MyDropDown />
+
       {loadingInvited ? (
         <div className="text-center text-gray-500 mt-8">
           초대 목록 로딩 중...

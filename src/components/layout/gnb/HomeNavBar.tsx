@@ -1,7 +1,9 @@
 import styles from './homenavbar.module.css'
 import Image from 'next/image'
 import clsx from 'clsx'
+import { useEffect, useRef, useState } from 'react'
 
+import MyDroopdown from '@/components/dropdown/MyDropDown'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import Badge from '@/components/common/badge/Badge'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
@@ -23,6 +25,8 @@ export default function HomeNavBar({
   hasCrown,
   onInviteClick,
 }: HomeNavBarProps) {
+  const [showDropdown, setShowDropdown] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const { userData } = useAuthStore()
   const { members } = useDashboardMembers()
 
@@ -44,6 +48,20 @@ export default function HomeNavBar({
   const showCrown = pageType === 'mydashboard' && hasCrown
   const showDashboardControls = pageType !== 'mydashboard'
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
   return (
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
       {/* 왼쪽 영역: 제목 + 왕관 */}
@@ -155,8 +173,12 @@ export default function HomeNavBar({
         )}
 
         {/* 프로필 이미지 + 이름 */}
+
         <div
           className={clsx(styles.flex_center_space_between, styles.nav_right)}
+          onClick={() => setShowDropdown((prev) => !prev)} // 클릭 시 드롭다운 토글
+          ref={dropdownRef} // 외부 클릭 감지를 위한 ref
+          style={{ cursor: 'pointer' }}
         >
           <div className={styles.profile_image}>
             {userData?.profileImageUrl ? (
@@ -184,6 +206,9 @@ export default function HomeNavBar({
           >
             {userData?.nickname}
           </div>
+          {showDropdown && (
+            <MyDroopdown onClose={() => setShowDropdown(false)} />
+          )}
         </div>
       </div>
     </div>

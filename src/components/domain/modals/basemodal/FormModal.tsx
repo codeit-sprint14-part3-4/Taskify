@@ -5,24 +5,23 @@ import baseStyle from './baseModal.module.css'
 import ModalButton from './ModalButton'
 import { FormModalProps } from '@/types/common/formmodal'
 
-export default function FormModal({
-  title,
-  inputLabel,
-  inputValue,
-  onChange,
-  onCancel, // 취소
-  onDelete, // 삭제
-  onEdit, // 변경
-  onCreate, // 생성
-  errorMessage,
-  size = 'small',
-  cancelLabel = '취소',
-  showCloseButton = false, // 닫기 이미지 표시
-  mode,
-}: FormModalProps) {
+export default function FormModal(props: FormModalProps) {
+  const {
+    title,
+    inputLabel,
+    inputValue,
+    onChange,
+    onCancel,
+    errorMessage,
+    size = 'small',
+    cancelLabel = '취소',
+    showCloseButton = false,
+  } = props
+
   const isLarge = size === 'large'
   const closeIconSize = isLarge ? 36 : 24
-  const inputId = 'modal-input' // 고유 id
+  const inputId = 'modal-input'
+  const mode = props.mode ?? 'default'
 
   return (
     <div className={baseStyle.overlay}>
@@ -77,27 +76,29 @@ export default function FormModal({
           {/* 버튼 그룹 */}
           <div className={baseStyle.buttonGroup} style={{ display: 'flex' }}>
             {/* 삭제 모드일 때만 삭제와 변경 버튼을 표시 */}
-            {mode === 'delete' && onDelete && onEdit && (
-              <>
-                <ModalButton
-                  type="button"
-                  onClick={onDelete}
-                  label="삭제"
-                  isCancel={true}
-                  size={size}
-                />
-                <ModalButton
-                  type="button"
-                  onClick={onEdit}
-                  label="변경"
-                  isCancel={false}
-                  size={size}
-                />
-              </>
-            )}
+            {props.mode === 'delete' &&
+              'onDelete' in props &&
+              'onEdit' in props && (
+                <>
+                  <ModalButton
+                    type="button"
+                    onClick={props.onDelete}
+                    label="삭제"
+                    isCancel={true}
+                    size={size}
+                  />
+                  <ModalButton
+                    type="button"
+                    onClick={props.onEdit}
+                    label="변경"
+                    isCancel={false}
+                    size={size}
+                  />
+                </>
+              )}
 
             {/* 기본 모드에서는 취소와 생성 버튼만 표시 */}
-            {mode === 'default' && (
+            {mode === 'default' && 'onCreate' in props && (
               <>
                 <ModalButton
                   type="button"
@@ -108,7 +109,7 @@ export default function FormModal({
                 />
                 <ModalButton
                   type="button"
-                  onClick={onCreate} // 생성은 onCreate 함수 실행
+                  onClick={props.onCreate}
                   label="생성"
                   isCancel={false}
                   size={size}
