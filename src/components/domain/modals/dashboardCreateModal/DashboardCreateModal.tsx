@@ -56,7 +56,7 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
           onChange={(e) => setText(e.target.value)}
           placeholder="대시보드 이름을 입력해주세요."
           disabled={false}
-          padding="2.5rem 1.5rem" /*padding 사이즈를 시안에 있는 걸 넣으면 시안 이미지처럼 안나오는데..? */
+          padding="2.5rem 1.5rem"
           className={styles.input}
         />
         <div className={styles.color_pin_container}>

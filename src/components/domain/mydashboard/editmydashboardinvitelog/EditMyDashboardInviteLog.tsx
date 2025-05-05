@@ -1,24 +1,28 @@
 import styles from './editMyDashboardInviteLog.module.css'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Image from 'next/image'
-import ArrowLeft from '../../../../../public/assets/icon/arrow-left-gray.svg'
-import ArrowRight from '../../../../../public/assets/icon/arrow-right-gray.svg'
 import AddBox from '../../../../../public/assets/icon/add-box.svg'
-import { Dashboard } from '@/types/api/dashboards'
 import { useState, useEffect } from 'react'
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import { Invitation } from '@/types/api/dashboards'
 import FormModal from '../../modals/basemodal/FormModal'
 import { useRouter } from 'next/router'
+import Pagination from '@/components/common/commonbutton/Pagination'
+import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardInviteLog() {
   const router = useRouter()
   const id = Number(router.query.id)
-  const [emailList, setEmailList] = useState<Invitation[]>([])
+  const [invitationList, setinvitationList] = useState<Invitation[]>([])
   const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [error, setError] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+  const [inviteToast, setInviteToast] = useState(false)
+  const [cancleToast, setCancelToast] = useState(false)
+  const [falseToast, setFalseToast] = useState(false)
 
   const handleInvite = () => {
     setIsModalOpen(true)
@@ -32,9 +36,9 @@ export default function EditMyDashboardInviteLog() {
     const fetchInviteEmail = async () => {
       try {
         const inviteEmailData =
-          await dashboardsService.getDashboardsInvitations(id, 1, 10)
-        console.log(inviteEmailData)
-        setEmailList(inviteEmailData.invitations)
+          await dashboardsService.getDashboardsInvitations(id, currentPage, 10)
+        setinvitationList(inviteEmailData.invitations)
+        setTotalCount(inviteEmailData.totalCount)
         setLoading(false)
       } catch (error) {
         console.error('이메일 정보를 불러오지 못했습니다', error)
@@ -42,7 +46,7 @@ export default function EditMyDashboardInviteLog() {
       }
     }
     fetchInviteEmail()
-  }, [id])
+  }, [id, currentPage])
 
   const handleConfirm = async () => {
     if (!inputValue) {
@@ -55,13 +59,17 @@ export default function EditMyDashboardInviteLog() {
     }
 
     try {
-      await dashboardsService.postDashboardsInvitations(id, body)
-      setIsModalOpen(false)
+      const res = await dashboardsService.postDashboardsInvitations(id, body)
+      setinvitationList((prev) => [...prev, res])
       setError('')
       setInputValue('')
       alert('초대 신청이 완료됐어요.')
+      // setInviteToast(true)
+      setIsModalOpen(false)
     } catch (error) {
       console.error('초대 버튼에서 에러가 발생했습니다. ', error)
+      alert('요청에 실패했습니다.')
+      // setFalseToast(true)
     }
   }
 
@@ -69,10 +77,28 @@ export default function EditMyDashboardInviteLog() {
     try {
       await dashboardsService.deleteDashboardsInvitations(id, invitationId)
       alert('취소 완료')
-      setEmailList((prev) => prev.filter((email) => email.id !== invitationId))
+      // setCancelToast(true)
+      setinvitationList((prev) =>
+        prev.filter((email) => email.id !== invitationId)
+      )
     } catch (error) {
+      alert('요청에 실패했습니다.')
       console.error('초대 거절 에러가 발생했습니다. ', error)
     }
+  }
+
+  if (loading) {
+    return (
+      <div className={styles.edit_invite_container}>
+        <section className={styles.dots_container}>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+        </section>
+      </div>
+    )
   }
 
   return (
@@ -80,31 +106,19 @@ export default function EditMyDashboardInviteLog() {
       <div className={styles.edit_invite_container}>
         <div className={styles.edit_invite_header_flex_container}>
           <div className={`text-2xl-bold`}>초대 내역</div>
-          <div className={styles.edit_invite_header_flex_container}>
-            <div>1 페이지 중 1</div>
-            <div>
-              <Image
-                src={ArrowLeft}
-                alt="왼쪽페이지버튼"
-                width={20}
-                height={16}
-                className="object-contain flex"
-              />
-            </div>
-            <div>
-              <Image
-                src={ArrowRight}
-                alt="오른쪽페이지버튼"
-                width={20}
-                height={16}
-                className="object-contain flex"
-              />
-            </div>
+          <div
+            className={`${styles.edit_invite_header_flex_container} gap-[1.6rem]`}
+          >
+            <Pagination
+              current={currentPage}
+              total={Math.ceil(totalCount / 10)}
+              onPageChange={setCurrentPage}
+            />
             <CommonButton
               variant="primary"
               padding="0.8rem 2rem 0.7rem 2rem"
               isActive={true}
-              className="text-md-medium flex items-center justify-center gap-3"
+              className={`${styles.button_hover} text-md-medium flex items-center justify-center gap-3`}
               onClick={() => handleInvite()}
             >
               <Image
@@ -137,7 +151,7 @@ export default function EditMyDashboardInviteLog() {
           이메일
         </div>
 
-        {emailList.map((invitations) => (
+        {invitationList.map((invitations) => (
           <div key={invitations.id} className={styles.invite_cancle_container}>
             <div>
               <div className={`${styles.edit_invite_email} text-lg-regular`}>
@@ -155,6 +169,30 @@ export default function EditMyDashboardInviteLog() {
             </CommonButton>
           </div>
         ))}
+
+        {/* {cancelToast && (
+          <Toast
+            message="삭제되었습니다."
+            onClose={() => setCancelToast(false)}
+            type="delete"
+          />
+        )} */}
+
+        {/* {inviteToast && (
+          <Toast
+            message="초대가 완료되었습니다."
+            onClose={() => setInviteToast(false)}
+            type="success"
+          />
+        )}
+
+        {falseToast && (
+          <Toast
+            message="요청에 실패했습니다."
+            onClose={() => setFalseToast(false)}
+            type="info"
+          />
+        )} */}
       </div>
     </>
   )

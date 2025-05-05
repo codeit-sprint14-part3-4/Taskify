@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react'
 import ColorPin from '@/components/domain/colorpin/ColorPin'
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import { useColorPicker } from '@/hooks/useColorPicker'
-import { Dashboard } from '@/types/api/dashboards'
 import { useRouter } from 'next/router'
+import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardAttribute() {
   const router = useRouter()
@@ -14,6 +14,10 @@ export default function EditMyDashboardAttribute() {
   const [editText, setEditText] = useState('')
   const [newTitle, setNewTitle] = useState('')
   const { selectedColor, handleColorSelect, COLORS } = useColorPicker()
+  const isCreatable = editText.trim() !== '' && selectedColor !== null
+  const [loading, setLoading] = useState(true)
+  const [showToast, setShowToast] = useState(false)
+  const [falseToast, setFalseToast] = useState(false)
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -27,8 +31,10 @@ export default function EditMyDashboardAttribute() {
         if (selectedColorObject) {
           handleColorSelect(selectedColorObject)
         }
+        setLoading(false)
       } catch (error) {
         console.error('대시보드 데이터를 가져오는 중 오류 발생', error)
+        setLoading(false)
       }
     }
     fetchDashboardData()
@@ -45,12 +51,30 @@ export default function EditMyDashboardAttribute() {
         color: String(selectedColor?.color),
       }
       await dashboardsService.putDashboards(id, body)
-      alert('대시보드 수정이 완료되었습니다.')
+      // setShowToast(true)
+      alert('수정이 완료되었습니다.')
       window.location.reload()
     } catch (error) {
       console.error('대시보드 수정 중 오류 발생', error)
+      alert('요청에 실패했습니다.')
+      // setFalseToast(true)
     }
   }
+
+  if (loading) {
+    return (
+      <div className={styles.edit_container}>
+        <section className={styles.dots_container}>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+        </section>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.edit_container}>
       <div className={`${styles.dashboard_edit_title_margin} text-2xl-bold`}>
@@ -83,10 +107,27 @@ export default function EditMyDashboardAttribute() {
         onClick={handleEditDashboardAttribute}
         variant="primary"
         padding="1.4rem 26.8rem"
-        isActive={true}
+        isActive={isCreatable}
+        className={`${styles.button_hover}`}
       >
         변경
       </CommonButton>
+
+      {/* {showToast && (
+        <Toast
+          message="변경되었습니다."
+          onClose={() => setShowToast(false)}
+          type="success"
+        />
+      )} */}
+
+      {/* {falseToast && (
+          <Toast
+            message="요청에 실패했습니다."
+            onClose={() => setFalseToast(false)}
+            type="info"
+          />
+        )} */}
     </div>
   )
 }

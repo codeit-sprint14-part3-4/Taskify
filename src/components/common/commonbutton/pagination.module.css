@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.arrowButtons button {
+  cursor: pointer;
+}
+
+.arrowButtons button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.image_container {
+  padding: 1.1rem 1.3rem;
+  border: 1px solid var(--gray-D9D9D9);
+}

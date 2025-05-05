@@ -84,12 +84,7 @@ export default function FormModal({
                 size={size}
               />
             )}
-            <ModalButton
-              type="submit"
-              onClick={onConfirm}
-              label={confirmLabel}
-              size={size}
-            />
+            <ModalButton type="submit" label={confirmLabel} size={size} />
           </div>
         </form>
       </div>
