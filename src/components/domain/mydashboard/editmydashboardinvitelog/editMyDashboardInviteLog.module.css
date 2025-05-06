@@ -11,6 +11,10 @@
   flex-wrap: wrap;
 }
 
+.edit_intite_button_pagination_container {
+  gap: 1.6rem;
+}
+
 .edit_invite_email_header {
   margin-top: 4rem;
   color: var(--gray-9FA6B2);
@@ -53,6 +57,10 @@
 
 .invite_button {
   padding: 0.8rem 2rem 0.7rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
 }
 
 @media (min-width: 768px) {

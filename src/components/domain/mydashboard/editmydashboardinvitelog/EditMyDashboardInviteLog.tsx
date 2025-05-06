@@ -100,7 +100,7 @@ export default function EditMyDashboardInviteLog() {
             초대 내역
           </div>
           <div
-            className={`${styles.edit_invite_header_flex_container} ${styles.edit_intite_button_pagination_container} gap-[1.6rem]`}
+            className={`${styles.edit_invite_header_flex_container} ${styles.edit_intite_button_pagination_container}`}
           >
             <div className={styles.pagination_container}>
               <Pagination
@@ -113,7 +113,7 @@ export default function EditMyDashboardInviteLog() {
               <CommonButton
                 variant="primary"
                 isActive={true}
-                className={`${styles.button_hover} ${styles.invite_button} text-md-medium flex items-center justify-center gap-3`}
+                className={`${styles.button_hover} ${styles.invite_button} text-md-medium`}
                 onClick={() => handleInvite()}
               >
                 <Image
@@ -151,7 +151,7 @@ export default function EditMyDashboardInviteLog() {
             <CommonButton
               variant="primary"
               isActive={true}
-              className={`${styles.button_hover} ${styles.invite_button} text-md-medium flex items-center justify-center gap-3`}
+              className={`${styles.button_hover} ${styles.invite_button} text-md-medium`}
               onClick={() => handleInvite()}
             >
               <Image
