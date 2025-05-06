@@ -247,6 +247,9 @@
   gap: 1.4rem;
   margin-top: 2.4rem;
   font-family: 'Pretendard';
+
+  max-height: 12rem;
+  overflow-y: auto;
 }
 
 .commentButton {

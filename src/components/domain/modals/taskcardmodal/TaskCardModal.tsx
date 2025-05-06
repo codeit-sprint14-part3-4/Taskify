@@ -113,6 +113,8 @@ export default function TaskCardModal({
   }, [])
 
   useEffect(() => {
+    if (!commentContainerRef.current) return
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries
@@ -120,7 +122,10 @@ export default function TaskCardModal({
           loadMoreComments()
         }
       },
-      { threshold: 0.1 }
+      {
+        root: commentContainerRef.current,
+        threshold: 0.1,
+      }
     )
 
     if (observerTargetRef.current) {
