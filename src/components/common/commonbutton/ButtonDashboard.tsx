@@ -40,7 +40,7 @@ export default function ButtonDashboard({
     },
     gap
   )
-  // 스타일 체인지지
+  // 스타일 체인지
   return (
     <div>
       <button

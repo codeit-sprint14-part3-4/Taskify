@@ -8,6 +8,8 @@ type BaseProps = {
   size?: 'small' | 'large'
   cancelLabel?: string
   showCloseButton?: boolean
+  isSubmitDisabled?: boolean
+  isActive?: boolean
 }
 
 // 생성 모드

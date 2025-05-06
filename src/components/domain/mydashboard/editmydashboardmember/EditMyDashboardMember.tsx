@@ -56,7 +56,9 @@ export default function EditMyDashboardMember() {
     <>
       <div className={styles.edit_member_container}>
         <div className={styles.edit_member_flex_container}>
-          <div className={`text-2xl-bold`}>구성원</div>
+          <div className={`${styles.edit_member_title} text-2xl-bold`}>
+            구성원
+          </div>
           <Pagination
             current={currentPage}
             total={Math.ceil(totalCount / 5)}
@@ -80,7 +82,6 @@ export default function EditMyDashboardMember() {
 
             <CommonButton
               variant="secondary"
-              padding="0.4rem 2.95rem"
               isActive={true}
               className={`${styles.edit_delete_button} text-md-medium`}
               onClick={() => handleMemberDelete(member.id)}

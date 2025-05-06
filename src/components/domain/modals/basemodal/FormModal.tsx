@@ -113,6 +113,7 @@ export default function FormModal(props: FormModalProps) {
                   label="생성"
                   isCancel={false}
                   size={size}
+                  disabled={props.isSubmitDisabled}
                 />
               </>
             )}
