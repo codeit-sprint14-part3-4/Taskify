@@ -88,7 +88,6 @@ export default function MyDashboardPage() {
       ) : (
         <>
           <DashboardList />
-          <MyDropDown />
           <MyInvitedDashboard />
         </>
       )}
