@@ -27,7 +27,7 @@ export default function Login() {
     isFormLoginValid,
   } = useFormSignup()
 
-  const { setAuth, setUserData } = useAuthStore()
+  const { setAccessToken, setUserData } = useAuthStore()
 
   // 로그인 요청 함수
   const handleLogin = async () => {
@@ -47,7 +47,7 @@ export default function Login() {
       // 로그인 성공 후 store에 accessToken과 userData 저장
       const { accessToken, user } = response
 
-      setAuth(accessToken) // accessToken 저장
+      setAccessToken(accessToken) // accessToken 저장
       setUserData(user) // userData 저장
 
       // 대시보드 페이지로 이동
