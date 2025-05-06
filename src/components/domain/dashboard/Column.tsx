@@ -153,7 +153,7 @@ export default function Column({
               hasMore={hasMore}
             />
 
-            {/* 관찰용 div는 카드 아래! */}
+            {/* 관찰용 div*/}
             <div
               ref={observerRef}
               style={{ height: '10px', backgroundColor: 'transparent' }}

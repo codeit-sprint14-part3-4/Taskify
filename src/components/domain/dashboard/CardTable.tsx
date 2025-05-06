@@ -24,7 +24,7 @@ export default function CardTable({
   hasMore,
 }: CardTableProps) {
   const observerRef = useRef<HTMLDivElement | null>(null)
-
+  // 관찰용 useEffectss
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -58,7 +58,7 @@ export default function CardTable({
           />
         </div>
       ))}
-      {/* 관찰용 div는 내부로 */}
+
       <div ref={observerRef} style={{ height: '10px' }} />
     </div>
   )
