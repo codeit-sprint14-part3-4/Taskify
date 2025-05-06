@@ -80,3 +80,10 @@
   height: 2.2rem;
   flex-shrink: 0;
 }
+.card_list {
+  max-height: 60vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
