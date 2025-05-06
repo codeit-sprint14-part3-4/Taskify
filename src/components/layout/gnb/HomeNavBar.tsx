@@ -12,7 +12,8 @@ interface HomeNavBarProps {
   pageType: 'mydashboard' | 'dashboard' | 'mypage'
   dashboardId: number
   dashboardTitle: string
-  hasCrown: boolean
+  isOwner: boolean
+  isEditPage: boolean
   onInviteClick: () => void
 }
 
@@ -20,7 +21,8 @@ export default function HomeNavBar({
   dashboardId,
   pageType,
   dashboardTitle,
-  hasCrown,
+  isOwner,
+  isEditPage,
   onInviteClick,
 }: HomeNavBarProps) {
   const { userData } = useAuthStore()
@@ -41,8 +43,9 @@ export default function HomeNavBar({
   const filteredMembers = Array.isArray(members)
     ? members.filter((member) => member.email !== userData?.email)
     : []
-  const showCrown = pageType === 'mydashboard' && hasCrown
-  const showDashboardControls = pageType !== 'mydashboard'
+  const showCrown = pageType === 'mydashboard' && isOwner
+  const showDashboardControls =
+    isOwner && pageType === 'dashboard' && !isEditPage
 
   return (
     <div className={clsx(styles.flex_center_space_between, styles.nav_wrapper)}>
@@ -70,7 +73,7 @@ export default function HomeNavBar({
               styles.nav_right_center_border
             )}
           >
-            {hasCrown && (
+            {isOwner && (
               <div className={styles.nav_right_center_border_setting}>
                 <Link href={`/dashboard/${dashboardId}/edit`}>
                   <ButtonDashboard

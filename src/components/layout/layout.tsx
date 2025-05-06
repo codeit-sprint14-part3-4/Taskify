@@ -8,6 +8,7 @@ import { dashboardsService } from '@/api/services/dashboardsServices'
 import FormModal from '@/components/domain/modals/basemodal/FormModal'
 import { membersService } from '@/api/services/membersServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
+import { usePathname } from 'next/navigation'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -33,14 +34,16 @@ const getRandomColor = () => {
 
 export default function Layout({ children, pageType }: LayoutProps) {
   const router = useRouter()
+  const path = usePathname()
   const { accessToken } = useAuthStore()
   const { setMembers } = useDashboardMembers()
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
-  const [hasCrown, setHasCrown] = useState(false)
+  const [isOwner, setIsOwner] = useState(false)
   const [dashboardTitle, setDashboardTitle] = useState('대시보드 제목 없음')
   const [membersEmail, setMembersEmail] = useState('')
   const [error, setError] = useState('')
   const dashboardId = Number(router.query.id)
+  const isEditPage = path.includes('edit')
 
   // 초대 처리 함수
   const handleInvite = async () => {
@@ -86,7 +89,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
         const { title, createdByMe } = dashboardData
 
         setDashboardTitle(createdByMe ? `${title} 👑` : title)
-        setHasCrown(createdByMe)
+        setIsOwner(createdByMe)
       } catch (error) {
         console.error('대시보드 조회 실패:', error)
       }
@@ -128,7 +131,8 @@ export default function Layout({ children, pageType }: LayoutProps) {
             pageType={pageType}
             dashboardId={dashboardId}
             dashboardTitle={dashboardTitle}
-            hasCrown={hasCrown}
+            isOwner={isOwner}
+            isEditPage={isEditPage}
             onInviteClick={() => setInviteModalOpen(true)}
           />
         </header>
@@ -144,15 +148,13 @@ export default function Layout({ children, pageType }: LayoutProps) {
           inputLabel="이메일"
           inputValue={membersEmail}
           onChange={(e) => setMembersEmail(e.target.value)}
-          onConfirm={handleInvite}
+          onCreate={handleInvite}
           onCancel={() => {
             setInviteModalOpen(false)
             setMembersEmail('')
             setError('')
           }}
-          errorMessage={error}
-          confirmLabel="초대하기"
-          cancelLabel="취소"
+          mode="default"
           showCloseButton
         />
       )}
