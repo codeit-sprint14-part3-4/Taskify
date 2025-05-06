@@ -18,7 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: max-content;
 }
 .dashboard_title {
   padding: 0 0.8rem 0 4rem;
@@ -45,12 +45,9 @@
   width: max-content;
 }
 
-.button_invitation {
-  padding-right: 4rem;
-}
 .nav_right {
   padding: 0rem 8rem 0rem 3.2rem;
-  border-left: 0.1rem solid var(--gray-D9D9D9);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -79,8 +76,10 @@
 
 .invited_members_wrapper {
   display: flex;
+  border-right: 0.1rem solid var(--gray-D9D9D9);
   align-items: center;
   padding-right: 3.2rem;
+  border-right: 0.1rem solid var(--gray-D9D9D9);
 }
 
 .invited_profile:not(:first-child) {
@@ -128,6 +127,7 @@
   }
   .right_center_wrapper {
     width: 100%;
+    justify-content: end;
   }
 
   .button_invitation {
@@ -151,6 +151,10 @@
   }
   .button_invitation {
     padding-right: 1rem;
+  }
+  .nav_right_profile {
+    justify-content: flex-end;
+    width: 100%;
   }
   .name {
     display: none;

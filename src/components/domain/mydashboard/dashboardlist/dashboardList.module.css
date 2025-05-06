@@ -46,19 +46,20 @@
   display: flex;
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 1023px) {
   .wrapper {
-    width: 50.4rem;
+    width: fit-content;
     font-family: 'Pretendard';
   }
 
   .main_container {
     gap: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
   }
 }
 
 @media (max-width: 767px) {
-  .wrapper {
-    width: 26rem;
-  }
 }

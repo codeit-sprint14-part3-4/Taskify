@@ -16,6 +16,7 @@
   width: max-content;
   height: max-content;
   display: flex;
+  transition: all 0.3s ease;
   align-items: center;
 }
 .buttonContent {
