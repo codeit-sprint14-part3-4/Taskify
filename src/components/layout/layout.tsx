@@ -37,7 +37,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
   const { setMembers } = useDashboardMembers()
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
   const [isOwner, setIsOwner] = useState(false)
-  const [dashboardTitle, setDashboardTitle] = useState('대시보드 제목 없음')
+  const [dashboardTitle, setDashboardTitle] = useState('')
   const [membersEmail, setMembersEmail] = useState('')
   const [error, setError] = useState('')
   const dashboardId = Number(router.query.id)
@@ -51,6 +51,20 @@ export default function Layout({ children, pageType }: LayoutProps) {
     }
 
     try {
+      const inviteList = await dashboardsService.getDashboardsInvitations(
+        dashboardId,
+        1,
+        20
+      )
+
+      const filteredInviteList = inviteList.invitations.filter(
+        (invitation) => invitation.invitee.email === membersEmail
+      )
+      if (filteredInviteList.length) {
+        alert('❌ 이미 초대한 이메일입니다 ❌')
+        return
+      }
+
       await dashboardsService.postDashboardsInvitations(dashboardId, {
         email: membersEmail,
       })

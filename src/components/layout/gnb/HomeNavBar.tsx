@@ -33,7 +33,7 @@ export default function HomeNavBar({
       case 'mydashboard':
         return '내 대시보드'
       case 'dashboard':
-        return dashboardTitle || '대시보드 제목 없음'
+        return dashboardTitle
       case 'mypage':
         return '계정관리'
       default:
