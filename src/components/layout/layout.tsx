@@ -8,7 +8,6 @@ import { dashboardsService } from '@/api/services/dashboardsServices'
 import FormModal from '@/components/domain/modals/basemodal/FormModal'
 import { membersService } from '@/api/services/membersServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
-import { usePathname } from 'next/navigation'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -34,7 +33,6 @@ const getRandomColor = () => {
 
 export default function Layout({ children, pageType }: LayoutProps) {
   const router = useRouter()
-  const path = usePathname()
   const { accessToken } = useAuthStore()
   const { setMembers } = useDashboardMembers()
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
@@ -43,7 +41,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
   const [membersEmail, setMembersEmail] = useState('')
   const [error, setError] = useState('')
   const dashboardId = Number(router.query.id)
-  const isEditPage = path.includes('edit')
+  const isEditPage = router.pathname.includes('edit')
 
   // 초대 처리 함수
   const handleInvite = async () => {
