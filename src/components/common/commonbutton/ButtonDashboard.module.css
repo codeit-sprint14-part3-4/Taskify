@@ -48,6 +48,7 @@
 }
 @media (max-width: 767px) {
   .icon {
-    display: none;
+    width: 0rem;
+    height: 0rem;
   }
 }
