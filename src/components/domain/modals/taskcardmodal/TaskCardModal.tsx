@@ -227,7 +227,7 @@ export default function TaskCardModal({
             <div>
               <div className="text-[#000000] text-xs-semibold">마감일</div>
               <div className="text-[#333236] text-md-regular">
-                {formatDate(card.dueDate)}
+                {card.dueDate ? formatDate(card.dueDate) : ''}
               </div>
             </div>
           </section>
