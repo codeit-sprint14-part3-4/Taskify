@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: max-content;
   transition: width 0.3s ease, padding 0.3s ease;
 }
 
@@ -43,7 +43,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: max-content;
 }
 
 .button_invitation {
@@ -114,6 +114,10 @@
   .nav_right_center_border {
     width: auto;
   }
+  .right_center_wrapper {
+    width: 100%;
+  }
+
   .button_invitation {
     padding-right: 2rem;
   }
