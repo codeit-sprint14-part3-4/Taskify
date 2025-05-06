@@ -3,7 +3,7 @@ import Image from 'next/image'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { ko } from 'date-fns/locale'
-
+import styles from '@/components/domain/modals/taskcardeditmodal/taskCardEditModal.module.css'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Input from '@/components/common/commoninput/CommonInput'
 import Tag from '@/components/common/tag/Tag'
@@ -184,39 +184,27 @@ export default function TaskCardEditModal({
 
   return (
     <AnimatedModalContainer isLoading={isLoading}>
-      <div className="fixed inset-0 z-50 bg-[rgba(0,0,0,0.7)] flex justify-center items-center">
-        <div className="w-[58.4rem] bg-[var(--white-FFFFFF)] rounded-2xl overflow-auto">
-          <div className="p-[3.2rem]">
-            <h2 className="pb-[3.2rem] text-2xl-bold text-[var(--black-333236)]">
-              할 일 수정
-            </h2>
+      <div className={styles.modalOverlay}>
+        <div className={styles.modalContainer}>
+          <div className={styles.modalContent}>
+            <h2 className={styles.modalTitle}>할 일 수정</h2>
 
-            {/* 상태 + 담당자 */}
-            <div className="flex w-full gap-[3.2rem]">
-              {/* 상태 */}
-              <div className="flex flex-col pb-[3.2rem] gap-[0.8rem] w-[21.7rem]">
-                <label className="text-2lg-medium text-[var(--black-333236)]">
-                  상태
-                </label>
+            <div className={styles.flexRow}>
+              <div className={styles.halfWidth}>
+                <label className={styles.label}>상태</label>
                 {columns && columns.length ? (
                   <StatusDropdown
                     columnList={columns}
                     value={selectedColumn}
                     onChange={(column) => {
                       handleStatusSelect(column)
-                      if (column.id !== columnInfo.id) setIsDisable(false)
-                      else setIsDisable(true)
+                      setIsDisable(column.id === columnInfo.id)
                     }}
                   />
                 ) : null}
               </div>
-
-              {/* 담당자 */}
-              <div className="flex flex-col pb-[3.2rem] gap-[0.8rem] w-[21.7rem]">
-                <label className="text-2lg-medium text-[var(--black-333236)]">
-                  담당자
-                </label>
-
+              <div className={styles.halfWidth}>
+                <label className={styles.label}>담당자</label>
                 <UserDropdown
                   users={users}
                   selectedUser={selectedUser}
@@ -238,22 +226,20 @@ export default function TaskCardEditModal({
               </div>
             </div>
 
-            {/* 제목 */}
-            <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-              <label className="text-2lg-medium text-[var(--black-333236)] flex items-center gap-[2px]">
-                제목
-                <span className="text-[var(--violet-5534DhA)] text-lg-regular">
-                  *
-                </span>
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>
+                제목 <span className={styles.required}>*</span>
               </label>
               <Input
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value)
-                  if (e.target.value != cardInfo.title) setIsDisable(false)
+                  if (
+                    e.target.value !== cardInfo.title &&
+                    e.target.value.trim()
+                  )
+                    setIsDisable(false)
                   else setIsDisable(true)
-
-                  if (!e.target.value) setIsDisable(true)
                 }}
                 placeholder="제목을 입력해 주세요"
                 height="5rem"
@@ -261,57 +247,46 @@ export default function TaskCardEditModal({
               />
             </div>
 
-            {/* 설명 */}
-            <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-              <label className="text-2lg-medium text-[var(--black-333236)] flex items-center gap-[2px]">
-                설명
-                <span className="text-[var(--violet-5534DhA)] text-lg-regular">
-                  *
-                </span>
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>
+                설명 <span className={styles.required}>*</span>
               </label>
-              <div className="w-full border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]">
+              <div className={styles.textareaContainer}>
                 <textarea
                   value={description}
                   onChange={(e) => {
                     setDescription(e.target.value)
-                    if (e.target.value != cardInfo.description)
+                    if (
+                      e.target.value !== cardInfo.description &&
+                      e.target.value.trim()
+                    )
                       setIsDisable(false)
                     else setIsDisable(true)
-
-                    if (!e.target.value) setIsDisable(true)
                   }}
                   placeholder="설명을 입력해 주세요"
-                  className="w-full px-[1.6rem] pt-[1.5rem] pb-[8.5rem] bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none rounded-lg"
+                  className={styles.textarea}
                 />
               </div>
             </div>
 
-            {/* 마감일 */}
-            <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-              <label className="text-2lg-medium text-[var(--black-333236)]">
-                마감일
-              </label>
-              <div className="group flex items-center w-full h-[5rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]">
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>마감일</label>
+              <div className={styles.datePickerWrapper}>
                 <Image
                   src="/assets/icon/calendar.svg"
                   alt="달력 아이콘"
                   width={22}
                   height={22}
-                  className="mr-[0.8rem]"
                 />
                 <DatePicker
                   selected={selectedDate}
                   onChange={(date) => {
                     setSelectedDate(date)
-                    console.log(date?.toLocaleDateString())
-                    console.log(new Date(cardInfo.dueDate).toLocaleDateString())
                     if (
                       date?.toString() !== new Date(cardInfo.dueDate).toString()
-                    ) {
+                    )
                       setIsDisable(false)
-                    } else {
-                      setIsDisable(true)
-                    }
+                    else setIsDisable(true)
                   }}
                   dateFormat="yyyy.MM.dd HH:mm"
                   showTimeSelect
@@ -319,18 +294,15 @@ export default function TaskCardEditModal({
                   timeIntervals={30}
                   timeCaption="시간"
                   placeholderText="날짜를 입력해 주세요"
-                  className="flex-1 bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
+                  className={styles.datePickerInput}
                   locale={ko}
                 />
               </div>
             </div>
 
-            {/* 태그 */}
-            <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-              <label className="text-2lg-medium text-[var(--black-333236)]">
-                태그
-              </label>
-              <div className="flex flex-wrap w-full min-h-[5rem] px-[1.6rem] py-[1rem] border border-[var(--gray-D9D9D9)] rounded-lg gap-[1rem] focus-within:border-[var(--violet-5534DhA)]">
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>태그</label>
+              <div className={styles.tagInputContainer}>
                 {tags.map((tag, idx) => (
                   <Tag
                     key={idx}
@@ -345,29 +317,23 @@ export default function TaskCardEditModal({
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleTagKeyDown}
                   placeholder={tags.length === 0 ? '입력 후 Enter' : ''}
-                  className="flex-1 min-w-[10rem] bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
+                  className={styles.tagInput}
                 />
               </div>
             </div>
 
-            {/* 이미지 */}
-            <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-              <label className="text-2lg-medium text-[var(--black-000000)]">
-                이미지
-              </label>
-              <div
-                className="w-[7.6rem] h-[7.6rem] relative flex items-center justify-center rounded-[0.6rem] bg-[#F5F5F5] cursor-pointer overflow-hidden"
-                onClick={handleImageClick}
-              >
+            <div className={styles.fieldGroup}>
+              <label className={styles.label}>이미지</label>
+              <div className={styles.imageBox} onClick={handleImageClick}>
                 {preview ? (
                   <>
                     <Image
                       src={preview}
                       alt="업로드된 이미지"
                       fill
-                      className="rounded-[0.6rem] object-cover"
+                      className={styles.imagePreview}
                     />
-                    <div className="absolute inset-0 bg-[rgba(0,0,0,0.6)] flex items-center justify-center">
+                    <div className={styles.imageOverlay}>
                       <Image
                         src="/assets/icon/pen.svg"
                         alt="펜 아이콘"
@@ -384,9 +350,8 @@ export default function TaskCardEditModal({
                     height={17}
                   />
                 )}
-
                 <input
-                  className="hidden"
+                  className={styles.imageInputHidden}
                   ref={inputRef}
                   type="file"
                   accept="image/*"
@@ -395,22 +360,19 @@ export default function TaskCardEditModal({
               </div>
             </div>
 
-            {/* 버튼 */}
-            <div className="w-full flex justify-center items-center gap-[0.8rem]">
+            <div className={styles.buttonGroup}>
               <CommonButton
                 onClick={() => handleCardEditModal(false)}
                 variant="secondary"
-                padding="1.4rem 11.4rem"
                 isActive={true}
-                className="w-full h-[5.4rem] rounded-lg text-[var(--gray-787486)] text-lg-medium border border-[var(--gray-D9D9D9)]"
+                className={styles.secondaryButton}
               >
                 취소
               </CommonButton>
               <CommonButton
                 variant="primary"
-                padding="1.4rem 11.4rem"
                 isActive={!IsDisable}
-                className="w-full h-[5.4rem] bg-[var(--violet-5534DhA)] text-[var(--white-FFFFFF)] text-lg-semibold"
+                className={styles.primaryButton}
                 onClick={handleSubmitForm}
               >
                 수정

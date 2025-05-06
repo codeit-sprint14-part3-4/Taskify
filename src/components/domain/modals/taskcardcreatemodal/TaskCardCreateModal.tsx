@@ -12,6 +12,7 @@ import { cardsService } from '@/api/services/cardsServices'
 import { CreateCardBody } from '@/types/api/cards'
 import { columnsService } from '@/api/services/columnsServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
+import styles from '@/components/domain/modals/taskcardcreatemodal/taskCardCreateModal.module.css'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -171,19 +172,15 @@ export default function TaskCardCreateModal({
   return (
     <>
       <div
-        className="fixed inset-0 z-40 bg-[rgba(0,0,0,0.7)]"
+        className={styles.modalOverlay}
         onClick={handleCardCreateModalClose}
       ></div>
-      <div className="fixed top-1/2 left-1/2 z-50 w-[58.4rem] -translate-x-1/2 -translate-y-1/2 bg-[var(--white-FFFFFF)] rounded-2xl">
-        <div className="p-[3.2rem]">
-          <h2 className="pb-[3.2rem] text-2xl-bold text-[var(--black-000000)]">
-            할 일 생성
-          </h2>
-          <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-            <label className="text-2lg-medium text-[var(--black-000000)]">
-              담당자
-            </label>
-            {/* UserDropdown 바로 사용 */}
+      <div className={styles.modalContainer}>
+        <div className={styles.modalContent}>
+          <h2 className={styles.modalTitle}>할 일 생성</h2>
+
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>담당자</label>
             <UserDropdown
               users={users}
               selectedUser={selectedUser}
@@ -192,12 +189,10 @@ export default function TaskCardCreateModal({
               setAssignee={setAssignee}
             />
           </div>
-          <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-            <label className="text-2lg-medium text-[var(--black-000000)] flex items-center gap-[2px]">
-              제목
-              <span className="text-[var(--violet-5534DhA)] text-lg-regular leading-none translate-y-[0.3rem]">
-                *
-              </span>
+
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>
+              제목 <span className={styles.required}>*</span>
             </label>
             <Input
               value={title}
@@ -207,89 +202,77 @@ export default function TaskCardCreateModal({
               padding="1.2rem 1.6rem"
             />
           </div>
-          <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-            <label className="text-2lg-medium text-[var(--black-000000)] flex items-center gap-[2px]">
-              설명
-              <span className="text-[var(--violet-5534DhA)] text-lg-regular leading-none translate-y-[0.3rem]">
-                *
-              </span>
+
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>
+              설명 <span className={styles.required}>*</span>
             </label>
-            <div className="w-full min-h-[12.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]">
+            <div className={styles.textareaContainer}>
               <textarea
                 value={description}
                 onChange={handleChangeDescription}
                 placeholder="설명을 입력해 주세요"
-                className="w-full min-h-[12.6rem] px-[1.6rem] py-[1.5rem] border-none bg-[var(--white-FFFFFF)] text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none resize-none"
+                className={styles.textarea}
                 wrap="soft"
               />
             </div>
           </div>
-          <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-            <label className="text-2lg-medium text-[var(--black-000000)]">
-              마감일
-            </label>
-            <div
-              className={`group flex items-center w-full h-[5rem] px-[1.6rem] border border-[var(--gray-D9D9D9)] rounded-lg focus-within:border-[var(--violet-5534DhA)]`}
-            >
+
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>마감일</label>
+            <div className={styles.datePickerWrapper}>
               <Image
                 src="/assets/icon/calendar.svg"
                 alt="달력 아이콘"
                 width={22}
                 height={22}
-                className="mr-[0.8rem]"
               />
               <DatePicker
                 selected={selectedDate}
-                onChange={(date: Date | null) => setSelectedDate(date)}
+                onChange={setSelectedDate}
                 dateFormat="yyyy.MM.dd HH:mm"
                 showTimeSelect
                 timeFormat="HH:mm"
                 timeIntervals={30}
                 timeCaption="시간"
                 placeholderText="날짜를 입력해 주세요"
-                className="flex-1 bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
+                className={styles.datePickerInput}
                 locale={ko}
               />
             </div>
           </div>
-          <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-            <label className="text-2lg-medium text-[var(--black-000000)]">
-              태그
-            </label>
-            <div className="flex flex-wrap w-full min-h-[5rem] px-[1.6rem] py-[1rem] border border-[var(--gray-D9D9D9)] rounded-lg gap-[1rem] focus-within:border-[var(--violet-5534DhA)]">
-              {tags.map((tag, index) => (
+
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>태그</label>
+            <div className={styles.tagInputContainer}>
+              {tags.map((tag, idx) => (
                 <Tag
-                  key={index}
+                  key={idx}
                   label={tag.label}
-                  isDeletable={true}
-                  onDelete={() => handleRemoveTag(index)}
+                  isDeletable
+                  onDelete={() => handleRemoveTag(idx)}
                 />
               ))}
-
               <input
                 type="text"
                 value={tagsInput}
                 onChange={(e) => setTagsInput(e.target.value)}
                 onKeyDown={handleTagKeyDown}
                 placeholder={tags.length === 0 ? '입력 후 Enter' : ''}
-                className="flex-1 min-w-[10rem] bg-transparent text-lg-regular text-[var(--black-333236)] placeholder-[var(--gray-9FA6B2)] outline-none"
+                className={styles.tagInput}
               />
             </div>
           </div>
-          <div className="flex flex-col pb-[3.2rem] gap-[0.8rem]">
-            <label className="text-2lg-medium text-[var(--black-000000)]">
-              이미지
-            </label>
-            <div
-              onClick={handleImageClick}
-              className="w-[7.6rem] h-[7.6rem] relative flex items-center justify-center rounded-[0.6rem] bg-[#F5F5F5] cursor-pointer overflow-hidden"
-            >
+
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>이미지</label>
+            <div className={styles.imageBox} onClick={handleImageClick}>
               {preview ? (
                 <Image
                   src={preview}
                   alt="업로드된 이미지"
                   fill
-                  className="rounded-[0.6rem] object-cover"
+                  className={styles.imagePreview}
                 />
               ) : (
                 <Image
@@ -299,32 +282,30 @@ export default function TaskCardCreateModal({
                   height={17}
                 />
               )}
+              <input
+                className={styles.imageInputHidden}
+                ref={inputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
             </div>
-            {/* 숨겨진 파일 인풋 */}
-            <input
-              className="hidden"
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
           </div>
-          <div className="w-full flex justify-center items-center gap-[0.8rem]">
+
+          <div className={styles.buttonGroup}>
             <CommonButton
               onClick={handleCardCreateModalClose}
               variant="secondary"
-              padding="1.4rem 11.4rem"
               isActive={true}
-              className="w-full h-[5.4rem] rounded-lg text-[var(--gray-787486)] text-lg-medium border border-[var(--gray-D9D9D9)]"
+              className={styles.secondaryButton}
             >
               취소
             </CommonButton>
             <CommonButton
               onClick={handleSubmitForm}
               variant="primary"
-              padding="1.4rem 11.4rem"
               isActive={!isButtonDisable}
-              className="w-full h-[5.4rem] bg-[var(--violet-5534DhA)] text-[var(--white-FFFFFF)] text-lg-semibold"
+              className={styles.primaryButton}
             >
               생성
             </CommonButton>
