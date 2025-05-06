@@ -46,6 +46,9 @@ export default function TaskCardModal({
   const observerTargetRef = useRef<HTMLDivElement>(null)
   const { userData } = useAuthStore()
   const [isCommentsLoaded, setIsCommentsLoaded] = useState(false)
+  const [editingComments, setEditingComments] = useState<{
+    [key: number]: string | null
+  }>({})
 
   const getComments = async (isLoadMore = false) => {
     try {
@@ -321,28 +324,73 @@ export default function TaskCardModal({
                       </div>
                     </div>
                     <div className={styles.commentText}>{comment.content}</div>
-                    {comment.author.id === userData.id && (
-                      <div className={styles.commentActions}>
-                        <button
-                          className={styles.commentActionBtn}
-                          onClick={() => {
-                            const newContent = prompt(
-                              '댓글 수정',
-                              comment.content
-                            )
-                            if (newContent !== null)
-                              editComment(comment.id, newContent)
-                          }}
-                        >
-                          수정
-                        </button>
-                        <button
-                          className={styles.commentActionBtn}
-                          onClick={() => deleteComment(comment.id)}
-                        >
-                          삭제
-                        </button>
-                      </div>
+                    {editingComments[comment.id] !== undefined ? (
+                      <>
+                        <input
+                          type="text"
+                          value={editingComments[comment.id] ?? ''}
+                          onChange={(e) =>
+                            setEditingComments((prev) => ({
+                              ...prev,
+                              [comment.id]: e.target.value,
+                            }))
+                          }
+                          className={styles.editInput}
+                        />
+                        <div className={styles.commentActions}>
+                          <button
+                            className={styles.commentActionBtn}
+                            onClick={async () => {
+                              await editComment(
+                                comment.id,
+                                editingComments[comment.id] ?? ''
+                              )
+                              setEditingComments((prev) => {
+                                const { [comment.id]: _, ...rest } = prev
+                                return rest
+                              })
+                            }}
+                            disabled={!editingComments[comment.id]?.trim()}
+                          >
+                            저장
+                          </button>
+                          <button
+                            className={styles.commentActionBtn}
+                            onClick={() =>
+                              setEditingComments((prev) => {
+                                const { [comment.id]: _, ...rest } = prev
+                                return rest
+                              })
+                            }
+                          >
+                            취소
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {comment.author.id === userData.id && (
+                          <div className={styles.commentActions}>
+                            <button
+                              className={styles.commentActionBtn}
+                              onClick={() =>
+                                setEditingComments((prev) => ({
+                                  ...prev,
+                                  [comment.id]: comment.content,
+                                }))
+                              }
+                            >
+                              수정
+                            </button>
+                            <button
+                              className={styles.commentActionBtn}
+                              onClick={() => deleteComment(comment.id)}
+                            >
+                              삭제
+                            </button>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
