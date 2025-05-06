@@ -13,7 +13,8 @@ interface HomeNavBarProps {
   pageType: 'mydashboard' | 'dashboard' | 'mypage'
   dashboardId: number
   dashboardTitle: string
-  hasCrown: boolean
+  isOwner: boolean
+  isEditPage: boolean
   onInviteClick: () => void
 }
 
@@ -21,7 +22,8 @@ export default function HomeNavBar({
   dashboardId,
   pageType,
   dashboardTitle,
-  hasCrown,
+  isOwner,
+  isEditPage,
   onInviteClick,
 }: HomeNavBarProps) {
   const { userData } = useAuthStore()
@@ -42,8 +44,9 @@ export default function HomeNavBar({
   const filteredMembers = Array.isArray(members)
     ? members.filter((member) => member.email !== userData?.email)
     : []
-  const showCrown = pageType === 'mydashboard' && hasCrown
-  const showDashboardControls = pageType !== 'mydashboard'
+  const showCrown = pageType === 'mydashboard' && isOwner
+  const showDashboardControls =
+    isOwner && pageType === 'dashboard' && !isEditPage
 
   // 반응형입니다.
   useEffect(() => {
@@ -85,7 +88,7 @@ export default function HomeNavBar({
       <div className={clsx(styles.right_center_wrapper)}>
         {showDashboardControls && (
           <div className={styles.nav_right_center_border}>
-            {hasCrown && (
+            {isOwner && (
               <div className={styles.nav_right_center_border_setting}>
                 <Link href={`/dashboard/${dashboardId}/edit`}>
                   <ButtonDashboard
