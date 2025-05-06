@@ -60,8 +60,8 @@
 .profile_image {
   border-radius: 50%;
   overflow: hidden;
-  width: 3.8rem;
-  height: 3.8rem;
+  width: 1.8rem;
+  height: 1.8rem;
   transition: width 0.3s ease, padding 0.3s ease;
   position: relative;
 }
@@ -78,8 +78,7 @@
   display: flex;
   border-right: 0.1rem solid var(--gray-D9D9D9);
   align-items: center;
-  padding-right: 3.2rem;
-  border-right: 0.1rem solid var(--gray-D9D9D9);
+  padding: 0 2.4rem 0 3.2rem;
 }
 
 .invited_profile:not(:first-child) {
