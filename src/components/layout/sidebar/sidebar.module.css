@@ -11,6 +11,7 @@
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  transition: width 0.3s ease, padding 0.3s ease;
   align-items: flex-start;
   z-index: 5;
 }
@@ -46,6 +47,7 @@
   margin-bottom: 2rem;
   width: 100%;
   color: var(--gray-787486);
+  transition: width 0.3s ease, padding 0.3s ease;
 }
 
 .link {
@@ -67,7 +69,57 @@
   justify-content: center;
   padding: 0.4rem;
 }
+.subMenu {
+  height: auto;
+}
+.dashboard_list {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  margin-bottom: 0.8rem;
+  padding: 1.2rem;
+  border-radius: 0.4rem;
+}
+.dashboard_list_active {
+  background-color: var(--violet-8);
+}
+.colorDot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 9999px;
+}
+.dashboard_container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.dashboard_label {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--gray-787486);
+}
+.article {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3.2rem;
+}
 
+.page_button {
+  width: 4rem;
+  height: 4rem;
+  border: 0.2rem solid #d9d9d9;
+  border-radius: 0.6rem 0 0 0.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.page_button_image {
+  width: 1.6rem;
+  height: 1.6rem;
+}
 /* 태블릿 (1023px 이하) */
 @media (max-width: 1023px) {
   .sidebar {
@@ -81,6 +133,15 @@
 
   .logoIcon {
     width: 3rem;
+  }
+  .dashboard_label {
+    font-size: 1.6rem;
+  }
+  .page_number {
+    display: none;
+  }
+  .dashboard_container {
+    gap: 0.4rem;
   }
 }
 
@@ -112,5 +173,22 @@
   }
   .addButton {
     margin-top: -2rem;
+  }
+  .dashboard_container {
+    display: none;
+  }
+  .page_button {
+    display: none;
+  }
+  .article {
+    width: 0px;
+  }
+  .dashboard_list {
+    display: inline-block;
+  }
+  .dashboard_list_dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

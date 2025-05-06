@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import styles from './layout.module.css'
 
 import HomeNavBar from './gnb/HomeNavBar'
 import Sidebar from './sidebar/Sidebar'
@@ -36,11 +37,12 @@ export default function Layout({ children, pageType }: LayoutProps) {
   const { accessToken } = useAuthStore()
   const { setMembers } = useDashboardMembers()
   const [inviteModalOpen, setInviteModalOpen] = useState(false)
-  const [hasCrown, setHasCrown] = useState(false)
+  const [isOwner, setIsOwner] = useState(false)
   const [dashboardTitle, setDashboardTitle] = useState('대시보드 제목 없음')
   const [membersEmail, setMembersEmail] = useState('')
   const [error, setError] = useState('')
   const dashboardId = Number(router.query.id)
+  const isEditPage = router.pathname.includes('edit')
 
   // 초대 처리 함수
   const handleInvite = async () => {
@@ -86,7 +88,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
         const { title, createdByMe } = dashboardData
 
         setDashboardTitle(createdByMe ? `${title} 👑` : title)
-        setHasCrown(createdByMe)
+        setIsOwner(createdByMe)
       } catch (error) {
         console.error('대시보드 조회 실패:', error)
       }
@@ -118,23 +120,22 @@ export default function Layout({ children, pageType }: LayoutProps) {
   }
 
   return (
-    <div className="flex h-screen">
-      <div className="w-[300px] shrink-0">
+    <div className={styles.wrapper}>
+      <div className={styles.sidebar_wrapper}>
         <Sidebar currentDashboardId={dashboardId} />
       </div>
-      <div className="flex flex-col flex-1">
-        <header className="h-[70px] shrink-0 border-b border-[var(--gray-D9D9D9)] bg-white">
+      <div className={styles.homenav_wrapper}>
+        <header className={styles.header_wrapper}>
           <HomeNavBar
             pageType={pageType}
             dashboardId={dashboardId}
             dashboardTitle={dashboardTitle}
-            hasCrown={hasCrown}
+            isOwner={isOwner}
+            isEditPage={isEditPage}
             onInviteClick={() => setInviteModalOpen(true)}
           />
         </header>
-        <main className="flex-1 bg-[var(--gray-FAFAFA)] overflow-auto">
-          {children}
-        </main>
+        <main className={styles.main_wrapper}>{children}</main>
       </div>
 
       {inviteModalOpen && (
@@ -144,15 +145,13 @@ export default function Layout({ children, pageType }: LayoutProps) {
           inputLabel="이메일"
           inputValue={membersEmail}
           onChange={(e) => setMembersEmail(e.target.value)}
-          onConfirm={handleInvite}
+          onCreate={handleInvite}
           onCancel={() => {
             setInviteModalOpen(false)
             setMembersEmail('')
             setError('')
           }}
-          errorMessage={error}
-          confirmLabel="초대하기"
-          cancelLabel="취소"
+          mode="default"
           showCloseButton
         />
       )}

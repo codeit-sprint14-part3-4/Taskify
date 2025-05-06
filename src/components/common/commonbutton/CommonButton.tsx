@@ -13,7 +13,7 @@ type ButtonProps = {
 export default function CommonButton({
   children,
   variant = 'primary',
-  padding = '1.4rem 1.4rem',
+  padding,
   isActive = false,
   className = '',
   onClick,

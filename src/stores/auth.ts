@@ -11,7 +11,7 @@ type UserData = {
 type AuthState = {
   accessToken: string | null
   userData: UserData | null
-  setAuth: (token: string) => void
+  setAccessToken: (token: string) => void
   setUserData: (data: UserData) => void
   clearAuth: () => void
 }
@@ -21,22 +21,17 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       accessToken: null,
       userData: null,
-      setAuth: (token) => set({ accessToken: token }),
-      setUserData: (data) => {
-        set({
-          userData: data,
-        })
-      },
-      clearAuth: () =>
-        set({
-          accessToken: null,
-          userData: null,
-        }),
+      setAccessToken: (token: string) => set({ accessToken: token }),
+      setUserData: (data: UserData) => set({ userData: data }),
+      clearAuth: () => set({ accessToken: null, userData: null }), // 인증 정보를 모두 지우는 함수
     }),
     {
       name: 'auth-storage',
-      storage: createJSONStorage(() => localStorage),
+      storage:
+        typeof window !== 'undefined' &&
+        window.location.hostname === 'localhost'
+          ? createJSONStorage(() => localStorage) // 개발환경에서는 로컬스토리지 사용
+          : createJSONStorage(() => sessionStorage), // 배포 환경에서는 세션스토리지 사용
     }
   )
 )
-// 헉 이거 로컬만 있어요. 배포할 때는 세션으로 하는 조건문 없어졌어요.

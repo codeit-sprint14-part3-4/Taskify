@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
+import styles from '@/pages/dashboard/[id]/dashboard.module.css'
 import { columnsService } from '@/api/services/columnsServices'
 import Layout from '@/components/layout/layout'
 import Column from '@/components/domain/dashboard/Column'
@@ -13,6 +13,7 @@ import {
   UpdateColumnBody,
 } from '@/types/api/columns'
 import FormModal from '@/components/domain/modals/basemodal/FormModal'
+import DeleteActionModal from '@/components/domain/modals/basemodal/DeleteActionModal'
 
 export default function DashboardPage() {
   const [columns, setColumns] = useState<ColumnType[]>([])
@@ -20,10 +21,13 @@ export default function DashboardPage() {
     null
   )
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0)
-
+  const [isMobile, setIsMobile] = useState(false)
   const [isCardCreateModalOpen, setIsCardCreateModalOpen] = useState(false)
   const [isColumnCreateModal, setIsColumnCreateModal] = useState(false)
   const [isColumnEditModal, setIsColumnEditModal] = useState(false)
+  const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
+    useState(false)
+  const [columnModalError, setColumnModalError] = useState<string>('')
 
   const [selectedColumnId, setSelectedColumnId] = useState<number>(-1)
   const [columnModalInput, setColumnModalInput] = useState<string>('')
@@ -33,6 +37,10 @@ export default function DashboardPage() {
   const getColumns = async () => {
     const columnsData = await columnsService.getColumns(dashboardId)
     setColumns(columnsData.data)
+  }
+
+  const isDuplicateColumnTitle = (title: string) => {
+    return columns.some((column) => column.title === title.trim())
   }
 
   const handleCardCreateModalOpen = (columnId: number) => {
@@ -61,6 +69,7 @@ export default function DashboardPage() {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setColumnModalInput(e.target.value)
+    setColumnModalError('')
   }
 
   const handleColumnOptionClick = (columnInfo: ColumnType) => {
@@ -68,8 +77,37 @@ export default function DashboardPage() {
     setColumnModalInput(columnInfo.title)
   }
 
+  const handleDeleteColumnConfirm = (column: ColumnType) => {
+    setTriggeredColumn(column)
+    setIsDeleteConfirmModalOpen(true)
+    setIsColumnEditModal(false)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!triggeredColumn) return
+    try {
+      await columnsService.deleteColumns(triggeredColumn.id)
+      const result = columns.filter((col) => col.id !== triggeredColumn.id)
+      setColumns(result)
+      setTriggeredColumn(null)
+      setIsDeleteConfirmModalOpen(false)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const postColumn = async () => {
     try {
+      if (isDuplicateColumnTitle(columnModalInput)) {
+        setColumnModalError('중복된 컬럼입니다')
+        return
+      }
+
+      if (columnModalInput.trim() === '') {
+        setColumnModalError('이름을 입력해주세요')
+        return
+      }
+
       const reqBody: CreateColumnBody = {
         title: columnModalInput,
         dashboardId: dashboardId,
@@ -79,10 +117,12 @@ export default function DashboardPage() {
       setColumns(result)
       setIsColumnCreateModal(false)
       setColumnModalInput('')
+      setColumnModalError('')
     } catch (err) {
       console.error(err)
     }
   }
+
   const putColumn = async (columnId: number) => {
     try {
       const reqBody: UpdateColumnBody = {
@@ -96,43 +136,38 @@ export default function DashboardPage() {
         return column
       })
       setColumns(result)
-      // const result = [...columns, res]
-      // setColumns(result)
       handleColumnEditModal(false)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const deleteColumn = async (columnId: number) => {
-    try {
-      await columnsService.deleteColumns(columnId)
-      const result = columns.filter((column) => column.id !== columnId)
-      setColumns(result)
-      handleColumnEditModal(false)
-      setColumnModalInput('')
     } catch (err) {
       console.error(err)
     }
   }
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
     if (!query.id) return
     if (isNaN(dashboardId)) {
-      // 대시보드 ID가 유효하지 않으면 404 페이지로 리다이렉트
       push('/404')
     } else {
       getColumns()
     }
   }, [query.id, dashboardId, push])
 
-  // 404 리다이렉트 구현 필요
   if (!dashboardId || isNaN(dashboardId)) return null
+
+  const isCreateDisabled = columnModalInput.trim() === ''
+  isDuplicateColumnTitle(columnModalInput) || columnModalError !== ''
 
   return (
     <>
-      {/* 컬럼 리스트 */}
-      <div className="flex overflow-x-auto">
+      <div className={styles.container}>
         {columns.map((column) => (
           <Column
             key={column.id}
@@ -143,16 +178,16 @@ export default function DashboardPage() {
             handleCardCreateModalOpen={handleCardCreateModalOpen}
             handleColumnEditModal={handleColumnEditModal}
             handleColumnOptionClick={handleColumnOptionClick}
+            handleDeleteColumnConfirm={handleDeleteColumnConfirm}
           />
         ))}
 
-        {/* 새로운 컬럼 추가하기 버튼 */}
-        <div className="pt-[6.8rem] pl-[2.4rem]">
+        <div className={styles.addColumnWrapper}>
           <ButtonDashboard
             paddingHeight="pt-[2.4rem] pb-[2rem]"
             paddingWidth="px-[8.6rem]"
             gap="gap-[1.2rem]"
-            className="box-border w-full rounded-[8px] border border-[var(--gray-D9D9D9)]"
+            className={styles.addColumnButton}
             color="bg-white text-[#333236] text-2lg-bold"
             onClick={() => {
               handleColumnCreateModal(true)
@@ -171,6 +206,7 @@ export default function DashboardPage() {
           </ButtonDashboard>
         </div>
       </div>
+
       {isCardCreateModalOpen && (
         <TaskCardCreateModal
           dashboardId={dashboardId}
@@ -179,6 +215,7 @@ export default function DashboardPage() {
           setRefreshTrigger={setRefreshTrigger}
         />
       )}
+
       {isColumnCreateModal && (
         <FormModal
           title="새 컬럼 생성"
@@ -189,22 +226,40 @@ export default function DashboardPage() {
           onCancel={() => {
             handleColumnCreateModal(false)
             setColumnModalInput('')
+            setColumnModalError('')
           }}
           mode="default"
+          size={isMobile ? 'small' : 'large'}
+          errorMessage={columnModalError}
+          isSubmitDisabled={isCreateDisabled}
         />
       )}
-      {isColumnEditModal && triggeredColumn && (
+
+      {isColumnEditModal && triggeredColumn && !isDeleteConfirmModalOpen && (
         <FormModal
           title="컬럼 관리"
           inputLabel="이름"
           inputValue={columnModalInput}
           onChange={handleColumnModalInputChange}
           onEdit={() => putColumn(triggeredColumn.id)}
-          onDelete={() => deleteColumn(triggeredColumn.id)}
+          onDelete={() => handleDeleteColumnConfirm(triggeredColumn)}
           onCancel={() => handleColumnEditModal(false)}
           cancelLabel="삭제"
           mode="delete"
           showCloseButton={true}
+          size={isMobile ? 'small' : 'large'}
+        />
+      )}
+
+      {isDeleteConfirmModalOpen && triggeredColumn && (
+        <DeleteActionModal
+          message="정말 이 컬럼을 삭제하시겠습니까?"
+          onCancel={() => {
+            setIsDeleteConfirmModalOpen(false)
+            setIsColumnEditModal(true)
+          }}
+          onDelete={handleConfirmDelete}
+          size={isMobile ? 'small' : 'large'}
         />
       )}
     </>

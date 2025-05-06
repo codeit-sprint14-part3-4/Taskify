@@ -16,6 +16,7 @@ export interface ColumnProps {
   handleCardCreateModalOpen: (columnId: number) => void
   handleColumnEditModal: (state: boolean) => void
   handleColumnOptionClick: (columnInfo: ColumnType) => void
+  handleDeleteColumnConfirm: (column: ColumnType) => void
 }
 
 export default function Column({

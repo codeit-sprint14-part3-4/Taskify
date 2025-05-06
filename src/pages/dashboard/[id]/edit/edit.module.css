@@ -5,11 +5,29 @@
   gap: 1.6rem;
   margin-left: 2rem;
 }
+.delete_button {
+  padding: 1.8rem 9.5rem;
+}
+/* bg-[var(--gray-FAFAFA)] flex flex-col gap-[1.6rem] ml-[2rem] */
 
-.button_hover:hover {
+.delete_button:hover {
   background-color: #ededed;
 }
 
-.button_hover:active {
+.delete_button:active {
   transform: scale(0.95);
+}
+
+@media (max-width: 767px) {
+  .button_container {
+    max-width: 28.4rem;
+  }
+
+  .delete_button {
+    padding: 1.3rem 8rem;
+    font-family: var(--font-family);
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 500;
+  }
 }

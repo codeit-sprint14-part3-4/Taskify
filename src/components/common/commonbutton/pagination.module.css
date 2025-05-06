@@ -18,3 +18,20 @@
   padding: 1.1rem 1.3rem;
   border: 1px solid rgb(81, 81, 81);
 }
+
+@media (max-width: 767px) {
+  .container {
+    gap: 1.2rem;
+  }
+
+  .image_container {
+    padding: 1rem;
+  }
+
+  .page_text {
+    font-family: var(--font-family);
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    font-weight: 400;
+  }
+}

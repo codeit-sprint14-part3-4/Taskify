@@ -1,12 +1,11 @@
 export type ModalSize = 'small' | 'large'
 
-export type ModalProps = {
+export interface ModalProps {
   message: string
-  onConfirm: () => void
-  onCancel?: () => void
-  onDelete?: () => void
-  size?: ModalSize
-  confirmLabel?: string
+  onCancel: () => void
+  onDelete: () => void
   cancelLabel?: string
   deleteLabel?: string
+
+  size?: 'small' | 'large'
 }
