@@ -96,7 +96,10 @@ export default function HomeNavBar({
       setDropdownStyle({
         position: 'absolute',
         top: rect.bottom + window.scrollY + 8,
-        left: rect.left + window.scrollX - 30,
+        left:
+          window.innerWidth <= 787
+            ? rect.left + window.scrollX - 100 // 모바일에서는 더 왼쪽
+            : rect.left + window.scrollX + 30, // 데스크탑 위치
         zIndex: 1000,
       })
     }
@@ -105,7 +108,7 @@ export default function HomeNavBar({
       updateDropdownPosition()
       window.addEventListener('resize', updateDropdownPosition)
       window.addEventListener('scroll', updateDropdownPosition)
-      // cleanup 함수: 드롭다운 닫히면 이벤트 제거해서 메모리 누수 방지
+      //
       return () => {
         window.removeEventListener('resize', updateDropdownPosition)
         window.removeEventListener('scroll', updateDropdownPosition)
