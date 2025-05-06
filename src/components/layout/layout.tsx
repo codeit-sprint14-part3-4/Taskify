@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import styles from './layout.module.css'
 
 import HomeNavBar from './gnb/HomeNavBar'
 import Sidebar from './sidebar/Sidebar'
@@ -119,12 +120,12 @@ export default function Layout({ children, pageType }: LayoutProps) {
   }
 
   return (
-    <div className="flex h-screen">
-      <div className="w-[300px] shrink-0">
+    <div className={styles.wrapper}>
+      <div className={styles.sidebar_wrapper}>
         <Sidebar currentDashboardId={dashboardId} />
       </div>
-      <div className="flex flex-col flex-1">
-        <header className="h-[70px] shrink-0 border-b border-[var(--gray-D9D9D9)] bg-white">
+      <div className={styles.homenav_wrapper}>
+        <header className={styles.header_wrapper}>
           <HomeNavBar
             pageType={pageType}
             dashboardId={dashboardId}
@@ -134,9 +135,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
             onInviteClick={() => setInviteModalOpen(true)}
           />
         </header>
-        <main className="flex-1 bg-[var(--gray-FAFAFA)] overflow-auto">
-          {children}
-        </main>
+        <main className={styles.main_wrapper}>{children}</main>
       </div>
 
       {inviteModalOpen && (

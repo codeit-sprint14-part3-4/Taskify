@@ -2,26 +2,48 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: auto;
+  width: 100%;
 }
 .nav_wrapper {
   height: 7rem;
   border-bottom: 0.1rem solid var(--gray-D9D9D9);
   background-color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: width 0.3s ease, padding 0.3s ease;
 }
 .nav_left {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 .dashboard_title {
   padding: 0 0.8rem 0 4rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
+.right_center_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  transition: width 0.3s ease, padding 0.3s ease;
+}
+
 .nav_right_center_border_setting {
   padding-right: 1.6rem;
 }
 
 .nav_right_center_border {
   padding-right: 1.6rem;
-  border-right: 1px solid var(--gray-D9D9D9);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .button_invitation {
@@ -29,6 +51,12 @@
 }
 .nav_right {
   padding: 0rem 8rem 0rem 3.2rem;
+  border-left: 0.1rem solid var(--gray-D9D9D9);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: max-content;
+  transition: width 0.3s ease, padding 0.3s ease;
 }
 .nickname_tag {
   width: max-content;
@@ -36,15 +64,22 @@
 .profile_image {
   border-radius: 50%;
   overflow: hidden;
+  width: 3.8rem;
+  height: 3.8rem;
+  transition: width 0.3s ease, padding 0.3s ease;
 }
-.me {
-  padding-left: 1.3rem;
-  cursor: pointer;
+
+.nav_right_profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: width 0.3s ease, padding 0.3s ease;
 }
 
 .invited_members_wrapper {
   display: flex;
   align-items: center;
+  padding-right: 3.2rem;
 }
 
 .invited_profile:not(:first-child) {
@@ -68,21 +103,26 @@
 
 /*태블릿*/
 @media (max-width: 1023px) {
-  .flex_center_space_between {
-    width: 100%;
-  }
   .nav_left {
     display: none;
   }
   .nav_wrapper {
-    padding-left: 4.25rem;
+    padding-left: 4rem;
+    justify-content: space-between;
+    width: 100%;
   }
-
+  .nav_right_center_border {
+    width: auto;
+  }
   .button_invitation {
     padding-right: 2rem;
   }
   .nav_right {
+    padding: 0rem 4rem 0rem 2.4rem;
     justify-content: flex-end;
+  }
+  .invited_members_wrapper {
+    padding-right: 2.4rem;
   }
 }
 /*모바일*/
@@ -105,5 +145,12 @@
     height: 0;
     padding: 0;
     margin: 0;
+  }
+  .nav_right {
+    padding: 0rem 1.2rem 0rem 2.4rem;
+  }
+
+  .nav_right_center_border_setting {
+    padding-right: 0.6rem;
   }
 }
