@@ -22,7 +22,7 @@ export default function Pagination({
   }
   return (
     <div className={styles.container}>
-      <div className="text-md-regular">
+      <div className={`${styles.page_text} text-md-regular`}>
         {current} 페이지 중 {total}
       </div>
       <div className={styles.arrowButtons}>

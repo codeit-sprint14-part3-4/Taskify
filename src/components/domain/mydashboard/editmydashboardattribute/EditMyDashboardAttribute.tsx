@@ -97,9 +97,10 @@ export default function EditMyDashboardAttribute() {
       <CommonButton
         onClick={handleEditDashboardAttribute}
         variant="primary"
-        padding="1.4rem 26.8rem"
         isActive={isCreatable}
-        className={isCreatable ? styles.button_hover : ''}
+        className={`${styles.change_button} ${
+          isCreatable ? styles.button_hover : ''
+        }`}
       >
         변경
       </CommonButton>
