@@ -347,12 +347,12 @@ export default function TaskCardModal({
                   </div>
                 </div>
               ))}
-              <div ref={observerTargetRef} style={{ height: '0.1rem' }} />
 
               {isLoadingMore && (
                 <div className={styles.loadingText}>댓글 불러오는 중...</div>
               )}
             </div>
+            <div ref={observerTargetRef} style={{ height: '0.1rem' }} />
           </div>
         </div>
       </div>
