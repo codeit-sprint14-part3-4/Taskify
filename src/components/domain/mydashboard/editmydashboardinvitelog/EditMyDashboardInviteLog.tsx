@@ -96,31 +96,36 @@ export default function EditMyDashboardInviteLog() {
     <>
       <div className={styles.edit_invite_container}>
         <div className={styles.edit_invite_header_flex_container}>
-          <div className={`text-2xl-bold`}>초대 내역</div>
+          <div className={`${styles.edit_invite_title} text-2xl-bold`}>
+            초대 내역
+          </div>
           <div
-            className={`${styles.edit_invite_header_flex_container} gap-[1.6rem]`}
+            className={`${styles.edit_invite_header_flex_container} ${styles.edit_intite_button_pagination_container}`}
           >
-            <Pagination
-              current={currentPage}
-              total={Math.ceil(totalCount / 5)}
-              onPageChange={setCurrentPage}
-            />
-            <CommonButton
-              variant="primary"
-              padding="0.8rem 2rem 0.7rem 2rem"
-              isActive={true}
-              className={`${styles.button_hover} text-md-medium flex items-center justify-center gap-3`}
-              onClick={() => handleInvite()}
-            >
-              <Image
-                src={AddBox}
-                alt="초대하기 버튼"
-                width={16}
-                height={16}
-                className="object-contain"
+            <div className={styles.pagination_container}>
+              <Pagination
+                current={currentPage}
+                total={Math.ceil(totalCount / 5)}
+                onPageChange={setCurrentPage}
               />
-              초대하기
-            </CommonButton>
+            </div>
+            <div className={styles.button_container}>
+              <CommonButton
+                variant="primary"
+                isActive={true}
+                className={`${styles.button_hover} ${styles.invite_button} text-md-medium`}
+                onClick={() => handleInvite()}
+              >
+                <Image
+                  src={AddBox}
+                  alt="초대하기 버튼"
+                  width={16}
+                  height={16}
+                  className="object-contain"
+                />
+                초대하기
+              </CommonButton>
+            </div>
           </div>
         </div>
         {isModalOpen && (
@@ -138,8 +143,27 @@ export default function EditMyDashboardInviteLog() {
           />
         )}
 
-        <div className={`${styles.edit_invite_email_header} text-lg-regular`}>
+        <div
+          className={`${styles.edit_invite_email_header} ${styles.invite_mobile_button} text-lg-regular`}
+        >
           이메일
+          <div className={styles.change_mobile_button_container}>
+            <CommonButton
+              variant="primary"
+              isActive={true}
+              className={`${styles.button_hover} ${styles.invite_button} text-md-medium`}
+              onClick={() => handleInvite()}
+            >
+              <Image
+                src={AddBox}
+                alt="초대하기 버튼"
+                width={16}
+                height={16}
+                className="object-contain"
+              />
+              초대하기
+            </CommonButton>
+          </div>
         </div>
 
         {invitationList.map((invitations) => (
@@ -151,7 +175,6 @@ export default function EditMyDashboardInviteLog() {
             </div>
             <CommonButton
               variant="secondary"
-              padding="0.4rem 2.95rem"
               isActive={true}
               className={`${styles.edit_cancel_button} text-md-medium`}
               onClick={() => handleInviteCancle(invitations.id)}
