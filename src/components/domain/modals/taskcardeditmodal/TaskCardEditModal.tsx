@@ -55,7 +55,7 @@ export default function TaskCardEditModal({
   const [assignee, setAssignee] = useState(-1)
   const [description, setDescription] = useState(cardInfo.description)
   const [selectedDate, setSelectedDate] = useState<Date | null>(
-    new Date(cardInfo.dueDate)
+    cardInfo.dueDate ? new Date(cardInfo.dueDate) : null
   )
 
   const [inputValue, setInputValue] = useState('')

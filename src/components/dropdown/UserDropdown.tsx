@@ -176,7 +176,7 @@ export default function UserDropdown({
                 )
               ) : (
                 <span className={styles.userName}>
-                  {'이름을 입력해 주세요'}
+                  {'이름을 선택해 주세요'}
                 </span>
               )}
             </div>
