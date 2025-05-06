@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import CardTable from '@/components/domain/dashboard/CardTable'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
@@ -7,7 +7,6 @@ import { ColumnType } from '@/types/api/columns'
 import { CardType } from '@/types/api/cards'
 import styles from './column.module.css'
 
-// 내부에서만 사용
 export interface ColumnProps {
   columnInfo: ColumnType
   dashboardId: number
@@ -27,64 +26,38 @@ export default function Column({
   handleColumnOptionClick,
 }: ColumnProps) {
   const [cards, setCards] = useState<CardType[]>([])
-  const [page, setPage] = useState(1)
+  const [cursorId, setCursorId] = useState<number | undefined>(undefined)
   const [hasMore, setHasMore] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
+
+  const observerRef = useRef<HTMLDivElement | null>(null)
 
   const getCards = async () => {
     if (isLoading || !hasMore) return
     setIsLoading(true)
 
     try {
-      console.log('[getCards] 호출됨 - page:', page, 'columnId:', columnInfo.id)
-
-      const res = await cardsService.getCards(3, columnInfo.id, page)
-
-      console.log('[getCards] 응답 데이터:', res)
-      console.log('[getCards] 받아온 카드 개수:', res.cards.length)
-      console.log('[getCards] 전체 카드 수 (totalCount):', res.totalCount)
+      const res = await cardsService.getCards(5, columnInfo.id, cursorId)
 
       const prevIds = new Set(cards.map((card) => card.id))
       const newCards = res.cards.filter((card) => !prevIds.has(card.id))
 
-      // 새로운 카드가 없을 경우에는 더 이상 불러올 카드가 없다고 설정
-      if (newCards.length === 0) {
-        console.log('[getCards] 새로운 카드 없음 - hasMore false 설정')
+      setCards((prevCards) => [...prevCards, ...newCards])
+
+      if (!res.cursorId || newCards.length === 0) {
         setHasMore(false)
-        return
+      } else {
+        setCursorId(res.cursorId)
       }
-
-      // 받아온 카드를 기존 카드 목록에 추가
-      setCards((prevCards) => {
-        const updatedCards = [...prevCards, ...newCards]
-        console.log('[getCards] 누적된 카드 개수:', updatedCards.length)
-        return updatedCards
-      })
-
-      // cursorId가 없으면 더 이상 불러올 데이터가 없다는 의미
-      if (!res.cursorId) {
-        console.log('[getCards] 모든 카드 로드 완료 - hasMore false 설정')
-        setHasMore(false)
-      }
-
-      setPage((prev) => prev + 1)
     } catch (e) {
-      console.error('[getCards] 에러 발생:', e)
+      console.error('[getCards] 에러:', e)
     } finally {
       setIsLoading(false)
     }
   }
 
   const loadMoreCards = () => {
-    if (!hasMore || isLoading) {
-      console.log(
-        '[loadMoreCards] 무시됨 - hasMore:',
-        hasMore,
-        'isLoading:',
-        isLoading
-      )
-      return
-    }
+    if (!hasMore || isLoading) return
     getCards()
   }
 
@@ -92,6 +65,28 @@ export default function Column({
   useEffect(() => {
     getCards()
   }, [])
+
+  // 무한 스크롤 감지
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasMore && !isLoading) {
+          loadMoreCards()
+        }
+      },
+      { threshold: 1 }
+    )
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current)
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current)
+      }
+    }
+  }, [hasMore, isLoading])
 
   return (
     <div className={styles.column}>
@@ -102,7 +97,7 @@ export default function Column({
             <div className={styles.dot} />
             <span className="text-lg-medium">{columnInfo.title}</span>
           </div>
-          <span className={styles.cardCount}>{cards && cards.length}</span>
+          <span className={styles.cardCount}>{cards.length}</span>
         </div>
         <button
           onClick={() => {
@@ -146,17 +141,24 @@ export default function Column({
       </div>
 
       <div className={styles.card_list}>
-        {/* 카드 리스트 */}
         {cards && (
-          <CardTable
-            cards={cards}
-            dashboardId={dashboardId}
-            columnInfo={columnInfo}
-            setRefreshTrigger={setRefreshTrigger}
-            onLoadMore={loadMoreCards}
-            isLoading={isLoading}
-            hasMore={hasMore}
-          />
+          <>
+            <CardTable
+              cards={cards}
+              dashboardId={dashboardId}
+              columnInfo={columnInfo}
+              setRefreshTrigger={setRefreshTrigger}
+              onLoadMore={loadMoreCards}
+              isLoading={isLoading}
+              hasMore={hasMore}
+            />
+
+            {/* 관찰용 div는 카드 아래! */}
+            <div
+              ref={observerRef}
+              style={{ height: '10px', backgroundColor: 'transparent' }}
+            />
+          </>
         )}
       </div>
     </div>

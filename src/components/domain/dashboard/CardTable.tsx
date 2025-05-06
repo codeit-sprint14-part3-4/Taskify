@@ -26,24 +26,25 @@ export default function CardTable({
   const observerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (!observerRef.current || !onLoadMore) return
-
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !isLoading && hasMore) {
-          console.log('[IntersectionObserver] 트리거됨 - onLoadMore 호출')
-          onLoadMore() // 여기에서 데이터를 불러옵니다
+        if (entry.isIntersecting && hasMore && !isLoading && onLoadMore) {
+          onLoadMore()
         }
       },
-      {
-        rootMargin: '100px', // 마지막 카드가 화면에 보일 때 트리거
-      }
+      { threshold: 1 }
     )
 
-    observer.observe(observerRef.current)
+    if (observerRef.current) {
+      observer.observe(observerRef.current)
+    }
 
-    return () => observer.disconnect()
-  }, [onLoadMore, isLoading, hasMore])
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current)
+      }
+    }
+  }, [hasMore, isLoading, onLoadMore])
 
   return (
     <div className="flex flex-col gap-4 px-[2rem]">
@@ -57,7 +58,8 @@ export default function CardTable({
           />
         </div>
       ))}
-      <div ref={observerRef} /> {/* 마지막 카드 감지용 div */}
+      {/* 관찰용 div는 내부로 */}
+      <div ref={observerRef} style={{ height: '10px' }} />
     </div>
   )
 }
