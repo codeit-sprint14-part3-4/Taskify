@@ -81,7 +81,7 @@
   flex-shrink: 0;
 }
 .card_list {
-  max-height: 60vh;
+  max-height: 100rem;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
