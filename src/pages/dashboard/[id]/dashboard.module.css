@@ -1,6 +1,7 @@
 .container {
+  min-height: calc(100vh - 7rem);
   display: flex;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   background-color: var(--gray-FAFAFA);
 }
 
@@ -34,4 +35,37 @@
 
 .inviteMessage {
   font-size: 1.4rem;
+}
+.addColumnWrapper {
+  padding-top: 6.8rem;
+  padding-left: 2.4rem;
+}
+@media (max-width: 1023px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    height: auto;
+  }
+  .addColumnWrapper {
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+  }
+  .addColumnButton {
+    padding-left: 18rem;
+    padding-right: 18rem;
+    margin-top: -5.6rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .addColumnWrapper {
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
+  }
+  .addColumnButton {
+    padding-left: 6.1rem;
+    padding-right: 6.1rem;
+    padding-top: 1.9rem;
+  }
 }

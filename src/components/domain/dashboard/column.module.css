@@ -1,11 +1,13 @@
 .column {
-  min-height: calc(100vh - 7rem);
-  width: 31.4rem;
+  width: 35.4rem;
   background-color: var(--gray-FAFAFA);
   border-radius: 0.6rem;
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--gray-D9D9D9);
+
+  height: auto; /* 또는 min-height 설정 */
+  overflow: visible; /* 중요 */
 }
 
 .header {
@@ -79,4 +81,56 @@
   width: 2.2rem;
   height: 2.2rem;
   flex-shrink: 0;
+  display: block;
+}
+
+.cardImage {
+  display: block;
+  width: auto;
+  height: auto;
+}
+
+@media (max-width: 1023px) {
+  .column {
+    width: 58.4rem;
+    border-right: none;
+  }
+  .cardImage {
+    margin-left: 9rem;
+    margin-top: 5.3rem;
+  }
+  .titleWrapper {
+    padding-left: 1rem;
+  }
+  .settingsButton {
+    padding-right: 1rem;
+  }
+  .addColumnButton {
+    padding-top: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .addButton {
+    width: 28.4rem;
+    height: 3.2rem;
+    padding: 0.9rem 0;
+    align-items: center;
+    justify-content: center;
+    display: flex !important;
+  }
+  .addIcon {
+    display: inline-flex !important;
+    width: 2.2rem;
+    height: 2.2rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .cardImage {
+    margin-top: 26rem;
+    margin-left: 15.1rem;
+  }
+  .column {
+    width: 100%;
+  }
 }
