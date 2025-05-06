@@ -5,6 +5,7 @@
   border-radius: 0.8rem;
   margin-top: 4rem;
   font-family: 'Pretendard';
+  overflow-y: auto;
 }
 
 .searchdiv {
@@ -82,6 +83,10 @@
 
 .Mobilevalue {
   font-size: 1.4rem;
+}
+
+.infiniteTrigger {
+  height: 2rem;
 }
 
 @media (max-width: 1279px) {

@@ -13,6 +13,7 @@ const MyInvitedDashboard = () => {
   const [hasMore, setHasMore] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const isMobile = useIsMobile()
 
   // 초대 목록을 가져오는 함수
@@ -60,17 +61,25 @@ const MyInvitedDashboard = () => {
       if (isLoading) return
       if (observerRef.current) observerRef.current.disconnect()
 
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          const lastItem = invitedList[invitedList.length - 1]
-          if (lastItem) {
-            fetchInvitations(lastItem.id, searchTerm)
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting && hasMore) {
+            const lastItem = invitedList[invitedList.length - 1]
+            if (lastItem) {
+              fetchInvitations(lastItem.id, searchTerm)
+            }
           }
+        },
+        {
+          root: containerRef.current, // 내부 스크롤 컨테이너
+          threshold: 0.1,
+          rootMargin: '0px 0px 100px 0px',
         }
-      })
+      )
 
       if (node) observerRef.current.observe(node)
     },
+
     [invitedList, hasMore, isLoading, searchTerm, fetchInvitations]
   )
 
@@ -94,7 +103,7 @@ const MyInvitedDashboard = () => {
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} ref={containerRef}>
       <div className={styles.searchdiv}>
         <h1 className={styles.inviteddashboardh1}>초대받은 대시보드</h1>
         <div className={styles.inputbox}>
@@ -118,35 +127,39 @@ const MyInvitedDashboard = () => {
         </div>
       </div>
       {isMobile ? (
-        // ✅ 모바일용 구조
-        invitedList.map((item, index) => (
-          <div key={item.id} className={styles.invitationMobileRow}>
-            <div className={styles.Mobilelabel}>이름</div>
-            <div className={styles.Mobilevalue}>{item.dashboard.title}</div>
-            <div className={styles.Mobilelabel}>초대자</div>
-            <div className={styles.Mobilevalue}>{item.inviter.nickname}</div>
-            <div className={styles.hideOnMobile}>수락 여부</div>
-            <div className={styles.Mobilevalue}>
-              <div className={styles.buttonsction}>
-                <CommonButton
-                  padding="0.7rem 3.7rem"
-                  isActive={true}
-                  onClick={() => handleInviteAcceptButton(item.id, true)}
-                >
-                  수락
-                </CommonButton>
-                <CommonButton
-                  padding="0.7rem 3.7rem"
-                  variant="secondary"
-                  isActive={true}
-                  onClick={() => handleInviteAcceptButton(item.id, false)}
-                >
-                  거절
-                </CommonButton>
+        <>
+          {invitedList.map((item) => (
+            <div key={item.id} className={styles.invitationMobileRow}>
+              <div className={styles.Mobilelabel}>이름</div>
+              <div className={styles.Mobilevalue}>{item.dashboard.title}</div>
+              <div className={styles.Mobilelabel}>초대자</div>
+              <div className={styles.Mobilevalue}>{item.inviter.nickname}</div>
+              <div className={styles.hideOnMobile}>수락 여부</div>
+              <div className={styles.Mobilevalue}>
+                <div className={styles.buttonsction}>
+                  <CommonButton
+                    padding="0.7rem 3.7rem"
+                    isActive={true}
+                    onClick={() => handleInviteAcceptButton(item.id, true)}
+                  >
+                    수락
+                  </CommonButton>
+                  <CommonButton
+                    padding="0.7rem 3.7rem"
+                    variant="secondary"
+                    isActive={true}
+                    onClick={() => handleInviteAcceptButton(item.id, false)}
+                  >
+                    거절
+                  </CommonButton>
+                </div>
               </div>
             </div>
-          </div>
-        ))
+          ))}
+
+          {/* ✅ 무한스크롤 트리거용 감지 엘리먼트 */}
+          <div ref={lastItemRef} className={styles.infiniteTrigger} />
+        </>
       ) : (
         // ✅ 기존 PC/태블릿용 구조
         <div className={styles.invitationbox}>
