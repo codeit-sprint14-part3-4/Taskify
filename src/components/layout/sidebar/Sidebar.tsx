@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+
 import styles from './sidebar.module.css'
 import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
 import { Dashboard } from '@/types/api/dashboards'
@@ -114,23 +115,25 @@ export default function Sidebar({
             />
           </button>
         </li>
-        <ul className="h-[580px]">
+        <ul className={styles.subMenu}>
           {dashboardList &&
             dashboardList.length &&
             dashboardList.map((dashboard) => (
-              <li key={dashboard.id}>
+              <li className={styles.dashboard_list_dot} key={dashboard.id}>
                 <Link
-                  className={`flex items-center gap-[16px] mb-[8px] px-[12px] py-[12px] rounded-[4px] ${
-                    currentDashboardId === dashboard.id ? 'bg-[#F1EFFD]' : ''
+                  className={`${styles.dashboard_list} ${
+                    currentDashboardId === dashboard.id
+                      ? styles.dashboard_list_active
+                      : ''
                   }`}
                   href={`/dashboard/${dashboard.id}`}
                 >
                   <div
-                    className="w-[8px] h-[8px] rounded-full"
+                    className={styles.colorDot}
                     style={{ backgroundColor: dashboard.color }}
                   ></div>
-                  <div className="flex items-center gap-[6px]">
-                    <div className="text-2lg-medium text-[#787486]">
+                  <div className={styles.dashboard_container}>
+                    <div className={styles.dashboard_label}>
                       {dashboard.title}
                     </div>
                     {dashboard.createdByMe && (
@@ -148,24 +151,24 @@ export default function Sidebar({
         </ul>
       </ul>
 
-      <article className="w-full flex justify-between items-center mt-[32px]">
+      <article className={styles.article}>
         <button
-          className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-l-[6px] flex justify-center items-center cursor-pointer"
+          className={styles.page_button}
           onClick={() => handlePageMove('left')}
         >
           <Image
-            className="w-[16px] h-[16px]"
+            className={styles.page_button_image}
             src="/assets/icon/arrow-left-gray.svg"
             width={16}
             height={16}
             alt="왼쪽 화살표"
           />
         </button>
-        <div>
+        <div className={styles.page_number}>
           {page} / {Math.ceil(totalCount / 10)}
         </div>
         <button
-          className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-r-[6px] flex justify-center items-center cursor-pointer"
+          className={styles.page_button}
           onClick={() => handlePageMove('right')}
         >
           <Image
