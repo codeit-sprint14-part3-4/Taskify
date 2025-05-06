@@ -2,14 +2,14 @@ import React from 'react'
 import styles from '@/components/domain/modals/basemodal/modal.module.css'
 import baseStyle from '@/components/domain/modals/basemodal/baseModal.module.css'
 import ModalButton from './ModalButton'
-import { ModalProps } from '@/types/common/modal'
+import { Actionmodal } from '@/types/common/actionmodal'
 
 export default function ConfirmActionModal({
   message,
   onConfirm,
   size = 'small',
-  confirmLabel = '확인', // 기본값을 '확인'으로 설정
-}: ModalProps) {
+  confirmLabel = '확인',
+}: Actionmodal) {
   // 모달 크기에 따른 스타일 계산
   const getModalClassNames = (size: string) => {
     return {
