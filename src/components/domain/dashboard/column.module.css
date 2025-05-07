@@ -89,7 +89,11 @@
   width: auto;
   height: auto;
 }
-
+.card_scroll {
+  overflow-y: auto;
+  max-height: calc(100vh - 300px);
+  padding-right: 0.5rem;
+}
 @media (max-width: 1023px) {
   .column {
     width: 58.4rem;
