@@ -49,7 +49,7 @@ export default function EditMyDashboardAttribute() {
         color: String(selectedColor?.color),
       }
       await dashboardsService.putDashboards(id, body)
-      // setShowToast(true)
+      // toast 이용 setShowToast(true)
       alert('수정이 완료되었습니다.')
       window.location.reload()
     } catch (error) {

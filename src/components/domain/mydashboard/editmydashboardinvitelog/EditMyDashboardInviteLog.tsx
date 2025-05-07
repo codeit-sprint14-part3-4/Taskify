@@ -60,6 +60,7 @@ export default function EditMyDashboardInviteLog() {
       setinvitationList((prev) => [...prev, res])
       setError('')
       setInputValue('')
+      //toast 이용 alert('초대 신청이 완료됐어요.')
       alert('초대 신청이 완료됐어요.')
       // setInviteToast(true)
       setIsModalOpen(false)
@@ -73,6 +74,7 @@ export default function EditMyDashboardInviteLog() {
   const handleInviteCancle = async (invitationId: number) => {
     try {
       await dashboardsService.deleteDashboardsInvitations(id, invitationId)
+      // toast 이용 alert('취소 완료')
       alert('취소 완료')
       // setCancelToast(true)
       setinvitationList((prev) =>
