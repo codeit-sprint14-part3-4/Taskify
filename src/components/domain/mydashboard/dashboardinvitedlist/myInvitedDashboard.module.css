@@ -89,9 +89,9 @@
   height: 2rem;
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 1023px) {
   .wrapper {
-    width: 50.4rem;
+    width: auto;
     height: 59.2rem;
     margin-top: 4.8rem;
   }
@@ -106,6 +106,7 @@
 
   .invitationtop {
     grid-template-columns: 15.8rem 15.4rem 16.4rem;
+    justify-content: space-between;
   }
 
   .invitationbox {
@@ -118,12 +119,12 @@
     grid-template-columns: 15.8rem 11rem 16.4rem;
     padding-bottom: 2.2rem;
     margin: 1.7rem 0 2rem;
+    justify-content: space-between;
   }
 }
 
 @media (max-width: 767px) {
   .wrapper {
-    width: 26rem;
     height: 77rem;
     margin-top: 2.4rem;
   }
@@ -146,5 +147,11 @@
     font-size: 2rem;
     line-height: 3.2rem;
     margin-bottom: 1.6rem;
+  }
+  .invitationMobileRow {
+    row-gap: 0.3rem;
+  }
+  .buttonsction {
+    padding-top: 1.2rem;
   }
 }

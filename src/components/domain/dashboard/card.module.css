@@ -132,7 +132,6 @@
 }
 @media (max-width: 767px) {
   .card {
-    width: 28.4rem; /* 카드 너비 고정 */
     height: auto; /* 내용에 따라 자동 높이 */
   }
 

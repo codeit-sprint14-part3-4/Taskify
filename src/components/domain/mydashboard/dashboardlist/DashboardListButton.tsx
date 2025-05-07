@@ -1,4 +1,4 @@
-import styles from './dashboardlistbutton.module.css'
+import styles from './dashboardListButton.module.css'
 import Image from 'next/image'
 
 import { ButtonHTMLAttributes, ReactNode } from 'react'
