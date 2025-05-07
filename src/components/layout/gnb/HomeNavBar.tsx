@@ -247,7 +247,11 @@ export default function HomeNavBar({
             <div>
               {dropdownOpen && (
                 <DropdownPortal>
-                  <div className={styles.dropdown} style={dropdownStyle}>
+                  <div
+                    className={styles.dropdown}
+                    style={dropdownStyle}
+                    ref={dropdownRef}
+                  >
                     <MyDroopdown onClose={() => setDropdownOpen(false)} />
                   </div>
                 </DropdownPortal>
