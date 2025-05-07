@@ -108,11 +108,14 @@
   flex: 1;
 }
 .article {
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: -9rem;
+  padding: 0 1rem;
 }
 
 .page_button {
