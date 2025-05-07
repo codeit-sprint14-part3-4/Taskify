@@ -16,6 +16,10 @@ export default function EditMyDashboardMember() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
 
+  const [showToast, setShowToast] = useState(false)
+  const [falseToast, setFalseToast] = useState(false)
+  const totalPages = Math.max(1, Math.ceil(totalCount / 5))
+
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -59,7 +63,7 @@ export default function EditMyDashboardMember() {
           </div>
           <Pagination
             current={currentPage}
-            total={Math.ceil(totalCount / 5)}
+            total={totalPages}
             onPageChange={setCurrentPage}
           />
         </div>

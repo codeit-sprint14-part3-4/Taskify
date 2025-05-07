@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-
 import styles from './sidebar.module.css'
 import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
 import { Dashboard } from '@/types/api/dashboards'
@@ -21,10 +20,10 @@ export default function Sidebar({
   const handleCloseModal = () => setIsModalOpen(false)
 
   const handlePageMove = (direction: string) => {
-    if (page !== 1 && direction == 'left') {
+    if (page !== 1 && direction === 'left') {
       setPage((prev) => prev - 1)
     }
-    if (Math.ceil(totalCount / 10) !== page && direction == 'right') {
+    if (Math.ceil(totalCount / 10) !== page && direction === 'right') {
       setPage((prev) => prev + 1)
     }
   }
@@ -109,37 +108,44 @@ export default function Sidebar({
             ))}
         </ul>
       </ul>
-      {dashboardList.length ? (
-        <article className="w-full flex justify-between items-center mt-[32px] min-h-[calc(100vh-50px)]">
-          <button
-            className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-l-[6px] flex justify-center items-center cursor-pointer"
-            onClick={() => handlePageMove('left')}
-          >
-            <Image
-              className="w-[16px] h-[16px]"
-              src="/assets/icon/arrow-left-gray.svg"
-              width={16}
-              height={16}
-              alt="왼쪽 화살표"
-            />
-          </button>
-          <div>
-            {page} / {Math.ceil(totalCount / 10)}
-          </div>
-          <button
-            className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-r-[6px] flex justify-center items-center cursor-pointer"
-            onClick={() => handlePageMove('right')}
-          >
-            <Image
-              className="w-[16px] h-[16px]"
-              src="/assets/icon/arrow-right-gray.svg"
-              width={16}
-              height={16}
-              alt="오른쪽 화살표"
-            />
-          </button>
-        </article>
-      ) : null}
+
+      <article className={styles.article}>
+        <button
+          disabled={page === 1}
+          className={`${styles.page_button} ${
+            page === 1 ? styles.disabled : ''
+          }`}
+          onClick={() => handlePageMove('left')}
+        >
+          <Image
+            className={styles.page_button_image}
+            src="/assets/image/arrow-left-bold.svg"
+            width={16}
+            height={16}
+            alt="왼쪽 화살표"
+          />
+        </button>
+        <div className={styles.page_number}>
+          {page} / {Math.max(1, Math.ceil(totalCount / 10))}
+        </div>
+        <button
+          disabled={page === Math.ceil(totalCount / 10) || totalCount === 0}
+          className={`${styles.page_button} ${
+            page === Math.ceil(totalCount / 10) || totalCount === 0
+              ? styles.disabled
+              : ''
+          }`}
+          onClick={() => handlePageMove('right')}
+        >
+          <Image
+            className={styles.page_button_image}
+            src="/assets/image/arrow-right-bold.svg"
+            width={16}
+            height={16}
+            alt="오른쪽 화살표"
+          />
+        </button>
+      </article>
 
       {isModalOpen && <DashboardCreateModal onClose={handleCloseModal} />}
     </div>
