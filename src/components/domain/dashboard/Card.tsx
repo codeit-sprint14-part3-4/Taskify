@@ -16,6 +16,7 @@ export interface CardProps {
   dashboardId: number
   columnInfo: ColumnType
   setRefreshTrigger: React.Dispatch<SetStateAction<number>>
+  index: number
 }
 
 export default function Card({
@@ -45,10 +46,7 @@ export default function Card({
 
   return (
     <>
-      <button
-        className={styles.card}
-        onClick={() => handleCardDetailModal(true)}
-      >
+      <div className={styles.card} onClick={() => handleCardDetailModal(true)}>
         <div
           className={`${styles.cardInner} ${
             !cardInfo.imageUrl ? styles.noImage : ''
@@ -109,7 +107,8 @@ export default function Card({
             </div>
           </div>
         </div>
-      </button>
+      </div>
+
       {isCardDetailModal && (
         <TaskCardModal
           card={cardInfo}
