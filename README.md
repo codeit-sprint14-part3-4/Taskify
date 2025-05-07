@@ -160,22 +160,16 @@ src/
     ├── fetch.ts                      🌍 fetch API 래퍼
     └── handleError.ts                ❗ 에러 핸들링 유틸
 ```
-## 📄 라이브러리
-<table>
-  <tr>
-    <td>
-      ![image](https://github.com/user-attachments/assets/78489b77-a322-437e-9775-b48014e00f1f)
-    </td>
-    <td style="padding-left: 20px; vertical-align: top;">
-      <ul>
-        <li><b>clsx</b>: 조건부로 클래스를 병합할 수 있는 간단한 유틸리티</li>
-        <li><b>date-fns</b>: 날짜를 다루는 현대적인 JS 라이브러리</li>
-        <li><b>React Date Picker</b>: 사용자 친화적인 날짜 선택 컴포넌트</li>
-        <li><b>Framer Motion</b>: React용 애니메이션 프레임워크</li>
-        <li><b>Tailwind CSS</b>: 유틸리티 중심 CSS 프레임워크</li>
-        <li><b>Zustand</b>: 전역 상태 관리를 위한 간단한 라이브러리</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+
+## 🧩 사용된 주요 라이브러리 소개
+
+| 라이브러리 | 설명 |
+|-----------|------|
+| **[clsx](https://www.npmjs.com/package/clsx)** | 조건부로 클래스를 병합할 수 있는 간결하고 빠른 유틸리티 함수 |
+| **[date-fns](https://date-fns.org/)** | 날짜 포맷, 덧셈/뺄셈, 비교 등의 기능을 모듈화하여 제공하는 최신 JavaScript 날짜 유틸리티 라이브러리 |
+| **[React Date Picker](https://reactdatepicker.com/)** | 직관적이고 커스터마이징이 쉬운 날짜 선택 UI 컴포넌트 |
+| **[Framer Motion](https://www.framer.com/motion/)** | 생산성과 퍼포먼스를 모두 잡은 React용 애니메이션 라이브러리 |
+| **[Tailwind CSS](https://tailwindcss.com/)** | 유틸리티 클래스 기반으로 빠르게 UI를 구성할 수 있게 도와주는 CSS 프레임워크 |
+| **[Zustand](https://github.com/pmndrs/zustand)** | 매우 간단하고 가벼운 상태 관리 라이브러리|
+
 
