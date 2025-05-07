@@ -34,7 +34,6 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedColumnId, setSelectedColumnId] = useState<number>(-1)
   const [columnModalInput, setColumnModalInput] = useState<string>('')
-  const [enable, setEnable] = useState(false)
   const [isClient, setIsClient] = useState(false)
 
   const { query, push } = useRouter()
@@ -171,21 +170,10 @@ export default function DashboardPage() {
   }, [query.id, dashboardId])
 
   useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnable(true))
-
-    return () => {
-      cancelAnimationFrame(animation)
-      setEnable(false)
-    }
-  })
-
-  useEffect(() => {
     setIsClient(true)
   }, [])
 
-  if (!enable) return null
-
-  if (!dashboardId || isNaN(dashboardId)) return null
+  if (!isClient || !dashboardId || isNaN(dashboardId)) return null
   if (isLoading) return <SkeletonDashboard />
 
   const isCreateDisabled =
@@ -193,49 +181,47 @@ export default function DashboardPage() {
 
   return (
     <>
-      {isClient ? (
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <div className={styles.container}>
-            {columns.map((column) => (
-              <Column
-                key={column.id}
-                columnInfo={column}
-                dashboardId={dashboardId}
-                refreshTrigger={refreshTrigger}
-                setRefreshTrigger={setRefreshTrigger}
-                handleCardCreateModalOpen={handleCardCreateModalOpen}
-                handleColumnEditModal={handleColumnEditModal}
-                handleColumnOptionClick={handleColumnOptionClick}
-                handleDeleteColumnConfirm={handleDeleteColumnConfirm}
-              />
-            ))}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div className={styles.container}>
+          {columns.map((column) => (
+            <Column
+              key={column.id}
+              columnInfo={column}
+              dashboardId={dashboardId}
+              refreshTrigger={refreshTrigger}
+              setRefreshTrigger={setRefreshTrigger}
+              handleCardCreateModalOpen={handleCardCreateModalOpen}
+              handleColumnEditModal={handleColumnEditModal}
+              handleColumnOptionClick={handleColumnOptionClick}
+              handleDeleteColumnConfirm={handleDeleteColumnConfirm}
+            />
+          ))}
 
-            <div className={styles.addColumnWrapper}>
-              <ButtonDashboard
-                paddingHeight="pt-[2.4rem] pb-[2rem]"
-                paddingWidth="px-[8.6rem]"
-                gap="gap-[1.2rem]"
-                className={styles.addColumnButton}
-                color="bg-white text-[#333236] text-2lg-bold"
-                onClick={() => {
-                  handleColumnCreateModal(true)
-                  setColumnModalInput('')
-                }}
-                suffix={
-                  <Image
-                    src="/assets/icon/add-box.svg"
-                    alt="추가 아이콘"
-                    width={22}
-                    height={22}
-                  />
-                }
-              >
-                새로운 컬럼 추가하기
-              </ButtonDashboard>
-            </div>
+          <div className={styles.addColumnWrapper}>
+            <ButtonDashboard
+              paddingHeight="pt-[2.4rem] pb-[2rem]"
+              paddingWidth="px-[8.6rem]"
+              gap="gap-[1.2rem]"
+              className={styles.addColumnButton}
+              color="bg-white text-[#333236] text-2lg-bold"
+              onClick={() => {
+                handleColumnCreateModal(true)
+                setColumnModalInput('')
+              }}
+              suffix={
+                <Image
+                  src="/assets/icon/add-box.svg"
+                  alt="추가 아이콘"
+                  width={22}
+                  height={22}
+                />
+              }
+            >
+              새로운 컬럼 추가하기
+            </ButtonDashboard>
           </div>
-        </DragDropContext>
-      ) : null}
+        </div>
+      </DragDropContext>
 
       {isCardCreateModalOpen && (
         <TaskCardCreateModal
