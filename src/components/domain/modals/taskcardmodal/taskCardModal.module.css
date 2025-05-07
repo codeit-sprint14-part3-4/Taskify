@@ -113,6 +113,7 @@
   color: var(--black-171717);
   margin-top: 0.4rem;
 }
+
 .textareainput:focus {
   border: 0.1rem solid var(--violet-5534DhA);
   outline: none;

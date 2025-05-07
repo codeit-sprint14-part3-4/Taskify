@@ -113,6 +113,13 @@ export default function TaskCardModal({
   }, [])
 
   useEffect(() => {
+    if (!isCommentsLoaded) return
+
+    const container = commentContainerRef.current
+    const target = observerTargetRef.current
+
+    if (!container || !target) return
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries
@@ -120,19 +127,15 @@ export default function TaskCardModal({
           loadMoreComments()
         }
       },
-      { threshold: 0.1 }
+      { root: container, threshold: 0.1 }
     )
 
-    if (observerTargetRef.current) {
-      observer.observe(observerTargetRef.current)
-    }
+    observer.observe(target)
 
     return () => {
-      if (observerTargetRef.current) {
-        observer.unobserve(observerTargetRef.current)
-      }
+      observer.disconnect() // 안전하게 해제
     }
-  }, [isLoadingMore, cursorId])
+  }, [isCommentsLoaded, isLoadingMore, cursorId])
 
   useEffect(() => {
     const fetch = async () => {
@@ -293,7 +296,7 @@ export default function TaskCardModal({
 
             <div
               ref={commentContainerRef}
-              className="flex flex-col gap-[2.4rem] mt-[2.4rem]"
+              className="flex flex-col gap-[2.4rem] mt-[2.4rem] overflow-y-auto max-h-[30rem]"
             >
               {comments.map((comment) => (
                 <div key={comment.id} className="flex w-[45rem] gap-[1rem]">
