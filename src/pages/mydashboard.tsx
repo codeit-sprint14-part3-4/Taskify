@@ -27,6 +27,7 @@ export default function MyDashboardPage() {
 
   return (
     <div className="p-[4rem]">
+      <DashboardList />
       {loadingInvited ? (
         <div className="space-y-[4rem]">
           {/* 📦 1. 대시보드 카드 6개 스켈레톤 */}
@@ -86,7 +87,6 @@ export default function MyDashboardPage() {
         </div>
       ) : (
         <>
-          <DashboardList />
           <MyInvitedDashboard />
         </>
       )}
