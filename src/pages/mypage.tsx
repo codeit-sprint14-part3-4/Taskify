@@ -41,6 +41,7 @@ export default function MyPage() {
         setEmail(user.email || '')
         if (user.profileImageUrl) setPreviewImage(user.profileImageUrl)
       } catch (error) {
+        console.error(error)
       } finally {
         setIsLoading(false)
       }
@@ -157,10 +158,11 @@ export default function MyPage() {
         email: updatedUser.email,
         profileImageUrl: updatedUser.profileImageUrl,
       })
-
+      // openModal('😊 프로필이 성공적으로 수정되었습니다!') toast 사용하면 좋을 것 같음음
       openModal('😊 프로필이 성공적으로 수정되었습니다!')
     } catch (error) {
-      openModal('프로필 저장 중 오류가 발생했습니다.')
+      const err = error as Error
+      openModal(err.message || '프로필 저장 중 오류가 발생했습니다.')
     }
   }
 

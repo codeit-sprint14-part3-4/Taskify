@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import React from 'react'
-import styles from './AnimatedModalContainer.module.css'
+import styles from './animatedModalContainer.module.css'
 
 interface AnimatedModalContainerProps {
   isLoading: boolean

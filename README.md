@@ -82,42 +82,103 @@
 
 ```bash
 src/
-├── assets/                  📦 정적 파일 (이미지, 아이콘 등)
+├── api/                              🌐 API 요청 모듈
 │
-├── components/              🧩 UI 컴포넌트 모음
-│   ├── common/              🛠️ 공통으로 사용하는 재사용 컴포넌트
-│   │   ├── input.tsx        ✏️ 인풋 필드
-│   │   ├── button/          🔘 버튼 UI
-│   │   ├── card/            📇 카드 컴포넌트
-│   │   ├── dropdown/        🔽 드롭다운 UI
-│   │   └── gnb/             🧭 상단 네비게이션바
+├── components/                       🧩 UI 컴포넌트 모음
+│   ├── common/                       🛠️ 공통 재사용 컴포넌트
+│   │   ├── animatedmodalcontainer/
+│   │   ├── animatedSection/
+│   │   ├── badge/
+│   │   ├── commonbutton/
+│   │   ├── commoninput/
+│   │   └── tag/
 │   │
-│   └── domain/              📚 도메인 중심 컴포넌트 (비즈니스 로직 포함)
-│       ├── dashboard/       📊 대시보드 관련 UI
-│       ├── form/            📝 로그인 / 회원가입 / 프로필 폼
-│       └── modals/          💬 모달 컴포넌트들
+│   └── domain/                       📚 도메인 중심 컴포넌트 (비즈니스 로직 포함)
+│       ├── colorpin/                🎨 색상 고정 관련 UI
+│       ├── dashboard/               📊 대시보드 관련 UI
+│       ├── modals/                  💬 모달 컴포넌트들
+│       │   ├── basemodal/
+│       │   ├── dashboardCreateModal/
+│       │   ├── taskcardcreateModal/
+│       │   ├── taskcardeditModal/
+│       │   └── taskcardmodal/
+│       └── mydashboard/             🗂️ 나의 대시보드 관련 기능
+│           ├── dashboardinvitedlist/
+│           ├── dashboardlist/
+│           ├── editmydashboardattribute/
+│           ├── editmydashboardinvitelog/
+│           └── editmydashboardmember/
 │
-├── hooks/                   🪝 커스텀 훅 모음
+├── dropdown/                         🔽 공통 드롭다운 컴포넌트
+├── featurecard/                      📇 특성 카드 컴포넌트
 │
-├── pages/                   📄 라우팅 페이지 (Next.js)
-│   ├── index.tsx            🏠 메인 랜딩 페이지
-│   ├── login.tsx            🔐 로그인 페이지
-│   ├── signup.tsx           🧑‍💻 회원가입 페이지
-│   ├── mydashboard.tsx      📂 나의 대시보드 페이지
-│   ├── mypage.tsx           🙋‍♂️ 마이페이지
-│   └── dashboard/
-│       └── [id]/            🧱 대시보드 상세/수정 페이지
-│           ├── index.tsx
-│           └── edit.tsx
+├── layout/                           🧱 레이아웃 구성 요소
+│   ├── footerbar/                    📌 푸터 바
+│   ├── gnb/                          🧭 글로벌 네비게이션 바
+│   ├── sidebar/                      📚 사이드바
+│   ├── layout.module.css             🎨 레이아웃 스타일
+│   └── layout.tsx                    📐 레이아웃 컴포넌트
 │
-├── api/                     🌐 API 요청 모듈
-│   ├── client/              ⚙️ axios 설정 (interceptor 등)
-│   └── services/            📬 API 서비스 함수 모음 (auth, dashboard 등)
+├── skeleton/                         🦴 스켈레톤 로딩 컴포넌트
+├── toast/                            🍞 토스트 알림 컴포넌트
 │
-├── styles/                  🎨 글로벌 스타일 및 테마
-│   ├── globals.css
-│   ├── reset.css
-│   └── theme.tsx
+├── hooks/                            🪝 커스텀 훅 모음
+│   ├── useColorPicker.ts             🎨 색상 선택 훅
+│   ├── useFormSignup.ts              🧾 회원가입 폼 훅
+│   └── useIsMobile.ts                📱 반응형 대응 훅
 │
-└── utils/                   🧠 유틸리티 함수 모음
+├── pages/                            📄 라우팅 페이지 (Next.js)
+│   ├── dashboard/
+│   │   └── [id]/                     🧱 대시보드 상세/수정 페이지
+│   │       ├── dashboard.module.css
+│   │       ├── index.tsx
+│   │       └── edit.tsx
+│   │
+│   ├── 404.tsx                       🚫 에러 페이지
+│   ├── _app.tsx                      🏗️ 전체 앱 초기화
+│   ├── _document.tsx                 📃 문서 설정
+│   ├── index.module.css              🎨 홈 스타일
+│   ├── index.tsx                     🏠 메인 랜딩 페이지
+│   ├── login.tsx                     🔐 로그인 페이지
+│   ├── signup.tsx                    🧑‍💻 회원가입 페이지
+│   ├── mydashboard.tsx              📂 나의 대시보드
+│   └── mypage.tsx                    🙋‍♂️ 마이페이지
+│
+├── stores/                           📦 전역 상태 관리 (Zustand 등)
+│   ├── auth.ts                       🔐 인증 관련 상태
+│   └── dashboardMembers.ts          👥 대시보드 멤버 관련 상태
+│
+├── styles/                           🎨 글로벌 스타일 및 리셋
+│   ├── globals.css                   🌐 전역 스타일
+│   └── reset.css                     🧼 브라우저 리셋
+│
+├── types/                            📐 타입 정의
+│   ├── api/                          📦 API 응답/요청 타입
+│   └── common/                       📄 공통 타입
+│
+└── utils/                            🧠 유틸리티 함수 모음
+    ├── fetch.ts                      🌍 fetch API 래퍼
+    └── handleError.ts                ❗ 에러 핸들링 유틸
+```
+
+## 🧩 사용된 주요 라이브러리 소개
+
+| 라이브러리 | 설명 |
+|-----------|------|
+| **[clsx](https://www.npmjs.com/package/clsx)** | 조건부로 클래스를 병합할 수 있는 간결하고 빠른 유틸리티 함수 |
+| **[date-fns](https://date-fns.org/)** | 날짜 포맷, 덧셈/뺄셈, 비교 등의 기능을 모듈화하여 제공하는 최신 JavaScript 날짜 유틸리티 라이브러리 |
+| **[React Date Picker](https://reactdatepicker.com/)** | 직관적이고 커스터마이징이 쉬운 날짜 선택 UI 컴포넌트 |
+| **[Framer Motion](https://www.framer.com/motion/)** | 생산성과 퍼포먼스를 모두 잡은 React용 애니메이션 라이브러리 |
+| **[Tailwind CSS](https://tailwindcss.com/)** | 유틸리티 클래스 기반으로 빠르게 UI를 구성할 수 있게 도와주는 CSS 프레임워크 |
+| **[Zustand](https://github.com/pmndrs/zustand)** | 매우 간단하고 가벼운 상태 관리 라이브러리|
+
+## 👥 R&R (Roles & Responsibilities)
+
+| 팀원     | 담당 주요 기능 |
+|----------|----------------|
+| **곽지훈** | 공통 컴포넌트 (버튼, 페이지네이션)<br/>나의 대시보드 초기 UI<br/>나의 대시보드 수정 페이지 (API 연동, 반응형, 스켈레톤 UI)<br/>대시보드 생성 모달<br/>무한 스크롤 |
+| **김수연** | 로그인<br/>회원가입<br/>토큰<br/>레이아웃 |
+| **김태욱** | 공통 컴포넌트 (인풋)<br/>랜딩페이지<br/>할 일 카드 모달<br/>MyDashboard 스켈레톤 UI 구현<br/>초대받은 대시보드 컴포넌트 UI 구현 |
+| **김희성** | - |
+| **박찬영** | 마이페이지 (API 연동, 반응형, 스켈레톤 UI)<br/>사이드바 UI<br/>공통 모달과 토스트<br/>드롭다운<br/>태그<br/>공통 CSS<br/>나의 대시보드 (반응형, 스켈레톤 UI) |
 

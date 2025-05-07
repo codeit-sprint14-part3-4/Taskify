@@ -41,7 +41,6 @@
   list-style: none;
   padding: 0;
   width: 100%;
-  min-height: calc(100vh - 50px);
 }
 
 .menuItem {

@@ -165,38 +165,30 @@ export default function Column({
                 width={22}
                 height={22}
                 unoptimized
-                style={{
-                  width: '2.2rem',
-                  height: '2.2rem',
-                  display: 'block',
-                }}
+                style={{ width: '2.2rem', height: '2.2rem', display: 'block' }}
               />
             </div>
           }
         />
       </div>
+      {cards && (
+        <>
+          <CardTable
+            cards={cards}
+            dashboardId={dashboardId}
+            columnInfo={columnInfo}
+            setRefreshTrigger={setRefreshTrigger}
+            onLoadMore={loadMoreCards}
+            isLoading={isLoading}
+            hasMore={hasMore}
+          />
 
-      <div className={styles.card_list}>
-        {cards && (
-          <>
-            <CardTable
-              cards={cards}
-              dashboardId={dashboardId}
-              columnInfo={columnInfo}
-              setRefreshTrigger={setRefreshTrigger}
-              onLoadMore={loadMoreCards}
-              isLoading={isLoading}
-              hasMore={hasMore}
-            />
-
-            {/* 관찰용 div*/}
-            <div
-              ref={observerRef}
-              style={{ height: '10px', backgroundColor: 'transparent' }}
-            />
-          </>
-        )}
-      </div>
+          <div
+            ref={observerRef}
+            style={{ height: '10px', backgroundColor: 'transparent' }}
+          />
+        </>
+      )}
     </div>
   )
 }

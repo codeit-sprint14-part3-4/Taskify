@@ -3,6 +3,7 @@ import Card from '@/components/domain/dashboard/Card'
 import { CardType } from '@/types/api/cards'
 import { ColumnType } from '@/types/api/columns'
 import { SetStateAction } from 'react'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 interface CardTableProps {
   cards: CardType[]
@@ -24,7 +25,8 @@ export default function CardTable({
   hasMore,
 }: CardTableProps) {
   const observerRef = useRef<HTMLDivElement | null>(null)
-  // 관찰용 useEffectss
+
+  // 무한 스크롤 트리거용 IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -47,19 +49,47 @@ export default function CardTable({
   }, [hasMore, isLoading, onLoadMore])
 
   return (
-    <div className="flex flex-col gap-4 px-[2rem]">
-      {cards.map((card, index) => (
-        <div key={`${card.id}-${index}`}>
-          <Card
-            cardInfo={card}
-            dashboardId={dashboardId}
-            columnInfo={columnInfo}
-            setRefreshTrigger={setRefreshTrigger}
-          />
+    <Droppable droppableId={String(columnInfo.id)}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          className="flex flex-col gap-4 px-[2rem]"
+        >
+          {cards.length === 0 ? (
+            <div className="text-gray-400 text-center py-4">
+              등록된 카드가 없습니다.
+            </div>
+          ) : (
+            cards.map((card, index) => (
+              <Draggable
+                key={card.id}
+                draggableId={String(card.id)}
+                index={index}
+              >
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    onClick={() => console.log('카드 클릭')} // 필요시
+                  >
+                    <Card
+                      cardInfo={card}
+                      dashboardId={dashboardId}
+                      columnInfo={columnInfo}
+                      setRefreshTrigger={setRefreshTrigger}
+                      index={index}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))
+          )}
+          {provided.placeholder}
+          <div ref={observerRef} style={{ height: '10px' }} />
         </div>
-      ))}
-
-      <div ref={observerRef} style={{ height: '10px' }} />
-    </div>
+      )}
+    </Droppable>
   )
 }
