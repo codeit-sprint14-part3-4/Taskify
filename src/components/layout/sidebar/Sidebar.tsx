@@ -117,7 +117,6 @@ export default function Sidebar({
         </li>
         <ul className={styles.subMenu}>
           {dashboardList &&
-            dashboardList.length &&
             dashboardList.map((dashboard) => (
               <li className={styles.dashboard_list_dot} key={dashboard.id}>
                 <Link
@@ -150,36 +149,37 @@ export default function Sidebar({
             ))}
         </ul>
       </ul>
-
-      <article className={styles.article}>
-        <button
-          className={styles.page_button}
-          onClick={() => handlePageMove('left')}
-        >
-          <Image
-            className={styles.page_button_image}
-            src="/assets/icon/arrow-left-gray.svg"
-            width={16}
-            height={16}
-            alt="왼쪽 화살표"
-          />
-        </button>
-        <div className={styles.page_number}>
-          {page} / {Math.ceil(totalCount / 10)}
-        </div>
-        <button
-          className={styles.page_button}
-          onClick={() => handlePageMove('right')}
-        >
-          <Image
-            className="w-[16px] h-[16px]"
-            src="/assets/icon/arrow-right-gray.svg"
-            width={16}
-            height={16}
-            alt="오른쪽 화살표"
-          />
-        </button>
-      </article>
+      {dashboardList.length ? (
+        <article className="w-full flex justify-between items-center mt-[32px]">
+          <button
+            className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-l-[6px] flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageMove('left')}
+          >
+            <Image
+              className="w-[16px] h-[16px]"
+              src="/assets/icon/arrow-left-gray.svg"
+              width={16}
+              height={16}
+              alt="왼쪽 화살표"
+            />
+          </button>
+          <div>
+            {page} / {Math.ceil(totalCount / 10)}
+          </div>
+          <button
+            className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-r-[6px] flex justify-center items-center cursor-pointer"
+            onClick={() => handlePageMove('right')}
+          >
+            <Image
+              className="w-[16px] h-[16px]"
+              src="/assets/icon/arrow-right-gray.svg"
+              width={16}
+              height={16}
+              alt="오른쪽 화살표"
+            />
+          </button>
+        </article>
+      ) : null}
 
       {isModalOpen && <DashboardCreateModal onClose={handleCloseModal} />}
     </div>
