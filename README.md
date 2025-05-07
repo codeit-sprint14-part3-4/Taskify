@@ -161,5 +161,21 @@ src/
     └── handleError.ts                ❗ 에러 핸들링 유틸
 ```
 ## 📄 라이브러리
-![image](https://github.com/user-attachments/assets/aed74ba4-a7a5-48d3-8c9b-df9403f642a6)
+<table>
+  <tr>
+    <td>
+      <img src="![image](https://github.com/user-attachments/assets/5aee84ac-07e9-4047-9846-6b0ebcd15d8d)" width="500"/>
+    </td>
+    <td style="padding-left: 20px; vertical-align: top;">
+      <ul>
+        <li><b>clsx</b>: 조건부로 클래스를 병합할 수 있는 간단한 유틸리티</li>
+        <li><b>date-fns</b>: 날짜를 다루는 현대적인 JS 라이브러리</li>
+        <li><b>React Date Picker</b>: 사용자 친화적인 날짜 선택 컴포넌트</li>
+        <li><b>Framer Motion</b>: React용 애니메이션 프레임워크</li>
+        <li><b>Tailwind CSS</b>: 유틸리티 중심 CSS 프레임워크</li>
+        <li><b>Zustand</b>: 전역 상태 관리를 위한 간단한 라이브러리</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
