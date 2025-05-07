@@ -116,7 +116,14 @@ export default function TaskCardModal({
   }, [])
 
   useEffect(() => {
-    if (!commentContainerRef.current) return
+
+    if (!isCommentsLoaded) return
+
+    const container = commentContainerRef.current
+    const target = observerTargetRef.current
+
+    if (!container || !target) return
+
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -125,22 +132,17 @@ export default function TaskCardModal({
           loadMoreComments()
         }
       },
-      {
-        root: commentContainerRef.current,
-        threshold: 0.1,
-      }
+
+      { root: container, threshold: 0.1 }
+
     )
 
-    if (observerTargetRef.current) {
-      observer.observe(observerTargetRef.current)
-    }
+    observer.observe(target)
 
     return () => {
-      if (observerTargetRef.current) {
-        observer.unobserve(observerTargetRef.current)
-      }
+      observer.disconnect() // 안전하게 해제
     }
-  }, [isLoadingMore, cursorId])
+  }, [isCommentsLoaded, isLoadingMore, cursorId])
 
   useEffect(() => {
     const fetch = async () => {
@@ -295,7 +297,9 @@ export default function TaskCardModal({
 
             <div
               ref={commentContainerRef}
+
               className={styles.commentListWrapper}
+
             >
               {comments.map((comment) => (
                 <div key={comment.id} className={styles.commentRow}>
