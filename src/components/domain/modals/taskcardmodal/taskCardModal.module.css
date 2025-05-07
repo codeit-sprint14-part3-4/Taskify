@@ -17,6 +17,7 @@
   padding: 3rem 3.8rem 3.3rem 1.8rem;
   position: relative;
   display: flex;
+
   flex-direction: column;
 }
 

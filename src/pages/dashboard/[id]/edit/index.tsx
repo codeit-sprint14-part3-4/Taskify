@@ -6,9 +6,9 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import { dashboardsService } from '@/api/services/dashboardsServices'
-import Layout from '@/components/layout/layout'
 import { useState } from 'react'
 import DeleteActionModal from '@/components/domain/modals/basemodal/DeleteActionModal'
+import Layout from '@/components/layout/layout'
 
 export default function EditPage() {
   const router = useRouter()
