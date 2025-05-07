@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Tag from '@/components/common/tag/Tag'
 import { commentsService } from '@/api/services/commentsServices'
 import type { Comment } from '@/types/api/comments'
-import styles from './TaskCardModal.module.css'
+import styles from './taskCardModal.module.css'
 import { CardType } from '@/types/api/cards'
 import { useAuthStore } from '@/stores/auth'
 import AnimatedModalContainer from '@/components/common/animatedmodalcontainer/AnimatedModalContainer'
@@ -343,8 +343,9 @@ export default function TaskCardModal({
                                 editingComments[comment.id] ?? ''
                               )
                               setEditingComments((prev) => {
-                                const { [comment.id]: _, ...rest } = prev
-                                return rest
+                                const updated = { ...prev }
+                                delete updated[comment.id]
+                                return updated
                               })
                             }}
                             disabled={!editingComments[comment.id]?.trim()}
@@ -355,8 +356,9 @@ export default function TaskCardModal({
                             className={styles.commentActionBtn}
                             onClick={() =>
                               setEditingComments((prev) => {
-                                const { [comment.id]: _, ...rest } = prev
-                                return rest
+                                const updated = { ...prev }
+                                delete updated[comment.id]
+                                return updated
                               })
                             }
                           >

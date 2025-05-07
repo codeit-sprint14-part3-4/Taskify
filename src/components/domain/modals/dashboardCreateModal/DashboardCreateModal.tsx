@@ -28,16 +28,10 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
       const newDashBoard = await dashboardsService.postDashboards(body)
       onClose()
       router.push(`/dashboard/${newDashBoard.id}`)
-    } catch (error: any) {
-      if (error.response?.status === 401) {
-        /*인증되지 않은 요청*/
-        alert('로그인 후 사용해주세요.')
-      } else if (error.response?.status === 500) {
-        alert('서버 오류가 발생 했습니다')
-      } else {
-        console.error('대시보드 생성 중 오류 발생:', error)
-        alert('대시보드 생성에 실패했습니다. 다시 시도해주세요.')
-      }
+    } catch (error) {
+      const err = error as Error
+      alert(err.message || '대시보드 생성에 실패했습니다. 다시 시도해주세요.')
+      console.error('대시보드 생성 중 오류 발생:', error)
     }
   }
 

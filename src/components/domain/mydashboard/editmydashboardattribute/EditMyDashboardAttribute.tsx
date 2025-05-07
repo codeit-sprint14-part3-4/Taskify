@@ -7,7 +7,6 @@ import { dashboardsService } from '@/api/services/dashboardsServices'
 import { useColorPicker } from '@/hooks/useColorPicker'
 import { useRouter } from 'next/router'
 import SkeletonAttribute from '@/components/skeleton/SkeletonAttribute'
-import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardAttribute() {
   const router = useRouter()
@@ -17,8 +16,6 @@ export default function EditMyDashboardAttribute() {
   const { selectedColor, handleColorSelect, COLORS } = useColorPicker()
   const isCreatable = editText.trim() !== '' && selectedColor !== null
   const [loading, setLoading] = useState(true)
-  const [showToast, setShowToast] = useState(false)
-  const [falseToast, setFalseToast] = useState(false)
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -52,7 +49,7 @@ export default function EditMyDashboardAttribute() {
         color: String(selectedColor?.color),
       }
       await dashboardsService.putDashboards(id, body)
-      // setShowToast(true)
+      // toast 이용 setShowToast(true)
       alert('수정이 완료되었습니다.')
       window.location.reload()
     } catch (error) {
