@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-
 import styles from './sidebar.module.css'
 import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
 import { Dashboard } from '@/types/api/dashboards'
@@ -36,10 +35,7 @@ export default function Sidebar({
       setTotalCount(res.totalCount)
     } catch (err) {
       console.error(err)
-
-
     } finally {
-
     }
   }
 
@@ -113,7 +109,6 @@ export default function Sidebar({
         </ul>
       </ul>
 
-      {/* 페이지네이션 항상 표시 */}
       <article className={styles.article}>
         <button
           disabled={page === 1}

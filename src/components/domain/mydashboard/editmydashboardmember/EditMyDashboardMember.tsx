@@ -20,8 +20,6 @@ export default function EditMyDashboardMember() {
   const [falseToast, setFalseToast] = useState(false)
   const totalPages = Math.max(1, Math.ceil(totalCount / 5))
 
-
-
   useEffect(() => {
     const fetchMembers = async () => {
       try {
