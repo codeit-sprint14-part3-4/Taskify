@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from './Tag.module.css'
+import styles from './tag.module.css'
 import type { TagColor, TagProps } from '@/types/common/tag'
 import { useMemo } from 'react'
 

@@ -1,4 +1,4 @@
-import styles from './ColorPin.module.css'
+import styles from './colorPin.module.css'
 import ColorBadgeProps from '@/types/common/colorpin'
 
 export default function ColorPin({
