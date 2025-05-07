@@ -12,7 +12,7 @@ import { cardsService } from '@/api/services/cardsServices'
 import { CreateCardBody } from '@/types/api/cards'
 import { columnsService } from '@/api/services/columnsServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
-import styles from '@/components/domain/modals/taskcardcreatemodal/taskCardCreateModal.module.css'
+import styles from './taskCardCreateModal.module.css'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
