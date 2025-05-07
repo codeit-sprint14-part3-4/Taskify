@@ -165,7 +165,7 @@ export default function DashboardPage() {
   if (!dashboardId || isNaN(dashboardId)) return null
 
   const isCreateDisabled = columnModalInput.trim() === ''
-  isDuplicateColumnTitle(columnModalInput) || columnModalError !== ''
+  // isDuplicateColumnTitle(columnModalInput) || columnModalError !== '' 이 줄 사용 안 하는데 일단 주석할게요. 뭔가 해놓으신 것 같아서요.
   if (!dashboardId || isNaN(dashboardId)) return null
 
   if (isLoading) {

@@ -9,7 +9,6 @@ import FormModal from '../../modals/basemodal/FormModal'
 import { useRouter } from 'next/router'
 import Pagination from '@/components/common/commonbutton/Pagination'
 import SkeletonInviteLog from '@/components/skeleton/SkeletonInviteLog'
-import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardInviteLog() {
   const router = useRouter()
@@ -21,9 +20,6 @@ export default function EditMyDashboardInviteLog() {
   const [error, setError] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
-  const [inviteToast, setInviteToast] = useState(false)
-  const [cancleToast, setCancelToast] = useState(false)
-  const [falseToast, setFalseToast] = useState(false)
 
   const handleInvite = () => {
     setIsModalOpen(true)

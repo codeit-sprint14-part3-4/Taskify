@@ -7,7 +7,6 @@ import { Member } from '@/types/api/menmbers'
 import { useRouter } from 'next/router'
 import Pagination from '@/components/common/commonbutton/Pagination'
 import SkeletonMember from '@/components/skeleton/SkeletonMember'
-import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardMember() {
   const router = useRouter()
@@ -16,8 +15,6 @@ export default function EditMyDashboardMember() {
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
-  const [showToast, setShowToast] = useState(false)
-  const [falseToast, setFalseToast] = useState(false)
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -40,6 +37,7 @@ export default function EditMyDashboardMember() {
       setMemberList((prevMembers) =>
         prevMembers.filter((member) => member.id !== memberId)
       )
+      //toast이용하면 좋을 것 같음  alert('취소 완료')
       alert('취소 완료')
       // setShowToast(true)
     } catch (error) {
