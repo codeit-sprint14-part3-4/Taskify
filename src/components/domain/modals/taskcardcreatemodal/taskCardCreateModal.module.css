@@ -57,9 +57,6 @@
 .textareaContainer:focus-within {
   border-color: var(--violet-5534DhA);
 }
-.title_wrapper {
-  border-color: var(--violet-5534DhA);
-}
 
 .textarea {
   width: 100%;
