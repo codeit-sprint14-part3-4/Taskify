@@ -14,7 +14,6 @@ import { columnsService } from '@/api/services/columnsServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
 import styles from './taskCardCreateModal.module.css'
 import clsx from 'clsx'
-
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
   'tag-pink',
