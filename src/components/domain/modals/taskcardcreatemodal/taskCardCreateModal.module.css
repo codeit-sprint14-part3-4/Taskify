@@ -15,6 +15,7 @@
   transform: translate(-50%, -50%);
   background-color: var(--white-FFFFFF);
   border-radius: 2rem;
+  transition: all 0.3s ease;
 }
 
 .modalContent {
