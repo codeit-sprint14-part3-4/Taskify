@@ -158,8 +158,6 @@ export default function TaskCardModal({
 
   if (!userData) return
 
-  //jsx 본문jsx 본문jsx 본문jsx 본문jsx 본문jsx 본문jsx 본문jsx 본문jsx 본문
-
   return (
     <AnimatedModalContainer isLoading={isLoading}>
       <div className={styles.overlay}>
