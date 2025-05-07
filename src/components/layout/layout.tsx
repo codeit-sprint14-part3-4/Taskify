@@ -40,14 +40,14 @@ export default function Layout({ children, pageType }: LayoutProps) {
   const [isOwner, setIsOwner] = useState(false)
   const [dashboardTitle, setDashboardTitle] = useState('')
   const [membersEmail, setMembersEmail] = useState('')
-
+  const [errorMessage, setErrorMessage] = useState('')
   const dashboardId = Number(router.query.id)
   const isEditPage = router.pathname.includes('edit')
 
   // 초대 처리 함수
   const handleInvite = async () => {
     if (!membersEmail) {
-      alert('이메일을 입력하세요.')
+      setErrorMessage('이메일을 입력하세요.')
       return
     }
 
@@ -62,7 +62,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
         (invitation) => invitation.invitee.email === membersEmail
       )
       if (filteredInviteList.length) {
-        alert('❌ 이미 초대한 이메일입니다 ❌')
+        setErrorMessage('❌ 이미 초대한 이메일입니다 ❌')
         return
       }
 
@@ -71,10 +71,11 @@ export default function Layout({ children, pageType }: LayoutProps) {
       })
       setInviteModalOpen(false)
       setMembersEmail('')
+      setErrorMessage('')
     } catch (err) {
       const error = err as Error
       const errorMessage = error.message || '초대 중 문제가 발생했습니다.'
-      alert(errorMessage)
+      setErrorMessage(errorMessage)
     }
   }
 
@@ -161,6 +162,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
             setInviteModalOpen(false)
             setMembersEmail('')
           }}
+          errorMessage={errorMessage}
           mode="default"
           showCloseButton
         />
