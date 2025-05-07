@@ -92,8 +92,14 @@
 }
 
 .buttonbox {
-  width: 3.2rem;
-  height: 3.2rem;
+  width: 3rem;
+  height: 3rem;
+  justify-items: center;
+  align-items: center;
+}
+
+.buttonbox:hover {
+  cursor: pointer;
 }
 
 .assigneebox {
@@ -370,6 +376,7 @@
 
 .menubuttonbox {
   display: flex;
+  gap: 2.4rem;
 }
 
 @media (max-width: 1279px) {
