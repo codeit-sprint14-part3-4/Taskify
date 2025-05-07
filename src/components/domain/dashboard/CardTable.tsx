@@ -72,7 +72,6 @@ export default function CardTable({
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    onClick={() => console.log('카드 클릭')} // 필요시
                   >
                     <Card
                       cardInfo={card}

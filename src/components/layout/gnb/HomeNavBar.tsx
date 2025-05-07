@@ -55,7 +55,7 @@ export default function HomeNavBar({
     ? members.filter((member) => member.email !== userData?.email)
     : []
 
-  const showCrown = pageType === 'mydashboard' && isOwner
+  const showCrown = pageType === 'dashboard' && isOwner
   const showDashboardControls =
     isOwner && pageType === 'dashboard' && !isEditPage
 
