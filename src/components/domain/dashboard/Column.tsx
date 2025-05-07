@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useRef, useState } from 'react'
+import { SetStateAction, useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
 import CardTable from '@/components/domain/dashboard/CardTable'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
@@ -21,6 +21,7 @@ export interface ColumnProps {
 export default function Column({
   columnInfo,
   dashboardId,
+  refreshTrigger,
   setRefreshTrigger,
   handleCardCreateModalOpen,
   handleColumnEditModal,
@@ -33,19 +34,25 @@ export default function Column({
 
   const observerRef = useRef<HTMLDivElement | null>(null)
 
-  const getCards = async () => {
-    if (isLoading || !hasMore) return
+  // 카드 생성일 기준으로 최신순 정렬하는 함수
+  const sortCardsByCreatedAt = (cards: CardType[]) => {
+    return cards.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+  }
+
+  const getCards = useCallback(async () => {
     setIsLoading(true)
+    setCursorId(undefined)
+    setHasMore(true)
 
     try {
-      const res = await cardsService.getCards(5, columnInfo.id, cursorId)
+      const res = await cardsService.getCards(5, columnInfo.id, undefined)
+      const sortedCards = sortCardsByCreatedAt(res.cards) // 복사된 배열 기준 정렬
+      setCards(sortedCards) // reverse 제거!
 
-      const prevIds = new Set(cards.map((card) => card.id))
-      const newCards = res.cards.filter((card) => !prevIds.has(card.id))
-
-      setCards((prevCards) => [...prevCards, ...newCards])
-
-      if (!res.cursorId || newCards.length === 0) {
+      if (!res.cursorId || res.cards.length === 0) {
         setHasMore(false)
       } else {
         setCursorId(res.cursorId)
@@ -55,38 +62,66 @@ export default function Column({
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [columnInfo.id])
 
-  const loadMoreCards = () => {
+  const loadMoreCards = async () => {
     if (!hasMore || isLoading) return
-    getCards()
+    setIsLoading(true)
+
+    try {
+      const res = await cardsService.getCards(5, columnInfo.id, cursorId)
+
+      const newCards = sortCardsByCreatedAt(res.cards)
+
+      // 중복 제거
+      const mergedCards = [...cards, ...newCards]
+      const uniqueCards = Array.from(
+        new Map(mergedCards.map((card) => [card.id, card])).values()
+      )
+
+      setCards(uniqueCards)
+
+      if (!res.cursorId || res.cards.length === 0) {
+        setHasMore(false)
+      } else {
+        setCursorId(res.cursorId)
+      }
+    } catch (e) {
+      console.error('[loadMoreCards] 에러:', e)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   // 초기 로딩
   useEffect(() => {
-    getCards()
-  }, [])
+    const fetchCards = async () => {
+      const res = await cardsService.getCards(5, columnInfo.id, undefined)
+      console.log('정렬 전', res.cards)
+
+      const sortedCards = sortCardsByCreatedAt(res.cards)
+      console.log('정렬 후', sortedCards)
+
+      setCards(sortedCards)
+    }
+
+    fetchCards()
+  }, [refreshTrigger, getCards])
 
   // 무한 스크롤 감지
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasMore && !isLoading) {
-          loadMoreCards()
-        }
-      },
-      { threshold: 1 }
-    )
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current)
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current)
+    const handleScroll = () => {
+      const scrollContainer = document.documentElement
+      if (
+        scrollContainer.scrollTop + window.innerHeight >=
+        scrollContainer.scrollHeight - 50
+      ) {
+        loadMoreCards()
       }
     }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [hasMore, isLoading])
 
   return (

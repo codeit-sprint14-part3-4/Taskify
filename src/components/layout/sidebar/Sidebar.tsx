@@ -150,7 +150,7 @@ export default function Sidebar({
         </ul>
       </ul>
       {dashboardList.length ? (
-        <article className="w-full flex justify-between items-center mt-[32px]">
+        <article className="w-full flex justify-between items-center mt-[32px] min-h-[calc(100vh-50px)]">
           <button
             className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-l-[6px] flex justify-center items-center cursor-pointer"
             onClick={() => handlePageMove('left')}
