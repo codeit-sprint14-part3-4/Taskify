@@ -5,7 +5,67 @@
 
 ## 🧑‍💻 팀원 소개 & 역할 (Team Members & Roles)
 
-<table> <thead> <tr> <th>이름</th> <th>프로필</th> <th>담당 주요 기능</th> </tr> </thead> <tbody> <tr> <td><a href="https://github.com/jihoon135">@곽지훈</a></td> <td><img src="https://avatars.githubusercontent.com/u/100752796?v=4" width="100"></td> <td> • 공통 컴포넌트 (버튼, 페이지네이션)<br/> • 나의 대시보드 초기 UI 및 수정 페이지<br/> • 대시보드 생성 모달<br/> • 무한 스크롤 </td> </tr> <tr> <td><a href="https://github.com/ramong26">@김수연</a></td> <td><img src="https://avatars.githubusercontent.com/u/192767726?v=4" width="100"></td> <td> • 로그인/회원가입<br/> • 토큰 처리<br/> • 전체 레이아웃 구성 </td> </tr> <tr> <td><a href="https://github.com/dkozowlk">@김태욱</a></td> <td><img src="https://avatars.githubusercontent.com/u/56295839?v=4" width="100"></td> <td> • 공통 인풋 컴포넌트<br/> • 랜딩페이지<br/> • 카드 모달 및 스켈레톤 UI<br/> • 초대받은 대시보드 UI </td> </tr> <tr> <td><a href="https://github.com/huiseong29">@김희성</a></td> <td><img src="https://avatars.githubusercontent.com/u/175691313?v=4" width="100"></td> <td> • API 요청 모듈 구성 (fetch + error handling)<br/> • Dashboard / Column / Card UI 및 CRUD 연동<br/> • 카드 상세 및 생성/수정 모달 UI 및 API 연동<br/> • Sidebar API 연동 및 페이지네이션<br/> • 드래그 앤 드롭 </td> </tr> <tr> <td><a href="https://github.com/Parkchanyoung0710">@박찬영</a></td> <td><img src="https://avatars.githubusercontent.com/u/120624055?v=4" width="100"></td> <td> • 마이페이지 (반응형, 스켈레톤 UI)<br/> • 사이드바 UI 및 공통 모달/토스트<br/> • 드롭다운, 태그, 공통 CSS<br/> • 나의 대시보드 반응형 </td> </tr> </tbody> </table>
+<table>
+  <thead>
+    <tr>
+      <th>이름</th>
+      <th>프로필</th>
+      <th>담당 주요 기능</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/jihoon135">@곽지훈</a></td>
+      <td><img src="https://avatars.githubusercontent.com/u/100752796?v=4" width="100"></td>
+      <td>
+        • 공통 컴포넌트 (버튼, 페이지네이션)<br/>
+        • 나의 대시보드 초기 UI 및 수정 페이지<br/>
+        • 대시보드 생성 모달<br/>
+        • 무한 스크롤
+      </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/ramong26">@김수연</a></td>
+      <td><img src="https://avatars.githubusercontent.com/u/192767726?v=4" width="100"></td>
+      <td>
+        • 로그인/회원가입<br/>
+        • 토큰 처리<br/>
+        • 전체 레이아웃 구성
+      </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/dkozowlk">@김태욱</a></td>
+      <td><img src="https://avatars.githubusercontent.com/u/56295839?v=4" width="100"></td>
+      <td>
+        • 공통 인풋 컴포넌트<br/>
+        • 랜딩페이지<br/>
+        • 카드 모달 및 스켈레톤 UI<br/>
+        • 초대받은 대시보드 UI
+      </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/huiseong29">@김희성</a>👑</td>
+      <td><img src="https://avatars.githubusercontent.com/u/175691313?v=4" width="100"></td>
+      <td>
+        • API 요청 모듈 구성 (fetch + error handling)<br/>
+        • Dashboard / Column / Card UI 및 CRUD 연동<br/>
+        • 카드 상세 및 생성/수정 모달 UI 및 API 연동<br/>
+        • Sidebar API 연동 및 페이지네이션<br/>
+        • 드래그 앤 드롭
+      </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/Parkchanyoung0710">@박찬영</a></td>
+      <td><img src="https://avatars.githubusercontent.com/u/120624055?v=4" width="100"></td>
+      <td>
+        • 마이페이지 (반응형, 스켈레톤 UI)<br/>
+        • 사이드바 UI 및 공통 모달/토스트<br/>
+        • 드롭다운, 태그, 공통 CSS<br/>
+        • 나의 대시보드 반응형
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## 🔗 배포 주소 (Deployment URL)
 - 
