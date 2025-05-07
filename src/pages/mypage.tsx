@@ -158,7 +158,7 @@ export default function MyPage() {
         email: updatedUser.email,
         profileImageUrl: updatedUser.profileImageUrl,
       })
-
+      // openModal('😊 프로필이 성공적으로 수정되었습니다!') toast 사용하면 좋을 것 같음음
       openModal('😊 프로필이 성공적으로 수정되었습니다!')
     } catch (error) {
       const err = error as Error
