@@ -164,11 +164,11 @@ src/
 <table>
   <tr>
     <td>
-      <img src="![image](https://github.com/user-attachments/assets/5aee84ac-07e9-4047-9846-6b0ebcd15d8d)" width="500"/>
+      <img src=![image](https://github.com/user-attachments/assets/5aee84ac-07e9-4047-9846-6b0ebcd15d8d) width="500"/>
     </td>
     <td style="padding-left: 20px; vertical-align: top;">
       <ul>
-        <li><b>clsx</b>: 조건부로 클래스를 병합할 수 있는 간단한 유틸리티</li>
+        <li><b>`clsx`</b>: 조건부로 클래스를 병합할 수 있는 간단한 유틸리티</li>
         <li><b>date-fns</b>: 날짜를 다루는 현대적인 JS 라이브러리</li>
         <li><b>React Date Picker</b>: 사용자 친화적인 날짜 선택 컴포넌트</li>
         <li><b>Framer Motion</b>: React용 애니메이션 프레임워크</li>
