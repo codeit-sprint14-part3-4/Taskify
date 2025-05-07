@@ -64,6 +64,7 @@ export default function Signup() {
       await usersService.postUsers(body) // 회원가입 API 호출
 
       setShowPasswordModal(true)
+      // setErrorMessage('가입이 완료되었습니다.') toast 이용하면 좋을 것 같음
       setErrorMessage('가입이 완료되었습니다.')
     } catch (error) {
       let message = '회원가입 중 문제가 발생했습니다.'

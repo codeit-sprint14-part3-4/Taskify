@@ -9,7 +9,6 @@ import FormModal from '../../modals/basemodal/FormModal'
 import { useRouter } from 'next/router'
 import Pagination from '@/components/common/commonbutton/Pagination'
 import SkeletonInviteLog from '@/components/skeleton/SkeletonInviteLog'
-import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardInviteLog() {
   const router = useRouter()
@@ -21,9 +20,6 @@ export default function EditMyDashboardInviteLog() {
   const [error, setError] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
-  const [inviteToast, setInviteToast] = useState(false)
-  const [cancleToast, setCancelToast] = useState(false)
-  const [falseToast, setFalseToast] = useState(false)
 
   const handleInvite = () => {
     setIsModalOpen(true)
@@ -64,6 +60,7 @@ export default function EditMyDashboardInviteLog() {
       setinvitationList((prev) => [...prev, res])
       setError('')
       setInputValue('')
+      //toast 이용 alert('초대 신청이 완료됐어요.')
       alert('초대 신청이 완료됐어요.')
       // setInviteToast(true)
       setIsModalOpen(false)
@@ -77,6 +74,7 @@ export default function EditMyDashboardInviteLog() {
   const handleInviteCancle = async (invitationId: number) => {
     try {
       await dashboardsService.deleteDashboardsInvitations(id, invitationId)
+      // toast 이용 alert('취소 완료')
       alert('취소 완료')
       // setCancelToast(true)
       setinvitationList((prev) =>

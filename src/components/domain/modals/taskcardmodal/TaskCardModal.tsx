@@ -343,8 +343,9 @@ export default function TaskCardModal({
                                 editingComments[comment.id] ?? ''
                               )
                               setEditingComments((prev) => {
-                                const { [comment.id]: _, ...rest } = prev
-                                return rest
+                                const updated = { ...prev }
+                                delete updated[comment.id]
+                                return updated
                               })
                             }}
                             disabled={!editingComments[comment.id]?.trim()}
@@ -355,8 +356,9 @@ export default function TaskCardModal({
                             className={styles.commentActionBtn}
                             onClick={() =>
                               setEditingComments((prev) => {
-                                const { [comment.id]: _, ...rest } = prev
-                                return rest
+                                const updated = { ...prev }
+                                delete updated[comment.id]
+                                return updated
                               })
                             }
                           >

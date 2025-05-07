@@ -9,14 +9,11 @@ import { dashboardsService } from '@/api/services/dashboardsServices'
 import Layout from '@/components/layout/layout'
 import { useState } from 'react'
 import DeleteActionModal from '@/components/domain/modals/basemodal/DeleteActionModal'
-import Toast from '@/components/toast/Toast'
 
 export default function EditPage() {
   const router = useRouter()
   const dashboardId = Number(router.query.id)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [showToast, setShowToast] = useState(false)
-  const [falseToast, setFalseToast] = useState(false)
 
   const handleModalOpen = () => {
     setIsModalOpen(true)
@@ -29,7 +26,7 @@ export default function EditPage() {
   const handleDashboardDelete = async () => {
     try {
       await dashboardsService.deleteDashboards(dashboardId)
-      // setShowToast(true)
+      // alert('삭제가 완료되었습니다.') toast 이용하면 좋을 것 같음
       alert('삭제가 완료되었습니다.')
       router.push('/mydashboard')
     } catch (error) {
@@ -80,9 +77,9 @@ export default function EditPage() {
             <DeleteActionModal
               size="small"
               message="정말 삭제하시겠습니까?"
-              onConfirm={handleDashboardDelete}
+              onDelete={handleDashboardDelete}
               onCancel={handleModalClose}
-              confirmLabel="삭제"
+              deleteLabel="삭제"
               cancelLabel="취소"
             />
           )}
