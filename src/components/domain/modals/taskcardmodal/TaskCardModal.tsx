@@ -116,14 +116,12 @@ export default function TaskCardModal({
   }, [])
 
   useEffect(() => {
-
     if (!isCommentsLoaded) return
 
     const container = commentContainerRef.current
     const target = observerTargetRef.current
 
     if (!container || !target) return
-
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -134,7 +132,6 @@ export default function TaskCardModal({
       },
 
       { root: container, threshold: 0.1 }
-
     )
 
     observer.observe(target)
@@ -297,9 +294,7 @@ export default function TaskCardModal({
 
             <div
               ref={commentContainerRef}
-
               className={styles.commentListWrapper}
-
             >
               {comments.map((comment) => (
                 <div key={comment.id} className={styles.commentRow}>
@@ -401,8 +396,8 @@ export default function TaskCardModal({
               {isLoadingMore && (
                 <div className={styles.loadingText}>댓글 불러오는 중...</div>
               )}
+              <div ref={observerTargetRef} style={{ height: '0.1rem' }} />
             </div>
-            <div ref={observerTargetRef} style={{ height: '0.1rem' }} />
           </div>
         </div>
       </div>
