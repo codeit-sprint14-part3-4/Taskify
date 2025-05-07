@@ -40,7 +40,9 @@ export default function EditPage() {
   }
   return (
     <>
-      <div className={styles.edit_container}>
+      <div
+        className={`bg-[var(--gray-FAFAFA)] flex flex-col gap-[1.6rem] ml-[2rem]`}
+      >
         <div className="mt-[2rem] ml-[2rem]">
           <button
             onClick={() => router.push(`/dashboard/${dashboardId}`)}
@@ -60,17 +62,15 @@ export default function EditPage() {
           </button>
         </div>
 
-        {/* 테일 윈드 처리 필요 */}
         <EditMyDashboardAttribute />
         <EditMyDashboardMember />
         <EditMyDashboardInviteLog />
 
-        <div className="ml-5">
+        <div className={`${styles.button_container}`}>
           <ButtonDashboard
-            className={`${styles.button_hover} text-2lg-medium text-[var(--black-333236)] mb-[2.0rem]`}
-            /* 테일 윈드 처리 필요 */
-            paddingHeight="py-[1.8rem]"
-            paddingWidth="px-[9.5rem]"
+            className={`${styles.delete_button} active:scale-95 
+            text-2lg-medium text-[var(--black-333236)] mb-[2.0rem] 
+      `}
             onClick={handleModalOpen}
           >
             대시보드 삭제하기
