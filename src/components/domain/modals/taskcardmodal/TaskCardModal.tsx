@@ -46,6 +46,9 @@ export default function TaskCardModal({
   const observerTargetRef = useRef<HTMLDivElement>(null)
   const { userData } = useAuthStore()
   const [isCommentsLoaded, setIsCommentsLoaded] = useState(false)
+  const [editingComments, setEditingComments] = useState<{
+    [key: number]: string | null
+  }>({})
 
   const getComments = async (isLoadMore = false) => {
     try {
@@ -113,6 +116,8 @@ export default function TaskCardModal({
   }, [])
 
   useEffect(() => {
+    if (!commentContainerRef.current) return
+
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries
@@ -120,7 +125,10 @@ export default function TaskCardModal({
           loadMoreComments()
         }
       },
-      { threshold: 0.1 }
+      {
+        root: commentContainerRef.current,
+        threshold: 0.1,
+      }
     )
 
     if (observerTargetRef.current) {
@@ -154,11 +162,9 @@ export default function TaskCardModal({
     <AnimatedModalContainer isLoading={isLoading}>
       <div className={styles.overlay}>
         <div className={styles.modalContainer}>
-          <div className="relative flex justify-between items-center mb-[2.4rem]">
-            <h1 className={`text-2xl-bold ${styles.cardTitle}`}>
-              {card.title}
-            </h1>
-            <div className="flex">
+          <div className={styles.modalheder}>
+            <h1 className={`${styles.cardTitle}`}>{card.title}</h1>
+            <div className={styles.menubuttonbox}>
               <button
                 onClick={() => setIsDropdownOpen((prev) => !prev)}
                 className={styles.buttonbox}
@@ -168,15 +174,15 @@ export default function TaskCardModal({
                 </div>
               </button>
               {isDropdownOpen && (
-                <div className="absolute z-10 bg-[#FFFFFF] top-[3rem] right-[4.5rem] p-[0.6rem] border border-[#d9d9d9] shadow-md rounded-[0.6rem] flex flex-col">
+                <div className={styles.dropdownBox}>
                   <button
-                    className="text-md-regular px-[1.6rem] py-[0.4rem] hover:bg-[#F1EFFD] hover:text-[#5534DA] cursor-pointer"
+                    className={styles.menuItem}
                     onClick={() => onEdit(card)}
                   >
                     수정하기
                   </button>
                   <button
-                    className="text-md-regular px-[1.6rem] py-[0.4rem] hover:bg-[#F1EFFD] hover:text-[#5534DA] cursor-pointer"
+                    className={styles.menuItem}
                     onClick={() => {
                       if (confirm('정말 삭제하시겠습니까?')) onDelete(card.id)
                     }}
@@ -195,8 +201,8 @@ export default function TaskCardModal({
 
           <section className={styles.assigneebox}>
             <div className={styles.assigneeInfo}>
-              <div className="text-[#000000] text-xs-semibold">담당자</div>
-              <div className="flex items-center mt-[0.6rem] gap-[0.8rem] text-md-regular">
+              <div className={styles.assigneelabel}>담당자</div>
+              <div className={styles.assigneecontent}>
                 {card.assignee ? (
                   card.assignee.profileImageUrl ? (
                     <>
@@ -205,7 +211,7 @@ export default function TaskCardModal({
                         alt="프로필 이미지"
                         width={24}
                         height={24}
-                        className="w-[3.4rem] h-[3.4rem] rounded-full object-cover"
+                        className="md:w-[3.4rem] md:h-[3.4rem] w-[2.6rem] h-[2.6rem] rounded-full object-cover"
                       />
                       <span className="text-[#333236]">
                         {card.assignee.nickname}
@@ -214,7 +220,7 @@ export default function TaskCardModal({
                   ) : (
                     <>
                       <Badge nickname={card.assignee.nickname} />
-                      <span className="text-[#333236]">
+                      <span className={styles.assigneespan}>
                         {card.assignee.nickname}
                       </span>
                     </>
@@ -225,20 +231,20 @@ export default function TaskCardModal({
               </div>
             </div>
             <div>
-              <div className="text-[#000000] text-xs-semibold">마감일</div>
-              <div className="text-[#333236] text-md-regular">
-                {card.dueDate ? formatDate(card.dueDate) : ''}
+              <div className={styles.deadlinelabel}>마감일</div>
+              <div className={styles.deadlinecontent}>
+                {formatDate(card.dueDate)}
               </div>
             </div>
           </section>
 
           <div>
             <div className={styles.statusTagRow}>
-              <div className="rounded-full bg-[#F1EFFD] px-[1rem] py-[0.4rem] flex justify-centeri items-center text-[#5534DA] text-xs-regular">
-                <div className="w-[0.6rem] h-[0.6rem] bg-[#5534DA] mr-[0.6rem] rounded-full"></div>
+              <div className={styles.statusborder}>
+                <div className={styles.statuscircle}></div>
                 <div>{columnInfo.title}</div>
               </div>
-              <div className="w-[0.1rem] h-[2rem] bg-[#D9D9D9] mx-[2rem]"></div>
+              <div className={styles.verticalDivider}></div>
               <div className={styles.tagList}>
                 {card.tags.map((tag, index) => (
                   <Tag key={index} label={tag} />
@@ -246,11 +252,7 @@ export default function TaskCardModal({
               </div>
             </div>
 
-            <p
-              className={`p-[1rem] w-[45rem] mt-[1.6rem] text-md-regular break-all`}
-            >
-              {card.description}
-            </p>
+            <p className={styles.cardDescription}>{card.description}</p>
 
             {card.imageUrl && (
               <div className={styles.imageWrapper}>
@@ -277,11 +279,11 @@ export default function TaskCardModal({
                 />
                 <div className={styles.commentinputbutton}>
                   <button
-                    className={`w-[8.3rem] h-[3.2rem] border border-[#D9D9D9] rounded-[0.4rem] ${
+                    className={`${styles.commentButton} ${
                       inputComment
                         ? 'text-[#5534DA] cursor-pointer'
                         : 'text-[#D9D9D9]'
-                    } text-xs-medium`}
+                    }`}
                     onClick={addComment}
                     disabled={!inputComment.trim()}
                   >
@@ -293,10 +295,10 @@ export default function TaskCardModal({
 
             <div
               ref={commentContainerRef}
-              className="flex flex-col gap-[2.4rem] mt-[2.4rem]"
+              className={styles.commentListWrapper}
             >
               {comments.map((comment) => (
-                <div key={comment.id} className="flex w-[45rem] gap-[1rem]">
+                <div key={comment.id} className={styles.commentRow}>
                   <div className="w-[3.4rem] h-[3.4rem]">
                     {comment.author.profileImageUrl ? (
                       <Image
@@ -310,50 +312,93 @@ export default function TaskCardModal({
                       <Badge nickname={comment.author.nickname} />
                     )}
                   </div>
-                  <div className="w-[39rem]">
-                    <div className="flex items-center gap-[0.8rem]">
-                      <div className="text-[#333236] text-lg-semibold">
+                  <div className="xl:w-[45rem] md:w-[42rem] w-full">
+                    <div className={styles.commentInfoRow}>
+                      <div className={styles.nicknameText}>
                         {comment.author.nickname}
                       </div>
-                      <div className="text-[#9FA6B2] text-xs-regular">
+                      <div className={styles.dateText}>
                         {formatDate(comment.createdAt)}
                       </div>
                     </div>
-                    <div className="text-[#333236] break-all">
-                      {comment.content}
-                    </div>
-                    {comment.author.id === userData.id && (
-                      <div className="flex items-center gap-[1.2rem] mt-[1rem] text-[#9FA6B2] text-xs-regular">
-                        <button
-                          className="border-b border-[#9FA6B2] cursor-pointer"
-                          onClick={() => {
-                            const newContent = prompt(
-                              '댓글 수정',
-                              comment.content
-                            )
-                            if (newContent !== null)
-                              editComment(comment.id, newContent)
-                          }}
-                        >
-                          수정
-                        </button>
-                        <button
-                          className="border-b border-[#9FA6B2] cursor-pointer"
-                          onClick={() => deleteComment(comment.id)}
-                        >
-                          삭제
-                        </button>
-                      </div>
+                    <div className={styles.commentText}>{comment.content}</div>
+                    {editingComments[comment.id] !== undefined ? (
+                      <>
+                        <input
+                          type="text"
+                          value={editingComments[comment.id] ?? ''}
+                          onChange={(e) =>
+                            setEditingComments((prev) => ({
+                              ...prev,
+                              [comment.id]: e.target.value,
+                            }))
+                          }
+                          className={styles.editInput}
+                        />
+                        <div className={styles.commentActions}>
+                          <button
+                            className={styles.commentActionBtn}
+                            onClick={async () => {
+                              await editComment(
+                                comment.id,
+                                editingComments[comment.id] ?? ''
+                              )
+                              setEditingComments((prev) => {
+                                const { [comment.id]: _, ...rest } = prev
+                                return rest
+                              })
+                            }}
+                            disabled={!editingComments[comment.id]?.trim()}
+                          >
+                            저장
+                          </button>
+                          <button
+                            className={styles.commentActionBtn}
+                            onClick={() =>
+                              setEditingComments((prev) => {
+                                const { [comment.id]: _, ...rest } = prev
+                                return rest
+                              })
+                            }
+                          >
+                            취소
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {comment.author.id === userData.id && (
+                          <div className={styles.commentActions}>
+                            <button
+                              className={styles.commentActionBtn}
+                              onClick={() =>
+                                setEditingComments((prev) => ({
+                                  ...prev,
+                                  [comment.id]: comment.content,
+                                }))
+                              }
+                            >
+                              수정
+                            </button>
+                            <button
+                              className={styles.commentActionBtn}
+                              onClick={() => deleteComment(comment.id)}
+                            >
+                              삭제
+                            </button>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
               ))}
-              <div ref={observerTargetRef} style={{ height: '0.1rem' }} />
 
               {isLoadingMore && (
                 <div className={styles.loadingText}>댓글 불러오는 중...</div>
               )}
             </div>
+            <div ref={observerTargetRef} style={{ height: '0.1rem' }} />
           </div>
         </div>
       </div>
