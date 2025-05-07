@@ -232,7 +232,7 @@ export default function TaskCardModal({
             <div>
               <div className={styles.deadlinelabel}>마감일</div>
               <div className={styles.deadlinecontent}>
-                {formatDate(card.dueDate)}
+                {card.dueDate ? formatDate(card.dueDate) : ''}
               </div>
             </div>
           </section>
