@@ -16,73 +16,32 @@ export default function Sidebar({
   const [dashboardList, setDashboardList] = useState<Dashboard[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
-  const [isLoading, setIsLoading] = useState(true)
 
   const handleOpenModal = () => setIsModalOpen(true)
   const handleCloseModal = () => setIsModalOpen(false)
 
   const handlePageMove = (direction: string) => {
-    if (page !== 1 && direction == 'left') {
+    if (page !== 1 && direction === 'left') {
       setPage((prev) => prev - 1)
     }
-    if (Math.ceil(totalCount / 10) !== page && direction == 'right') {
+    if (Math.ceil(totalCount / 10) !== page && direction === 'right') {
       setPage((prev) => prev + 1)
     }
   }
 
   const getDashboardList = async () => {
-    setIsLoading(true)
     try {
-      setIsLoading(true)
       const res = await dashboardsService.getDashboards('pagination', page)
       setDashboardList(res.dashboards)
       setTotalCount(res.totalCount)
-      setIsLoading(false)
     } catch (err) {
       console.error(err)
-    } finally {
-      setIsLoading(false)
     }
   }
 
   useEffect(() => {
     getDashboardList()
   }, [page, currentDashboardId])
-
-  if (isLoading) {
-    return (
-      <div className={styles.sidebar}>
-        {/* 로고 영역 */}
-        <div className="flex flex-col items-center mb-[2rem]">
-          <div className="w-[3rem] h-[3rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-full mb-[0.4rem]"></div>
-          <div className="w-[8rem] h-[1.5rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem]"></div>
-        </div>
-
-        {/* 제목 영역 */}
-        <div className="flex justify-between items-center px-[1rem] mb-[1rem]">
-          <div className="w-[10rem] h-[1.6rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem]"></div>
-          <div className="w-[2rem] h-[2rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-full"></div>
-        </div>
-
-        {/* 리스트 영역 */}
-        <ul className="px-[1rem]">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <li
-              key={i}
-              className="w-full h-[3rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem] mb-[0.5rem]"
-            />
-          ))}
-        </ul>
-
-        {/* 페이지네이션 영역 */}
-        <article className="w-full flex justify-between items-center mt-[32px] px-[1rem]">
-          <div className="w-[40px] h-[40px] bg-[var(--gray-D9D9D9)] animate-pulse rounded-full" />
-          <div className="w-[3rem] h-[1.5rem] bg-[var(--gray-D9D9D9)] animate-pulse rounded-[0.4rem]" />
-          <div className="w-[40px] h-[40px] bg-[var(--gray-D9D9D9)] animate-pulse rounded-full" />
-        </article>
-      </div>
-    )
-  }
 
   return (
     <div className={styles.sidebar}>
@@ -149,37 +108,45 @@ export default function Sidebar({
             ))}
         </ul>
       </ul>
-      {dashboardList.length ? (
-        <article className="w-full flex justify-between items-center mt-[32px] min-h-[calc(100vh-50px)]">
-          <button
-            className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-l-[6px] flex justify-center items-center cursor-pointer"
-            onClick={() => handlePageMove('left')}
-          >
-            <Image
-              className="w-[16px] h-[16px]"
-              src="/assets/icon/arrow-left-gray.svg"
-              width={16}
-              height={16}
-              alt="왼쪽 화살표"
-            />
-          </button>
-          <div>
-            {page} / {Math.ceil(totalCount / 10)}
-          </div>
-          <button
-            className="w-[40px] h-[40px] border-2 border-[#D9D9D9] rounded-r-[6px] flex justify-center items-center cursor-pointer"
-            onClick={() => handlePageMove('right')}
-          >
-            <Image
-              className="w-[16px] h-[16px]"
-              src="/assets/icon/arrow-right-gray.svg"
-              width={16}
-              height={16}
-              alt="오른쪽 화살표"
-            />
-          </button>
-        </article>
-      ) : null}
+
+      {/* 페이지네이션 항상 표시 */}
+      <article className={styles.article}>
+        <button
+          disabled={page === 1}
+          className={`${styles.page_button} ${
+            page === 1 ? styles.disabled : ''
+          }`}
+          onClick={() => handlePageMove('left')}
+        >
+          <Image
+            className={styles.page_button_image}
+            src="/assets/image/arrow-left-bold.svg"
+            width={16}
+            height={16}
+            alt="왼쪽 화살표"
+          />
+        </button>
+        <div className={styles.page_number}>
+          {page} / {Math.max(1, Math.ceil(totalCount / 10))}
+        </div>
+        <button
+          disabled={page === Math.ceil(totalCount / 10) || totalCount === 0}
+          className={`${styles.page_button} ${
+            page === Math.ceil(totalCount / 10) || totalCount === 0
+              ? styles.disabled
+              : ''
+          }`}
+          onClick={() => handlePageMove('right')}
+        >
+          <Image
+            className={styles.page_button_image}
+            src="/assets/image/arrow-right-bold.svg"
+            width={16}
+            height={16}
+            alt="오른쪽 화살표"
+          />
+        </button>
+      </article>
 
       {isModalOpen && <DashboardCreateModal onClose={handleCloseModal} />}
     </div>

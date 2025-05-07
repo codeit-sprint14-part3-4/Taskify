@@ -1,7 +1,5 @@
-import Image from 'next/image'
 import styles from './pagination.module.css'
-import ArrowLeft from '../../../../public/assets/icon/arrow-left-gray.svg'
-import ArrowRight from '../../../../public/assets/icon/arrow-right-gray.svg'
+import Image from 'next/image'
 import { PaginationProps } from '@/types/common/pagination'
 
 export default function Pagination({
@@ -9,8 +7,10 @@ export default function Pagination({
   total,
   onPageChange,
 }: PaginationProps) {
+  const totalPages = Math.max(1, total)
+
   const handleNext = () => {
-    if (current < total) {
+    if (current < totalPages) {
       onPageChange(current + 1)
     }
   }
@@ -20,25 +20,38 @@ export default function Pagination({
       onPageChange(current - 1)
     }
   }
+
   return (
     <div className={styles.container}>
       <div className={`${styles.page_text} text-md-regular`}>
-        {current} 페이지 중 {total}
+        {current} / {totalPages}
       </div>
       <div className={styles.arrowButtons}>
         <button
           onClick={handlePrev}
           disabled={current === 1}
-          className={styles.image_container}
+          className={styles.pageButton}
         >
-          <Image src={ArrowLeft} alt="이전 페이지" width={7} height={7} />
+          <Image
+            className={styles.page_button_image}
+            src="/assets/image/arrow-left-bold.svg"
+            width={16}
+            height={16}
+            alt="왼쪽 화살표"
+          />
         </button>
         <button
           onClick={handleNext}
-          disabled={current === total}
-          className={styles.image_container}
+          disabled={current === totalPages}
+          className={styles.pageButton}
         >
-          <Image src={ArrowRight} alt="다음 페이지" width={7} height={7} />
+          <Image
+            className={styles.page_button_image}
+            src="/assets/image/arrow-right-bold.svg"
+            width={16}
+            height={16}
+            alt="오른쪽 화살표"
+          />
         </button>
       </div>
     </div>

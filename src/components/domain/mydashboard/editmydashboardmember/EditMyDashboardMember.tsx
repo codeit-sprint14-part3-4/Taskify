@@ -7,7 +7,6 @@ import { Member } from '@/types/api/menmbers'
 import { useRouter } from 'next/router'
 import Pagination from '@/components/common/commonbutton/Pagination'
 import SkeletonMember from '@/components/skeleton/SkeletonMember'
-import Toast from '@/components/toast/Toast'
 
 export default function EditMyDashboardMember() {
   const router = useRouter()
@@ -18,7 +17,7 @@ export default function EditMyDashboardMember() {
   const [totalCount, setTotalCount] = useState(0)
   const [showToast, setShowToast] = useState(false)
   const [falseToast, setFalseToast] = useState(false)
-
+  const totalPages = Math.max(1, Math.ceil(totalCount / 5))
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -61,7 +60,7 @@ export default function EditMyDashboardMember() {
           </div>
           <Pagination
             current={currentPage}
-            total={Math.ceil(totalCount / 5)}
+            total={totalPages}
             onPageChange={setCurrentPage}
           />
         </div>
