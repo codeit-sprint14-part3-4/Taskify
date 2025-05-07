@@ -36,6 +36,10 @@ export default function Sidebar({
       setTotalCount(res.totalCount)
     } catch (err) {
       console.error(err)
+
+
+    } finally {
+
     }
   }
 

@@ -15,9 +15,13 @@ export default function EditMyDashboardMember() {
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
+
   const [showToast, setShowToast] = useState(false)
   const [falseToast, setFalseToast] = useState(false)
   const totalPages = Math.max(1, Math.ceil(totalCount / 5))
+
+
+
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -39,6 +43,7 @@ export default function EditMyDashboardMember() {
       setMemberList((prevMembers) =>
         prevMembers.filter((member) => member.id !== memberId)
       )
+      //toast이용하면 좋을 것 같음  alert('취소 완료')
       alert('취소 완료')
       // setShowToast(true)
     } catch (error) {
