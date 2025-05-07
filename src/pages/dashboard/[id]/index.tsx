@@ -14,6 +14,7 @@ import {
 } from '@/types/api/columns'
 import FormModal from '@/components/domain/modals/basemodal/FormModal'
 import DeleteActionModal from '@/components/domain/modals/basemodal/DeleteActionModal'
+import SkeletonDashboard from '@/components/skeleton/SkeletonDashboard'
 
 export default function DashboardPage() {
   const [columns, setColumns] = useState<ColumnType[]>([])
@@ -28,7 +29,7 @@ export default function DashboardPage() {
   const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
     useState(false)
   const [columnModalError, setColumnModalError] = useState<string>('')
-
+  const [isLoading, setIsLoading] = useState(true)
   const [selectedColumnId, setSelectedColumnId] = useState<number>(-1)
   const [columnModalInput, setColumnModalInput] = useState<string>('')
   const { query, push } = useRouter()
@@ -37,6 +38,7 @@ export default function DashboardPage() {
   const getColumns = async () => {
     const columnsData = await columnsService.getColumns(dashboardId)
     setColumns(columnsData.data)
+    setIsLoading(false)
   }
 
   const isDuplicateColumnTitle = (title: string) => {
@@ -164,7 +166,11 @@ export default function DashboardPage() {
 
   const isCreateDisabled = columnModalInput.trim() === ''
   isDuplicateColumnTitle(columnModalInput) || columnModalError !== ''
+  if (!dashboardId || isNaN(dashboardId)) return null
 
+  if (isLoading) {
+    return <SkeletonDashboard />
+  }
   return (
     <>
       <div className={styles.container}>
@@ -253,7 +259,7 @@ export default function DashboardPage() {
 
       {isDeleteConfirmModalOpen && triggeredColumn && (
         <DeleteActionModal
-          message="정말 이 컬럼을 삭제하시겠습니까?"
+          message="컬럼의 모든 카드가 삭제됩니다"
           onCancel={() => {
             setIsDeleteConfirmModalOpen(false)
             setIsColumnEditModal(true)

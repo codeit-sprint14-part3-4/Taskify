@@ -1,0 +1,233 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContainer {
+  width: 100%;
+  max-width: 58.4rem;
+  background-color: var(--white-FFFFFF);
+  border-radius: 2rem;
+  overflow: auto;
+}
+
+.modalContent {
+  padding: 3.2rem;
+}
+
+.modalTitle {
+  padding-bottom: 3.2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--black-333236);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+
+  padding-bottom: 3.2rem;
+}
+
+.flexRow {
+  display: flex;
+  width: 100%;
+  gap: 3.2rem;
+  margin-bottom: 3.2rem;
+}
+
+.halfWidth {
+  width: 21.7rem;
+}
+
+.label {
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  color: var(--black-333236);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.required {
+  color: var(--violet-5534DhA);
+  font-size: 1.4rem;
+}
+
+.textareaContainer {
+  width: 100%;
+  border: 1px solid var(--gray-D9D9D9);
+  border-radius: 0.8rem;
+}
+
+.textareaContainer:focus-within {
+  border-color: var(--violet-5534DhA);
+}
+
+.textarea {
+  width: 100%;
+  padding: 1.5rem 1.6rem 6.5rem;
+  font-size: 1.4rem;
+  color: var(--black-333236);
+  background-color: var(--white-FFFFFF);
+  resize: none;
+  border: none;
+  outline: none;
+}
+
+/* 데이트피커 영역*/
+.datePickerWrapper {
+  display: flex;
+  align-items: center;
+  height: 5rem;
+  width: 100%;
+  padding: 0 1.6rem;
+  border: 1px solid var(--gray-D9D9D9);
+  border-radius: 0.8rem;
+}
+
+.datePickerWrapper:focus-within {
+  border-color: var(--violet-5534DhA);
+}
+
+.datePickerInput {
+  flex: 1;
+  background: transparent;
+  font-size: 1.4rem;
+  color: var(--black-333236);
+  outline: none;
+  border: none;
+}
+
+/* 태그 영역 */
+.tagInputContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 5rem;
+  padding: 1rem 1.6rem;
+  border: 1px solid var(--gray-D9D9D9);
+  border-radius: 0.8rem;
+  gap: 1rem;
+}
+
+.tagInputContainer:focus-within {
+  border-color: var(--violet-5534DhA);
+}
+
+.tagInput {
+  flex: 1;
+  min-width: 10rem;
+  background: transparent;
+  font-size: 1.4rem;
+  color: var(--black-333236);
+  border: none;
+  outline: none;
+}
+
+/* 이미지 영역*/
+.imageBox {
+  width: 7.6rem;
+  height: 7.6rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.imagePreview {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageInputHidden {
+  display: none;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.primaryButton,
+.secondaryButton {
+  padding: 1.4rem 11.4rem;
+  border-radius: 0.8rem;
+  font-size: 1.6rem;
+  height: 5.4rem;
+  width: 25.6rem;
+}
+
+@media (max-width: 767px) {
+  .modalContainer {
+    max-width: 32.7rem;
+  }
+
+  .imageBox {
+    width: 5.8rem;
+    height: 5.8rem;
+  }
+
+  .modalContent {
+    padding: 2rem;
+  }
+
+  .modalTitle {
+    font-size: 1.6rem;
+  }
+
+  .label {
+    font-size: 1.4rem;
+  }
+
+  .textarea {
+    font-size: 1.4rem;
+  }
+
+  .datePickerInput {
+    font-size: 1.4rem;
+  }
+
+  .flexRow {
+    flex-direction: column;
+    gap: 3.2rem;
+  }
+
+  .halfWidth {
+    width: 100%;
+  }
+
+  .buttonGroup {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 14.4rem;
+    padding: 1rem 0;
+  }
+}

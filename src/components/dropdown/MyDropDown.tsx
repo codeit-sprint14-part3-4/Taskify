@@ -4,7 +4,13 @@ import { useRouter } from 'next/router'
 import { useAuthStore } from '@/stores/auth'
 import clsx from 'clsx'
 
-const DropdownMenu = ({ onClose }: { onClose?: () => void }) => {
+const DropdownMenu = ({
+  onClose,
+  style,
+}: {
+  onClose?: () => void
+  style?: React.CSSProperties
+}) => {
   const router = useRouter()
   const { clearAuth } = useAuthStore()
 
@@ -34,7 +40,12 @@ const DropdownMenu = ({ onClose }: { onClose?: () => void }) => {
   ]
 
   return (
-    <div className={styles.dropdownMenu} role="menu" aria-label="사용자 메뉴">
+    <div
+      className={styles.dropdownMenu}
+      role="menu"
+      aria-label="사용자 메뉴"
+      style={style}
+    >
       <div className={styles.menuHeader}>
         {menuItems.map(({ label, onClick }) => (
           <button

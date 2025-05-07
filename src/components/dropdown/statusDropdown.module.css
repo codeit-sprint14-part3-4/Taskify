@@ -112,3 +112,8 @@
 .statusText {
   color: var(--violet-5534DhA);
 }
+@media (max-width: 767px) {
+  .container {
+    max-width: 100%;
+  }
+}

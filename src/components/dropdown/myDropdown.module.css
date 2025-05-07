@@ -1,11 +1,11 @@
 .dropdownMenu {
   position: absolute;
-  top: 6rem;
-  right: 0;
+  width: max-content;
+
   background: white;
   border: 0.1rem solid #ccc;
   border-radius: 0.8rem;
-
+  z-index: 1000;
   box-shadow: 0 0.4rem 11.2rem rgba(0, 0, 0, 0.1);
   z-index: 1000;
   display: flex;
