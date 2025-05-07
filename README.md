@@ -28,7 +28,7 @@
 - 
 
 ## 🚀 배포 환경 (Deployment Environment)
-- 
+- <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=Vercel&logoColor=white">
 
 ## 📅 프로젝트 기간 (Project Timeline)
 2025년 4월 22일 ~ 2025년 5월 12일
