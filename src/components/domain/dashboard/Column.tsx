@@ -97,10 +97,8 @@ export default function Column({
   useEffect(() => {
     const fetchCards = async () => {
       const res = await cardsService.getCards(5, columnInfo.id, undefined)
-      console.log('정렬 전', res.cards)
 
       const sortedCards = sortCardsByCreatedAt(res.cards)
-      console.log('정렬 후', sortedCards)
 
       setCards(sortedCards)
     }
