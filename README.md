@@ -28,7 +28,7 @@
 - 
 
 ## 🚀 배포 환경 (Deployment Environment)
-- <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=Vercel&logoColor=white">
+<img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=Vercel&logoColor=white">
 
 ## 📅 프로젝트 기간 (Project Timeline)
 2025년 4월 22일 ~ 2025년 5월 12일
@@ -72,9 +72,8 @@
 | **State Management** | ![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat&logo=Zustand&logoColor=white&labelColor=orange) |
 | **Styling** | ![CSS Modules](https://img.shields.io/badge/CSS%20Modules-000000?style=flat&logo=css3&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white) |
 | **Drag & Drop** | ![DnD](https://img.shields.io/badge/Drag_&_Drop_UI-6E40C9?style=flat&logo=framer&logoColor=white) |
-| **Auth** | ![OAuth](https://img.shields.io/badge/OAuth-4285F4?style=flat&logo=google&logoColor=white) |
 | **Version Control** | ![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white) |
-| **Deployment** | ![AWS S3](https://img.shields.io/badge/AWS_S3-FF9900?style=flat&logo=amazonaws&logoColor=white) ![CloudFront](https://img.shields.io/badge/CloudFront-232F3E?style=flat&logo=amazonaws&logoColor=white) |
+| **Deployment** | ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=Vercel&logoColor=white")
 
 
 ---
