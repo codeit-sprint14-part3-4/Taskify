@@ -253,7 +253,7 @@ export default function DashboardPage() {
 
       {isDeleteConfirmModalOpen && triggeredColumn && (
         <DeleteActionModal
-          message="정말 이 컬럼을 삭제하시겠습니까?"
+          message="컬럼의 모든 카드가 삭제됩니다"
           onCancel={() => {
             setIsDeleteConfirmModalOpen(false)
             setIsColumnEditModal(true)
