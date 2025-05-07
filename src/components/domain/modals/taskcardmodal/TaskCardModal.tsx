@@ -116,14 +116,12 @@ export default function TaskCardModal({
   }, [])
 
   useEffect(() => {
-
     if (!isCommentsLoaded) return
 
     const container = commentContainerRef.current
     const target = observerTargetRef.current
 
     if (!container || !target) return
-
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -134,7 +132,6 @@ export default function TaskCardModal({
       },
 
       { root: container, threshold: 0.1 }
-
     )
 
     observer.observe(target)
@@ -235,7 +232,7 @@ export default function TaskCardModal({
             <div>
               <div className={styles.deadlinelabel}>마감일</div>
               <div className={styles.deadlinecontent}>
-                {formatDate(card.dueDate)}
+                {card.dueDate ? formatDate(card.dueDate) : ''}
               </div>
             </div>
           </section>
@@ -297,9 +294,7 @@ export default function TaskCardModal({
 
             <div
               ref={commentContainerRef}
-
               className={styles.commentListWrapper}
-
             >
               {comments.map((comment) => (
                 <div key={comment.id} className={styles.commentRow}>
