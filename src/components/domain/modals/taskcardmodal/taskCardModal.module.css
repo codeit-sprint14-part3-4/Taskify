@@ -33,9 +33,12 @@
   font-size: 2.4rem;
   line-height: 3.2rem;
   font-weight: 700;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 auto;
+  min-width: 0;
+
 }
 
 .modaltop {
@@ -198,21 +201,14 @@
 
 .tagList {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.8rem;
-
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-
-  padding-bottom: 0.2rem;
+  width: 100%;
+  max-width: 35rem;
 }
-.tagList::-webkit-scrollbar {
-  display: none;
-}
+
 .tagList {
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 
 .editInput {
