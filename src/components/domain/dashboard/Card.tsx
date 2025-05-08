@@ -58,16 +58,16 @@ export default function Card({
     setIsCardDetailModal(false)
   }
 
-  // ✅ 태그 색상 고정: localStorage에 저장 & 가져오기
-  const tagsWithColors = cardInfo.tags.map((tagLabel, idx) => {
-    const key = `tagColor_${cardInfo.id}_${idx}`
-    const savedColor = localStorage.getItem(key)
+  const tagsWithColors = cardInfo.tags.map((tagLabel) => {
+    const key = `tagColor_${cardInfo.id}_${tagLabel}`
+    const savedColor = sessionStorage.getItem(key)
     let color: TagColor
     if (savedColor && TAG_COLORS.includes(savedColor as TagColor)) {
       color = savedColor as TagColor
     } else {
-      const randomColor = TAG_COLORS[idx % TAG_COLORS.length]
-      localStorage.setItem(key, randomColor)
+      const randomColor =
+        TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)]
+      sessionStorage.setItem(key, randomColor)
       color = randomColor
     }
     return { label: tagLabel, color }
