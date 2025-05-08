@@ -4,10 +4,11 @@
 }
 .main_container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 1.2rem;
+  height: 16rem;
 }
 .page_button_left {
   width: 4rem;
@@ -58,6 +59,7 @@
     align-items: center;
     justify-content: space-around;
     flex-wrap: wrap;
+    height: 23rem;
   }
 }
 
