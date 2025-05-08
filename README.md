@@ -72,7 +72,7 @@
 </table>
 
 ## 🔗 배포 주소 (Deployment URL)
-- taskify-git-develop-codeit-part3.vercel.app
+- [taskify-git-develop-codeit-part3.vercel.app](https://taskify-git-develop-codeit-part3.vercel.app/)
 
 ## 📅 프로젝트 기간 (Project Timeline)
 2025년 4월 22일 ~ 2025년 5월 12일
