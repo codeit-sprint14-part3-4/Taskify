@@ -64,6 +64,7 @@ export default function DashboardList() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.main_container}>
+
         <div className={styles.button_dashboard_wrapper}>
           <ButtonDashboard
             onClick={handleCreateDashboardModal}
@@ -82,6 +83,7 @@ export default function DashboardList() {
             새로운 대시보드
           </ButtonDashboard>
         </div>
+
         {error && <div className="text-red-500 mt-4">{error}</div>}
 
         {dashboards.map((dashboard, index) => (
@@ -116,11 +118,6 @@ export default function DashboardList() {
       </div>
 
       <div className={`${styles.page_wrapper} text-md-regular`}>
-        <div className={styles.botton_gap}>
-          <span>
-            {page} / {totalPages}
-          </span>
-        </div>
         <button
           onClick={handlePrev}
           disabled={page === 1}
@@ -136,6 +133,11 @@ export default function DashboardList() {
             />
           </div>
         </button>
+
+        <span className={styles.page_number}>
+          {page} / {totalPages}
+        </span>
+
         <button
           onClick={handleNext}
           disabled={page === totalPages}

@@ -79,9 +79,7 @@ export default function Column({
 
   // 초기 로딩
   useEffect(() => {
-
     getCards()
-
   }, [refreshTrigger, getCards])
   // 무한 스크롤 감지
   useEffect(() => {
