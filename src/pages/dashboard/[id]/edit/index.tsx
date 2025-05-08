@@ -38,7 +38,7 @@ export default function EditPage() {
   return (
     <>
       <div
-        className={`bg-[var(--gray-FAFAFA)] flex flex-col gap-[1.6rem] ml-[2rem]`}
+        className={`bg-[var(--gray-FAFAFA)] flex flex-col gap-[1.6rem] pl-[2rem] pr-[2rem]`}
       >
         <div className="mt-[2rem] ml-[2rem]">
           <button

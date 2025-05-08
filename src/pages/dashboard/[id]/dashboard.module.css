@@ -36,8 +36,7 @@
   font-size: 1.4rem;
 }
 .addColumnWrapper {
-  padding-top: 6.8rem;
-  padding-left: 2.4rem;
+  margin: 6.8rem 2.4rem 0 2.4rem;
 }
 @media (max-width: 1023px) {
   .container {
@@ -47,21 +46,13 @@
     height: auto;
   }
   .addColumnWrapper {
-    padding-left: 2.4rem;
-    padding-right: 2.4rem;
+    margin: 2rem 0;
   }
   .addColumnButton {
-    padding-left: 18rem;
-    padding-right: 18rem;
-    margin-top: -5.6rem;
   }
 }
 
 @media (max-width: 767px) {
-  .addColumnWrapper {
-    padding-left: 2.4rem;
-    padding-right: 2.4rem;
-  }
   .addColumnButton {
     padding-left: 6.1rem;
     padding-right: 6.1rem;

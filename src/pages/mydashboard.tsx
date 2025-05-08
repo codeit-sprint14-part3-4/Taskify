@@ -26,7 +26,7 @@ export default function MyDashboardPage() {
   }, [])
 
   return (
-    <div className="p-[4rem]">
+    <div className="pt-[4rem] pl-[4rem] pr-[4rem] flex items-start justify-center flex-col">
       <DashboardList />
       {loadingInvited ? (
         <div className="space-y-[4rem]">
@@ -74,13 +74,13 @@ export default function MyDashboardPage() {
           </div>
         </div>
       ) : invitedList.length === 0 ? (
-        <div className="justify-center items-center bg-white rounded-[1.6rem] shadow-[0_0_6px_rgba(0,_0,_0,_0.05)]  lg:w-[96rem] lg:mt-[7.4rem]   md:p-[2.4rem_4rem]  md:w-[50.4rem] md:h-[39rem]   p-[2.4rem_2rem] w-[26rem] h-[32.7rem]  ">
-          <div className="md:text-md-bold text-2xl-bold">초대받은 대시보드</div>
-          <div className=" flex flex-col items-center gap-[2.4rem] text-[#8c8c8c] pt-16 md:mt-0 mt-[6.4rem]">
+        <div className="justify-center items-center bg-white rounded-[1.6rem] shadow-[0_0_6px_rgba(0,_0,_0,_0.05)]  lg:w-[96rem] lg:mt-[7.4rem]   md:p-[2.4rem_4rem]  md:w-[50.4rem] md:h-[39rem]   p-[2.4rem_2rem] w-full h-[32.7rem]  ">
+          <div className="md:text-4xl text-md font-bold">초대받은 대시보드</div>
+          <div className=" flex flex-col justify-center items-center gap-[2.4rem] text-[#8c8c8c] pt-16 md:mt-0 mt-[6.4rem]">
             <div className="relative  md:w-[10rem] md:h-[10rem] w-[6rem] h-[6rem]  ">
               <Image src="/assets/icon/email.svg" alt="email" fill />
             </div>
-            <div className="md:text-xs-regular text-2lg-regular">
+            <div className="md:text-3xl text-sm">
               아직 초대받은 대시보드가 없어요
             </div>
           </div>

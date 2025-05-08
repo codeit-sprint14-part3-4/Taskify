@@ -71,7 +71,7 @@
 
 @media (max-width: 1023px) and (min-width: 767px) {
   .edit_invite_container {
-    max-width: 54.4rem;
+    max-width: 100%;
   }
 
   .pagination_container {
@@ -80,10 +80,6 @@
 }
 
 @media (max-width: 767px) {
-  .edit_invite_container {
-    max-width: 28.4rem;
-  }
-
   .edit_invite_button_wrapper {
     display: flex;
     justify-content: flex-end;
