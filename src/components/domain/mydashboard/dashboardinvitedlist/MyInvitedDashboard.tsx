@@ -6,6 +6,7 @@ import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { Invitation } from '@/types/api/invitations'
 import { invitationsService } from '@/api/services/invitationsServices'
 import useIsMobile from '@/hooks/useIsMobile'
+import { useDashboardListStore } from '@/stores/dashboardList'
 
 const MyInvitedDashboard = () => {
   const [invitedList, setInvitedList] = useState<Invitation[]>([])
@@ -96,6 +97,12 @@ const MyInvitedDashboard = () => {
       await invitationsService.putInvitations(invitationId, {
         inviteAccepted: isAccept,
       })
+
+      // ✅ 사이드바 갱신
+      const fetchDashboardList =
+        useDashboardListStore.getState().fetchDashboardList
+      await fetchDashboardList(1)
+
       setInvitedList((prev) => prev.filter((item) => item.id !== invitationId))
     } catch (err) {
       console.error(err)
