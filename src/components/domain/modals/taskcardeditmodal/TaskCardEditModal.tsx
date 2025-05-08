@@ -17,6 +17,7 @@ import { useDashboardMembers } from '@/stores/dashboardMembers'
 import { cardsService } from '@/api/services/cardsServices'
 import AnimatedModalContainer from '@/components/common/animatedmodalcontainer/AnimatedModalContainer'
 import clsx from 'clsx'
+import { useToast } from '@/context/ToastContext'
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
   'tag-pink',
@@ -50,6 +51,7 @@ export default function TaskCardEditModal({
   handleCardEditModal,
   setRefreshTrigger,
 }: TaskCardEditModalProps) {
+  const { showToast } = useToast()
   const [selectedColumn, setSelectedColumn] = useState<ColumnType>(columnInfo)
   const [title, setTitle] = useState(cardInfo.title)
   const [assignee, setAssignee] = useState(-1)
@@ -186,10 +188,12 @@ export default function TaskCardEditModal({
       await cardsService.putCards(cardInfo.id, bodyData)
 
       setRefreshTrigger((prev) => prev + 1)
-
+      showToast('수정이 완료되었습니다.', 'success')
       handleCardEditModal(false)
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      const err = error as Error
+      showToast(err.message, 'error')
+      console.error('에러:', error)
     } finally {
       setIsLoading(false)
     }
