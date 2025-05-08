@@ -37,8 +37,25 @@ export default function HomeNavBar({
   const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({})
   const dropdownRef = useRef<HTMLDivElement>(null)
   const dropdownBtnRef = useRef<HTMLDivElement>(null)
+  const [windowWidth, setWindowWidth] = useState<number>(0)
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
 
+    // 초기 크기 설정
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
   const getTitle = () => {
+    if (windowWidth <= 1023 && pageType === 'dashboard') {
+      return ''
+    }
+
     switch (pageType) {
       case 'mydashboard':
         return '내 대시보드'
@@ -55,7 +72,7 @@ export default function HomeNavBar({
     ? members.filter((member) => member.email !== userData?.email)
     : []
 
-  const showCrown = pageType === 'dashboard' && isOwner
+  const showCrown = pageType === 'dashboard' && isOwner && windowWidth >= 1023
   const showDashboardControls =
     isOwner && pageType === 'dashboard' && !isEditPage
 
@@ -120,9 +137,7 @@ export default function HomeNavBar({
   return (
     <div className={styles.nav_wrapper}>
       <div className={styles.nav_left}>
-        <div className={`${styles.dashboard_title} text-xl-bold`}>
-          {getTitle()}
-        </div>
+        <div className={styles.dashboard_title}>{getTitle()}</div>
         {showCrown && (
           <Image
             src="/assets/icon/crown.svg"

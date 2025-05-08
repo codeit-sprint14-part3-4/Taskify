@@ -64,12 +64,11 @@ export default function DashboardList() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.main_container}>
-
         <div className={styles.button_dashboard_wrapper}>
           <ButtonDashboard
             onClick={handleCreateDashboardModal}
             gap="gap-2"
-            className="text-lg-semibold w-full md:w-full lg:py-[2.1rem] lg:px-[9.5rem] md:py-[2rem] md:px-[5.3rem] px-[7rem] py-[1.5rem] lg:w-full"
+            className="text-lg-semibold w-full  lg:py-[2.1rem] lg:px-[9.5rem] md:py-[2rem] md:px-[5.3rem] px-[7rem] py-[1.5rem] lg:w-full"
             suffix={
               <Image
                 src="/assets/icon/add-box.svg"
