@@ -30,6 +30,7 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
       const newDashBoard = await dashboardsService.postDashboards(body)
       onClose()
       router.push(`/dashboard/${newDashBoard.id}`)
+      showToast('대시보드 생성에 성공했습니다.', 'success')
     } catch (error) {
       const err = error as Error
       showToast(err.message, 'error')

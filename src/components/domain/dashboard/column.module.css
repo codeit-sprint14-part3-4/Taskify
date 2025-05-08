@@ -14,8 +14,8 @@
   align-items: center;
   justify-content: space-between;
 
-  margin-left: 1.6rem;
-  margin-right: 1.6rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
   margin-top: 2.2rem;
 }
 
@@ -23,19 +23,33 @@
   display: flex;
   align-items: center;
   gap: 1.2rem;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
 }
 
 .dotTitle {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
+.dotTitle span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.settingsButton {
+  flex-shrink: 0;
+}
 .dot {
   width: 0.8rem;
   height: 0.8rem;
   background-color: #5534da;
   border-radius: 9999px;
+  flex-shrink: 0;
 }
 
 .titleText {

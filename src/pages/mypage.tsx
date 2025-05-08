@@ -219,12 +219,12 @@ export default function MyPage() {
     <>
       <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh] max-[767px]:pr-[2rem] max-[767px]:bg-[var(--gray-FAFAFA)]">
         <div className="flex flex-nowrap px-0 items-start justify-start w-full">
-          <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem] min-h-[calc(100vh-7rem)] max-[767px]:pb-[3rem]">
-            <div className="mt-[1rem] mb-[2rem]">
+          <div className="flex flex-col flex-1 px-[3rem] max-[767px]:px-[0rem] max-w-[80rem] min-h-[calc(100vh-7rem)] ">
+            <div className="mt-[1rem] mb-[2rem] max-[767px]:mb-[0rem]">
               <button
                 onClick={() => router.back()}
                 type="button"
-                className="flex items-center gap-[0.6rem] text-[var(--black-333236)] font-[var(--font-family)] cursor-pointer"
+                className="max-[767px]:pl-[1.2rem] flex items-center gap-[0.6rem] text-[var(--black-333236)] font-[var(--font-family)] cursor-pointer"
               >
                 <Image
                   src="/assets/image/arrow-left.svg"

@@ -164,6 +164,7 @@
 @media (max-width: 767px) {
   .modalContainer {
     max-width: 32.7rem;
+    height: 70rem;
   }
 
   .imageBox {
