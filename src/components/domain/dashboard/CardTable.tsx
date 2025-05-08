@@ -31,10 +31,10 @@ export default function CardTable({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && hasMore && !isLoading && onLoadMore) {
-          onLoadMore()
+          onLoadMore() // 무한 스크롤 트리거
         }
       },
-      { threshold: 1 }
+      { threshold: 1 } // 요소가 완전히 보일 때 트리거
     )
 
     if (observerRef.current) {
@@ -72,7 +72,6 @@ export default function CardTable({
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    onClick={() => console.log('카드 클릭')} // 필요시
                   >
                     <Card
                       cardInfo={card}
