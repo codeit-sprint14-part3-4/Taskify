@@ -22,7 +22,6 @@ export default function EditMyDashboardInviteLog() {
   const [error, setError] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
-
   const handleInvite = () => setIsModalOpen(true)
   const handleCancel = () => setIsModalOpen(false)
 
@@ -58,7 +57,8 @@ export default function EditMyDashboardInviteLog() {
       showToast('성공적으로 완료되었습니다!', 'success')
       setIsModalOpen(false)
     } catch (error) {
-      showToast('에러가 발생했습니다.', 'error')
+      const err = error as Error
+      showToast(err.message, 'error')
       console.error('초대 버튼 에러:', error)
     }
   }
@@ -71,7 +71,8 @@ export default function EditMyDashboardInviteLog() {
         prev.filter((email) => email.id !== invitationId)
       )
     } catch (error) {
-      showToast('에러가 발생했습니다.', 'error')
+      const err = error as Error
+      showToast(err.message, 'error')
       console.error('초대 취소 에러:', error)
     }
   }

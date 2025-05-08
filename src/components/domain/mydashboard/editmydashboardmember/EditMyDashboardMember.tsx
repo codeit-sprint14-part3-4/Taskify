@@ -41,7 +41,6 @@ export default function EditMyDashboardMember() {
         prevMembers.filter((member) => member.id !== memberId)
       )
       showToast('성공적으로 완료되었습니다!', 'success')
-      alert('취소 완료')
     } catch (error) {
       showToast('에러가 발생했습니다.', 'error')
       console.error('삭제를 실패했습니다.', error)
@@ -89,22 +88,6 @@ export default function EditMyDashboardMember() {
             </CommonButton>
           </div>
         ))}
-
-        {/* {showToast && (
-          <Toast
-            message="삭제되었습니다."
-            onClose={() => setShowToast(false)}
-            type="delete"
-          />
-        )} */}
-
-        {/* {falseToast && (
-          <Toast
-            message="요청에 실패했습니다."
-            onClose={() => setFalseToast(false)}
-            type="info"
-          />
-        )} */}
       </div>
     </>
   )

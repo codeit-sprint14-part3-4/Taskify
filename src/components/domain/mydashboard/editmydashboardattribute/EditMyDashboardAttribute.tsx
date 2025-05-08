@@ -42,7 +42,7 @@ export default function EditMyDashboardAttribute() {
 
   const handleEditDashboardAttribute = async () => {
     if (!editText) {
-      alert('대시보드 이름을 입력해주세요.')
+      showToast('대시보드 이름을 입력해주세요.', 'error')
       return
     }
     try {
@@ -54,7 +54,8 @@ export default function EditMyDashboardAttribute() {
       setNewTitle(editText)
       showToast('성공적으로 완료되었습니다!', 'success')
     } catch (error) {
-      showToast('에러가 발생했습니다.', 'error')
+      const err = error as Error
+      showToast(err.message, 'error')
       console.error('대시보드 수정 중 오류 발생', error)
     }
   }
