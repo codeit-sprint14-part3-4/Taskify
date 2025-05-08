@@ -22,7 +22,7 @@
         • 나의 대시보드 초기 UI 및 수정 페이지<br/>
         • 대시보드 생성 모달<br/>
         • 무한 스크롤<br/>
-        * toast context API 구현
+        • toast context API 구현
       </td>
     </tr>
     <tr>
