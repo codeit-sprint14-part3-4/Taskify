@@ -1,6 +1,7 @@
 .wrapper {
   display: flex;
   height: 100vh;
+  overflow-y: hidden;
 }
 .sidebar_wrapper {
   flex-shrink: 0;
@@ -25,7 +26,11 @@
   .sidebar_wrapper {
     flex-shrink: 0;
   }
+  .wrapper {
+    overflow-y: auto;
+  }
 }
+
 @media (max-width: 767px) {
   .sidebar_wrapper {
   }
