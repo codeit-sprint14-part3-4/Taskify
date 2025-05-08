@@ -219,7 +219,7 @@ export default function MyPage() {
     <>
       <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh] max-[767px]:pr-[2rem] max-[767px]:bg-[#ffffff]">
         <div className="flex flex-nowrap px-0 items-start justify-start w-full">
-          <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem] min-h-[calc(100vh-7rem)] max-[767px]:pb-[6rem]">
+          <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem] min-h-[calc(100vh-7rem)] max-[767px]:pb-[3rem]">
             <div className="mt-[1rem] mb-[2rem]">
               <button
                 onClick={() => router.back()}

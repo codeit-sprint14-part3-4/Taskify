@@ -14,9 +14,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 1.6rem;
-  padding-right: 1.6rem;
-  padding-top: 2.2rem;
+  margin-left: 1.6rem;
+  margin-right: 1.6rem;
+  margin-top: 2.2rem;
 }
 
 .titleWrapper {
@@ -96,7 +96,7 @@
 }
 @media (max-width: 1023px) {
   .column {
-    width: 58.4rem;
+    width: 100%;
     border-right: none;
   }
   .cardImage {

@@ -114,20 +114,21 @@
 /*태블릿*/
 @media (max-width: 1023px) {
   .nav_wrapper {
-    padding-left: 4rem;
-    justify-content: space-between;
+    justify-content: end;
     width: 100%;
   }
   .nav_right_center_border {
     width: auto;
   }
+  .nav_right_center_border_setting {
+    padding-right: 1rem;
+  }
   .right_center_wrapper {
-    width: 100%;
     justify-content: end;
   }
-
-  .button_invitation {
-    padding-right: 2rem;
+  .nav_left {
+    padding-left: 1rem;
+    display: none;
   }
   .nav_right {
     padding: 0rem 4rem 0rem 2.4rem;
