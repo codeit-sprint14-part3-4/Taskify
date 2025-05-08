@@ -63,15 +63,16 @@ export default function TaskCardEditModal({
   const [inputValue, setInputValue] = useState('')
   const [columns, setColumns] = useState<ColumnType[]>([])
   const [tags, setTags] = useState<{ label: string; color: TagColor }[]>(() => {
-    return cardInfo.tags.map((tagLabel, idx) => {
-      const key = `tagColor_${cardInfo.id}_${idx}`
-      const savedColor = localStorage.getItem(key)
+    return cardInfo.tags.map((tagLabel) => {
+      const key = `tagColor_${cardInfo.id}_${tagLabel}`
+      const savedColor = sessionStorage.getItem(key)
       let color: TagColor
       if (savedColor && TAG_COLORS.includes(savedColor as TagColor)) {
         color = savedColor as TagColor
       } else {
-        const randomColor = TAG_COLORS[idx % TAG_COLORS.length]
-        localStorage.setItem(key, randomColor)
+        const randomColor =
+          TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)]
+        sessionStorage.setItem(key, randomColor)
         color = randomColor
       }
       return { label: tagLabel, color }
@@ -99,7 +100,6 @@ export default function TaskCardEditModal({
     ? users.filter((user) => user.id === cardInfo.assignee.id)[0]
     : undefined
 
-  // 변경된 부분: 처음엔 선택된 유저 없음
   const [selectedUser, setSelectedUser] = useState<
     (typeof users)[0] | undefined
   >(currentUser)
@@ -154,7 +154,7 @@ export default function TaskCardEditModal({
         columnId: selectedColumn.id,
         title: title,
         description: description,
-        tags: tags.map((tag) => tag.label), // 태그 배열 요청 바디에 넣을 수 있는 형태로 변경
+        tags: tags.map((tag) => tag.label),
       }
 
       // 담당자가 있으면 담당자 추가
@@ -164,7 +164,6 @@ export default function TaskCardEditModal({
 
       // 이미지가 있으면 이미지 먼저 생성 요청
       if (imgFile) {
-        // 이미지가 있다면 columnService.postColumnsImage 메서드로 이미지 생성 요청부터.
         const postImage = await columnsService.postColumnsImage(
           columnInfo.id,
           imgFile
