@@ -1,6 +1,7 @@
 .wrapper {
   width: 102.2rem;
   height: fit-content;
+  font-family: 'Pretendard';
 }
 .main_container {
   display: flex;
@@ -50,18 +51,23 @@
 @media (max-width: 1023px) {
   .wrapper {
     width: fit-content;
-    font-family: 'Pretendard';
+    padding-bottom: 4.8rem;
   }
 
   .main_container {
-    gap: 1rem;
-    display: flex;
     align-items: center;
-    justify-content: space-around;
+    gap: 1rem;
     flex-wrap: wrap;
     height: 23rem;
+    flex-direction: column;
   }
 }
 
 @media (max-width: 767px) {
+  .wrapper {
+    padding-bottom: 2.4rem;
+  }
+  .main_container {
+    height: max-content;
+  }
 }

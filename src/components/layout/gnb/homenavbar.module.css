@@ -113,9 +113,6 @@
 
 /*태블릿*/
 @media (max-width: 1023px) {
-  .nav_left {
-    display: none;
-  }
   .nav_wrapper {
     padding-left: 4rem;
     justify-content: space-between;
@@ -138,6 +135,9 @@
   }
   .invited_members_wrapper {
     padding-right: 2.4rem;
+  }
+  .dashboard_title {
+    padding: 0;
   }
 }
 /*모바일*/
