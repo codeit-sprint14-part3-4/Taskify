@@ -9,6 +9,7 @@ import { useAuthStore } from '@/stores/auth'
 import AnimatedModalContainer from '@/components/common/animatedmodalcontainer/AnimatedModalContainer'
 import Badge from '@/components/common/badge/Badge'
 import { ColumnType } from '@/types/api/columns'
+import type { TagColor } from '@/types/common/tag'
 
 export const formatDate = (isoDate: string): string => {
   const date = new Date(isoDate)
@@ -28,6 +29,19 @@ interface Props {
   onEdit: (card: CardType) => void
   onDelete: (cardId: number) => void
 }
+
+const TAG_COLORS: TagColor[] = [
+  'tag-orange',
+  'tag-pink',
+  'tag-blue',
+  'tag-green',
+  'tag-purple',
+  'tag-yellow',
+  'tag-red',
+  'tag-teal',
+  'tag-brown',
+  'tag-gray',
+]
 
 export default function TaskCardModal({
   card,
@@ -49,6 +63,21 @@ export default function TaskCardModal({
   const [editingComments, setEditingComments] = useState<{
     [key: number]: string | null
   }>({})
+
+  const tagsWithColors = card.tags.map((tagLabel) => {
+    const key = `tagColor_${card.id}_${tagLabel}`
+    const savedColor = sessionStorage.getItem(key)
+    let color: TagColor
+    if (savedColor && TAG_COLORS.includes(savedColor as TagColor)) {
+      color = savedColor as TagColor
+    } else {
+      const randomColor =
+        TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)]
+      sessionStorage.setItem(key, randomColor)
+      color = randomColor
+    }
+    return { label: tagLabel, color }
+  })
 
   const getComments = async (isLoadMore = false) => {
     try {
@@ -130,14 +159,13 @@ export default function TaskCardModal({
           loadMoreComments()
         }
       },
-
       { root: container, threshold: 0.1 }
     )
 
     observer.observe(target)
 
     return () => {
-      observer.disconnect() // 안전하게 해제
+      observer.disconnect()
     }
   }, [isCommentsLoaded, isLoadingMore, cursorId])
 
@@ -145,11 +173,9 @@ export default function TaskCardModal({
     const fetch = async () => {
       const delay = new Promise((res) => setTimeout(res, 300))
       const commentFetch = getComments()
-
       await Promise.all([delay, commentFetch])
       setIsCommentsLoaded(true)
     }
-
     fetch()
   }, [])
 
@@ -176,7 +202,10 @@ export default function TaskCardModal({
                 <div className={styles.dropdownBox}>
                   <button
                     className={styles.menuItem}
-                    onClick={() => onEdit(card)}
+                    onClick={() => {
+                      setIsDropdownOpen(false)
+                      onEdit(card)
+                    }}
                   >
                     수정하기
                   </button>
@@ -245,8 +274,8 @@ export default function TaskCardModal({
               </div>
               <div className={styles.verticalDivider}></div>
               <div className={styles.tagList}>
-                {card.tags.map((tag, index) => (
-                  <Tag key={index} label={tag} />
+                {tagsWithColors.map((tag, index) => (
+                  <Tag key={index} label={tag.label} color={tag.color} />
                 ))}
               </div>
             </div>

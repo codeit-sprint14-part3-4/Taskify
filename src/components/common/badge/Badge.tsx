@@ -22,10 +22,9 @@ const COLORS = [
 const Badge = ({ nickname, profileImage }: BadgeProps) => {
   const [bgColor, setBgColor] = useState<string>('')
 
-  // 고정된 색상 가져오기 함수
   const getBadgeColor = (nickname: string): string => {
     const key = `badgeColor_${nickname}`
-    const savedColor = localStorage.getItem(key)
+    const savedColor = sessionStorage.getItem(key)
     if (savedColor && COLORS.includes(savedColor)) {
       return savedColor
     } else {
@@ -34,7 +33,7 @@ const Badge = ({ nickname, profileImage }: BadgeProps) => {
         0
       )
       const color = COLORS[hash % COLORS.length]
-      localStorage.setItem(key, color)
+      sessionStorage.setItem(key, color)
       return color
     }
   }
