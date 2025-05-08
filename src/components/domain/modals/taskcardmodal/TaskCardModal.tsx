@@ -311,7 +311,7 @@ export default function TaskCardModal({
                       <Badge nickname={comment.author.nickname} />
                     )}
                   </div>
-                  <div className="xl:w-[45rem] md:w-[42rem] w-full">
+                  <div className="lg:w-[45rem] md:w-[42rem] w-full">
                     <div className={styles.commentInfoRow}>
                       <div className={styles.nicknameText}>
                         {comment.author.nickname}

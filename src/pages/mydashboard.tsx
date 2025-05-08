@@ -40,7 +40,7 @@ export default function MyDashboardPage() {
           </div>
 
           {/* 📦 2. 초대받은 대시보드 영역 */}
-          <div className="bg-white rounded-[1.6rem] shadow-[0_0_6px_rgba(0,_0,_0,_0.05)] xl:w-[96rem] p-[2.4rem] animate-pulse space-y-[2.4rem]">
+          <div className="bg-white rounded-[1.6rem] shadow-[0_0_6px_rgba(0,_0,_0,_0.05)] lg:w-[96rem] p-[2.4rem] animate-pulse space-y-[2.4rem]">
             {/* 타이틀 */}
             <div className="h-[2.4rem] w-[16rem] bg-gray-200 rounded" />
 
@@ -73,7 +73,7 @@ export default function MyDashboardPage() {
           </div>
         </div>
       ) : invitedList.length === 0 ? (
-        <div className="justify-center items-center bg-white rounded-[1.6rem] shadow-[0_0_6px_rgba(0,_0,_0,_0.05)]   xl:w-[96rem] xl:mt-[7.4rem]   md:p-[2.4rem_4rem]  md:w-[50.4rem] md:h-[39rem]   p-[2.4rem_2rem] w-[26rem] h-[32.7rem]  ">
+        <div className="justify-center items-center bg-white rounded-[1.6rem] shadow-[0_0_6px_rgba(0,_0,_0,_0.05)]  lg:w-[96rem] lg:mt-[7.4rem]   md:p-[2.4rem_4rem]  md:w-[50.4rem] md:h-[39rem]   p-[2.4rem_2rem] w-[26rem] h-[32.7rem]  ">
           <div className="md:text-md-bold text-2xl-bold">초대받은 대시보드</div>
           <div className=" flex flex-col items-center gap-[2.4rem] text-[#8c8c8c] pt-16 md:mt-0 mt-[6.4rem]">
             <div className="relative  md:w-[10rem] md:h-[10rem] w-[6rem] h-[6rem]  ">

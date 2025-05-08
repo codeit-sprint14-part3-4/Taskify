@@ -16,7 +16,7 @@ import { columnsService } from '@/api/services/columnsServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
 import { cardsService } from '@/api/services/cardsServices'
 import AnimatedModalContainer from '@/components/common/animatedmodalcontainer/AnimatedModalContainer'
-
+import clsx from 'clsx'
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
   'tag-pink',
@@ -187,11 +187,14 @@ export default function TaskCardEditModal({
       <div className={styles.modalOverlay}>
         <div className={styles.modalContainer}>
           <div className={styles.modalContent}>
-            <h2 className={styles.modalTitle}>할 일 수정</h2>
-
+            <div className={clsx(`${styles.modalTitle} text-2xl-bold`)}>
+              할 일 수정
+            </div>
             <div className={styles.flexRow}>
               <div className={styles.halfWidth}>
-                <label className={styles.label}>상태</label>
+                <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                  상태
+                </label>
                 {columns && columns.length ? (
                   <StatusDropdown
                     columnList={columns}
@@ -204,7 +207,9 @@ export default function TaskCardEditModal({
                 ) : null}
               </div>
               <div className={styles.halfWidth}>
-                <label className={styles.label}>담당자</label>
+                <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                  담당자
+                </label>
                 <UserDropdown
                   users={users}
                   selectedUser={selectedUser}
@@ -227,7 +232,7 @@ export default function TaskCardEditModal({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
                 제목 <span className={styles.required}>*</span>
               </label>
               <Input
@@ -248,7 +253,7 @@ export default function TaskCardEditModal({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
                 설명 <span className={styles.required}>*</span>
               </label>
               <div className={styles.textareaContainer}>
@@ -270,7 +275,9 @@ export default function TaskCardEditModal({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>마감일</label>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                마감일
+              </label>
               <div className={styles.datePickerWrapper}>
                 <Image
                   src="/assets/icon/calendar.svg"
@@ -301,7 +308,9 @@ export default function TaskCardEditModal({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>태그</label>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                태그
+              </label>
               <div className={styles.tagInputContainer}>
                 {tags.map((tag, idx) => (
                   <Tag
@@ -323,7 +332,9 @@ export default function TaskCardEditModal({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>이미지</label>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                이미지
+              </label>
               <div className={styles.imageBox} onClick={handleImageClick}>
                 {preview ? (
                   <>

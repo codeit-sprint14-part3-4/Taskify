@@ -35,7 +35,9 @@
 .rotate {
   transform: rotate(180deg);
 }
-
+.button_wrapper {
+  padding: 0.8rem;
+}
 .dropdown {
   max-height: calc(4.8rem * 4);
   scroll-padding-block: 0.8rem;

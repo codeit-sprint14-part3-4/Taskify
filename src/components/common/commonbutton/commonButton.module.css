@@ -1,5 +1,4 @@
 .button {
-  border: 0.1rem solid var(--gray-D9D9D9);
   cursor: pointer;
   border-radius: 0.8rem;
   font-family: var(--font-family);
@@ -25,4 +24,5 @@
 .secondary {
   background-color: var(--white-FFFFFF);
   color: var(--gray-787486);
+  border: 0.1rem solid var(--gray-D9D9D9);
 }
