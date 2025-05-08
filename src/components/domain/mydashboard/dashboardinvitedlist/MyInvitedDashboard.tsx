@@ -6,7 +6,11 @@ import CommonButton from '@/components/common/commonbutton/CommonButton'
 import { Invitation } from '@/types/api/invitations'
 import { invitationsService } from '@/api/services/invitationsServices'
 import useIsMobile from '@/hooks/useIsMobile'
+
+import { useDashboardListStore } from '@/stores/dashboardList'
+
 import { useToast } from '@/context/ToastContext'
+
 
 const MyInvitedDashboard = () => {
   const { showToast } = useToast()
@@ -98,6 +102,12 @@ const MyInvitedDashboard = () => {
       await invitationsService.putInvitations(invitationId, {
         inviteAccepted: isAccept,
       })
+
+      // ✅ 사이드바 갱신
+      const fetchDashboardList =
+        useDashboardListStore.getState().fetchDashboardList
+      await fetchDashboardList(1)
+
       setInvitedList((prev) => prev.filter((item) => item.id !== invitationId))
       showToast('성공적으로 완료되었습니다!', 'success')
     } catch (error) {
