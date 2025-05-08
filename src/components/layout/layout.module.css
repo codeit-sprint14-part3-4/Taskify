@@ -20,7 +20,7 @@
 .main_wrapper {
   flex: 1;
   background-color: var(--gray-FAFAFA);
-  overflow: auto;
+  overflow: hidden;
 }
 @media (max-width: 1023px) {
   .sidebar_wrapper {

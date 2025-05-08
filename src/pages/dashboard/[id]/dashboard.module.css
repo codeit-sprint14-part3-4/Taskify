@@ -2,6 +2,18 @@
   min-height: calc(100vh - 7rem);
   display: flex;
   background-color: var(--gray-FAFAFA);
+  width: calc(100vw - 300px);
+  overflow-x: auto;
+}
+
+.container::-webkit-scrollbar {
+  background-color: #fafafa;
+  height: 1rem;
+}
+.container::-webkit-scrollbar-thumb {
+  background-color: var(--color-violet-300);
+  border-radius: 1rem;
+  border: 0.2rem solid #fafafa;
 }
 
 .main {
@@ -35,16 +47,22 @@
 .inviteMessage {
   font-size: 1.4rem;
 }
+
 .addColumnWrapper {
   padding-top: 6.8rem;
   padding-left: 2.4rem;
+  width: 38.8rem;
 }
+
 @media (max-width: 1023px) {
   .container {
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    height: auto;
+    max-height: calc(100vh - 70px);
+  }
+  .inviteSection {
+    padding: 2.4rem 4rem 6rem 4rem;
   }
   .addColumnWrapper {
     padding-left: 2.4rem;

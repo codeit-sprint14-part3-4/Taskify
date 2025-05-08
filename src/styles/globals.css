@@ -6,6 +6,7 @@ html {
 body {
   font-size: 1.6rem !important;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 :root {
   --font-family: 'Pretendard', sans-serif;
