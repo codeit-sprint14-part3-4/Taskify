@@ -14,6 +14,7 @@ import { columnsService } from '@/api/services/columnsServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
 import styles from './taskCardCreateModal.module.css'
 import clsx from 'clsx'
+import { useToast } from '@/context/ToastContext'
 
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
@@ -41,6 +42,7 @@ export default function TaskCardCreateModal({
   handleCardCreateModalClose,
   setRefreshTrigger,
 }: TaskCardCreateModalProps) {
+  const { showToast } = useToast()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [assignee, setAssignee] = useState(-1)
@@ -78,47 +80,54 @@ export default function TaskCardCreateModal({
   }
 
   const handleSubmitForm = async () => {
-    const bodyData: CreateCardBody = {
-      dashboardId,
-      columnId,
-      title,
-      description,
-      tags: tags.map((tag) => tag.label),
-    }
 
-    if (assignee !== -1) {
-      bodyData.assigneeUserId = assignee
-    }
-
-    if (imgFile) {
-      const postImage = await columnsService.postColumnsImage(columnId, imgFile)
-      bodyData.imageUrl = postImage.imageUrl
-    }
-
-    if (selectedDate) {
-      const date = selectedDate
-      const parseDate = `${date.getFullYear()}-${String(
-        date.getMonth() + 1
-      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(
-        date.getHours()
-      ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
-      bodyData.dueDate = parseDate
-    }
-
-    const createdCard: CardType = await cardsService.postCards(bodyData)
-
-    tags.forEach((tag) => {
-      const oldKey = `tagColor_${columnId}_${tag.label}`
-      const newKey = `tagColor_${createdCard.id}_${tag.label}`
-      const color = sessionStorage.getItem(oldKey)
-      if (color) {
-        sessionStorage.setItem(newKey, color)
-        sessionStorage.removeItem(oldKey)
+    try {
+      const bodyData: CreateCardBody = {
+        dashboardId: dashboardId,
+        columnId: columnId,
+        title: title,
+        description: description,
+        tags: tags.map((tag) => tag.label), // 태그 배열 요청 바디에 넣을 수 있는 형태로 변경
       }
-    })
 
-    setRefreshTrigger((prev) => prev + 1)
-    handleCardCreateModalClose()
+      // 담당자가 있으면 담당자 추가
+      if (assignee != -1) {
+        bodyData.assigneeUserId = assignee
+      }
+
+      // 이미지가 있으면 이미지 먼저 생성 요청
+      if (imgFile) {
+        // 이미지가 있다면 columnService.postColumnsImage 메서드로 이미지 생성 요청부터.
+        const postImage = await columnsService.postColumnsImage(
+          columnId,
+          imgFile
+        )
+        bodyData.imageUrl = postImage.imageUrl
+      }
+
+      // 날짜 데이터 파싱
+      if (selectedDate) {
+        const date = selectedDate // Date 타입
+        const parseDate = `${date.getFullYear()}-${String(
+          date.getMonth() + 1
+        ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(
+          date.getHours()
+        ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+
+        bodyData.dueDate = parseDate
+      }
+
+      // 서버로 요청
+      await cardsService.postCards(bodyData)
+
+      setRefreshTrigger((prev) => prev + 1)
+      showToast('카드 생성에 성공했습니다.', 'success')
+      handleCardCreateModalClose()
+    } catch (error) {
+      const err = error as Error
+      showToast(err.message, 'error')
+      console.error('초대 버튼 에러:', error)
+    }
   }
 
   const handleImageClick = () => {
