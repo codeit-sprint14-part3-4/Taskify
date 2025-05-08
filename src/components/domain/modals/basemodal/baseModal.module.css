@@ -79,3 +79,9 @@
     transform: scale(1) translateY(0);
   }
 }
+
+@media (max-width: 767px) {
+  .modal {
+    width: 28rem;
+  }
+}
