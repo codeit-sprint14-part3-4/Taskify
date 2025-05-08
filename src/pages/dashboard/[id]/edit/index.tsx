@@ -8,9 +8,12 @@ import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import { useState } from 'react'
 import DeleteActionModal from '@/components/domain/modals/basemodal/DeleteActionModal'
+import { useToast } from '@/context/ToastContext'
 import Layout from '@/components/layout/layout'
 
+
 export default function EditPage() {
+  const { showToast } = useToast()
   const router = useRouter()
   const dashboardId = Number(router.query.id)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -26,13 +29,11 @@ export default function EditPage() {
   const handleDashboardDelete = async () => {
     try {
       await dashboardsService.deleteDashboards(dashboardId)
-      // alert('삭제가 완료되었습니다.') toast 이용하면 좋을 것 같음
-      alert('삭제가 완료되었습니다.')
+      showToast('삭제가 완료되었습니다.', 'success')
       router.push('/mydashboard')
     } catch (error) {
-      console.error('대시보드 삭제 중 오류 발생', error)
-      alert('요청에 실패했습니다.')
-      // setFalseToast(true)
+      const err = error as Error
+      showToast(err.message, 'error')
     }
   }
   return (
@@ -83,22 +84,6 @@ export default function EditPage() {
               cancelLabel="취소"
             />
           )}
-
-          {/* {showToast && (
-          <Toast
-            message="삭제되었습니다."
-            onClose={() => setShowToast(false)}
-            type="delete"
-          />
-        )} */}
-
-          {/* {falseToast && (
-          <Toast
-            message="요청에 실패했습니다."
-            onClose={() => setFalseToast(false)}
-            type="info"
-          />
-        )} */}
         </div>
       </div>
     </>

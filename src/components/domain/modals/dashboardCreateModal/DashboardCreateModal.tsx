@@ -7,12 +7,14 @@ import { CreateDashboardBody } from '@/types/api/dashboards'
 import { dashboardsService } from '@/api/services/dashboardsServices'
 import ColorPin from '@/components/domain/colorpin/ColorPin'
 import { useColorPicker } from '@/hooks/useColorPicker'
+import { useToast } from '@/context/ToastContext'
 
 interface DashboardModalProps {
   onClose: () => void
 }
 
 export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
+  const { showToast } = useToast()
   const [text, setText] = useState('')
   const router = useRouter()
 
@@ -30,7 +32,7 @@ export default function DashboardCreateModal({ onClose }: DashboardModalProps) {
       router.push(`/dashboard/${newDashBoard.id}`)
     } catch (error) {
       const err = error as Error
-      alert(err.message || '대시보드 생성에 실패했습니다. 다시 시도해주세요.')
+      showToast(err.message, 'error')
       console.error('대시보드 생성 중 오류 발생:', error)
     }
   }

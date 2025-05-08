@@ -9,8 +9,10 @@ import { authService } from '../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
 import Modal from '@/components/domain/modals/basemodal/ConfirmActionModal'
 import { useFormSignup } from '@/hooks/useFormSignup'
+import { useToast } from '@/context/ToastContext'
 
 export default function Login() {
+  const { showToast } = useToast()
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -32,7 +34,7 @@ export default function Login() {
   // 로그인 요청 함수
   const handleLogin = async () => {
     if (!email || !password || emailError || passwordError) {
-      alert('입력된 정보에 오류가 있습니다.')
+      showToast('입력된 정보에 오류가 있습니다.', 'error')
       return
     }
     setIsLoading(true)

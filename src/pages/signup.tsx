@@ -8,8 +8,10 @@ import { usersService } from '../api/services/usersServices'
 import Input from '@/components/common/commoninput/CommonInput'
 import CommonButton from '@/components/common/commonbutton/CommonButton'
 import Modal from '@/components/domain/modals/basemodal/ConfirmActionModal'
+import { useToast } from '@/context/ToastContext'
 
 export default function Signup() {
+  const { showToast } = useToast()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -41,7 +43,7 @@ export default function Signup() {
   // 회원가입 요청 함수
   const handleSignup = async () => {
     if (!isTermsAccepted) {
-      alert('이용약관에 동의해주세요.')
+      showToast('이용약관에 동의해주세요.', 'error')
       return
     }
 
