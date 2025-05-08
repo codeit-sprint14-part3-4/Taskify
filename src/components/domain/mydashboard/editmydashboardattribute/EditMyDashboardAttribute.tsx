@@ -7,8 +7,10 @@ import { dashboardsService } from '@/api/services/dashboardsServices'
 import { useColorPicker } from '@/hooks/useColorPicker'
 import { useRouter } from 'next/router'
 import SkeletonAttribute from '@/components/skeleton/SkeletonAttribute'
+import { useToast } from '@/context/ToastContext'
 
 export default function EditMyDashboardAttribute() {
+  const { showToast } = useToast()
   const router = useRouter()
   const id = Number(router.query.id)
   const [editText, setEditText] = useState('')
@@ -49,13 +51,11 @@ export default function EditMyDashboardAttribute() {
         color: String(selectedColor?.color),
       }
       await dashboardsService.putDashboards(id, body)
-      // toast 이용 setShowToast(true)
-      alert('수정이 완료되었습니다.')
-      window.location.reload()
+      setNewTitle(editText)
+      showToast('성공적으로 완료되었습니다!', 'success')
     } catch (error) {
+      showToast('에러가 발생했습니다.', 'error')
       console.error('대시보드 수정 중 오류 발생', error)
-      alert('요청에 실패했습니다.')
-      // setFalseToast(true)
     }
   }
 
@@ -101,22 +101,6 @@ export default function EditMyDashboardAttribute() {
       >
         변경
       </CommonButton>
-
-      {/* {showToast && (
-        <Toast
-          message="변경되었습니다."
-          onClose={() => setShowToast(false)}
-          type="success"
-        />
-      )} */}
-
-      {/* {falseToast && (
-          <Toast
-            message="요청에 실패했습니다."
-            onClose={() => setFalseToast(false)}
-            type="info"
-          />
-        )} */}
     </div>
   )
 }

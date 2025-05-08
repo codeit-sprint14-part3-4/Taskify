@@ -9,8 +9,10 @@ import FormModal from '../../modals/basemodal/FormModal'
 import { useRouter } from 'next/router'
 import Pagination from '@/components/common/commonbutton/Pagination'
 import SkeletonInviteLog from '@/components/skeleton/SkeletonInviteLog'
+import { useToast } from '@/context/ToastContext'
 
 export default function EditMyDashboardInviteLog() {
+  const { showToast } = useToast()
   const router = useRouter()
   const id = Number(router.query.id)
   const [invitationList, setInvitationList] = useState<Invitation[]>([])
@@ -53,25 +55,23 @@ export default function EditMyDashboardInviteLog() {
       setInvitationList((prev) => [...prev, res])
       setError('')
       setInputValue('')
-      //toast 이용 alert('초대 신청이 완료됐어요.')
-      alert('초대 신청이 완료됐어요.')
+      showToast('성공적으로 완료되었습니다!', 'success')
       setIsModalOpen(false)
     } catch (error) {
+      showToast('에러가 발생했습니다.', 'error')
       console.error('초대 버튼 에러:', error)
-      alert('요청에 실패했습니다.')
     }
   }
 
   const handleInviteCancel = async (invitationId: number) => {
     try {
       await dashboardsService.deleteDashboardsInvitations(id, invitationId)
-      // toast 이용 alert('취소 완료')
-      alert('취소 완료')
+      showToast('성공적으로 완료되었습니다!', 'success')
       setInvitationList((prev) =>
         prev.filter((email) => email.id !== invitationId)
       )
     } catch (error) {
-      alert('요청에 실패했습니다.')
+      showToast('에러가 발생했습니다.', 'error')
       console.error('초대 취소 에러:', error)
     }
   }
@@ -171,30 +171,6 @@ export default function EditMyDashboardInviteLog() {
           </CommonButton>
         </div>
       ))}
-
-      {/* {cancelToast && (
-          <Toast
-            message="삭제되었습니다."
-            onClose={() => setCancelToast(false)}
-            type="delete"
-          />
-        )} */}
-
-      {/* {inviteToast && (
-          <Toast
-            message="초대가 완료되었습니다."
-            onClose={() => setInviteToast(false)}
-            type="success"
-          />
-        )}
-
-        {falseToast && (
-          <Toast
-            message="요청에 실패했습니다."
-            onClose={() => setFalseToast(false)}
-            type="info"
-          />
-        )} */}
     </div>
   )
 }
