@@ -60,9 +60,21 @@ export default function TaskCardEditModal({
 
   const [inputValue, setInputValue] = useState('')
   const [columns, setColumns] = useState<ColumnType[]>([])
-  const [tags, setTags] = useState<{ label: string; color: TagColor }[]>(
-    cardInfo.tags.map((tag) => ({ label: tag, color: getRandomTagColor() }))
-  )
+  const [tags, setTags] = useState<{ label: string; color: TagColor }[]>(() => {
+    return cardInfo.tags.map((tagLabel, idx) => {
+      const key = `tagColor_${cardInfo.id}_${idx}`
+      const savedColor = localStorage.getItem(key)
+      let color: TagColor
+      if (savedColor && TAG_COLORS.includes(savedColor as TagColor)) {
+        color = savedColor as TagColor
+      } else {
+        const randomColor = TAG_COLORS[idx % TAG_COLORS.length]
+        localStorage.setItem(key, randomColor)
+        color = randomColor
+      }
+      return { label: tagLabel, color }
+    })
+  })
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
   ])
@@ -109,9 +121,14 @@ export default function TaskCardEditModal({
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
+      e.preventDefault()
       setIsDisable(false)
       const randomIndex = Math.floor(Math.random() * availableColors.length)
       const selectedColor = availableColors[randomIndex]
+      const newTagIndex = tags.length
+      const key = `tagColor_${cardInfo.id}_${newTagIndex}`
+      localStorage.setItem(key, selectedColor)
+
       setTags([...tags, { label: inputValue.trim(), color: selectedColor }])
       const newColors = availableColors.filter((c) => c !== selectedColor)
       setAvailableColors(newColors.length ? newColors : [...TAG_COLORS])
@@ -317,6 +334,7 @@ export default function TaskCardEditModal({
                   <Tag
                     key={idx}
                     label={tag.label}
+                    color={tag.color}
                     isDeletable
                     onDelete={() => handleRemoveTag(idx)}
                   />

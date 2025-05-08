@@ -67,9 +67,7 @@ export default function DashboardList() {
         <ButtonDashboard
           onClick={handleCreateDashboardModal}
           gap="gap-2"
-
           className="text-lg-semibold lg:py-[2.1rem] lg:px-[9.5rem] md:py-[2rem] md:px-[5.3rem] px-[7.5rem] py-[1.5rem] "
-
           suffix={
             <Image
               src="/assets/icon/add-box.svg"
@@ -117,11 +115,6 @@ export default function DashboardList() {
       </div>
 
       <div className={`${styles.page_wrapper} text-md-regular`}>
-        <div className={styles.botton_gap}>
-          <span>
-            {page} / {totalPages}
-          </span>
-        </div>
         <button
           onClick={handlePrev}
           disabled={page === 1}
@@ -137,6 +130,11 @@ export default function DashboardList() {
             />
           </div>
         </button>
+
+        <span className={styles.page_number}>
+          {page} / {totalPages}
+        </span>
+
         <button
           onClick={handleNext}
           disabled={page === totalPages}

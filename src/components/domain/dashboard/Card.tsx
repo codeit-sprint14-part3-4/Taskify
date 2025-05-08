@@ -9,6 +9,20 @@ import TaskCardEditModal from '../modals/taskcardeditmodal/TaskCardEditModal'
 import { CardType } from '@/types/api/cards'
 import styles from './card.module.css'
 import { ColumnType } from '@/types/api/columns'
+import type { TagColor } from '@/types/common/tag'
+
+const TAG_COLORS: TagColor[] = [
+  'tag-orange',
+  'tag-pink',
+  'tag-blue',
+  'tag-green',
+  'tag-purple',
+  'tag-yellow',
+  'tag-red',
+  'tag-teal',
+  'tag-brown',
+  'tag-gray',
+]
 
 // 내부에서만 사용
 export interface CardProps {
@@ -44,6 +58,21 @@ export default function Card({
     setIsCardDetailModal(false)
   }
 
+  // ✅ 태그 색상 고정: localStorage에 저장 & 가져오기
+  const tagsWithColors = cardInfo.tags.map((tagLabel, idx) => {
+    const key = `tagColor_${cardInfo.id}_${idx}`
+    const savedColor = localStorage.getItem(key)
+    let color: TagColor
+    if (savedColor && TAG_COLORS.includes(savedColor as TagColor)) {
+      color = savedColor as TagColor
+    } else {
+      const randomColor = TAG_COLORS[idx % TAG_COLORS.length]
+      localStorage.setItem(key, randomColor)
+      color = randomColor
+    }
+    return { label: tagLabel, color }
+  })
+
   return (
     <>
       <div className={styles.card} onClick={() => handleCardDetailModal(true)}>
@@ -73,8 +102,8 @@ export default function Card({
             </h4>
 
             <div className={styles.tagList}>
-              {cardInfo.tags.map((tag, index) => (
-                <Tag key={index} label={tag} />
+              {tagsWithColors.map((tag, index) => (
+                <Tag key={index} label={tag.label} color={tag.color} />
               ))}
             </div>
 

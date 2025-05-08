@@ -146,6 +146,8 @@ export default function TaskCardCreateModal({
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagsInput.trim() !== '') {
+      e.preventDefault() // 이벤트 중복 문제 해결
+
       const randomIndex = Math.floor(Math.random() * availableColors.length)
       const selectedColor = availableColors[randomIndex]
 
