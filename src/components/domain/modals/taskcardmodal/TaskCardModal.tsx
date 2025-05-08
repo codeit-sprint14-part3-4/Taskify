@@ -204,18 +204,18 @@ export default function TaskCardModal({
               <div className={styles.assigneecontent}>
                 {card.assignee ? (
                   card.assignee.profileImageUrl ? (
-                    <>
+                    <div className={styles.image_wrapper}>
                       <Image
                         src={card.assignee.profileImageUrl}
                         alt="프로필 이미지"
                         width={24}
                         height={24}
-                        className="md:w-[3.4rem] md:h-[3.4rem] w-[2.6rem] h-[2.6rem] rounded-full object-cover"
+                        className={styles.profile_image}
                       />
                       <span className="text-[#333236]">
                         {card.assignee.nickname}
                       </span>
-                    </>
+                    </div>
                   ) : (
                     <>
                       <Badge nickname={card.assignee.nickname} />
@@ -298,10 +298,10 @@ export default function TaskCardModal({
             >
               {comments.map((comment) => (
                 <div key={comment.id} className={styles.commentRow}>
-                  <div className="w-[3.4rem] h-[3.4rem]">
+                  <div className={styles.image_wrapper}>
                     {comment.author.profileImageUrl ? (
                       <Image
-                        className="w-[3.4rem] h-[3.4rem] object-cover"
+                        className={styles.profile_image}
                         src={comment.author.profileImageUrl}
                         width={50}
                         height={50}

@@ -34,23 +34,13 @@ export default function Column({
 
   const observerRef = useRef<HTMLDivElement | null>(null)
 
-  // 카드 생성일 기준으로 최신순 정렬하는 함수
-  const sortCardsByCreatedAt = (cards: CardType[]) => {
-    return cards.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-  }
-
   const getCards = useCallback(async () => {
     setIsLoading(true)
-    setCursorId(undefined)
     setHasMore(true)
 
     try {
       const res = await cardsService.getCards(5, columnInfo.id, undefined)
-      const sortedCards = sortCardsByCreatedAt(res.cards) // 복사된 배열 기준 정렬
-      setCards(sortedCards) // reverse 제거!
+      setCards(res.cards) // 정렬 없이 그대로 사용
 
       if (!res.cursorId || res.cards.length === 0) {
         setHasMore(false)
@@ -63,7 +53,6 @@ export default function Column({
       setIsLoading(false)
     }
   }, [columnInfo.id])
-
   const loadMoreCards = async () => {
     if (!hasMore || isLoading) return
     setIsLoading(true)
@@ -71,15 +60,10 @@ export default function Column({
     try {
       const res = await cardsService.getCards(5, columnInfo.id, cursorId)
 
-      const newCards = sortCardsByCreatedAt(res.cards)
+      // 기존 카드에 새로운 카드 추가
+      const mergedCards = [...cards, ...res.cards] // 기존 카드 순서 유지
 
-      // 중복 제거
-      const mergedCards = [...cards, ...newCards]
-      const uniqueCards = Array.from(
-        new Map(mergedCards.map((card) => [card.id, card])).values()
-      )
-
-      setCards(uniqueCards)
+      setCards(mergedCards)
 
       if (!res.cursorId || res.cards.length === 0) {
         setHasMore(false)
@@ -95,17 +79,10 @@ export default function Column({
 
   // 초기 로딩
   useEffect(() => {
-    const fetchCards = async () => {
-      const res = await cardsService.getCards(5, columnInfo.id, undefined)
 
-      const sortedCards = sortCardsByCreatedAt(res.cards)
+    getCards()
 
-      setCards(sortedCards)
-    }
-
-    fetchCards()
   }, [refreshTrigger, getCards])
-
   // 무한 스크롤 감지
   useEffect(() => {
     const handleScroll = () => {
@@ -171,16 +148,17 @@ export default function Column({
       </div>
       {cards && (
         <>
-          <CardTable
-            cards={cards}
-            dashboardId={dashboardId}
-            columnInfo={columnInfo}
-            setRefreshTrigger={setRefreshTrigger}
-            onLoadMore={loadMoreCards}
-            isLoading={isLoading}
-            hasMore={hasMore}
-          />
-
+          <div className={styles.card_scroll}>
+            <CardTable
+              cards={cards}
+              dashboardId={dashboardId}
+              columnInfo={columnInfo}
+              setRefreshTrigger={setRefreshTrigger}
+              onLoadMore={loadMoreCards}
+              isLoading={isLoading}
+              hasMore={hasMore}
+            />
+          </div>
           <div
             ref={observerRef}
             style={{ height: '10px', backgroundColor: 'transparent' }}
