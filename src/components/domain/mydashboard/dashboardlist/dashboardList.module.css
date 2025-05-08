@@ -57,9 +57,8 @@
   .main_container {
     align-items: center;
     gap: 1rem;
-    flex-wrap: wrap;
     height: 23rem;
-    flex-direction: column;
+    align-content: flex-start;
   }
 }
 
