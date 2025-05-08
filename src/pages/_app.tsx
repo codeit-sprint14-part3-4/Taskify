@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <Head>
         <title>Taskify</title>
       </Head>
-      {getLayout(<Component {...pageProps} />)}
+      <ToastProvider>{getLayout(<Component {...pageProps} />)}</ToastProvider>
     </>
   )
 }
