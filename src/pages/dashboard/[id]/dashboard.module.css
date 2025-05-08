@@ -58,6 +58,7 @@
     align-items: center;
     overflow-y: auto;
     max-height: calc(100vh - 70px);
+    width: auto;
   }
   .inviteSection {
     padding: 2.4rem 4rem 6rem 4rem;
