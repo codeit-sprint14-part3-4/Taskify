@@ -28,7 +28,7 @@
   align-items: center;
   justify-content: space-between;
   transition: padding 0.3s ease, width 0.3s ease, font-size 0.3s ease;
-  gap: 10px;
+  gap: 3.6rem;
 }
 .logotext {
   transition: all 0.3s ease;
@@ -69,9 +69,7 @@
   }
   .login {
     font-size: 1.4rem;
-    width: 11rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+
+    gap: 2.4rem;
   }
 }
