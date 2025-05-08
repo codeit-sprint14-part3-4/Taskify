@@ -12,6 +12,10 @@
   height: 16rem;
 }
 
+.button_dashboard_wrapper {
+  margin-left: 0.1rem;
+}
+
 .page_button_left {
   width: 4rem;
   height: 4rem;
