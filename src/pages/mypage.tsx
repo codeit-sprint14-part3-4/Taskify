@@ -217,7 +217,7 @@ export default function MyPage() {
     <SkeletonMyPage />
   ) : (
     <>
-      <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh] max-[767px]:pr-[2rem] max-[767px]:bg-[#ffffff]">
+      <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh] max-[767px]:pr-[2rem] max-[767px]:bg-[var(--gray-FAFAFA)]">
         <div className="flex flex-nowrap px-0 items-start justify-start w-full">
           <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem] min-h-[calc(100vh-7rem)] max-[767px]:pb-[3rem]">
             <div className="mt-[1rem] mb-[2rem]">
@@ -239,20 +239,21 @@ export default function MyPage() {
               </button>
             </div>
 
-            <div className="flex flex-col gap-[2.4rem] max-[767px]:gap-[1rem] max-[767px]:flex-center max-[767px]:flex items-start flex items-center justify-center">
+            <div className="flex flex-col gap-[2.4rem] max-[767px]:gap-[1rem] max-[767px]:flex-center max-[767px]:flex items-start flex items-center justify-center pt-[1.6rem] pl-[2rem] pb-[1.6rem] pr-[2rem]">
               {/* 프로필 카드 */}
               <section
                 className="
                 bg-[var(--white-FFFFFF)] 
                 rounded-[1.6rem] 
-                p-[3.2rem]
+        
                 w-[66.9rem] 
                 h-[36.6rem] 
+               
                 max-[1023px]:w-[54.8rem] 
                 max-[1023px]:h-[36.6rem] 
                 max-[767px]:w-full 
                 max-[767px]:h-[49.6rem]
-                 max-[767px]:p-[0rem]
+                max-[767px]: pt-[1.6rem] pl-[2rem] pb-[1.6rem] pr-[2rem]
               "
               >
                 <h2 className="text-2xl-bold mb-[1.6rem]">프로필</h2>
@@ -344,7 +345,7 @@ export default function MyPage() {
                   max-[1023px]:h-[46.6rem] 
                   max-[767px]:w-full 
                   max-[767px]:h-[42rem]
-                  max-[767px]:p-[0rem]
+                  max-[767px]:pt-[1.6rem] pl-[2rem] pb-[1.6rem] pr-[2rem]
                 "
               >
                 <h2 className="text-2xl-bold mb-[0.8rem] ">비밀번호 변경</h2>
