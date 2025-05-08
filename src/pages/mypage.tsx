@@ -3,13 +3,13 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 import CommonButton from '@/components/common/commonbutton/CommonButton'
-import Layout from '@/components/layout/layout'
 import Modal from '@/components/domain/modals/basemodal/ConfirmActionModal'
 import SkeletonMyPage from '@/components/skeleton/SkeletonMyPage'
 
 import { useAuthStore } from '@/stores/auth'
 import { usersService } from '@/api/services/usersServices'
 import { authService } from '@/api/services/authServices'
+import Layout from '@/components/layout/layout'
 
 export default function MyPage() {
   const router = useRouter()
@@ -219,7 +219,7 @@ export default function MyPage() {
     <>
       <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh] max-[767px]:mr-[2rem]">
         <div className="flex flex-nowrap px-0 items-start justify-start w-full">
-          <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem] max-[767px]: h-[96.6rem]">
+          <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem] min-h-[calc(100vh-7rem)]">
             <div className="mt-[1rem] mb-[2rem]">
               <button
                 onClick={() => router.back()}

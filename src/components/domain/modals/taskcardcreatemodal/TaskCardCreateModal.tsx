@@ -242,6 +242,7 @@ export default function TaskCardCreateModal({
                 placeholderText="날짜를 입력해 주세요"
                 className={styles.datePickerInput}
                 locale={ko}
+                popperPlacement="bottom-start"
               />
             </div>
           </div>

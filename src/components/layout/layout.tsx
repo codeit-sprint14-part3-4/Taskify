@@ -165,6 +165,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
           errorMessage={errorMessage}
           mode="default"
           showCloseButton
+          isSubmitDisabled={membersEmail.trim() === ''}
         />
       )}
     </div>

@@ -275,6 +275,12 @@ export default function TaskCardModal({
                   onChange={(e) => setInputComment(e.target.value)}
                   placeholder="댓글을 작성하기"
                   className={`${styles.textareainput} text-md-regular resize-none`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      addComment()
+                    }
+                  }}
                 />
                 <div className={styles.commentinputbutton}>
                   <button

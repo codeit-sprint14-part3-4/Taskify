@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import Layout from '@/components/layout/layout'
 import DashboardList from '@/components/domain/mydashboard/dashboardlist/DashboardList'
 import MyInvitedDashboard from '@/components/domain/mydashboard/dashboardinvitedlist/MyInvitedDashboard'
 import { invitationsService } from '@/api/services/invitationsServices'
 import { Invitation } from '@/types/api/invitations'
+import Layout from '@/components/layout/layout'
 
 export default function MyDashboardPage() {
   const [invitedList, setInvitedList] = useState<Invitation[]>([])
