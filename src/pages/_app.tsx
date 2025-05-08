@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 
 import type { AppProps } from 'next/app'
 import type { NextPage } from 'next'
+import Head from 'next/head'
 
 import { ToastProvider } from '@/context/ToastContext'
 
@@ -17,8 +18,10 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
     <>
-      {' '}
-      <ToastProvider>{getLayout(<Component {...pageProps} />)}</ToastProvider>
+      <Head>
+        <title>Taskify</title>
+      </Head>
+      {getLayout(<Component {...pageProps} />)}
     </>
   )
 }
