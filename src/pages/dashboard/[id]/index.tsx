@@ -17,8 +17,10 @@ import {
   CreateColumnBody,
   UpdateColumnBody,
 } from '@/types/api/columns'
+import { useToast } from '@/context/ToastContext'
 
 export default function DashboardPage() {
+  const { showToast } = useToast()
   const [columns, setColumns] = useState<ColumnType[]>([])
   const [triggeredColumn, setTriggeredColumn] = useState<ColumnType | null>(
     null
@@ -58,8 +60,7 @@ export default function DashboardPage() {
 
   const handleColumnCreateModal = (state: boolean) => {
     if (state && columns.length >= 10) {
-      // toast 이용 alert('컬럼은 최대 10개까지 추가가 가능합니다.')
-      alert('컬럼은 최대 10개까지 추가가 가능합니다.')
+      showToast('컬럼은 최대 10개까지 추가가 가능합니다.', 'error')
       return
     }
     setIsColumnCreateModal(state)
@@ -201,7 +202,7 @@ export default function DashboardPage() {
           <div className={styles.addColumnWrapper}>
             <ButtonDashboard
               paddingHeight="pt-[2.4rem] pb-[2rem]"
-              paddingWidth="px-[8.6rem]"
+              paddingWidth="px-[8.5rem]"
               gap="gap-[1.2rem]"
               className={styles.addColumnButton}
               color="bg-white text-[#333236] text-2lg-bold"

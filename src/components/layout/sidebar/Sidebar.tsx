@@ -3,8 +3,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import styles from './sidebar.module.css'
 import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
-import { Dashboard } from '@/types/api/dashboards'
-import { dashboardsService } from '@/api/services/dashboardsServices'
+
+import { useDashboardListStore } from '@/stores/dashboardList'
 
 export default function Sidebar({
   currentDashboardId,
@@ -12,36 +12,27 @@ export default function Sidebar({
   currentDashboardId: number
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [dashboardList, setDashboardList] = useState<Dashboard[]>([])
-  const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
+
+  const { sideBarDashboards, totalCount, fetchSidebarDashboards } =
+    useDashboardListStore()
 
   const handleOpenModal = () => setIsModalOpen(true)
   const handleCloseModal = () => setIsModalOpen(false)
 
   const handlePageMove = (direction: string) => {
-    if (page !== 1 && direction === 'left') {
-      setPage((prev) => prev - 1)
+    const lastPage = Math.ceil(totalCount / 12) // 마지막 페이지 계산
+    if (direction === 'left' && page > 1) {
+      setPage(page - 1) // 페이지 왼쪽으로 이동
     }
-    if (Math.ceil(totalCount / 10) !== page && direction === 'right') {
-      setPage((prev) => prev + 1)
-    }
-  }
-
-  const getDashboardList = async () => {
-    try {
-      const res = await dashboardsService.getDashboards('pagination', page)
-      setDashboardList(res.dashboards)
-      setTotalCount(res.totalCount)
-    } catch (err) {
-      console.error(err)
-    } finally {
+    if (direction === 'right' && page < lastPage) {
+      setPage(page + 1) // 페이지 오른쪽으로 이동
     }
   }
 
   useEffect(() => {
-    getDashboardList()
-  }, [page, currentDashboardId])
+    fetchSidebarDashboards(page) // page 인자를 넘겨서 페이지별로 12개씩 가져오기
+  }, [page, fetchSidebarDashboards])
 
   return (
     <div className={styles.sidebar}>
@@ -75,8 +66,8 @@ export default function Sidebar({
           </button>
         </li>
         <ul className={styles.subMenu}>
-          {dashboardList &&
-            dashboardList.map((dashboard) => (
+          {sideBarDashboards &&
+            sideBarDashboards.map((dashboard) => (
               <li className={styles.dashboard_list_dot} key={dashboard.id}>
                 <Link
                   className={`${styles.dashboard_list} ${
@@ -126,12 +117,12 @@ export default function Sidebar({
           />
         </button>
         <div className={styles.page_number}>
-          {page} / {Math.max(1, Math.ceil(totalCount / 10))}
+          {page} / {Math.max(1, Math.ceil(totalCount / 12))}
         </div>
         <button
-          disabled={page === Math.ceil(totalCount / 10) || totalCount === 0}
+          disabled={page === Math.ceil(totalCount / 12) || totalCount === 0}
           className={`${styles.page_button} ${
-            page === Math.ceil(totalCount / 10) || totalCount === 0
+            page === Math.ceil(totalCount / 12) || totalCount === 0
               ? styles.disabled
               : ''
           }`}

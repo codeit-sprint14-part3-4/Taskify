@@ -5,8 +5,8 @@
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--gray-D9D9D9);
-  height: auto; /* 또는 min-height 설정 */
-  overflow: visible; /* 중요 */
+  height: auto;
+  overflow: visible;
   flex: 0 0 auto;
 }
 
@@ -14,28 +14,50 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 1.6rem;
-  padding-right: 1.6rem;
-  padding-top: 2.2rem;
+
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-top: 2.2rem;
 }
 
 .titleWrapper {
   display: flex;
   align-items: center;
   gap: 1.2rem;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
 }
 
 .dotTitle {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
+.dotTitle span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.settingsButton {
+  flex-shrink: 0;
+}
 .dot {
   width: 0.8rem;
   height: 0.8rem;
   background-color: #5534da;
   border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.titleText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 150px;
 }
 
 .cardCount {
@@ -94,9 +116,10 @@
   max-height: calc(100vh - 300px);
   padding-right: 0.5rem;
 }
+
 @media (max-width: 1023px) {
   .column {
-    width: 58.4rem;
+    width: 100%;
     border-right: none;
   }
   .cardImage {

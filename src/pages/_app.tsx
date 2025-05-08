@@ -4,6 +4,8 @@ import type { AppProps } from 'next/app'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
+import { ToastProvider } from '@/context/ToastContext'
+
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode
 }

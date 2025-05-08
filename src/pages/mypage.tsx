@@ -217,14 +217,14 @@ export default function MyPage() {
     <SkeletonMyPage />
   ) : (
     <>
-      <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh] max-[767px]:mr-[2rem]">
+      <div className="flex flex-col bg-[var(--gray-FAFAFA)] min-h-[80vh] max-[767px]:pr-[2rem] max-[767px]:bg-[var(--gray-FAFAFA)]">
         <div className="flex flex-nowrap px-0 items-start justify-start w-full">
-          <div className="flex flex-col flex-1 px-[3rem] max-w-[80rem] min-h-[calc(100vh-7rem)]">
-            <div className="mt-[1rem] mb-[2rem]">
+          <div className="flex flex-col flex-1 px-[3rem] max-[767px]:px-[0rem] max-w-[80rem] min-h-[calc(100vh-7rem)] ">
+            <div className="mt-[1rem] mb-[2rem] max-[767px]:mb-[0rem]">
               <button
                 onClick={() => router.back()}
                 type="button"
-                className="flex items-center gap-[0.6rem] text-[var(--black-333236)] font-[var(--font-family)] cursor-pointer"
+                className="max-[767px]:pl-[1.2rem] flex items-center gap-[0.6rem] text-[var(--black-333236)] font-[var(--font-family)] cursor-pointer"
               >
                 <Image
                   src="/assets/image/arrow-left.svg"
@@ -239,19 +239,21 @@ export default function MyPage() {
               </button>
             </div>
 
-            <div className="flex flex-col gap-[2.4rem] max-[767px]:gap-[1rem]">
+            <div className="flex flex-col gap-[2.4rem] max-[767px]:gap-[1rem] max-[767px]:flex-center max-[767px]:flex items-start flex items-center justify-center pt-[1.6rem] pl-[2rem] pb-[1.6rem] pr-[2rem]">
               {/* 프로필 카드 */}
               <section
                 className="
                 bg-[var(--white-FFFFFF)] 
                 rounded-[1.6rem] 
-                p-[3.2rem]
+        
                 w-[66.9rem] 
                 h-[36.6rem] 
+               
                 max-[1023px]:w-[54.8rem] 
                 max-[1023px]:h-[36.6rem] 
-                max-[767px]:w-[28.4rem] 
+                max-[767px]:w-full 
                 max-[767px]:h-[49.6rem]
+                max-[767px]: pt-[1.6rem] pl-[2rem] pb-[1.6rem] pr-[2rem]
               "
               >
                 <h2 className="text-2xl-bold mb-[1.6rem]">프로필</h2>
@@ -341,8 +343,9 @@ export default function MyPage() {
                   h-[46.6rem] 
                   max-[1023px]:w-[54.8rem] 
                   max-[1023px]:h-[46.6rem] 
-                  max-[767px]:w-[28.4rem] 
+                  max-[767px]:w-full 
                   max-[767px]:h-[42rem]
+                  max-[767px]:pt-[1.6rem] pl-[2rem] pb-[1.6rem] pr-[2rem]
                 "
               >
                 <h2 className="text-2xl-bold mb-[0.8rem] ">비밀번호 변경</h2>
@@ -350,7 +353,7 @@ export default function MyPage() {
                   <div className="flex flex-col mb-[0.6rem]">
                     <label
                       htmlFor="currentPassword"
-                      className="text-lg-regular text-[var(--black-4B4B4B)]"
+                      className="text-lg-regular text-[var(--black-4B4B4B)] pb-[0.8rem]"
                     >
                       현재 비밀번호
                     </label>
@@ -378,7 +381,7 @@ export default function MyPage() {
                   <div className="flex flex-col mb-[0.6rem]">
                     <label
                       htmlFor="newPassword"
-                      className="text-lg-regular text-[var(--black-4B4B4B)]"
+                      className="text-lg-regular text-[var(--black-4B4B4B)] pb-[0.8rem]"
                     >
                       새 비밀번호
                     </label>
@@ -406,7 +409,7 @@ export default function MyPage() {
                   <div className="flex flex-col mb-[0.6rem]">
                     <label
                       htmlFor="confirmNewPassword"
-                      className="text-lg-regular text-[var(--black-4B4B4B)]"
+                      className="text-lg-regular text-[var(--black-4B4B4B)] pb-[0.8rem]"
                     >
                       새 비밀번호 확인
                     </label>

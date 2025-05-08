@@ -9,8 +9,10 @@ import { authService } from '../api/services/authServices'
 import { useAuthStore } from '@/stores/auth'
 import Modal from '@/components/domain/modals/basemodal/ConfirmActionModal'
 import { useFormSignup } from '@/hooks/useFormSignup'
+import { useToast } from '@/context/ToastContext'
 
 export default function Login() {
+  const { showToast } = useToast()
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -32,7 +34,7 @@ export default function Login() {
   // 로그인 요청 함수
   const handleLogin = async () => {
     if (!email || !password || emailError || passwordError) {
-      alert('입력된 정보에 오류가 있습니다.')
+      showToast('입력된 정보에 오류가 있습니다.', 'error')
       return
     }
     setIsLoading(true)
@@ -63,7 +65,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex items-center justify-center pt-[8.8rem] sm:pt-[22.3rem]">
+    <div className="flex items-center justify-center pt-[8.8rem] pb-[9rem] sm:pt-[22.3rem]">
       <div className="w-[90%] max-w-[34rem] sm:max-w-[50rem] h-auto sm:h-[65.3rem] flex items-center justify-center flex-col transition-all duration-300 ease-in-out">
         <Link href="/" legacyBehavior>
           <a>

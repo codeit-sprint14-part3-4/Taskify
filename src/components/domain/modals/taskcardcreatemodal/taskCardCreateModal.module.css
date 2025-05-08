@@ -157,10 +157,14 @@
   height: 5.4rem;
   width: 25.6rem;
 }
-
+@media (max-width: 1023px) {
+  .modalContent {
+  }
+}
 @media (max-width: 767px) {
   .modalContainer {
     max-width: 32.7rem;
+    height: 70rem;
   }
 
   .imageBox {

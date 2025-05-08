@@ -9,11 +9,13 @@ import type { TagColor } from '@/types/common/tag'
 import { SetStateAction, useRef, useState } from 'react'
 import UserDropdown from '@/components/dropdown/UserDropdown'
 import { cardsService } from '@/api/services/cardsServices'
-import { CreateCardBody } from '@/types/api/cards'
+import { CreateCardBody, CardType } from '@/types/api/cards'
 import { columnsService } from '@/api/services/columnsServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
 import styles from './taskCardCreateModal.module.css'
 import clsx from 'clsx'
+import { useToast } from '@/context/ToastContext'
+
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
   'tag-pink',
@@ -40,16 +42,15 @@ export default function TaskCardCreateModal({
   handleCardCreateModalClose,
   setRefreshTrigger,
 }: TaskCardCreateModalProps) {
+  const { showToast } = useToast()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [assignee, setAssignee] = useState(-1)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [tagsInput, setTagsInput] = useState('')
   const [tags, setTags] = useState<{ label: string; color: TagColor }[]>([])
-  const [availableColors, setAvailableColors] = useState<TagColor[]>([
-    ...TAG_COLORS,
-  ])
   const [isButtonDisable, setIsButtonDisable] = useState(true)
+
   const dashboardMembers = useDashboardMembers((state) => state.members)
   const users = dashboardMembers.map((user) => ({
     id: user.userId,
@@ -58,7 +59,6 @@ export default function TaskCardCreateModal({
     profileImageUrl: user.profileImageUrl,
   }))
 
-  // 변경된 부분: 처음엔 선택된 유저 없음
   const [selectedUser, setSelectedUser] = useState<
     (typeof users)[0] | undefined
   >(undefined)
@@ -69,63 +69,65 @@ export default function TaskCardCreateModal({
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
-    if (description.trim()) {
-      setIsButtonDisable(false)
-    } else {
-      setIsButtonDisable(true)
-    }
+    setIsButtonDisable(!(e.target.value.trim() && description.trim()))
   }
 
   const handleChangeDescription = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setDescription(e.target.value)
-    if (title.trim()) {
-      setIsButtonDisable(false)
-    } else {
-      setIsButtonDisable(true)
-    }
+    setIsButtonDisable(!(title.trim() && e.target.value.trim()))
   }
 
   const handleSubmitForm = async () => {
-    const bodyData: CreateCardBody = {
-      dashboardId: dashboardId,
-      columnId: columnId,
-      title: title,
-      description: description,
-      tags: tags.map((tag) => tag.label), // 태그 배열 요청 바디에 넣을 수 있는 형태로 변경
+
+    try {
+      const bodyData: CreateCardBody = {
+        dashboardId: dashboardId,
+        columnId: columnId,
+        title: title,
+        description: description,
+        tags: tags.map((tag) => tag.label), // 태그 배열 요청 바디에 넣을 수 있는 형태로 변경
+      }
+
+      // 담당자가 있으면 담당자 추가
+      if (assignee != -1) {
+        bodyData.assigneeUserId = assignee
+      }
+
+      // 이미지가 있으면 이미지 먼저 생성 요청
+      if (imgFile) {
+        // 이미지가 있다면 columnService.postColumnsImage 메서드로 이미지 생성 요청부터.
+        const postImage = await columnsService.postColumnsImage(
+          columnId,
+          imgFile
+        )
+        bodyData.imageUrl = postImage.imageUrl
+      }
+
+      // 날짜 데이터 파싱
+      if (selectedDate) {
+        const date = selectedDate // Date 타입
+        const parseDate = `${date.getFullYear()}-${String(
+          date.getMonth() + 1
+        ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(
+          date.getHours()
+        ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+
+        bodyData.dueDate = parseDate
+      }
+
+      // 서버로 요청
+      await cardsService.postCards(bodyData)
+
+      setRefreshTrigger((prev) => prev + 1)
+      showToast('카드 생성에 성공했습니다.', 'success')
+      handleCardCreateModalClose()
+    } catch (error) {
+      const err = error as Error
+      showToast(err.message, 'error')
+      console.error('초대 버튼 에러:', error)
     }
-
-    // 담당자가 있으면 담당자 추가
-    if (assignee != -1) {
-      bodyData.assigneeUserId = assignee
-    }
-
-    // 이미지가 있으면 이미지 먼저 생성 요청
-    if (imgFile) {
-      // 이미지가 있다면 columnService.postColumnsImage 메서드로 이미지 생성 요청부터.
-      const postImage = await columnsService.postColumnsImage(columnId, imgFile)
-      bodyData.imageUrl = postImage.imageUrl
-    }
-
-    // 날짜 데이터 파싱
-    if (selectedDate) {
-      const date = selectedDate // Date 타입
-      const parseDate = `${date.getFullYear()}-${String(
-        date.getMonth() + 1
-      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(
-        date.getHours()
-      ).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
-
-      bodyData.dueDate = parseDate
-    }
-
-    // 서버로 요청
-    await cardsService.postCards(bodyData)
-
-    setRefreshTrigger((prev) => prev + 1)
-
-    handleCardCreateModalClose()
   }
 
   const handleImageClick = () => {
@@ -146,21 +148,23 @@ export default function TaskCardCreateModal({
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagsInput.trim() !== '') {
-      const randomIndex = Math.floor(Math.random() * availableColors.length)
-      const selectedColor = availableColors[randomIndex]
+      e.preventDefault()
 
-      setTags([...tags, { label: tagsInput.trim(), color: selectedColor }])
+      const tagLabel = tagsInput.trim()
+      const randomColor =
+        TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)]
+      const key = `tagColor_${columnId}_${tagLabel}`
 
-      const newAvailableColors = availableColors.filter(
-        (color) => color !== selectedColor
-      )
-
-      if (newAvailableColors.length === 0) {
-        setAvailableColors([...TAG_COLORS])
+      const savedColor = sessionStorage.getItem(key)
+      let color: TagColor
+      if (savedColor && TAG_COLORS.includes(savedColor as TagColor)) {
+        color = savedColor as TagColor
       } else {
-        setAvailableColors(newAvailableColors)
+        color = randomColor
+        sessionStorage.setItem(key, color)
       }
 
+      setTags([...tags, { label: tagLabel, color }])
       setTagsInput('')
     }
   }
@@ -256,6 +260,7 @@ export default function TaskCardCreateModal({
                 <Tag
                   key={idx}
                   label={tag.label}
+                  color={tag.color}
                   isDeletable
                   onDelete={() => handleRemoveTag(idx)}
                 />

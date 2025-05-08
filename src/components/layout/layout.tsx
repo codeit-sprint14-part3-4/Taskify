@@ -9,6 +9,7 @@ import { dashboardsService } from '@/api/services/dashboardsServices'
 import FormModal from '@/components/domain/modals/basemodal/FormModal'
 import { membersService } from '@/api/services/membersServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
+import { useToast } from '@/context/ToastContext'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -33,6 +34,7 @@ const getRandomColor = () => {
 }
 
 export default function Layout({ children, pageType }: LayoutProps) {
+  const { showToast } = useToast()
   const router = useRouter()
   const { accessToken } = useAuthStore()
   const { setMembers } = useDashboardMembers()
@@ -71,6 +73,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
       })
       setInviteModalOpen(false)
       setMembersEmail('')
+      showToast('성공적으로 완료되었습니다!', 'success')
       setErrorMessage('')
     } catch (err) {
       const error = err as Error

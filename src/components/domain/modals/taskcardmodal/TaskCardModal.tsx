@@ -9,6 +9,7 @@ import { useAuthStore } from '@/stores/auth'
 import AnimatedModalContainer from '@/components/common/animatedmodalcontainer/AnimatedModalContainer'
 import Badge from '@/components/common/badge/Badge'
 import { ColumnType } from '@/types/api/columns'
+import type { TagColor } from '@/types/common/tag'
 
 export const formatDate = (isoDate: string): string => {
   const date = new Date(isoDate)
@@ -28,6 +29,19 @@ interface Props {
   onEdit: (card: CardType) => void
   onDelete: (cardId: number) => void
 }
+
+const TAG_COLORS: TagColor[] = [
+  'tag-orange',
+  'tag-pink',
+  'tag-blue',
+  'tag-green',
+  'tag-purple',
+  'tag-yellow',
+  'tag-red',
+  'tag-teal',
+  'tag-brown',
+  'tag-gray',
+]
 
 export default function TaskCardModal({
   card,
@@ -49,6 +63,21 @@ export default function TaskCardModal({
   const [editingComments, setEditingComments] = useState<{
     [key: number]: string | null
   }>({})
+
+  const tagsWithColors = card.tags.map((tagLabel) => {
+    const key = `tagColor_${card.id}_${tagLabel}`
+    const savedColor = sessionStorage.getItem(key)
+    let color: TagColor
+    if (savedColor && TAG_COLORS.includes(savedColor as TagColor)) {
+      color = savedColor as TagColor
+    } else {
+      const randomColor =
+        TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)]
+      sessionStorage.setItem(key, randomColor)
+      color = randomColor
+    }
+    return { label: tagLabel, color }
+  })
 
   const getComments = async (isLoadMore = false) => {
     try {
@@ -130,14 +159,13 @@ export default function TaskCardModal({
           loadMoreComments()
         }
       },
-
       { root: container, threshold: 0.1 }
     )
 
     observer.observe(target)
 
     return () => {
-      observer.disconnect() // 안전하게 해제
+      observer.disconnect()
     }
   }, [isCommentsLoaded, isLoadingMore, cursorId])
 
@@ -145,11 +173,9 @@ export default function TaskCardModal({
     const fetch = async () => {
       const delay = new Promise((res) => setTimeout(res, 300))
       const commentFetch = getComments()
-
       await Promise.all([delay, commentFetch])
       setIsCommentsLoaded(true)
     }
-
     fetch()
   }, [])
 
@@ -160,99 +186,107 @@ export default function TaskCardModal({
   return (
     <AnimatedModalContainer isLoading={isLoading}>
       <div className={styles.overlay}>
-        <div className={styles.modalContainer}>
-          <div className={styles.modalheder}>
-            <h1 className={`${styles.cardTitle}`}>{card.title}</h1>
-            <div className={styles.menubuttonbox}>
-              <button
-                onClick={() => setIsDropdownOpen((prev) => !prev)}
-                className={styles.buttonbox}
-              >
-                <div className={styles.kebabbutton}>
-                  <Image src="/assets/icon/kebab.svg" alt="메뉴" fill />
-                </div>
-              </button>
-              {isDropdownOpen && (
-                <div className={styles.dropdownBox}>
-                  <button
-                    className={styles.menuItem}
-                    onClick={() => onEdit(card)}
-                  >
-                    수정하기
-                  </button>
-                  <button
-                    className={styles.menuItem}
-                    onClick={() => {
-                      if (confirm('정말 삭제하시겠습니까?')) onDelete(card.id)
-                    }}
-                  >
-                    삭제하기
-                  </button>
-                </div>
-              )}
-              <button onClick={onClose} className={styles.buttonbox}>
-                <div className={styles.closebutton}>
-                  <Image src="/assets/icon/close.svg" alt="닫기" fill />
-                </div>
-              </button>
-            </div>
-          </div>
+        <div className={styles.modalContainer} ref={commentContainerRef}>
+          <div className={styles.modalContainer_child}>
+            <div className={styles.modalheder}>
+              <h1 className={`${styles.cardTitle}`}>{card.title}</h1>
+              <div className={styles.menubuttonbox}>
+                <button
+                  onClick={() => setIsDropdownOpen((prev) => !prev)}
+                  className={styles.buttonbox}
+                >
+                  <div className={styles.kebabbutton}>
+                    <Image src="/assets/icon/kebab.svg" alt="메뉴" fill />
+                  </div>
+                </button>
 
-          <section className={styles.assigneebox}>
-            <div className={styles.assigneeInfo}>
-              <div className={styles.assigneelabel}>담당자</div>
-              <div className={styles.assigneecontent}>
-                {card.assignee ? (
-                  card.assignee.profileImageUrl ? (
-                    <div className={styles.image_wrapper}>
-                      <Image
-                        src={card.assignee.profileImageUrl}
-                        alt="프로필 이미지"
-                        width={24}
-                        height={24}
-                        className={styles.profile_image}
-                      />
-                      <span className="text-[#333236]">
-                        {card.assignee.nickname}
-                      </span>
-                    </div>
-                  ) : (
-                    <>
-                      <Badge nickname={card.assignee.nickname} />
-                      <span className={styles.assigneespan}>
-                        {card.assignee.nickname}
-                      </span>
-                    </>
-                  )
-                ) : (
-                  '미지정'
+                {isDropdownOpen && (
+                  <div className={styles.dropdownBox}>
+                    <button
+                      className={styles.menuItem}
+                      onClick={() => {
+                        setIsDropdownOpen(false)
+                        onEdit(card)
+                      }}
+                    >
+                      수정하기
+                    </button>
+                    <button
+                      className={styles.menuItem}
+                      onClick={() => {
+                        if (confirm('정말 삭제하시겠습니까?')) onDelete(card.id)
+                      }}
+                    >
+                      삭제하기
+                    </button>
+                  </div>
                 )}
+
+                <button onClick={onClose} className={styles.buttonbox}>
+                  <div className={styles.closebutton}>
+                    <Image src="/assets/icon/close.svg" alt="닫기" fill />
+                  </div>
+                </button>
               </div>
+            </div>
+            <div className={styles.assigneebox_wrapper}>
+              <section className={styles.assigneebox}>
+                <div className={styles.assigneeInfo}>
+                  <div className={styles.assigneelabel}>담당자</div>
+                  <div className={styles.assigneecontent}>
+                    {card.assignee ? (
+                      card.assignee.profileImageUrl ? (
+                        <div className={styles.image_wrapper}>
+                          <Image
+                            src={card.assignee.profileImageUrl}
+                            alt="프로필 이미지"
+                            width={24}
+                            height={24}
+                            className={styles.profile_image}
+                          />
+                          <span className="text-[#333236]">
+                            {card.assignee.nickname}
+                          </span>
+                        </div>
+                      ) : (
+                        <>
+                          <Badge nickname={card.assignee.nickname} />
+                          <span className={styles.assigneespan}>
+                            {card.assignee.nickname}
+                          </span>
+                        </>
+                      )
+                    ) : (
+                      '미지정'
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <div className={styles.deadlinelabel}>마감일</div>
+                  <div className={styles.deadlinecontent}>
+                    {card.dueDate ? formatDate(card.dueDate) : ''}
+                  </div>
+                </div>
+              </section>
             </div>
             <div>
-              <div className={styles.deadlinelabel}>마감일</div>
-              <div className={styles.deadlinecontent}>
-                {card.dueDate ? formatDate(card.dueDate) : ''}
+              <div className={styles.statusTagRow}>
+                <div className={styles.statusborder}>
+                  <div className={styles.statuscircle}></div>
+                  <div>{columnInfo.title}</div>
+                </div>
+
+                <div className={styles.verticalDivider}></div>
+
+                <div className={styles.tagList}>
+                  {tagsWithColors.map((tag, index) => (
+                    <Tag key={index} label={tag.label} color={tag.color} />
+                  ))}
+                </div>
               </div>
+
+              <p className={styles.cardDescription}>{card.description}</p>
             </div>
-          </section>
-
-          <div>
-            <div className={styles.statusTagRow}>
-              <div className={styles.statusborder}>
-                <div className={styles.statuscircle}></div>
-                <div>{columnInfo.title}</div>
-              </div>
-              <div className={styles.verticalDivider}></div>
-              <div className={styles.tagList}>
-                {card.tags.map((tag, index) => (
-                  <Tag key={index} label={tag} />
-                ))}
-              </div>
-            </div>
-
-            <p className={styles.cardDescription}>{card.description}</p>
-
             {card.imageUrl && (
               <div className={styles.imageWrapper}>
                 <Image
@@ -264,147 +298,145 @@ export default function TaskCardModal({
                 />
               </div>
             )}
-          </div>
-
-          <div className={styles.commentSection}>
-            <div>
-              <label className={styles.commentlabel}>댓글</label>
-              <div className={styles.commentInputArea}>
-                <textarea
-                  value={inputComment}
-                  onChange={(e) => setInputComment(e.target.value)}
-                  placeholder="댓글을 작성하기"
-                  className={`${styles.textareainput} text-md-regular resize-none`}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault()
-                      addComment()
-                    }
-                  }}
-                />
-                <div className={styles.commentinputbutton}>
-                  <button
-                    className={`${styles.commentButton} ${
-                      inputComment
-                        ? 'text-[#5534DA] cursor-pointer'
-                        : 'text-[#D9D9D9]'
-                    }`}
-                    onClick={addComment}
-                    disabled={!inputComment.trim()}
-                  >
-                    입력
-                  </button>
+            <div className={styles.commentSection}>
+              <div>
+                <label className={styles.commentlabel}>댓글</label>
+                <div className={styles.commentInputArea}>
+                  <textarea
+                    value={inputComment}
+                    onChange={(e) => setInputComment(e.target.value)}
+                    placeholder="댓글을 작성하기"
+                    className={`${styles.textareainput} text-md-regular resize-none`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault()
+                        addComment()
+                      }
+                    }}
+                  />
+                  <div className={styles.commentinputbutton}>
+                    <button
+                      className={`${styles.commentButton} ${
+                        inputComment
+                          ? 'text-[#5534DA] cursor-pointer'
+                          : 'text-[#D9D9D9]'
+                      }`}
+                      onClick={addComment}
+                      disabled={!inputComment.trim()}
+                    >
+                      입력
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div
-              ref={commentContainerRef}
-              className={styles.commentListWrapper}
-            >
-              {comments.map((comment) => (
-                <div key={comment.id} className={styles.commentRow}>
-                  <div className={styles.image_wrapper}>
-                    {comment.author.profileImageUrl ? (
-                      <Image
-                        className={styles.profile_image}
-                        src={comment.author.profileImageUrl}
-                        width={50}
-                        height={50}
-                        alt="프로필 이미지"
-                      />
-                    ) : (
-                      <Badge nickname={comment.author.nickname} />
-                    )}
-                  </div>
-                  <div className="lg:w-[45rem] md:w-[42rem] w-full">
-                    <div className={styles.commentInfoRow}>
-                      <div className={styles.nicknameText}>
-                        {comment.author.nickname}
-                      </div>
-                      <div className={styles.dateText}>
-                        {formatDate(comment.createdAt)}
-                      </div>
-                    </div>
-                    <div className={styles.commentText}>{comment.content}</div>
-                    {editingComments[comment.id] !== undefined ? (
-                      <>
-                        <input
-                          type="text"
-                          value={editingComments[comment.id] ?? ''}
-                          onChange={(e) =>
-                            setEditingComments((prev) => ({
-                              ...prev,
-                              [comment.id]: e.target.value,
-                            }))
-                          }
-                          className={styles.editInput}
+              <div className={styles.commentListWrapper}>
+                {comments.map((comment) => (
+                  <div key={comment.id} className={styles.commentRow}>
+                    <div className={styles.image_wrapper}>
+                      {comment.author.profileImageUrl ? (
+                        <Image
+                          className={styles.profile_image}
+                          src={comment.author.profileImageUrl}
+                          width={50}
+                          height={50}
+                          alt="프로필 이미지"
                         />
-                        <div className={styles.commentActions}>
-                          <button
-                            className={styles.commentActionBtn}
-                            onClick={async () => {
-                              await editComment(
-                                comment.id,
-                                editingComments[comment.id] ?? ''
-                              )
-                              setEditingComments((prev) => {
-                                const updated = { ...prev }
-                                delete updated[comment.id]
-                                return updated
-                              })
-                            }}
-                            disabled={!editingComments[comment.id]?.trim()}
-                          >
-                            저장
-                          </button>
-                          <button
-                            className={styles.commentActionBtn}
-                            onClick={() =>
-                              setEditingComments((prev) => {
-                                const updated = { ...prev }
-                                delete updated[comment.id]
-                                return updated
-                              })
-                            }
-                          >
-                            취소
-                          </button>
+                      ) : (
+                        <Badge nickname={comment.author.nickname} />
+                      )}
+                    </div>
+                    <div ref={observerTargetRef} style={{ height: '0.1rem' }} />
+                    <div className="lg:w-[45rem] md:w-[42rem] w-full">
+                      <div className={styles.commentInfoRow}>
+                        <div className={styles.nicknameText}>
+                          {comment.author.nickname}
                         </div>
-                      </>
-                    ) : (
-                      <>
-                        {comment.author.id === userData.id && (
+                        <div className={styles.dateText}>
+                          {formatDate(comment.createdAt)}
+                        </div>
+                      </div>
+                      <div className={styles.commentText}>
+                        {comment.content}
+                      </div>
+                      {editingComments[comment.id] !== undefined ? (
+                        <>
+                          <input
+                            type="text"
+                            value={editingComments[comment.id] ?? ''}
+                            onChange={(e) =>
+                              setEditingComments((prev) => ({
+                                ...prev,
+                                [comment.id]: e.target.value,
+                              }))
+                            }
+                            className={styles.editInput}
+                          />
                           <div className={styles.commentActions}>
                             <button
                               className={styles.commentActionBtn}
-                              onClick={() =>
-                                setEditingComments((prev) => ({
-                                  ...prev,
-                                  [comment.id]: comment.content,
-                                }))
-                              }
+                              onClick={async () => {
+                                await editComment(
+                                  comment.id,
+                                  editingComments[comment.id] ?? ''
+                                )
+                                setEditingComments((prev) => {
+                                  const updated = { ...prev }
+                                  delete updated[comment.id]
+                                  return updated
+                                })
+                              }}
+                              disabled={!editingComments[comment.id]?.trim()}
                             >
-                              수정
+                              저장
                             </button>
                             <button
                               className={styles.commentActionBtn}
-                              onClick={() => deleteComment(comment.id)}
+                              onClick={() =>
+                                setEditingComments((prev) => {
+                                  const updated = { ...prev }
+                                  delete updated[comment.id]
+                                  return updated
+                                })
+                              }
                             >
-                              삭제
+                              취소
                             </button>
                           </div>
-                        )}
-                      </>
-                    )}
+                        </>
+                      ) : (
+                        <>
+                          {comment.author.id === userData.id && (
+                            <div className={styles.commentActions}>
+                              <button
+                                className={styles.commentActionBtn}
+                                onClick={() =>
+                                  setEditingComments((prev) => ({
+                                    ...prev,
+                                    [comment.id]: comment.content,
+                                  }))
+                                }
+                              >
+                                수정
+                              </button>
+                              <button
+                                className={styles.commentActionBtn}
+                                onClick={() => deleteComment(comment.id)}
+                              >
+                                삭제
+                              </button>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
-              {isLoadingMore && (
-                <div className={styles.loadingText}>댓글 불러오는 중...</div>
-              )}
-              <div ref={observerTargetRef} style={{ height: '0.1rem' }} />
+                {isLoadingMore && (
+                  <div className={styles.loadingText}>댓글 불러오는 중...</div>
+                )}
+              </div>
             </div>
           </div>
         </div>

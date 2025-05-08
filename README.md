@@ -20,8 +20,10 @@
       <td>
         • 공통 컴포넌트 (버튼, 페이지네이션)<br/>
         • 나의 대시보드 초기 UI 및 수정 페이지<br/>
+        • API 연결, 스켈레톤 UI, 반응형<br/>
         • 대시보드 생성 모달<br/>
-        • 무한 스크롤
+        • 무한 스크롤<br/>
+        • toast context API 구현
       </td>
     </tr>
     <tr>
@@ -70,7 +72,7 @@
 </table>
 
 ## 🔗 배포 주소 (Deployment URL)
-- 
+- taskify-git-develop-codeit-part3.vercel.app
 
 ## 📅 프로젝트 기간 (Project Timeline)
 2025년 4월 22일 ~ 2025년 5월 12일

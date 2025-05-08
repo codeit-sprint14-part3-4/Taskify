@@ -4,84 +4,67 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import DashboardCreateModal from '@/components/domain/modals/dashboardCreateModal/DashboardCreateModal'
-import { dashboardsService } from '@/api/services/dashboardsServices'
 import DashBoardListButton from './DashboardListButton'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import ColorPin from '../../colorpin/ColorPin'
-
-interface Dashboard {
-  id: number
-  title: string
-  createdByMe: boolean
-  color: string
-}
+import { useDashboardListStore } from '@/stores/dashboardList'
 
 export default function DashboardList() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [page, setPage] = useState(1)
-  const [dashboards, setDashboards] = useState<Dashboard[]>([])
-  const [totalPages, setTotalPages] = useState(0)
   const [error, setError] = useState<string | null>(null)
+
   const router = useRouter()
+  const { dashboards, totalCount, fetchDashboardList } = useDashboardListStore()
 
-  const dashboardsPerPage = 5
-
-  // 대시보드 목록을 가져오는 함수
-  const fetchDashboards = async (pageNumber: number) => {
-    try {
-      const data = await dashboardsService.getDashboards(
-        'pagination',
-        pageNumber,
-        dashboardsPerPage
-      )
-      setDashboards(data.dashboards)
-
-      setTotalPages(Math.ceil(data.totalCount / dashboardsPerPage))
-    } catch (err) {
+  // 페이지 변경 시 대시보드 목록 새로 가져오기
+  useEffect(() => {
+    fetchDashboardList(page).catch((err) => {
       const error = err as Error
       setError(error.message || '대시보드를 불러오는 데 실패했습니다.')
+    })
+  }, [page, fetchDashboardList])
+  const handleNext = () => {
+    const maxPage = Math.ceil(totalCount / 5) // 총 페이지 수 계산
+    if (page < maxPage) {
+      setPage((prev) => prev + 1) // 페이지가 최대 페이지보다 적을 경우에만 증가
     }
   }
 
-  const handleNext = () => {
-    if (page < totalPages) setPage((prev) => prev + 1)
+  const handlePrev = () => {
+    if (page > 1) {
+      setPage((prev) => prev - 1) // 페이지가 1보다 크면 감소
+    }
   }
 
-  const handlePrev = () => {
-    if (page > 1) setPage((prev) => prev - 1)
-  }
   const handleDashboardClick = (id: number) => {
     router.push(`/dashboard/${id}`)
   }
-  // 대시보드 생성 모달 열기 / 닫기
+
   const handleCreateDashboardModal = () => setIsModalOpen(true)
   const handleCloseDashboardModal = () => setIsModalOpen(false)
-
-  useEffect(() => {
-    fetchDashboards(page)
-  }, [page])
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.main_container}>
-        <ButtonDashboard
-          onClick={handleCreateDashboardModal}
-          gap="gap-2"
-
-          className="text-lg-semibold lg:py-[2.1rem] lg:px-[9.5rem] md:py-[2rem] md:px-[5.3rem] px-[7.5rem] py-[1.5rem] "
-
-          suffix={
-            <Image
-              src="/assets/icon/add-box.svg"
-              alt="addbutton"
-              width={22}
-              height={22}
-              className="object-contain flex"
-            />
-          }
-        >
-          새로운 대시보드
-        </ButtonDashboard>
+        <div className={styles.button_dashboard_wrapper}>
+          <ButtonDashboard
+            onClick={handleCreateDashboardModal}
+            gap="gap-2"
+            className="text-lg-semibold w-full  lg:py-[2.1rem] lg:px-[9.5rem] md:py-[2rem] md:px-[5.3rem] px-[7rem] py-[1.5rem] lg:w-full"
+            suffix={
+              <Image
+                src="/assets/icon/add-box.svg"
+                alt="addbutton"
+                width={22}
+                height={22}
+                className="object-contain flex"
+              />
+            }
+          >
+            새로운 대시보드
+          </ButtonDashboard>
+        </div>
 
         {error && <div className="text-red-500 mt-4">{error}</div>}
 
@@ -117,11 +100,6 @@ export default function DashboardList() {
       </div>
 
       <div className={`${styles.page_wrapper} text-md-regular`}>
-        <div className={styles.botton_gap}>
-          <span>
-            {page} / {totalPages}
-          </span>
-        </div>
         <button
           onClick={handlePrev}
           disabled={page === 1}
@@ -137,9 +115,14 @@ export default function DashboardList() {
             />
           </div>
         </button>
+
+        <span className={styles.page_number}>
+          {page} / {Math.ceil(totalCount / 5)}{' '}
+        </span>
+
         <button
           onClick={handleNext}
-          disabled={page === totalPages}
+          disabled={page === totalCount}
           className={styles.page_button_right}
         >
           <div className={styles.crown_center}>

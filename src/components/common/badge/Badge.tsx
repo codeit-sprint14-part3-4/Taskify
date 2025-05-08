@@ -6,32 +6,44 @@ interface BadgeProps {
   profileImage?: string
 }
 
-const getRandomColor = () => {
-  const colors = [
-    '#FFC85A',
-    '#FDD446',
-    '#9DD7ED',
-    '#C4B1A2',
-    '#F4D7DA',
-    '#A3C4A2',
-    '#FF787A',
-    '#F4BEFF',
-    '#BEC3FF',
-    '#BF57B5',
-  ]
-  const randomIndex = Math.floor(Math.random() * colors.length)
-  return colors[randomIndex]
-}
+const COLORS = [
+  '#FFC85A',
+  '#FDD446',
+  '#9DD7ED',
+  '#C4B1A2',
+  '#F4D7DA',
+  '#A3C4A2',
+  '#FF787A',
+  '#F4BEFF',
+  '#BEC3FF',
+  '#BF57B5',
+]
 
 const Badge = ({ nickname, profileImage }: BadgeProps) => {
   const [bgColor, setBgColor] = useState<string>('')
 
-  // 랜덤 배경색 설정
+  const getBadgeColor = (nickname: string): string => {
+    const key = `badgeColor_${nickname}`
+    const savedColor = sessionStorage.getItem(key)
+    if (savedColor && COLORS.includes(savedColor)) {
+      return savedColor
+    } else {
+      const hash = [...nickname].reduce(
+        (acc, char) => acc + char.charCodeAt(0),
+        0
+      )
+      const color = COLORS[hash % COLORS.length]
+      sessionStorage.setItem(key, color)
+      return color
+    }
+  }
+
   useEffect(() => {
     if (!profileImage) {
-      setBgColor(getRandomColor()) // 프로필 이미지가 없을 때만 랜덤 배경 색상
+      const color = getBadgeColor(nickname)
+      setBgColor(color)
     }
-  }, [profileImage])
+  }, [profileImage, nickname])
 
   // 닉네임 첫 글자 반환
   const getFirstLetter = (nickname: string) => {

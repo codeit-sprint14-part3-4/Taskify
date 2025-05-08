@@ -16,28 +16,34 @@ const TAG_COLORS: TagColor[] = [
   'tag-gray',
 ]
 
-function getRandomTagColor(): TagColor {
-  const randomIndex = Math.floor(Math.random() * TAG_COLORS.length)
-  return TAG_COLORS[randomIndex]
+function getTagColorFromLabel(label: string): TagColor {
+  let hash = 0
+  for (let i = 0; i < label.length; i++) {
+    hash = label.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  const index = Math.abs(hash) % TAG_COLORS.length
+  return TAG_COLORS[index]
 }
 
 interface ExtendedTagProps extends TagProps {
   isDeletable?: boolean
   onDelete?: () => void
+  color?: TagColor
 }
 
 export default function Tag({
   label,
-  // color,
   isDeletable = false,
   onDelete,
+  color,
 }: ExtendedTagProps) {
-  // 컴포넌트 생성 시 1회만 랜덤 색 고정
-  const color = useMemo(() => getRandomTagColor(), [])
+  const tagColor = useMemo(() => {
+    return color ?? getTagColorFromLabel(label)
+  }, [label, color])
 
   return (
     <div
-      className={`${styles.tag} ${styles[color]} text-md-regular relative ${
+      className={`${styles.tag} ${styles[tagColor]} text-md-regular relative ${
         isDeletable ? `${styles['tag-hover']} ${styles['tag-active']}` : ''
       }`}
     >

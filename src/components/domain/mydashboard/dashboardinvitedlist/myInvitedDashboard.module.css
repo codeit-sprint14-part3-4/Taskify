@@ -126,7 +126,7 @@
 @media (max-width: 767px) {
   .wrapper {
     height: 77rem;
-    margin-top: 2.4rem;
+    margin: 2.4rem 0 2.4rem 0;
   }
 
   .hideOnMobile {
