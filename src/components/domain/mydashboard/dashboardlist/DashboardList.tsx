@@ -64,25 +64,24 @@ export default function DashboardList() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.main_container}>
-        <ButtonDashboard
-          onClick={handleCreateDashboardModal}
-          gap="gap-2"
-
-          className="text-lg-semibold lg:py-[2.1rem] lg:px-[9.5rem] md:py-[2rem] md:px-[5.3rem] px-[7.5rem] py-[1.5rem] "
-
-          suffix={
-            <Image
-              src="/assets/icon/add-box.svg"
-              alt="addbutton"
-              width={22}
-              height={22}
-              className="object-contain flex"
-            />
-          }
-        >
-          새로운 대시보드
-        </ButtonDashboard>
-
+        <div className={styles.button_dashboard_wrapper}>
+          <ButtonDashboard
+            onClick={handleCreateDashboardModal}
+            gap="gap-2"
+            className="text-lg-semibold w-full md:w-full lg:py-[2.1rem] lg:px-[9.5rem] md:py-[2rem] md:px-[5.3rem] px-[7rem] py-[1.5rem] lg:w-full"
+            suffix={
+              <Image
+                src="/assets/icon/add-box.svg"
+                alt="addbutton"
+                width={22}
+                height={22}
+                className="object-contain flex"
+              />
+            }
+          >
+            새로운 대시보드
+          </ButtonDashboard>
+        </div>
         {error && <div className="text-red-500 mt-4">{error}</div>}
 
         {dashboards.map((dashboard, index) => (

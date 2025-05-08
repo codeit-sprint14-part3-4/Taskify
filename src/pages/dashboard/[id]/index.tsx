@@ -201,7 +201,7 @@ export default function DashboardPage() {
           <div className={styles.addColumnWrapper}>
             <ButtonDashboard
               paddingHeight="pt-[2.4rem] pb-[2rem]"
-              paddingWidth="px-[8.6rem]"
+              paddingWidth="px-[8.5rem]"
               gap="gap-[1.2rem]"
               className={styles.addColumnButton}
               color="bg-white text-[#333236] text-2lg-bold"

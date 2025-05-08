@@ -1,6 +1,7 @@
 .wrapper {
   width: 102.2rem;
   height: fit-content;
+  font-family: 'Pretendard';
 }
 .main_container {
   display: flex;
@@ -10,6 +11,7 @@
   gap: 1.2rem;
   height: 16rem;
 }
+
 .page_button_left {
   width: 4rem;
   height: 4rem;
@@ -50,18 +52,25 @@
 @media (max-width: 1023px) {
   .wrapper {
     width: fit-content;
-    font-family: 'Pretendard';
+    padding-bottom: 4.8rem;
   }
 
   .main_container {
-    gap: 1rem;
-    display: flex;
     align-items: center;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    gap: 1rem;
     height: 23rem;
+    align-content: flex-start;
   }
 }
 
 @media (max-width: 767px) {
+  .wrapper {
+    padding-bottom: 2.4rem;
+  }
+  .button_dashboard_wrapper {
+    width: 100%;
+  }
+  .main_container {
+    height: max-content;
+  }
 }

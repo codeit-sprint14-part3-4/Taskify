@@ -42,19 +42,16 @@
 
 @media (max-width: 1023px) {
   .edit_container {
-    max-width: 54.4rem;
+    max-width: 100%;
   }
 
   .change_button {
     padding: 1.4rem 23rem;
+    width: 100%;
   }
 }
 
 @media (max-width: 767px) {
-  .edit_container {
-    max-width: 28.4rem;
-  }
-
   .dashboard_edit_title_margin {
     font-family: var(--font-family);
     font-size: 2rem;
