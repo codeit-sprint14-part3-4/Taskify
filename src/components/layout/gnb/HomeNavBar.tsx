@@ -31,7 +31,7 @@ export default function HomeNavBar({
 }: HomeNavBarProps) {
   const { userData } = useAuthStore()
   const { members } = useDashboardMembers()
-  const [membersToShow, setMembersToShow] = useState(4)
+
   // 드롭다운
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({})
@@ -55,18 +55,19 @@ export default function HomeNavBar({
     ? members.filter((member) => member.email !== userData?.email)
     : []
 
-  const showCrown = pageType === 'mydashboard' && isOwner
+  const showCrown = pageType === 'dashboard' && isOwner
   const showDashboardControls =
     isOwner && pageType === 'dashboard' && !isEditPage
 
-  useEffect(() => {
-    const handleResize = () => {
-      setMembersToShow(window.innerWidth <= 1023 ? 2 : 4)
+  // 화면 크기 변화 감지용
+  const getMembersToShowCount = () => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 1023 ? 2 : 4
     }
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    return 4
+  }
+
+  const shownMembers = filteredMembers.slice(0, getMembersToShowCount())
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -97,7 +98,7 @@ export default function HomeNavBar({
         position: 'absolute',
         top: rect.bottom + window.scrollY + 8,
         left:
-          window.innerWidth <= 787
+          window.innerWidth <= 1024
             ? rect.left + window.scrollX - 100 // 모바일에서는 더 왼쪽
             : rect.left + window.scrollX + 30, // 데스크탑 위치
         zIndex: 1000,
@@ -142,6 +143,7 @@ export default function HomeNavBar({
                   paddingWidth="px-6.5"
                   gap="gap-2"
                   style={{
+                    width: 'max-content',
                     color: 'var(--gray-787486)',
                     objectFit: 'contain',
                     display: 'flex',
@@ -166,6 +168,7 @@ export default function HomeNavBar({
                 paddingWidth="px-6.5"
                 gap="gap-2"
                 style={{
+                  width: 'max-content',
                   color: 'var(--gray-787486)',
                   objectFit: 'contain',
                   display: 'flex',
@@ -188,8 +191,8 @@ export default function HomeNavBar({
         )}
         <div className={styles.nav_right_profile}>
           <div className={styles.invited_members_wrapper}>
-            {filteredMembers.slice(0, membersToShow).map((member) => (
-              <div key={member.email} className={styles.invited_profile}>
+            {shownMembers.map((member, index) => (
+              <div key={index} className={styles.invited_profile}>
                 {member.profileImageUrl ? (
                   <Image
                     src={member.profileImageUrl}
@@ -210,9 +213,9 @@ export default function HomeNavBar({
                 )}
               </div>
             ))}
-            {filteredMembers.length > membersToShow && (
+            {filteredMembers.length > shownMembers.length && (
               <div className={styles.extra_count}>
-                +{filteredMembers.length - membersToShow}
+                +{filteredMembers.length - shownMembers.length}
               </div>
             )}
           </div>

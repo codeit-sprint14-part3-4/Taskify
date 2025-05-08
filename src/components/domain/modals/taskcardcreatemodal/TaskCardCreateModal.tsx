@@ -13,7 +13,7 @@ import { CreateCardBody } from '@/types/api/cards'
 import { columnsService } from '@/api/services/columnsServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
 import styles from './taskCardCreateModal.module.css'
-
+import clsx from 'clsx'
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
   'tag-pink',
@@ -146,6 +146,8 @@ export default function TaskCardCreateModal({
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagsInput.trim() !== '') {
+      e.preventDefault() // 이벤트 중복 문제 해결
+
       const randomIndex = Math.floor(Math.random() * availableColors.length)
       const selectedColor = availableColors[randomIndex]
 
@@ -180,7 +182,9 @@ export default function TaskCardCreateModal({
           <h2 className={styles.modalTitle}>할 일 생성</h2>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>담당자</label>
+            <label className={clsx(`${styles.label} text-2lg-medium`)}>
+              담당자
+            </label>
             <UserDropdown
               users={users}
               selectedUser={selectedUser}
@@ -191,7 +195,7 @@ export default function TaskCardCreateModal({
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>
+            <label className={clsx(`${styles.label} text-2lg-medium`)}>
               제목 <span className={styles.required}>*</span>
             </label>
             <Input
@@ -204,7 +208,7 @@ export default function TaskCardCreateModal({
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>
+            <label className={clsx(`${styles.label} text-2lg-medium`)}>
               설명 <span className={styles.required}>*</span>
             </label>
             <div className={styles.textareaContainer}>
@@ -219,7 +223,9 @@ export default function TaskCardCreateModal({
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>마감일</label>
+            <label className={clsx(`${styles.label} text-2lg-medium`)}>
+              마감일
+            </label>
             <div className={styles.datePickerWrapper}>
               <Image
                 src="/assets/icon/calendar.svg"
@@ -238,12 +244,15 @@ export default function TaskCardCreateModal({
                 placeholderText="날짜를 입력해 주세요"
                 className={styles.datePickerInput}
                 locale={ko}
+                popperPlacement="bottom-start"
               />
             </div>
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>태그</label>
+            <label className={clsx(`${styles.label} text-2lg-medium`)}>
+              태그
+            </label>
             <div className={styles.tagInputContainer}>
               {tags.map((tag, idx) => (
                 <Tag
@@ -265,7 +274,9 @@ export default function TaskCardCreateModal({
           </div>
 
           <div className={styles.fieldGroup}>
-            <label className={styles.label}>이미지</label>
+            <label className={clsx(`${styles.label} text-2lg-medium`)}>
+              이미지
+            </label>
             <div className={styles.imageBox} onClick={handleImageClick}>
               {preview ? (
                 <Image

@@ -13,11 +13,12 @@
   cursor: pointer;
 }
 .buttonInner {
-  width: max-content;
   height: max-content;
+  width: max-content;
   display: flex;
   transition: all 0.3s ease;
   align-items: center;
+  justify-content: center;
 }
 .buttonContent {
   display: flex;
@@ -50,5 +51,8 @@
   .icon {
     width: 0rem;
     height: 0rem;
+  }
+  .buttonInner {
+    width: 100%;
   }
 }

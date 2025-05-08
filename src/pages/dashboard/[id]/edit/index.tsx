@@ -6,10 +6,11 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import { dashboardsService } from '@/api/services/dashboardsServices'
-import Layout from '@/components/layout/layout'
 import { useState } from 'react'
 import DeleteActionModal from '@/components/domain/modals/basemodal/DeleteActionModal'
 import { useToast } from '@/context/ToastContext'
+import Layout from '@/components/layout/layout'
+
 
 export default function EditPage() {
   const { showToast } = useToast()
@@ -38,7 +39,7 @@ export default function EditPage() {
   return (
     <>
       <div
-        className={`bg-[var(--gray-FAFAFA)] flex flex-col gap-[1.6rem] ml-[2rem]`}
+        className={`bg-[var(--gray-FAFAFA)] flex flex-col gap-[1.6rem] pl-[2rem] pr-[2rem]`}
       >
         <div className="mt-[2rem] ml-[2rem]">
           <button

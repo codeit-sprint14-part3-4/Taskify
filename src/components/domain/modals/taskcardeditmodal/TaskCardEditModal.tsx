@@ -16,7 +16,7 @@ import { columnsService } from '@/api/services/columnsServices'
 import { useDashboardMembers } from '@/stores/dashboardMembers'
 import { cardsService } from '@/api/services/cardsServices'
 import AnimatedModalContainer from '@/components/common/animatedmodalcontainer/AnimatedModalContainer'
-
+import clsx from 'clsx'
 const TAG_COLORS: TagColor[] = [
   'tag-orange',
   'tag-pink',
@@ -60,9 +60,21 @@ export default function TaskCardEditModal({
 
   const [inputValue, setInputValue] = useState('')
   const [columns, setColumns] = useState<ColumnType[]>([])
-  const [tags, setTags] = useState<{ label: string; color: TagColor }[]>(
-    cardInfo.tags.map((tag) => ({ label: tag, color: getRandomTagColor() }))
-  )
+  const [tags, setTags] = useState<{ label: string; color: TagColor }[]>(() => {
+    return cardInfo.tags.map((tagLabel, idx) => {
+      const key = `tagColor_${cardInfo.id}_${idx}`
+      const savedColor = localStorage.getItem(key)
+      let color: TagColor
+      if (savedColor && TAG_COLORS.includes(savedColor as TagColor)) {
+        color = savedColor as TagColor
+      } else {
+        const randomColor = TAG_COLORS[idx % TAG_COLORS.length]
+        localStorage.setItem(key, randomColor)
+        color = randomColor
+      }
+      return { label: tagLabel, color }
+    })
+  })
   const [availableColors, setAvailableColors] = useState<TagColor[]>([
     ...TAG_COLORS,
   ])
@@ -109,9 +121,14 @@ export default function TaskCardEditModal({
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
+      e.preventDefault()
       setIsDisable(false)
       const randomIndex = Math.floor(Math.random() * availableColors.length)
       const selectedColor = availableColors[randomIndex]
+      const newTagIndex = tags.length
+      const key = `tagColor_${cardInfo.id}_${newTagIndex}`
+      localStorage.setItem(key, selectedColor)
+
       setTags([...tags, { label: inputValue.trim(), color: selectedColor }])
       const newColors = availableColors.filter((c) => c !== selectedColor)
       setAvailableColors(newColors.length ? newColors : [...TAG_COLORS])
@@ -187,11 +204,14 @@ export default function TaskCardEditModal({
       <div className={styles.modalOverlay}>
         <div className={styles.modalContainer}>
           <div className={styles.modalContent}>
-            <h2 className={styles.modalTitle}>할 일 수정</h2>
-
+            <div className={clsx(`${styles.modalTitle} text-2xl-bold`)}>
+              할 일 수정
+            </div>
             <div className={styles.flexRow}>
               <div className={styles.halfWidth}>
-                <label className={styles.label}>상태</label>
+                <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                  상태
+                </label>
                 {columns && columns.length ? (
                   <StatusDropdown
                     columnList={columns}
@@ -204,7 +224,9 @@ export default function TaskCardEditModal({
                 ) : null}
               </div>
               <div className={styles.halfWidth}>
-                <label className={styles.label}>담당자</label>
+                <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                  담당자
+                </label>
                 <UserDropdown
                   users={users}
                   selectedUser={selectedUser}
@@ -227,7 +249,7 @@ export default function TaskCardEditModal({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
                 제목 <span className={styles.required}>*</span>
               </label>
               <Input
@@ -248,7 +270,7 @@ export default function TaskCardEditModal({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
                 설명 <span className={styles.required}>*</span>
               </label>
               <div className={styles.textareaContainer}>
@@ -270,7 +292,9 @@ export default function TaskCardEditModal({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>마감일</label>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                마감일
+              </label>
               <div className={styles.datePickerWrapper}>
                 <Image
                   src="/assets/icon/calendar.svg"
@@ -296,17 +320,21 @@ export default function TaskCardEditModal({
                   placeholderText="날짜를 입력해 주세요"
                   className={styles.datePickerInput}
                   locale={ko}
+                  popperPlacement="bottom-start"
                 />
               </div>
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>태그</label>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                태그
+              </label>
               <div className={styles.tagInputContainer}>
                 {tags.map((tag, idx) => (
                   <Tag
                     key={idx}
                     label={tag.label}
+                    color={tag.color}
                     isDeletable
                     onDelete={() => handleRemoveTag(idx)}
                   />
@@ -323,7 +351,9 @@ export default function TaskCardEditModal({
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>이미지</label>
+              <label className={clsx(`${styles.label} text-2lg-medium`)}>
+                이미지
+              </label>
               <div className={styles.imageBox} onClick={handleImageClick}>
                 {preview ? (
                   <>

@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import Layout from '@/components/layout/layout'
 import styles from '@/pages/dashboard/[id]/dashboard.module.css'
 import { columnsService } from '@/api/services/columnsServices'
 import { cardsService } from '@/api/services/cardsServices'
-import Layout from '@/components/layout/layout'
 import Column from '@/components/domain/dashboard/Column'
 import ButtonDashboard from '@/components/common/commonbutton/ButtonDashboard'
 import TaskCardCreateModal from '@/components/domain/modals/taskcardcreatemodal/TaskCardCreateModal'
@@ -202,7 +202,7 @@ export default function DashboardPage() {
           <div className={styles.addColumnWrapper}>
             <ButtonDashboard
               paddingHeight="pt-[2.4rem] pb-[2rem]"
-              paddingWidth="px-[8.6rem]"
+              paddingWidth="px-[8.5rem]"
               gap="gap-[1.2rem]"
               className={styles.addColumnButton}
               color="bg-white text-[#333236] text-2lg-bold"

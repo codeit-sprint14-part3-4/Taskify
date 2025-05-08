@@ -99,7 +99,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
         )
         const { title, createdByMe } = dashboardData
 
-        setDashboardTitle(createdByMe ? `${title} 👑` : title)
+        setDashboardTitle(createdByMe ? `${title}` : title)
         setIsOwner(createdByMe)
       } catch (error) {
         console.error('대시보드 조회 실패:', error)
@@ -165,6 +165,7 @@ export default function Layout({ children, pageType }: LayoutProps) {
           errorMessage={errorMessage}
           mode="default"
           showCloseButton
+          isSubmitDisabled={membersEmail.trim() === ''}
         />
       )}
     </div>
