@@ -48,15 +48,11 @@
 
 @media (max-width: 1023px) {
   .edit_member_container {
-    max-width: 54.4rem;
+    max-width: 100%;
   }
 }
 
 @media (max-width: 767px) {
-  .edit_member_container {
-    max-width: 28.4rem;
-  }
-
   .edit_member_title {
     font-family: var(--font-family);
     font-size: 2rem;

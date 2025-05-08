@@ -26,7 +26,7 @@ export default function MyDashboardPage() {
   }, [])
 
   return (
-    <div className="pt-[4rem] pl-[4rem] flex items-start justify-center flex-col">
+    <div className="pt-[4rem] pl-[4rem] pr-[4rem] flex items-start justify-center flex-col">
       <DashboardList />
       {loadingInvited ? (
         <div className="space-y-[4rem]">

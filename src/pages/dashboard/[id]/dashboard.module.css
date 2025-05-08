@@ -46,16 +46,13 @@
     height: auto;
   }
   .addColumnWrapper {
-    margin: 0 2.4rem 2rem 2.4rem;
+    margin: 2rem 0;
   }
   .addColumnButton {
-    margin: -5.6rem 18rem 0 18rem;
   }
 }
 
 @media (max-width: 767px) {
-  .addColumnWrapper {
-  }
   .addColumnButton {
     padding-left: 6.1rem;
     padding-right: 6.1rem;

@@ -17,12 +17,16 @@
 .delete_button:active {
   transform: scale(0.95);
 }
-
-@media (max-width: 767px) {
-  .button_container {
-    max-width: 28.4rem;
+@media (max-width: 1023px) {
+  .edit_container {
+    max-width: 100%;
+    border-bottom: 0.1rem solid var(--gray-EEEEEE);
   }
-
+  .delete_button {
+    width: 100%;
+  }
+}
+@media (max-width: 767px) {
   .delete_button {
     padding: 1.3rem 8rem;
     font-family: var(--font-family);

@@ -143,6 +143,7 @@ export default function HomeNavBar({
                   paddingWidth="px-6.5"
                   gap="gap-2"
                   style={{
+                    width: 'max-content',
                     color: 'var(--gray-787486)',
                     objectFit: 'contain',
                     display: 'flex',
@@ -167,6 +168,7 @@ export default function HomeNavBar({
                 paddingWidth="px-6.5"
                 gap="gap-2"
                 style={{
+                  width: 'max-content',
                   color: 'var(--gray-787486)',
                   objectFit: 'contain',
                   display: 'flex',
