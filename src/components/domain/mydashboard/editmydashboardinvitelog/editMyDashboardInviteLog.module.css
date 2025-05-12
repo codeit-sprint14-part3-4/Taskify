@@ -1,0 +1,133 @@
+.edit_invite_container {
+  background-color: var(--white-FFFFFF);
+  max-width: 62rem;
+  padding: 2.6rem 2.8rem;
+}
+
+.edit_invite_header_flex_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.edit_intite_button_pagination_container {
+  gap: 1.6rem;
+}
+
+.edit_invite_email_header {
+  margin-top: 4rem;
+  color: var(--gray-9FA6B2);
+}
+
+.edit_invite_email {
+  color: var(--black-333236);
+}
+
+.invite_cancle_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.1rem solid var(--gray-EEEEEE);
+  padding: 1.6rem 0;
+}
+
+.edit_cancel_button {
+  color: var(--violet-5534DhA);
+  border-radius: 0.4rem;
+  padding: 0.4rem 2.95rem;
+}
+
+.edit_cancel_button:hover {
+  background-color: #f3f0ff;
+  color: #4a2cc3;
+}
+
+.edit_cancel_button:active {
+  transform: scale(0.95);
+}
+
+.button_hover:hover {
+  background-color: #4227ae;
+}
+
+.button_hover:active {
+  transform: scale(0.98);
+}
+
+.invite_button {
+  padding: 0.8rem 2rem 0.7rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+@media (min-width: 768px) {
+  .change_mobile_button_container {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) and (min-width: 767px) {
+  .edit_invite_container {
+    max-width: 100%;
+  }
+
+  .pagination_container {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .edit_invite_button_wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.8rem;
+  }
+
+  .edit_invite_title {
+    font-family: var(--font-family);
+    font-size: 2rem;
+    line-height: 3.2rem;
+    font-weight: 700;
+  }
+
+  .edit_member_flex_gap {
+    gap: 0.8rem;
+  }
+
+  .edit_invite_email {
+    font-family: var(--font-family);
+    font-size: 1.4rem;
+    line-height: 2.4rem;
+    font-weight: 400;
+  }
+
+  .edit_cancel_button {
+    padding: 0.7rem 1.5rem;
+    font-family: var(--font-family);
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    font-weight: 500;
+  }
+
+  .button_container {
+    display: none;
+  }
+
+  .invite_mobile_button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.8rem;
+  }
+
+  .invite_button {
+    padding: 0.4rem 1.2rem;
+    font-family: var(--font-family);
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    font-weight: 500;
+  }
+}

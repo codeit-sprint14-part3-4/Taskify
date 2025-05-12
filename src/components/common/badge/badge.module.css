@@ -1,0 +1,38 @@
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: bold;
+  border: 0.2rem solid white;
+  background-color: transparent;
+}
+
+.badgeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 0.2rem solid white;
+  position: relative;
+}
+
+.profileImage {
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 0.2rem solid white;
+}
+
+.badgeWithText {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

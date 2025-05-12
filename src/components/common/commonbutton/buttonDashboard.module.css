@@ -1,0 +1,58 @@
+.button {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.8rem;
+
+  transition: all 0.3s ease;
+}
+.buttonWrapper {
+  border: 0.1rem solid var(--gray-D9D9D9);
+  border-radius: 0.8rem;
+
+  background-color: var(--white-FFFFFF);
+  cursor: pointer;
+}
+.buttonInner {
+  height: max-content;
+  width: max-content;
+  display: flex;
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+}
+.buttonContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.textOnly {
+  color: #333236;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.iconOnly {
+  border: none;
+  padding: 0;
+  color: transparent;
+  width: auto;
+  height: auto;
+}
+.icon {
+  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+@media (max-width: 767px) {
+  .icon {
+    width: 0rem;
+    height: 0rem;
+  }
+  .buttonInner {
+    width: 100%;
+  }
+}

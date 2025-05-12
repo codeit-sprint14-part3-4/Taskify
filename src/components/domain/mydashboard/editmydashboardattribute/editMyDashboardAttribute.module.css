@@ -1,0 +1,69 @@
+.edit_container {
+  background-color: var(--white-FFFFFF);
+  max-width: 62rem;
+  padding: 3.2rem 2.8rem;
+}
+
+.dashboard_edit_title_margin {
+  margin-bottom: 2.4rem;
+}
+
+.dashboard_edit_name_margin {
+  margin-bottom: 0.8rem;
+}
+
+.edit_input {
+  border-radius: 0.8rem;
+}
+
+.edit_color_pin_container {
+  display: flex;
+  margin: 1.6rem 0 4rem 0;
+  gap: 1.2rem;
+}
+
+.change_button {
+  padding: 1.4rem 26.8rem;
+}
+
+.button_container {
+  display: flex;
+  justify-content: center;
+  gap: 1.6rem;
+}
+
+.button_hover:hover {
+  background-color: #4227ae;
+}
+
+.button_hover:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 1023px) {
+  .edit_container {
+    max-width: 100%;
+  }
+
+  .change_button {
+    padding: 1.4rem 23rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboard_edit_title_margin {
+    font-family: var(--font-family);
+    font-size: 2rem;
+    line-height: 3.2rem;
+    font-weight: 700;
+  }
+
+  .change_button {
+    padding: 1.5rem 10.3rem 1.5rem 10.3rem;
+    font-family: var(--font-family);
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+    font-weight: 500;
+  }
+}

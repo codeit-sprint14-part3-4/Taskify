@@ -1,0 +1,79 @@
+.container {
+  min-height: calc(100vh - 7rem);
+  display: flex;
+  background-color: var(--gray-FAFAFA);
+  width: calc(100vw - 300px);
+  overflow-x: auto;
+}
+
+.container::-webkit-scrollbar {
+  background-color: #fafafa;
+  height: 1rem;
+}
+.container::-webkit-scrollbar-thumb {
+  background-color: var(--color-violet-300);
+  border-radius: 1rem;
+  border: 0.2rem solid #fafafa;
+}
+
+.main {
+  flex: 1;
+}
+
+.inviteSection {
+  background-color: var(--white-FFFFFF);
+  padding: 2.4rem 4rem 6rem 4rem;
+  border-radius: 1.6rem;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  max-width: 96rem;
+  margin-top: 7.4rem;
+}
+
+.inviteTitle {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 2.4rem;
+  color: var(--black-333236);
+}
+
+.inviteBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem;
+  color: #8c8c8c;
+}
+
+.inviteMessage {
+  font-size: 1.4rem;
+}
+
+.addColumnWrapper {
+  margin: 6.8rem 2.4rem 0 2.4rem;
+}
+
+@media (max-width: 1023px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    max-height: calc(100vh - 70px);
+    width: auto;
+  }
+  .inviteSection {
+    padding: 2.4rem 4rem 6rem 4rem;
+  }
+  .addColumnWrapper {
+    margin: 2rem 0;
+  }
+  .addColumnButton {
+  }
+}
+
+@media (max-width: 767px) {
+  .addColumnButton {
+    padding-left: 6.1rem;
+    padding-right: 6.1rem;
+    padding-top: 1.9rem;
+  }
+}

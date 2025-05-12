@@ -1,0 +1,194 @@
+.card {
+  width: 100%;
+  border-radius: 0.6rem;
+  background-color: white;
+  border: 0.1rem solid #d9d9d9;
+  overflow: hidden;
+  cursor: pointer;
+  flex-direction: column;
+  display: flex;
+}
+.cardInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.imageWrapper {
+  padding-top: 1.6rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+.image {
+  width: 27.4rem;
+  height: 16rem;
+  object-fit: cover;
+}
+
+.content {
+  padding-top: 1.2rem;
+  padding-bottom: 1.6rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  font-weight: 500;
+  color: var(--gray-787486);
+  gap: 1rem;
+}
+
+.dateSection {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.calendarIcon {
+  display: inline-block;
+}
+
+.assigneeSection {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 1023px) {
+  .dateAssignee {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-shrink: 0;
+  }
+  .cardInner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4.6rem;
+  }
+  .image {
+    width: 9rem;
+    height: 5.3rem;
+    object-fit: cover;
+    border-radius: 0.4rem;
+  }
+  .imageWrapper {
+    width: 9rem;
+    height: 5.3rem;
+    display: flex;
+    flex-shrink: 0;
+    align-self: center;
+    height: 100%;
+    padding: 0;
+    margin-left: 2rem;
+  }
+
+  .content {
+    padding-right: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.4rem;
+    flex: 1;
+  }
+
+  .tagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .dateSection {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.2rem;
+    color: var(--gray-787486);
+  }
+  .assigneeSection {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+}
+@media (max-width: 767px) {
+  .card {
+    height: auto; /* 내용에 따라 자동 높이 */
+  }
+
+  .cardInner {
+    flex-direction: column; /* 세로 배치 */
+    gap: 1.2rem;
+  }
+
+  .imageWrapper {
+    width: 26rem;
+    height: 15rem;
+    margin: 0 auto; /* 가운데 정렬 */
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .image {
+    width: 26rem;
+    height: 15rem;
+    object-fit: cover;
+    border-radius: 0.4rem;
+    margin-top: 1.5rem;
+  }
+
+  .content {
+    padding: 2rem 1.6rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-self: normal;
+  }
+
+  .tagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between; /* 날짜 왼쪽, 프로필 오른쪽 */
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--gray-787486);
+    margin-top: 0.6rem;
+  }
+
+  .dateSection {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .assigneeSection {
+    display: flex;
+    align-items: center;
+  }
+}

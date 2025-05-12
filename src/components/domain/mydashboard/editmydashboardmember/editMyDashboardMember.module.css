@@ -1,0 +1,81 @@
+.edit_member_container {
+  background-color: var(--white-FFFFFF);
+  max-width: 62rem;
+  padding: 2.6rem 2.8rem;
+}
+
+.edit_member_flex_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit_member_flex_gap {
+  gap: 1.2rem;
+}
+
+.edit_member_name_header {
+  margin-top: 4rem;
+  color: var(--gray-9FA6B2);
+}
+
+.edit_member_name {
+  color: var(--black-333236);
+}
+
+.member_delete_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.1rem solid var(--gray-EEEEEE);
+  padding: 1.6rem 0;
+}
+
+.edit_delete_button {
+  color: var(--violet-5534DhA);
+  border-radius: 0.4rem;
+  padding: 0.4rem 2.95rem;
+}
+
+.edit_delete_button:hover {
+  background-color: #f3f0ff;
+  color: #4a2cc3;
+}
+
+.edit_delete_button:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 1023px) {
+  .edit_member_container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .edit_member_title {
+    font-family: var(--font-family);
+    font-size: 2rem;
+    line-height: 3.2rem;
+    font-weight: 700;
+  }
+
+  .edit_member_flex_gap {
+    gap: 0.8rem;
+  }
+
+  .edit_member_name {
+    font-family: var(--font-family);
+    font-size: 1.4rem;
+    line-height: 2.4rem;
+    font-weight: 400;
+  }
+
+  .edit_delete_button {
+    padding: 0.7rem 1.5rem;
+    font-family: var(--font-family);
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,21 @@
+.input {
+  border: 0.1rem solid var(--gray-D9D9D9);
+  border-radius: 0.6rem;
+  height: 4rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: var(--violet-5534DhA);
+}
+
+.error {
+  border-color: var(--red-D6173A);
+}
+
+.errorMessage {
+  color: var(--red-D6173A);
+  font-size: 1.2rem;
+  margin-top: 0.4rem;
+}

@@ -1,0 +1,75 @@
+.nav {
+  background-color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navWrapper {
+  padding: 1.5rem 8rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: padding 0.3s ease, width 0.3s ease, font-size 0.3s ease;
+}
+.logo {
+  width: 12.1rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: padding 0.3s ease, width 0.3s ease, font-size 0.3s ease;
+}
+
+.login {
+  width: max-content;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: padding 0.3s ease, width 0.3s ease, font-size 0.3s ease;
+  gap: 3.6rem;
+}
+.logotext {
+  transition: all 0.3s ease;
+}
+.login li a {
+  text-decoration: none;
+  color: var(--white-FFFFFF);
+}
+.profile {
+  left: 5px;
+  top: 5px;
+  position: relative;
+}
+@media (max-width: 1023px) {
+  .navWrapper {
+    padding: 1.55rem 4rem;
+  }
+}
+
+@media (max-width: 743px) {
+  .navWrapper {
+    padding: 1.6rem 2.4rem;
+  }
+  .logo {
+    height: 1.5625rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .image {
+    height: 2.7rem;
+  }
+  .logotext {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transform: scale(0);
+  }
+  .login {
+    font-size: 1.4rem;
+
+    gap: 2.4rem;
+  }
+}
