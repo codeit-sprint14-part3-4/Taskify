@@ -106,10 +106,6 @@
 
 ### 마이페이지
 ![마이페이지](https://github.com/user-attachments/assets/76b55881-797e-427c-a011-c338c5f5b66f)
-![마이페이지 비밀번호 변경](https://github.com/user-attachments/assets/190fc502-02ae-4646-9c05-d020acf60a34)
-
-### 페이지네이션
-![페이지네이션](https://github.com/user-attachments/assets/d07a878d-35b8-457b-bd62-a59ef5859491)
 
 ### 멤버 초대하기
 ![초대하기모달](https://github.com/user-attachments/assets/6bffd928-0490-41d7-8077-fdbe774fa43d)
