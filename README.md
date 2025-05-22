@@ -1,4 +1,4 @@
-# 📋 Taskify
+![카드](https://github.com/user-attachments/assets/c00f9418-6a70-4652-87cb-e2a91ddb3397)# 📋 Taskify
 > **"Taskify는 일정 관리와 공유 기능을 제공하는 웹 애플리케이션입니다."**
 
 ---
@@ -76,6 +76,47 @@
 
 ## 📅 프로젝트 기간 (Project Timeline)
 2025년 4월 22일 ~ 2025년 5월 12일
+
+---
+## 📌 주요 기능
+### 랜딩페이지
+![랜딩페이지](https://github.com/user-attachments/assets/f33a5a44-7ece-43c4-9a96-cd4a48a8ddcb)
+
+### 회원가입 & 로그인
+![회원가입](https://github.com/user-attachments/assets/d6478f16-7abe-4d42-b51f-98a28b07b7ae)
+![제목 없는 동영상 - Clipchamp로 제작](https://github.com/user-attachments/assets/ba39ad11-7f0b-43fa-ba3f-d83a5a1f071c)
+
+### 초대받은 대시보드
+![초대](https://github.com/user-attachments/assets/41e64304-c669-421a-9e4e-2d8050a8d7c3)
+
+### 대시보드 내 카드
+![카드](https://github.com/user-attachments/assets/7a27cc74-be03-4df5-94be-0e9f77937330)
+
+### 할 일 카드 생성 및 수정 모달
+![카드 생성 모달](https://github.com/user-attachments/assets/48b223d6-d373-4a14-a69b-32d2897f437d)
+
+### 대시보드 내 컬럼
+![컬럼](https://github.com/user-attachments/assets/f6412fb9-42ab-463d-96f9-1dc5b2babe62)
+
+### 카드 드래그앤드롭
+![드래그앤드롭](https://github.com/user-attachments/assets/a690513b-de8f-4b68-9f35-d8be4615cfde)
+
+### 대시보드 수정 페이지
+![대시보드 수정](https://github.com/user-attachments/assets/fb5cbff7-f09d-4bff-a916-8571d51f0d2b)
+
+### 마이페이지
+![마이페이지](https://github.com/user-attachments/assets/76b55881-797e-427c-a011-c338c5f5b66f)
+![마이페이지 비밀번호 변경](https://github.com/user-attachments/assets/190fc502-02ae-4646-9c05-d020acf60a34)
+
+### 페이지네이션
+![페이지네이션](https://github.com/user-attachments/assets/d07a878d-35b8-457b-bd62-a59ef5859491)
+
+### 멤버 초대하기
+![초대하기모달](https://github.com/user-attachments/assets/6bffd928-0490-41d7-8077-fdbe774fa43d)
+
+### 로그아웃
+![로그아웃](https://github.com/user-attachments/assets/f3bf7751-7c59-49a9-99b4-5e95c40d391d)
+
 
 ---
 
