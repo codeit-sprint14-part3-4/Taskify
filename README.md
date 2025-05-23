@@ -1,4 +1,4 @@
-![카드](https://github.com/user-attachments/assets/c00f9418-6a70-4652-87cb-e2a91ddb3397)# 📋 Taskify
+# 📋 Taskify
 > **"Taskify는 일정 관리와 공유 기능을 제공하는 웹 애플리케이션입니다."**
 
 ---
